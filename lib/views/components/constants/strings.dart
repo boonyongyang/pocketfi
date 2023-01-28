@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart' show immutable;
 
+// list of strings used in the app
 @immutable
 class Strings {
   static const allowLikesTitle = 'Allow likes';

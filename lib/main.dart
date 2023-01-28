@@ -5,6 +5,7 @@ import 'package:pocketfi/state/auth/providers/auth_state_provider.dart';
 import 'package:pocketfi/state/auth/providers/is_logged_in_provider.dart';
 import 'package:pocketfi/state/providers/is_loading_provider.dart';
 import 'package:pocketfi/views/components/loading/loading_screen.dart';
+import 'package:pocketfi/views/login/login_view.dart';
 import 'firebase_options.dart';
 
 import 'dart:developer' as devtools show log;
@@ -89,34 +90,34 @@ class MainView extends StatelessWidget {
   }
 }
 
-// for view that is not logged in
-class LoginView extends ConsumerWidget {
-  const LoginView({
-    Key? key,
-  }) : super(key: key);
+// // for view that is not logged in
+// class LoginView extends ConsumerWidget {
+//   const LoginView({
+//     Key? key,
+//   }) : super(key: key);
 
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Login View'),
-      ),
-      body: Column(
-        children: [
-          TextButton(
-            onPressed: ref.read(authStateProvider.notifier).loginWithGoogle,
-            child: const Text(
-              'Sign In with Google',
-            ),
-          ),
-          // TextButton(
-          //   onPressed: ref.read(authStateProvider.notifier).loginWithFacebook,
-          //   child: const Text(
-          //     'Sign In with Facebook',
-          //   ),
-          // ),
-        ],
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context, WidgetRef ref) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: const Text('Login View'),
+//       ),
+//       body: Column(
+//         children: [
+//           TextButton(
+//             onPressed: ref.read(authStateProvider.notifier).loginWithGoogle,
+//             child: const Text(
+//               'Sign In with Google',
+//             ),
+//           ),
+//           // TextButton(
+//           //   onPressed: ref.read(authStateProvider.notifier).loginWithFacebook,
+//           //   child: const Text(
+//           //     'Sign In with Facebook',
+//           //   ),
+//           // ),
+//         ],
+//       ),
+//     );
+//   }
+// }

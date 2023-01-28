@@ -17,6 +17,8 @@ class LoadingScreen {
 
   LoadingScreenController? _controller;
 
+  // show loading screen (based on controller)
+  // if controller is null, create new controller
   void show({
     required BuildContext context,
     String text = Strings.loading,
@@ -33,11 +35,13 @@ class LoadingScreen {
     }
   }
 
+  // hide loading screen (based on controller)
   void hide() {
     _controller?.close();
     _controller = null;
   }
 
+  // update loading screen )
   LoadingScreenController? showOverlay({
     required BuildContext context,
     required String text,
@@ -48,12 +52,21 @@ class LoadingScreen {
       return null; // return if state is null
     }
 
+    // create stream controller
+    // this is used to update the text in the loading screen
+    // without having to rebuild the entire loading screen
+    // (which will cause the loading screen to flicker)
+    // this is because the loading screen is an overlay
+    // and it will be rebuilt every time the state changes
+    // (which is every time the text is updated)
+    // so we use a stream to update the text
     final textController = StreamController<String>(); // create stream
     textController.add(text); // add initial text in stream
 
     final renderBox = context.findRenderObject() as RenderBox;
     final size = renderBox.size;
 
+    // create overlay of loading screen (UI)
     final overlay = OverlayEntry(
       builder: (context) {
         return Material(
@@ -110,6 +123,7 @@ class LoadingScreen {
     // add overlay to state
     state.insert(overlay);
 
+    // return controller
     return LoadingScreenController(
       close: () {
         textController.close();
