@@ -14,6 +14,7 @@ import 'package:pocketfi/views/components/animations/lottie_animation_view.dart'
 import 'package:pocketfi/views/components/animations/models/lottie_animation.dart';
 import 'package:pocketfi/views/components/animations/welcome_app_animation_view.dart';
 import 'package:pocketfi/views/components/loading/loading_screen.dart';
+import 'package:pocketfi/views/components/main/main_view.dart';
 import 'package:pocketfi/views/login/login_view.dart';
 import 'firebase_options.dart';
 
@@ -73,44 +74,44 @@ class App extends StatelessWidget {
   }
 }
 
-// for view that is already logged in
-class MainView extends StatelessWidget {
-  const MainView({super.key});
+// // for view that is already logged in
+// class MainView extends StatelessWidget {
+//   const MainView({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Main View'),
-      ),
-      body: Consumer(
-        builder: (_, ref, child) {
-          return TextButton(
-            onPressed: () async {
-              await ref.read(authStateProvider.notifier).logOut();
-            },
-            child: SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: Column(
-                children: const [
-                  Text('Logout'),
-                  ErrorAnimationView(),
-                  DataNotFoundAnimationView(),
-                  // EmptyContentsAnimationView(),
-                  EmptyContentsWithTextAnimationView(text: 'tes'),
-                  LoadingAnimationView(),
-                  LoadingThumbnailAnimationView(),
-                  WelcomeAppAnimationView(),
-                  LottieAnimationView(animation: LottieAnimation.loadingImage),
-                ],
-              ),
-            ),
-          );
-        },
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: const Text('Main View'),
+//       ),
+//       body: Consumer(
+//         builder: (_, ref, child) {
+//           return TextButton(
+//             onPressed: () async {
+//               await ref.read(authStateProvider.notifier).logOut();
+//             },
+//             child: SingleChildScrollView(
+//               scrollDirection: Axis.vertical,
+//               child: Column(
+//                 children: const [
+//                   Text('Logout'),
+//                   ErrorAnimationView(),
+//                   DataNotFoundAnimationView(),
+//                   // EmptyContentsAnimationView(),
+//                   EmptyContentsWithTextAnimationView(text: 'tes'),
+//                   LoadingAnimationView(),
+//                   LoadingThumbnailAnimationView(),
+//                   WelcomeAppAnimationView(),
+//                   LottieAnimationView(animation: LottieAnimation.loadingImage),
+//                 ],
+//               ),
+//             ),
+//           );
+//         },
+//       ),
+//     );
+//   }
+// }
 
 // // for view that is not logged in
 // class LoginView extends ConsumerWidget {
