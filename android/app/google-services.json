@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "308866983425",
+    "project_id": "pocketfi-jellyy",
+    "storage_bucket": "pocketfi-jellyy.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:308866983425:android:ab88a6dc6909ab8dc60200",
+        "android_client_info": {
+          "package_name": "jellyy.pocketfi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "308866983425-p6qk1am1fb0fo1e8de5eai11kq1mjgvi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBisbG8J1UiBRffh0JRBZt4B2Th22iRylk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "308866983425-p6qk1am1fb0fo1e8de5eai11kq1mjgvi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
