@@ -38,7 +38,7 @@ dependencies:
   firebase_storage: ^11.0.10
   flutter:
     sdk: flutter
-  flutter_facebook_auth: ^5.0.7
+  # flutter_facebook_auth: ^5.0.7
   flutter_hooks: ^0.18.5+1
   font_awesome_flutter: ^10.3.0
   google_sign_in: ^5.4.3
