@@ -4,6 +4,15 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/state/auth/providers/auth_state_provider.dart';
 import 'package:pocketfi/state/auth/providers/is_logged_in_provider.dart';
 import 'package:pocketfi/state/providers/is_loading_provider.dart';
+import 'package:pocketfi/views/components/animations/data_not_found_animation_view.dart';
+import 'package:pocketfi/views/components/animations/empty_contents_animation_view.dart';
+import 'package:pocketfi/views/components/animations/empty_contents_with_text_animation_view.dart';
+import 'package:pocketfi/views/components/animations/error_animation_view.dart';
+import 'package:pocketfi/views/components/animations/loading_animation_view.dart';
+import 'package:pocketfi/views/components/animations/loading_thumbnail_animation_view.dart';
+import 'package:pocketfi/views/components/animations/lottie_animation_view.dart';
+import 'package:pocketfi/views/components/animations/models/lottie_animation.dart';
+import 'package:pocketfi/views/components/animations/welcome_app_animation_view.dart';
 import 'package:pocketfi/views/components/loading/loading_screen.dart';
 import 'package:pocketfi/views/login/login_view.dart';
 import 'firebase_options.dart';
@@ -80,8 +89,21 @@ class MainView extends StatelessWidget {
             onPressed: () async {
               await ref.read(authStateProvider.notifier).logOut();
             },
-            child: const Text(
-              'Logout',
+            child: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: Column(
+                children: const [
+                  Text('Logout'),
+                  ErrorAnimationView(),
+                  DataNotFoundAnimationView(),
+                  // EmptyContentsAnimationView(),
+                  EmptyContentsWithTextAnimationView(text: 'tes'),
+                  LoadingAnimationView(),
+                  LoadingThumbnailAnimationView(),
+                  WelcomeAppAnimationView(),
+                  LottieAnimationView(animation: LottieAnimation.loadingImage),
+                ],
+              ),
             ),
           );
         },
@@ -110,12 +132,12 @@ class MainView extends StatelessWidget {
 //               'Sign In with Google',
 //             ),
 //           ),
-//           // TextButton(
-//           //   onPressed: ref.read(authStateProvider.notifier).loginWithFacebook,
-//           //   child: const Text(
-//           //     'Sign In with Facebook',
-//           //   ),
-//           // ),
+//           TextButton(
+//             onPressed: ref.read(authStateProvider.notifier).loginWithFacebook,
+//             child: const Text(
+//               'Sign In with Facebook',
+//             ),
+//           ),
 //         ],
 //       ),
 //     );
