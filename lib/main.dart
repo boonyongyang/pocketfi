@@ -14,7 +14,9 @@ import 'package:pocketfi/views/components/animations/lottie_animation_view.dart'
 import 'package:pocketfi/views/components/animations/models/lottie_animation.dart';
 import 'package:pocketfi/views/components/animations/welcome_app_animation_view.dart';
 import 'package:pocketfi/views/components/loading/loading_screen.dart';
+import 'package:pocketfi/views/components/main/bottom_nav_bar_view.dart';
 import 'package:pocketfi/views/components/main/main_view.dart';
+import 'package:pocketfi/views/components/main/nav_bar.dart';
 import 'package:pocketfi/views/login/login_view.dart';
 import 'firebase_options.dart';
 
@@ -48,8 +50,10 @@ class App extends StatelessWidget {
       title: 'Home Page',
       theme: ThemeData(
         brightness: Brightness.light,
-        primarySwatch: Colors.orange,
-        indicatorColor: Colors.orange,
+        primarySwatch: Colors.amber,
+        indicatorColor: Colors.white10,
+        // primarySwatch: Colors.orange,
+        // indicatorColor: Colors.orange,
       ),
       darkTheme: ThemeData(
         brightness: Brightness.dark,
@@ -67,7 +71,7 @@ class App extends StatelessWidget {
           });
           final isLoggedIn = ref.watch(isLoggedInProvider);
           // isLoggedIn.log();
-          return isLoggedIn ? const MainView() : const LoginView();
+          return isLoggedIn ? const MaterialYou() : const LoginView();
         },
       ),
     );

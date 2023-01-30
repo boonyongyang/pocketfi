@@ -18,9 +18,13 @@ class MainView extends ConsumerStatefulWidget {
   ConsumerState<ConsumerStatefulWidget> createState() => _MainViewState();
 }
 
-class _MainViewState extends ConsumerState<MainView> {
+var indexProvider = StateProvider<int>((ref) => 0);
+
+class _MainViewState extends ConsumerState<MainView>
+    with AutomaticKeepAliveClientMixin<MainView> {
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return DefaultTabController(
       length: 3,
       child: Scaffold(
@@ -30,16 +34,12 @@ class _MainViewState extends ConsumerState<MainView> {
           ),
           // actions: [],
           bottom: const TabBar(
+            indicatorColor: Colors.black,
             tabs: [
-              Tab(
-                icon: Icon(Icons.wallet),
-              ),
-              Tab(
-                icon: Icon(Icons.find_replace_outlined),
-              ),
-              Tab(
-                icon: Icon(Icons.receipt_long),
-              ),
+              Tab(icon: FaIcon(FontAwesomeIcons.moneyBills)),
+              Tab(icon: FaIcon(FontAwesomeIcons.sackDollar)),
+              Tab(icon: FaIcon(FontAwesomeIcons.personFallingBurst)),
+              // icon: Icon(Icons.receipt_long)),
             ],
           ),
         ),
@@ -65,11 +65,45 @@ class _MainViewState extends ConsumerState<MainView> {
             ),
           ],
         ),
+        // body: IndexedStack(
+        //   index: ref.watch(indexProvider),
+        //   children: [
+        //     Text('Timeline'),
+        //     Text('Timeline'),
+        //     Text('Timeline'),
+        //   ],
+        // ),
         floatingActionButton: FloatingActionButton(
           child: const Icon(Icons.add),
           onPressed: () {},
         ),
+        // bottomNavigationBar: BottomNavigationBar(
+        //     onTap: (index) {
+        //       ref.read(indexProvider.notifier).state = index;
+        //     },
+        //     currentIndex: ref.watch(indexProvider),
+        //     items: const [
+        //       BottomNavigationBarItem(
+        //         icon: Icon(Icons.timeline),
+        //         label: 'Timeline',
+        //       ),
+        //       BottomNavigationBarItem(
+        //         icon: Icon(Icons.attach_money),
+        //         label: 'Budget',
+        //       ),
+        //       BottomNavigationBarItem(
+        //         icon: Icon(Icons.local_florist_rounded),
+        //         label: 'Finances',
+        //       ),
+        //       BottomNavigationBarItem(
+        //         icon: Icon(Icons.person),
+        //         label: 'Account',
+        //       ),
+        //     ]),
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
