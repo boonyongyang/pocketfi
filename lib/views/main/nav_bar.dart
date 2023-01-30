@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pocketfi/views/components/animations/empty_contents_with_text_animation_view.dart';
-import 'package:pocketfi/views/components/main/account/account_page.dart';
-import 'package:pocketfi/views/components/main/main_view.dart';
-import 'package:pocketfi/views/components/main/timeline/timeline_page.dart';
+import 'package:pocketfi/views/main/account/account_page.dart';
+import 'package:pocketfi/views/main/main_view.dart';
+import 'package:pocketfi/views/main/timeline/timeline_page.dart';
 import 'package:pocketfi/views/tabs/users_posts_view.dart';
 
 const TextStyle _textStyle = TextStyle(

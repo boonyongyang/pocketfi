@@ -8,7 +8,7 @@ import 'package:pocketfi/state/image_upload/models/file_type.dart';
 // import 'package:pocketfi/state/post_settings/providers/post_setting_provider.dart';
 import 'package:pocketfi/views/components/dialogs/alert_dialog_model.dart';
 import 'package:pocketfi/views/components/dialogs/logout_dialog.dart';
-import 'package:pocketfi/views/components/main/main_view.dart';
+import 'package:pocketfi/views/main/main_view.dart';
 import 'package:pocketfi/views/constants/strings.dart';
 // import 'package:pocketfi/views/create_new_posts/create_new_post_view.dart';
 import 'package:pocketfi/views/tabs/users_posts_view.dart';
