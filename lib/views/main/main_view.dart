@@ -1,3 +1,4 @@
+import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -75,7 +76,7 @@ class _MainViewState extends ConsumerState<MainView>
         // ),
         floatingActionButton: FloatingActionButton(
           child: const Icon(Icons.add),
-          onPressed: () {},
+          onPressed: () => Beamer.of(context).beamToNamed('/timeline/details'),
         ),
         // bottomNavigationBar: BottomNavigationBar(
         //     onTap: (index) {

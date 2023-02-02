@@ -1,12 +1,17 @@
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
+import 'package:pocketfi/views/components/animations/data_not_found_animation_view.dart';
+import 'package:pocketfi/views/components/animations/empty_contents_animation_view.dart';
+import 'package:pocketfi/views/components/animations/error_animation_view.dart';
+import 'package:pocketfi/views/components/animations/loading_animation_view.dart';
+import 'package:pocketfi/views/components/animations/welcome_app_animation_view.dart';
 import 'package:pocketfi/views/main/main_view.dart';
 
 class NavBarBeamer extends StatelessWidget {
-  NavBarBeamer({super.key});
+  const NavBarBeamer({super.key});
 
-  final routerDelegate = BeamerDelegate(
-    initialPath: '/a',
+  static final routerDelegate = BeamerDelegate(
+    initialPath: '/timeline',
     locationBuilder: RoutesLocationBuilder(
       routes: {
         '*': (context, state, data) => const ScaffoldWithBottomNavBar(),
@@ -38,16 +43,28 @@ class TabA extends BeamLocation<BeamState> {
   @override
   List<BeamPage> buildPages(BuildContext context, BeamState state) => [
         const BeamPage(
-          key: ValueKey('a'),
-          title: 'Tab A',
+          key: ValueKey('timeline'),
+          title: 'Timeline',
           type: BeamPageType.noTransition,
-          child: RootScreen(label: 'A', detailsPath: '/a/details'),
+          // child: RootScreen(label: 'Timeline', detailsPath: '/timeline/details'),
+          child: MainView(),
         ),
         if (state.uri.pathSegments.length == 2)
           const BeamPage(
-            key: ValueKey('a/details'),
-            title: 'Details A',
-            child: DetailsScreen(label: 'A'),
+            type: BeamPageType.slideTransition,
+            key: ValueKey('timeline/addnewexpense'),
+            title: 'Timeline Details',
+            child: RootScreen(
+                label: 'Add new expense',
+                detailsPath: '/timeline/addnewexpense/selectcategory'),
+          ),
+        if (state.uri.pathSegments.length == 3)
+          const BeamPage(
+            // fullScreenDialog: true,
+            type: BeamPageType.fadeTransition,
+            key: ValueKey('timeline/addnewexpense/selectcategory'),
+            title: 'Select Category',
+            child: DetailsScreen(label: 'Select Category'),
           ),
       ];
 }
@@ -64,8 +81,8 @@ class TabB extends BeamLocation<BeamState> {
           key: ValueKey('b'),
           title: 'Tab B',
           type: BeamPageType.noTransition,
-          // child: RootScreen(label: 'B', detailsPath: '/b/details'),
-          child: MainView(),
+          child: RootScreen(label: 'B', detailsPath: '/b/details'),
+          // child: MainView(),
         ),
         if (state.uri.pathSegments.length == 2)
           const BeamPage(
@@ -137,9 +154,9 @@ class _ScaffoldWithBottomNavBarState extends State<ScaffoldWithBottomNavBar> {
 
   final _routerDelegates = [
     BeamerDelegate(
-      initialPath: '/a',
+      initialPath: '/timeline',
       locationBuilder: (routeInformation, _) {
-        if (routeInformation.location!.contains('/a')) {
+        if (routeInformation.location!.contains('/timeline')) {
           return TabA(routeInformation);
         }
         return NotFound(path: routeInformation.location!);
@@ -178,8 +195,8 @@ class _ScaffoldWithBottomNavBarState extends State<ScaffoldWithBottomNavBar> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     final uriString = Beamer.of(context).configuration.location!;
-    // _currentIndex = uriString.contains('/a') ? 0 : 1;
-    if (uriString.contains('/a')) {
+    // _currentIndex = uriString.contains('/timeline') ? 0 : 1;
+    if (uriString.contains('/timeline')) {
       _currentIndex = 0;
     } else if (uriString.contains('/b')) {
       _currentIndex = 1;
@@ -264,8 +281,8 @@ class _ScaffoldWithBottomNavBarState extends State<ScaffoldWithBottomNavBar> {
         },
         destinations: const [
           NavigationDestination(
-            selectedIcon: Icon(Icons.eco),
-            icon: Icon(Icons.eco_outlined),
+            selectedIcon: Icon(Icons.timeline),
+            icon: Icon(Icons.timeline_outlined),
             label: 'Timeline',
           ),
           NavigationDestination(
@@ -307,18 +324,26 @@ class RootScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text('Tab root - $label'),
       ),
-      body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Text('Screen $label',
-                style: Theme.of(context).textTheme.titleLarge),
-            const Padding(padding: EdgeInsets.all(4)),
-            TextButton(
-              onPressed: () => Beamer.of(context).beamToNamed(detailsPath),
-              child: const Text('View details'),
-            ),
-          ],
+      body: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Text('Screen $label',
+                  style: Theme.of(context).textTheme.titleLarge),
+              const Padding(padding: EdgeInsets.all(4)),
+              TextButton(
+                onPressed: () => Beamer.of(context).beamToNamed(detailsPath),
+                child: const Text('View details'),
+              ),
+              const EmptyContentsAnimationView(),
+              const ErrorAnimationView(),
+              const LoadingAnimationView(),
+              const WelcomeAppAnimationView(),
+              const DataNotFoundAnimationView(),
+            ],
+          ),
         ),
       ),
     );
@@ -348,8 +373,11 @@ class DetailsScreenState extends State<DetailsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Details Screen - ${widget.label}'),
-      ),
+          // title: Text('Details Screen - ${widget.label}'),
+          leading: IconButton(
+        icon: const Icon(Icons.close),
+        onPressed: () => Beamer.of(context).beamBack(),
+      )),
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
