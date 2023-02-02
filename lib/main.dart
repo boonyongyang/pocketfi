@@ -14,10 +14,11 @@ import 'package:pocketfi/views/components/animations/lottie_animation_view.dart'
 import 'package:pocketfi/views/components/animations/models/lottie_animation.dart';
 import 'package:pocketfi/views/components/animations/welcome_app_animation_view.dart';
 import 'package:pocketfi/views/components/loading/loading_screen.dart';
-import 'package:pocketfi/views/components/main/bottom_nav_bar_view.dart';
-import 'package:pocketfi/views/components/main/main_view.dart';
-import 'package:pocketfi/views/components/main/nav_bar.dart';
+import 'package:pocketfi/views/main/bottom_nav_bar_view.dart';
+import 'package:pocketfi/views/main/main_view.dart';
+import 'package:pocketfi/views/main/nav_bar.dart';
 import 'package:pocketfi/views/login/login_view.dart';
+import 'package:pocketfi/views/main/nav_bar_beamer.dart';
 import 'firebase_options.dart';
 
 import 'dart:developer' as devtools show log;
@@ -71,7 +72,7 @@ class App extends StatelessWidget {
           });
           final isLoggedIn = ref.watch(isLoggedInProvider);
           // isLoggedIn.log();
-          return isLoggedIn ? const MaterialYou() : const LoginView();
+          return isLoggedIn ? NavBarBeamer() : const LoginView();
         },
       ),
     );
