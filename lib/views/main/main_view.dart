@@ -30,12 +30,57 @@ class _MainViewState extends ConsumerState<MainView>
       length: 3,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text(
-            Strings.appName,
+          backgroundColor: const Color(0xFF0F3D66),
+          title: Center(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                IconButton(
+                  onPressed: () {},
+                  icon: const Icon(
+                    Icons.settings,
+                    color: Colors.white,
+                  ),
+                ),
+                Center(
+                  child: Column(
+                    children: const [
+                      Text(
+                        // Strings.appName,
+                        '- MYR 3,250.50',
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.white,
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 4.0),
+                        child: Text(
+                          'Cash Flow',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                IconButton(
+                  onPressed: () {},
+                  icon: const Icon(
+                    Icons.search,
+                    color: Colors.white,
+                  ),
+                ),
+              ],
+            ),
           ),
           // actions: [],
           bottom: const TabBar(
-            indicatorColor: Colors.black,
+            indicatorColor: Color(0xFFF8B319),
+            labelColor: Color(0xFFF8B319),
+            unselectedLabelColor: Colors.grey,
             tabs: [
               Tab(icon: FaIcon(FontAwesomeIcons.moneyBills)),
               Tab(icon: FaIcon(FontAwesomeIcons.sackDollar)),
@@ -46,61 +91,21 @@ class _MainViewState extends ConsumerState<MainView>
         ),
         body: const TabBarView(
           children: [
-            // UserPostsView(),
-            // UserPostsView(),
-            // UserPostsView(),
-            Center(
-              child: Text(
-                'Expenses',
-              ),
-            ),
-            Center(
-              child: Text(
-                'Income',
-              ),
-            ),
-            Center(
-              child: Text(
-                'Bills',
-              ),
-            ),
+            UserPostsView(),
+            UserPostsView(),
+            UserPostsView(),
+            // Center(
+            //   child: Text(
+            //     'Expenses',
+            //   ),
+            // ),
           ],
         ),
-        // body: IndexedStack(
-        //   index: ref.watch(indexProvider),
-        //   children: [
-        //     Text('Timeline'),
-        //     Text('Timeline'),
-        //     Text('Timeline'),
-        //   ],
-        // ),
         floatingActionButton: FloatingActionButton(
+          backgroundColor: const Color(0xFFFCD46A),
           child: const Icon(Icons.add),
           onPressed: () => Beamer.of(context).beamToNamed('/timeline/details'),
         ),
-        // bottomNavigationBar: BottomNavigationBar(
-        //     onTap: (index) {
-        //       ref.read(indexProvider.notifier).state = index;
-        //     },
-        //     currentIndex: ref.watch(indexProvider),
-        //     items: const [
-        //       BottomNavigationBarItem(
-        //         icon: Icon(Icons.timeline),
-        //         label: 'Timeline',
-        //       ),
-        //       BottomNavigationBarItem(
-        //         icon: Icon(Icons.attach_money),
-        //         label: 'Budget',
-        //       ),
-        //       BottomNavigationBarItem(
-        //         icon: Icon(Icons.local_florist_rounded),
-        //         label: 'Finances',
-        //       ),
-        //       BottomNavigationBarItem(
-        //         icon: Icon(Icons.person),
-        //         label: 'Account',
-        //       ),
-        //     ]),
       ),
     );
   }
