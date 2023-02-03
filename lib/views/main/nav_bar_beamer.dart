@@ -5,6 +5,8 @@ import 'package:pocketfi/views/components/animations/empty_contents_animation_vi
 import 'package:pocketfi/views/components/animations/error_animation_view.dart';
 import 'package:pocketfi/views/components/animations/loading_animation_view.dart';
 import 'package:pocketfi/views/components/animations/welcome_app_animation_view.dart';
+import 'package:pocketfi/views/main/account/account_page.dart';
+import 'package:pocketfi/views/main/account/setting_page.dart';
 import 'package:pocketfi/views/main/main_view.dart';
 
 class NavBarBeamer extends StatelessWidget {
@@ -128,13 +130,20 @@ class TabD extends BeamLocation<BeamState> {
           key: ValueKey('d'),
           title: 'Tab D',
           type: BeamPageType.noTransition,
-          child: RootScreen(label: 'D', detailsPath: '/d/details'),
+          // child: RootScreen(label: 'D', detailsPath: '/d/details'),
+          child: ProfilePage(),
         ),
+        // if (state.uri.pathSegments.length == 2)
+        //   const BeamPage(
+        //     key: ValueKey('d/details'),
+        //     title: 'Details D',
+        //     child: DetailsScreen(label: 'D'),
+        //   ),
         if (state.uri.pathSegments.length == 2)
           const BeamPage(
-            key: ValueKey('d/details'),
-            title: 'Details D',
-            child: DetailsScreen(label: 'D'),
+            key: ValueKey('d/settings'),
+            title: 'Profile settings',
+            child: SettingsPage(),
           ),
       ];
 }

@@ -9,6 +9,7 @@ import 'package:pocketfi/state/image_upload/models/file_type.dart';
 import 'package:pocketfi/views/components/dialogs/alert_dialog_model.dart';
 import 'package:pocketfi/views/components/dialogs/logout_dialog.dart';
 import 'package:pocketfi/views/constants/strings.dart';
+import 'package:pocketfi/views/main/account/account_page.dart';
 // import 'package:pocketfi/views/create_new_posts/create_new_post_view.dart';
 import 'package:pocketfi/views/tabs/users_posts_view.dart';
 
@@ -93,12 +94,12 @@ class _MainViewState extends ConsumerState<MainView>
           children: [
             UserPostsView(),
             UserPostsView(),
-            UserPostsView(),
-            // Center(
-            //   child: Text(
-            //     'Expenses',
-            //   ),
-            // ),
+            // UserPostsView(),
+            Center(
+              child: Text(
+                'Bills',
+              ),
+            ),
           ],
         ),
         floatingActionButton: FloatingActionButton(

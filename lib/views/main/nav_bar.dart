@@ -27,10 +27,11 @@ class _MaterialYouState extends State<MaterialYou> {
     MainView(),
     TimelinePage(),
     EmptyContentsWithTextAnimationView(text: 'Timeline'),
+    EmptyContentsWithTextAnimationView(text: 'Timeline'),
     // Text('Budget', style: _textStyle),
     // Text('Finances', style: _textStyle),
     // Text('Account', style: _textStyle),
-    AccountPage(title: "Account"),
+    // AccountPage(title: "Account"),
   ];
 
   @override
