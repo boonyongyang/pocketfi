@@ -79,12 +79,14 @@ class App extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: Consumer(
         builder: (context, ref, child) {
-          // take care of displaying the loading screen
+          // check if app is loading
           ref.listen<bool>(isLoadingProvider, (_, isLoading) {
             isLoading
                 ? LoadingScreen.instance().show(context: context)
                 : LoadingScreen.instance().hide();
           });
+
+          // check if user is logged in
           final isLoggedIn = ref.watch(isLoggedInProvider);
           // isLoggedIn.log();
           return isLoggedIn ? NavBarBeamer() : const LoginView();

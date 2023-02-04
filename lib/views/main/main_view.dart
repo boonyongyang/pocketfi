@@ -10,6 +10,7 @@ import 'package:pocketfi/views/components/dialogs/alert_dialog_model.dart';
 import 'package:pocketfi/views/components/dialogs/logout_dialog.dart';
 import 'package:pocketfi/views/constants/strings.dart';
 import 'package:pocketfi/views/main/account/account_page.dart';
+import 'package:pocketfi/views/main/account/setting_page.dart';
 // import 'package:pocketfi/views/create_new_posts/create_new_post_view.dart';
 import 'package:pocketfi/views/tabs/users_posts_view.dart';
 
@@ -102,10 +103,44 @@ class _MainViewState extends ConsumerState<MainView>
             ),
           ],
         ),
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: const Color(0xFFFCD46A),
-          child: const Icon(Icons.add),
-          onPressed: () => Beamer.of(context).beamToNamed('/timeline/details'),
+        floatingActionButton: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Expanded(child: Container()),
+            FloatingActionButton(
+              heroTag: 'bookmark',
+              backgroundColor: const Color(0xFFFCD46A),
+              child: const Icon(Icons.bookmarks),
+              onPressed: () =>
+                  Beamer.of(context).beamToNamed('/timeline/details'),
+            ),
+            const SizedBox(height: 16),
+            FloatingActionButton(
+              heroTag: 'scan receipt',
+              backgroundColor: const Color(0xFFFCD46A),
+              child: const Icon(Icons.camera_alt),
+              onPressed: () =>
+                  // Beamer.of(context).beamToNamed('/timeline/details'),
+                  ScaffoldMessenger.of(context).showSnackBar(
+                // SnackBar(content: Text('Value is ${current.state}')),
+                SnackBar(content: Text('Value is $ref')),
+              ),
+            ),
+            const SizedBox(height: 16),
+            FloatingActionButton(
+              heroTag: 'add new expense',
+              backgroundColor: const Color(0xFFFCD46A),
+              child: const Icon(Icons.add),
+              onPressed: () =>
+                  // Beamer.of(context).beamToNamed('/timeline/details'),
+                  Navigator.of(context, rootNavigator: true).push(
+                MaterialPageRoute(
+                  builder: (context) => const SettingsPage(),
+                  fullscreenDialog: true,
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

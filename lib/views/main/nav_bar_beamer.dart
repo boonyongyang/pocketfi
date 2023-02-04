@@ -8,6 +8,7 @@ import 'package:pocketfi/views/components/animations/welcome_app_animation_view.
 import 'package:pocketfi/views/main/account/account_page.dart';
 import 'package:pocketfi/views/main/account/setting_page.dart';
 import 'package:pocketfi/views/main/main_view.dart';
+import 'package:pocketfi/views/main/timeline/timeline_page.dart';
 
 class NavBarBeamer extends StatelessWidget {
   const NavBarBeamer({super.key});
@@ -50,6 +51,7 @@ class TabA extends BeamLocation<BeamState> {
           type: BeamPageType.noTransition,
           // child: RootScreen(label: 'Timeline', detailsPath: '/timeline/details'),
           child: MainView(),
+          // child: TimelinePage(),
         ),
         if (state.uri.pathSegments.length == 2)
           const BeamPage(
@@ -289,26 +291,50 @@ class _ScaffoldWithBottomNavBarState extends State<ScaffoldWithBottomNavBar> {
           }
         },
         destinations: const [
+          // GestureDetector(
+          //   onDoubleTap: () {
+          //     Beamer.of(context).beamToNamed('/timeline');
+          //   },
+          // child: const
           NavigationDestination(
             selectedIcon: Icon(Icons.timeline),
             icon: Icon(Icons.timeline_outlined),
             label: 'Timeline',
           ),
+          // ),
+          // GestureDetector(
+          //   onDoubleTap: () {
+          //     Beamer.of(context).beamToNamed('/b');
+          //   },
+          // child: const
           NavigationDestination(
             selectedIcon: Icon(Icons.flood),
             icon: Icon(Icons.flood_outlined),
             label: 'Budget',
           ),
+          // ),
+          // GestureDetector(
+          //   onDoubleTap: () {
+          //     Beamer.of(context).beamToNamed('/c');
+          //   },
+          // child: const
           NavigationDestination(
             selectedIcon: Icon(Icons.attach_money_rounded),
             icon: Icon(Icons.attach_money_outlined),
             label: 'Finances',
           ),
+          // ),
+          // GestureDetector(
+          //   onDoubleTap: () {
+          //     Beamer.of(context).beamToNamed('/d');
+          //   },
+          // child: const
           NavigationDestination(
             selectedIcon: Icon(Icons.person),
             icon: Icon(Icons.person_outline),
             label: 'Account',
           ),
+          // ),
         ],
       ),
     );

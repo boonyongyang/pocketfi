@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/state/auth/providers/auth_state_provider.dart';
 import 'package:pocketfi/views/components/dialogs/alert_dialog_model.dart';
 import 'package:pocketfi/views/components/dialogs/logout_dialog.dart';
+import 'package:pocketfi/views/main/account/setting_page.dart';
 
 const kPrimaryColor = Color(0xFFFF7643);
 const kPrimaryLightColor = Color(0xFFFFECDF);
@@ -80,7 +81,13 @@ class _ProfilePageBodyState extends ConsumerState<ProfilePageBody> {
             text: "Settings",
             // icon: "assets/icons/Settings.svg",
             icon: const Icon(Icons.settings),
-            press: () => Beamer.of(context).beamToNamed('/d/settings'),
+            // press: () => Beamer.of(context).beamToNamed('/d/settings'),
+            press: () => Navigator.of(context, rootNavigator: true).push(
+              MaterialPageRoute(
+                builder: (context) => const SettingsPage(),
+                fullscreenDialog: true,
+              ),
+            ),
           ),
           ProfilePageMenu(
             text: "Help Center",
