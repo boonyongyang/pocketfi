@@ -7,7 +7,7 @@ import 'package:pocketfi/views/components/animations/loading_animation_view.dart
 import 'package:pocketfi/views/components/animations/welcome_app_animation_view.dart';
 import 'package:pocketfi/views/main/account/account_page.dart';
 import 'package:pocketfi/views/main/account/setting_page.dart';
-import 'package:pocketfi/views/main/main_view.dart';
+import 'package:pocketfi/views/main/timeline_view.dart';
 import 'package:pocketfi/views/main/timeline/timeline_page.dart';
 
 class NavBarBeamer extends StatelessWidget {
@@ -50,7 +50,7 @@ class TabA extends BeamLocation<BeamState> {
           title: 'Timeline',
           type: BeamPageType.noTransition,
           // child: RootScreen(label: 'Timeline', detailsPath: '/timeline/details'),
-          child: MainView(),
+          child: TimelineView(),
           // child: TimelinePage(),
         ),
         if (state.uri.pathSegments.length == 2)
@@ -62,6 +62,15 @@ class TabA extends BeamLocation<BeamState> {
                 label: 'Add new expense',
                 detailsPath: '/timeline/addnewexpense/selectcategory'),
           ),
+        // if (state.)
+        //   const BeamPage(
+        //     type: BeamPageType.slideTransition,
+        //     key: ValueKey('timeline/overview'),
+        //     title: 'Overview Details',
+        //     child: RootScreen(
+        //         label: 'Overview',
+        //         detailsPath: '/timeline/addnewexpense/selectcategory'),
+        //   ),
         if (state.uri.pathSegments.length == 3)
           const BeamPage(
             // fullScreenDialog: true,

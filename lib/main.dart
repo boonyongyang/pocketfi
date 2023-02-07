@@ -15,7 +15,7 @@ import 'package:pocketfi/views/components/animations/models/lottie_animation.dar
 import 'package:pocketfi/views/components/animations/welcome_app_animation_view.dart';
 import 'package:pocketfi/views/components/loading/loading_screen.dart';
 import 'package:pocketfi/views/main/bottom_nav_bar_view.dart';
-import 'package:pocketfi/views/main/main_view.dart';
+import 'package:pocketfi/views/main/timeline_view.dart';
 import 'package:pocketfi/views/main/nav_bar.dart';
 import 'package:pocketfi/views/login/login_view.dart';
 import 'package:pocketfi/views/main/nav_bar_beamer.dart';

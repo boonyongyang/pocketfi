@@ -12,14 +12,14 @@ class Transaction {
   final String userId;
   final double amount;
   final Category category;
-  final String description;
+  final String? description;
   final DateTime createdAt;
-  final String thumbnailUrl;
-  final String fileUrl;
-  final String filename;
-  final double aspectRatio;
-  final String thumbnailStorageId;
-  final String originalFileStorageId;
+  final String thumbnailUrl; // image
+  final String fileUrl; // image
+  final String filename; // image
+  final double aspectRatio; // image
+  final String thumbnailStorageId; // image
+  final String originalFileStorageId; // image
   final TransactionType type;
   // final List<Tag> tags;
   // final bool shared = false;

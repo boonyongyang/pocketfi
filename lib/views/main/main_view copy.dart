@@ -1,14 +1,19 @@
 import 'package:beamer/beamer.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/state/auth/providers/auth_state_provider.dart';
+import 'package:pocketfi/state/image_upload/helpers/image_picker_helper.dart';
 // import 'package:pocketfi/state/image_upload/helpers/image_picker_helper.dart';
 import 'package:pocketfi/state/image_upload/models/file_type.dart';
+import 'package:pocketfi/state/post_settings/providers/post_setting_provider.dart';
+import 'package:pocketfi/views/components/animations/loading_animation_view.dart';
 // import 'package:pocketfi/state/post_settings/providers/post_setting_provider.dart';
 import 'package:pocketfi/views/components/dialogs/alert_dialog_model.dart';
 import 'package:pocketfi/views/components/dialogs/logout_dialog.dart';
 import 'package:pocketfi/views/constants/strings.dart';
+import 'package:pocketfi/views/create_new_posts/create_new_post_view.dart';
 import 'package:pocketfi/views/main/account/account_page.dart';
 import 'package:pocketfi/views/main/account/setting_page.dart';
 // import 'package:pocketfi/views/create_new_posts/create_new_post_view.dart';
@@ -38,11 +43,37 @@ class _MainViewState extends ConsumerState<MainView>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 IconButton(
-                  onPressed: () {},
                   icon: const Icon(
                     Icons.settings,
                     color: Colors.white,
                   ),
+                  onPressed: () async {
+                    // pick a video first
+                    final videoFile =
+                        await ImagePickerHelper.pickVideoFromGallery();
+                    if (videoFile == null) {
+                      // no video available so return early
+                      return;
+                    }
+
+                    // refresh the provider so it does not contain the previous post's setting
+                    ref.refresh(postSettingProvider);
+
+                    // go to the screen to create a new post
+                    if (!mounted) {
+                      return;
+                    }
+
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => CreateNewPostView(
+                          fileToPost: videoFile,
+                          fileType: FileType.video,
+                        ),
+                      ),
+                    );
+                  },
                 ),
                 Center(
                   child: Column(
@@ -69,11 +100,37 @@ class _MainViewState extends ConsumerState<MainView>
                   ),
                 ),
                 IconButton(
-                  onPressed: () {},
                   icon: const Icon(
                     Icons.search,
                     color: Colors.white,
                   ),
+                  onPressed: () async {
+                    // pick a image first
+                    final imageFile =
+                        await ImagePickerHelper.pickImageFromGallery();
+                    if (imageFile == null) {
+                      // no image available so return early
+                      return;
+                    }
+
+                    // refresh the provider so it does not contain the previous post's setting
+                    ref.refresh(postSettingProvider);
+
+                    // go to the screen to create a new post
+                    if (!mounted) {
+                      return;
+                    }
+
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => CreateNewPostView(
+                          fileToPost: imageFile,
+                          fileType: FileType.image,
+                        ),
+                      ),
+                    );
+                  },
                 ),
               ],
             ),
@@ -91,14 +148,19 @@ class _MainViewState extends ConsumerState<MainView>
             ],
           ),
         ),
-        body: const TabBarView(
+        body: TabBarView(
           children: [
-            UserPostsView(),
-            UserPostsView(),
+            const UserPostsView(),
+            const UserPostsView(),
             // UserPostsView(),
             Center(
-              child: Text(
-                'Bills',
+              child: Column(
+                children: [
+                  const Text(
+                    'Bills',
+                  ),
+                  const LoadingAnimationView(),
+                ],
               ),
             ),
           ],
@@ -139,6 +201,11 @@ class _MainViewState extends ConsumerState<MainView>
                   fullscreenDialog: true,
                 ),
               ),
+            ),
+            const SizedBox(height: 16),
+            CupertinoSwitch(
+              onChanged: (bool value) => !value,
+              value: true,
             ),
           ],
         ),

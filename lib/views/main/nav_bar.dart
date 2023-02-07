@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pocketfi/views/components/animations/empty_contents_with_text_animation_view.dart';
 import 'package:pocketfi/views/main/account/account_page.dart';
-import 'package:pocketfi/views/main/main_view.dart';
+import 'package:pocketfi/views/main/timeline_view.dart';
 import 'package:pocketfi/views/main/timeline/timeline_page.dart';
 import 'package:pocketfi/views/tabs/users_posts_view.dart';
 
@@ -24,7 +24,7 @@ class _MaterialYouState extends State<MaterialYou> {
 
   List<Widget> pages = const [
     // Text('Timeline', style: _textStyle),
-    MainView(),
+    TimelineView(),
     TimelinePage(),
     EmptyContentsWithTextAnimationView(text: 'Timeline'),
     EmptyContentsWithTextAnimationView(text: 'Timeline'),

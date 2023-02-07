@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:pocketfi/state/timeline/transaction/create_new_transaction/transaction_type.dart';
 import 'package:pocketfi/state/timeline/transaction/models/transaction.dart';
-import 'package:pocketfi/views/components/animations/small_error_animation_view.dart';
 
 class TransactionCardView extends StatelessWidget {
   final Transaction transaction;
@@ -19,6 +19,63 @@ class TransactionCardView extends StatelessWidget {
       child: Column(
         children: [
           const Text('ExpenseCardView'),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 12.0),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: Container(
+                padding: const EdgeInsets.all(15),
+                color: Colors.grey[100],
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle, color: Colors.grey[500]),
+                          child: const Center(
+                            child: Icon(
+                              Icons.attach_money_outlined,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Column(
+                          children: [
+                            Text(transaction.category.categoryName,
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  color: Color(0xFF51779E),
+                                )),
+                            Text(transaction.description ?? '',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.grey[700],
+                                )),
+                          ],
+                        ),
+                      ],
+                    ),
+                    Text(
+                      '${transaction.type == TransactionType.expense ? '-' : '+'}\$$transaction.amount',
+                      style: TextStyle(
+                        //fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        color: transaction.type == TransactionType.expense
+                            ? Colors.red
+                            : Colors.green,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
           Image.network(
             transaction.thumbnailUrl,
             fit: BoxFit.cover,

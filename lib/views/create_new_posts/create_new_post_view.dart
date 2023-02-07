@@ -1,0 +1,140 @@
+import 'dart:io';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:pocketfi/state/auth/providers/user_id_provider.dart';
+import 'package:pocketfi/state/image_upload/models/file_type.dart';
+import 'package:pocketfi/state/image_upload/models/thumbnail_request.dart';
+import 'package:pocketfi/state/image_upload/providers/image_uploader_provider.dart';
+import 'package:pocketfi/state/post_settings/models/post_setting.dart';
+import 'package:pocketfi/state/post_settings/providers/post_setting_provider.dart';
+import 'package:pocketfi/views/components/file_thumbnail_view.dart';
+import 'package:pocketfi/views/constants/strings.dart';
+
+class CreateNewPostView extends StatefulHookConsumerWidget {
+  final File fileToPost;
+  final FileType fileType;
+  const CreateNewPostView({
+    required this.fileToPost,
+    required this.fileType,
+    super.key,
+  });
+
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _CreateNewPostViewState();
+}
+
+class _CreateNewPostViewState extends ConsumerState<CreateNewPostView> {
+  @override
+  Widget build(BuildContext context) {
+    final thumbnailRequest = ThumbnailRequest(
+      widget.fileToPost,
+      widget.fileType,
+    );
+    final postSettings = ref.watch(postSettingProvider);
+    final postController = useTextEditingController();
+    final isPostButtonEnabled = useState(false);
+    useEffect(
+      () {
+        // this is a listener that will be called when the text changes
+        void listener() {
+          isPostButtonEnabled.value = postController.text.isNotEmpty;
+        }
+
+        // add the listener
+        // this will be called when the text changes
+        postController.addListener(listener);
+
+        // return a function that will be called when the widget is disposed
+        // precautionary measure, so that the listener is removed
+        return () {
+          postController.removeListener(listener);
+        };
+      },
+      // keys that will be used to determine if the useEffect should be called
+      // if the keys are the same, the useEffect will not be called
+      [postController],
+    );
+
+    // if want to set on or off setting, use ref.read()
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(Strings.createNewPost),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.send),
+            // if the post button is enabled, then the onPressed will be called
+            onPressed: isPostButtonEnabled.value
+                ? () async {
+                    final userId = ref.read(
+                      userIdProvider,
+                    );
+                    if (userId == null) {
+                      return;
+                    }
+                    final message = postController.text;
+                    // hook the UI to the imageUploadProvider for uploading the post
+                    // hooking the UI to the provider will cause the UI to rebuild
+                    final isUploaded =
+                        await ref.read(imageUploadProvider.notifier).upload(
+                              file: widget.fileToPost,
+                              fileType: widget.fileType,
+                              message: message,
+                              postSettings: postSettings,
+                              userId: userId,
+                            );
+                    if (isUploaded && mounted) {
+                      // if the post is uploaded, then pop the screen
+                      Navigator.of(context).pop();
+                    }
+                  }
+                // if the post button is disabled, then the onPressed will be null
+                : null,
+          ),
+        ],
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            FileThumbnailView(
+              thumbnailRequest: thumbnailRequest,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                decoration: const InputDecoration(
+                  labelText: Strings.pleaseWriteYourMessageHere,
+                ),
+                autofocus: true,
+                maxLines: null,
+                // places the text in the controller
+                controller: postController,
+              ),
+            ),
+            // map the post settings to a list of list tiles
+            ...PostSetting.values.map(
+              (postSetting) => ListTile(
+                title: Text(postSetting.title),
+                subtitle: Text(postSetting.description),
+                trailing: Switch(
+                  // default switch is false
+                  value: postSettings[postSetting] ?? false,
+                  // when the switch is toggled, set the setting(update)
+                  onChanged: (isOn) {
+                    ref.read(postSettingProvider.notifier).setSetting(
+                          postSetting,
+                          isOn,
+                        );
+                  },
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
