@@ -286,7 +286,7 @@ class _ScaffoldWithBottomNavBarState extends State<ScaffoldWithBottomNavBar> {
       //   },
       // ),
       bottomNavigationBar: NavigationBar(
-        height: 80,
+        height: 60,
         selectedIndex: _currentIndex,
         // onDestinationSelected: (int newIndex) {
         //   setState(() {

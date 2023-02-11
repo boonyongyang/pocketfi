@@ -27,6 +27,7 @@ class ImageUploadNotifier extends StateNotifier<IsLoading> {
     required File file,
     required FileType fileType,
     required String message,
+    required double amount,
     required Map<PostSetting, bool> postSettings,
     required UserId userId,
   }) async {
@@ -47,7 +48,8 @@ class ImageUploadNotifier extends StateNotifier<IsLoading> {
         // create thumbnail
         final thumbnail = img.copyResize(
           fileAsImage,
-          width: Constants.imageThumbnailWidth,
+          // width: Constants.imageThumbnailWidth,
+          height: Constants.imageThumbnailHeight,
         );
         // encode the thumbnail
         final thumbnailData = img.encodeJpg(thumbnail);
@@ -105,6 +107,7 @@ class ImageUploadNotifier extends StateNotifier<IsLoading> {
       final postPayload = PostPayload(
         userId: userId,
         message: message,
+        amount: amount,
         thumbnailUrl: await thumbnailRef.getDownloadURL(),
         fileUrl: await originalFileRef.getDownloadURL(),
         fileType: fileType,

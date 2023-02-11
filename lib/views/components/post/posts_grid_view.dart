@@ -14,7 +14,7 @@ class PostsGridView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.amber,
+      color: const Color(0xFFE1DCDC),
       constraints: const BoxConstraints(
           // minWidth: 100.0,
           // maxWidth: 320.0,
@@ -24,6 +24,7 @@ class PostsGridView extends StatelessWidget {
       child: ListView.builder(
         shrinkWrap: true,
         padding: const EdgeInsets.all(8.0),
+        // // grid view stuff
         // gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         //   crossAxisCount: 1, // number of columns
         //   mainAxisSpacing: 8.0, // vertical spacing

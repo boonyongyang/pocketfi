@@ -9,14 +9,15 @@ class Post {
   final String postId;
   final String userId;
   final String message;
+  final double amount;
   final DateTime createdAt;
-  final String thumbnailUrl;
-  final String fileUrl;
-  final FileType fileType;
-  final String fileName;
-  final double aspectRatio;
-  final String thumbnailStorageId;
-  final String originalFileStorageId;
+  final String? thumbnailUrl;
+  final String? fileUrl;
+  final FileType? fileType;
+  final String? fileName;
+  final double? aspectRatio;
+  final String? thumbnailStorageId;
+  final String? originalFileStorageId;
   final Map<PostSetting, bool> postSettings;
 
   Post({
@@ -24,6 +25,7 @@ class Post {
     required Map<String, dynamic> json,
   })  : userId = json[PostKey.userId],
         message = json[PostKey.message],
+        amount = json[PostKey.amount],
         createdAt = (json[PostKey.createdAt] as Timestamp).toDate(),
         thumbnailUrl = json[PostKey.thumbnailUrl],
         fileUrl = json[PostKey.fileUrl],

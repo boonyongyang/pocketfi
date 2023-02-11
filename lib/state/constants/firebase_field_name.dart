@@ -10,5 +10,11 @@ class FirebaseFieldName {
   static const displayName = 'display_name';
   static const email = 'email';
 
+  static const transactionId = 'transaction_id';
+  static const categoryId = 'category_id';
+  static const categoryName = 'category_name';
+  static const categoryColor = 'category_color';
+  static const categoryIcon = 'category_icon';
+
   const FirebaseFieldName._(); // private constructor
 }

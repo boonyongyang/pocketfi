@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/state/auth/providers/user_id_provider.dart';
@@ -42,7 +41,7 @@ class _CreateNewPostViewState extends ConsumerState<CreateNewPostView> {
       () {
         // this is a listener that will be called when the text changes
         void listener() {
-          isPostButtonEnabled.value = postAmountController.text.isNotEmpty;
+          isPostButtonEnabled.value = postMessageController.text.isNotEmpty;
         }
 
         // add the listener
@@ -127,13 +126,6 @@ class _CreateNewPostViewState extends ConsumerState<CreateNewPostView> {
                 decoration: const InputDecoration(
                   labelText: 'Amount',
                 ),
-                keyboardType: TextInputType.number,
-                inputFormatters: <TextInputFormatter>[
-                  FilteringTextInputFormatter.allow(RegExp(
-                    r'^\d+(?:\.\d{0,2})?$',
-                    // r'^(?!0(?:.0{1,2})?)\d+(?:.\d{1,2})?$',
-                  )),
-                ],
                 autofocus: true,
                 maxLines: null,
                 // places the text in the controller

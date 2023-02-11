@@ -1,39 +1,46 @@
 import 'package:flutter/material.dart';
-import 'package:pocketfi/state/timeline/transaction/create_new_transaction/transaction_type.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:pocketfi/state/posts/models/post.dart';
+import 'package:pocketfi/state/timeline/transaction/models/transaction_type.dart';
 
-class MyTransaction extends StatelessWidget {
+class MyTransaction extends ConsumerWidget {
   final String? description;
   final String money;
-  final TransactionType expenseOrIncome;
+  final TransactionType transactionType;
+  final Post post;
 
   const MyTransaction({
     super.key,
     required this.description,
     required this.money,
-    required this.expenseOrIncome,
+    required this.transactionType,
+    required this.post,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12.0),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(10),
         child: Container(
-          padding: const EdgeInsets.all(15),
+          padding: const EdgeInsets.all(16),
           color: Colors.grey[100],
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
                     padding: const EdgeInsets.all(5),
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle, color: Colors.grey[500]),
+                    decoration: const BoxDecoration(
+                        shape: BoxShape.circle, color: Colors.amber),
                     child: const Center(
                       child: Icon(
-                        Icons.attach_money_outlined,
+                        Icons.restaurant,
                         color: Colors.white,
                       ),
                     ),
@@ -41,28 +48,59 @@ class MyTransaction extends StatelessWidget {
                   const SizedBox(
                     width: 10,
                   ),
-                  Column(
-                    children: [
-                      const Text('Food and Drink',
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Color(0xFF51779E),
-                          )),
-                      Text(description ?? '',
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Colors.grey[700],
-                          )),
-                    ],
+                  Padding(
+                    padding: const EdgeInsets.only(left: 4.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // category
+                        const Text('Food and Drinks',
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Color(0xFF51779E),
+                            )),
+                        Row(
+                          children: [
+                            ActionChip(
+                              // avatar: CircleAvatar(
+                              //   backgroundColor: Colors.grey.shade800,
+                              //   child: const Text('A'),
+                              // ),
+                              label: const Text('Lunch'),
+                              onPressed: () =>
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Lunch'),
+                                ),
+                              ),
+                            ),
+                            const Chip(
+                              label: Text('Foodpanda'),
+                            ),
+                          ],
+                        ),
+                        Text(description ?? '',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.grey[700],
+                            )),
+                        Image.network(
+                          post.thumbnailUrl ?? '',
+                          fit: BoxFit.cover,
+                          height: 100.0,
+                        ),
+                        Text(post.createdAt.toIso8601String()),
+                      ],
+                    ),
                   ),
                 ],
               ),
               Text(
-                '${expenseOrIncome == TransactionType.expense ? '-' : '+'}\$$money',
+                '${transactionType == TransactionType.expense ? '-' : '+'}MYR $money',
                 style: TextStyle(
                   //fontWeight: FontWeight.bold,
                   fontSize: 16,
-                  color: expenseOrIncome == TransactionType.expense
+                  color: transactionType == TransactionType.expense
                       ? Colors.red
                       : Colors.green,
                 ),

@@ -43,7 +43,7 @@ class _MainViewState extends ConsumerState<TimelineView>
               children: [
                 IconButton(
                   icon: const Icon(
-                    Icons.settings,
+                    Icons.notifications,
                     color: Colors.white,
                   ),
                   onPressed: () async {
@@ -103,33 +103,7 @@ class _MainViewState extends ConsumerState<TimelineView>
                     Icons.search,
                     color: Colors.white,
                   ),
-                  onPressed: () async {
-                    // pick a image first
-                    final imageFile =
-                        await ImagePickerHelper.pickImageFromGallery();
-                    if (imageFile == null) {
-                      // no image available so return early
-                      return;
-                    }
-
-                    // refresh the provider so it does not contain the previous post's setting
-                    ref.refresh(postSettingProvider);
-
-                    // go to the screen to create a new post
-                    if (!mounted) {
-                      return;
-                    }
-
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => CreateNewPostView(
-                          fileToPost: imageFile,
-                          fileType: FileType.image,
-                        ),
-                      ),
-                    );
-                  },
+                  onPressed: () => pickImage(),
                 ),
               ],
             ),
@@ -151,7 +125,6 @@ class _MainViewState extends ConsumerState<TimelineView>
           children: [
             const UserPostsView(),
             const UserPostsView(),
-            // UserPostsView(),
             Center(
               child: Column(
                 children: const [
@@ -167,14 +140,6 @@ class _MainViewState extends ConsumerState<TimelineView>
           children: [
             Expanded(child: Container()),
             FloatingActionButton(
-              heroTag: 'bookmark',
-              backgroundColor: const Color(0xFFFCD46A),
-              child: const Icon(Icons.bookmarks),
-              onPressed: () =>
-                  Beamer.of(context).beamToNamed('/timeline/details'),
-            ),
-            const SizedBox(height: 16),
-            FloatingActionButton(
               heroTag: 'scan receipt',
               backgroundColor: const Color(0xFFFCD46A),
               child: const Icon(Icons.camera_alt),
@@ -187,17 +152,52 @@ class _MainViewState extends ConsumerState<TimelineView>
             ),
             const SizedBox(height: 16),
             FloatingActionButton(
+              heroTag: 'bookmarks',
+              backgroundColor: const Color(0xFFFCD46A),
+              child: const Icon(Icons.bookmarks),
+              onPressed: () =>
+                  Beamer.of(context).beamToNamed('/timeline/details'),
+            ),
+            const SizedBox(height: 16),
+            FloatingActionButton(
               heroTag: 'add new expense',
               backgroundColor: const Color(0xFFFCD46A),
               child: const Icon(Icons.add),
-              onPressed: () =>
-                  // Beamer.of(context).beamToNamed('/timeline/details'),
-                  Navigator.of(context, rootNavigator: true).push(
-                MaterialPageRoute(
-                  builder: (context) => const SettingsPage(),
-                  fullscreenDialog: true,
-                ),
-              ),
+              onPressed: () async {
+                final imageFile =
+                    await ImagePickerHelper.pickImageFromGallery();
+                if (imageFile == null) {
+                  // no image available so return early
+                  return;
+                }
+
+                // refresh the provider so it does not contain the previous post's setting
+                ref.refresh(postSettingProvider);
+
+                // go to the screen to create a new post
+                if (!mounted) {
+                  return;
+                }
+
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => CreateNewPostView(
+                      fileToPost: imageFile,
+                      fileType: FileType.image,
+                    ),
+                  ),
+                );
+
+                // Beamer.of(context).beamToNamed('/timeline/details'),
+
+                // Navigator.of(context, rootNavigator: true).push(
+                //   MaterialPageRoute(
+                //     builder: (context) => const SettingsPage(),
+                //     fullscreenDialog: true,
+                //   ),
+                // );
+              },
             ),
           ],
         ),
@@ -207,4 +207,58 @@ class _MainViewState extends ConsumerState<TimelineView>
 
   @override
   bool get wantKeepAlive => true;
+
+  pickImage() async {
+    // pick a image first
+    final imageFile = await ImagePickerHelper.pickImageFromGallery();
+    if (imageFile == null) {
+      // no image available so return early
+      return;
+    }
+
+    // refresh the provider so it does not contain the previous post's setting
+    ref.refresh(postSettingProvider);
+
+    // go to the screen to create a new post
+    if (!mounted) {
+      return;
+    }
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => CreateNewPostView(
+          fileToPost: imageFile,
+          fileType: FileType.image,
+        ),
+      ),
+    );
+  }
+
+  createTransactionTest() async {
+    // pick a image first
+    final imageFile = await ImagePickerHelper.pickImageFromGallery();
+    if (imageFile == null) {
+      // no image available so return early
+      return;
+    }
+
+    // refresh the provider so it does not contain the previous post's setting
+    ref.refresh(postSettingProvider);
+
+    // go to the screen to create a new post
+    if (!mounted) {
+      return;
+    }
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => CreateNewPostView(
+          fileToPost: imageFile,
+          fileType: FileType.image,
+        ),
+      ),
+    );
+  }
 }

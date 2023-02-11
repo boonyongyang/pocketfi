@@ -11,6 +11,7 @@ class PostPayload extends MapView<String, dynamic> {
   PostPayload({
     required UserId userId,
     required String message,
+    required double amount,
     required String thumbnailUrl,
     required String fileUrl,
     required FileType fileType,
@@ -23,6 +24,7 @@ class PostPayload extends MapView<String, dynamic> {
           {
             PostKey.userId: userId,
             PostKey.message: message,
+            PostKey.amount: amount,
             // this will set the createdAt field to the server timestamp
             PostKey.createdAt: FieldValue.serverTimestamp(),
             PostKey.thumbnailUrl: thumbnailUrl,

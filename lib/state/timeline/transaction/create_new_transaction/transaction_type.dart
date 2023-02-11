@@ -1,4 +1,0 @@
-enum TransactionType {
-  expense,
-  income,
-}

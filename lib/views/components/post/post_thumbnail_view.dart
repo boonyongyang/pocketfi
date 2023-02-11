@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pocketfi/state/posts/models/post.dart';
-import 'package:pocketfi/state/timeline/transaction/create_new_transaction/transaction_type.dart';
+import 'package:pocketfi/state/timeline/transaction/models/transaction_type.dart';
 import 'package:pocketfi/views/components/timeline/transaction/my_transaction.dart';
 
 class PostThumbnailView extends StatelessWidget {
@@ -19,16 +19,17 @@ class PostThumbnailView extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const MyTransaction(
-            description: 'Chicken Rice',
-            money: '8.00',
-            expenseOrIncome: TransactionType.expense,
+          MyTransaction(
+            description: post.message,
+            money: post.amount.toString(),
+            transactionType: TransactionType.expense,
+            post: post,
           ),
-          Image.network(
-            post.thumbnailUrl,
-            fit: BoxFit.cover,
-            height: 100.0,
-          ),
+          // Image.network(
+          //   post.thumbnailUrl,
+          //   fit: BoxFit.cover,
+          //   height: 100.0,
+          // ),
         ],
       ),
     );

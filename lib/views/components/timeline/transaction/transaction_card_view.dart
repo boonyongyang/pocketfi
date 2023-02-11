@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pocketfi/state/timeline/transaction/create_new_transaction/transaction_type.dart';
+import 'package:pocketfi/state/timeline/transaction/models/transaction_type.dart';
 import 'package:pocketfi/state/timeline/transaction/models/transaction.dart';
 
 class TransactionCardView extends StatelessWidget {
@@ -47,7 +47,7 @@ class TransactionCardView extends StatelessWidget {
                         ),
                         Column(
                           children: [
-                            Text(transaction.category.categoryName,
+                            Text(transaction.category,
                                 style: const TextStyle(
                                   fontSize: 16,
                                   color: Color(0xFF51779E),
@@ -77,7 +77,7 @@ class TransactionCardView extends StatelessWidget {
             ),
           ),
           Image.network(
-            transaction.thumbnailUrl,
+            transaction.thumbnailUrl ?? '',
             fit: BoxFit.cover,
           ),
         ],

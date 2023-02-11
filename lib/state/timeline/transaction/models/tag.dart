@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart' show Icon;
-
 class Tag {
   final String tagId;
   final String tagName;

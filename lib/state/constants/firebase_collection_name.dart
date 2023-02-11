@@ -8,5 +8,10 @@ class FirebaseCollectionName {
   static const posts = 'posts';
   static const users = 'users';
 
+  static const transactions = 'transactions';
+  static const categories = 'categories';
+  static const tags = 'tags';
+  static const bookmarks = 'bookmarks';
+
   const FirebaseCollectionName._(); // private constructor
 }
