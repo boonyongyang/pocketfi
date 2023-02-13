@@ -5,6 +5,7 @@ import 'package:pocketfi/views/components/animations/empty_contents_animation_vi
 import 'package:pocketfi/views/components/animations/error_animation_view.dart';
 import 'package:pocketfi/views/components/animations/loading_animation_view.dart';
 import 'package:pocketfi/views/components/animations/welcome_app_animation_view.dart';
+import 'package:pocketfi/views/constants/app_colors.dart';
 import 'package:pocketfi/views/tabs/account/account_page.dart';
 import 'package:pocketfi/views/tabs/account/setting_page.dart';
 import 'package:pocketfi/views/tabs/timeline/timeline_page.dart';
@@ -26,7 +27,9 @@ class BottomNavBarBeamer extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(primarySwatch: Colors.orange),
+      theme: ThemeData(
+        primarySwatch: AppColorsForAll.mainMaterialColor1,
+      ),
       routerDelegate: routerDelegate,
       routeInformationParser: BeamerParser(),
       backButtonDispatcher: BeamerBackButtonDispatcher(

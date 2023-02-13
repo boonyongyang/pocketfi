@@ -13,6 +13,7 @@ class AppColorsForAll {
 
 // type to Colors instead of Color
   static final mainMaterialColor1 = generateMaterialColor(mainColor1);
+  static final mainMaterialColor2 = generateMaterialColor(mainColor2);
 
   const AppColorsForAll._();
 }
