@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:pocketfi/state/tabs/timeline/posts/models/post.dart';
-import 'package:pocketfi/views/tabs/timeline/post/post_thumbnail_view.dart';
+import 'package:pocketfi/state/tabs/timeline/transaction/models/transaction_type.dart';
+import 'package:pocketfi/views/tabs/timeline/transactions/transaction_card.dart';
 // import 'package:pocketfi/views/post_comments/post_comments_view.dart';
 
-class PostsGridView extends StatelessWidget {
+class TransactionsListView extends StatelessWidget {
   final Iterable<Post> posts;
 
-  const PostsGridView({
+  const TransactionsListView({
     Key? key,
     required this.posts,
   }) : super(key: key);
@@ -32,8 +33,9 @@ class PostsGridView extends StatelessWidget {
         itemCount: posts.length,
         itemBuilder: (context, index) {
           final post = posts.elementAt(index); // get the post at the index
-          return PostThumbnailView(
+          return TransactionCard(
             post: post,
+            transactionType: TransactionType.expense,
             onTapped: () {
               // navigate to the post details view
 

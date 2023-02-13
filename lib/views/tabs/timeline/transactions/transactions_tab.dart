@@ -4,11 +4,11 @@ import 'package:pocketfi/state/tabs/timeline/posts/providers/user_posts_provider
 import 'package:pocketfi/views/components/animations/empty_contents_with_text_animation_view.dart';
 import 'package:pocketfi/views/components/animations/error_animation_view.dart';
 import 'package:pocketfi/views/components/animations/loading_animation_view.dart';
-import 'package:pocketfi/views/tabs/timeline/post/posts_grid_view.dart';
+import 'package:pocketfi/views/tabs/timeline/transactions/transactions_list_view.dart';
 import 'package:pocketfi/views/constants/strings.dart';
 
-class UserPostsView extends ConsumerWidget {
-  const UserPostsView({Key? key}) : super(key: key);
+class TransactionsTab extends ConsumerWidget {
+  const TransactionsTab({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -37,7 +37,7 @@ class UserPostsView extends ConsumerWidget {
             );
           } else {
             // if there are posts, return a list of posts
-            return PostsGridView(
+            return TransactionsListView(
               posts: posts,
             );
           }

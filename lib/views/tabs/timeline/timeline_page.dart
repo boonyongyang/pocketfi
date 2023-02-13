@@ -5,11 +5,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/state/image_upload/helpers/image_picker_helper.dart';
 import 'package:pocketfi/state/image_upload/models/file_type.dart';
 import 'package:pocketfi/state/tabs/timeline/posts/post_settings/providers/post_setting_provider.dart';
-import 'package:pocketfi/views/components/animations/loading_animation_view.dart';
 import 'package:pocketfi/views/components/animations/lottie_animation_view.dart';
 import 'package:pocketfi/views/components/animations/models/lottie_animation.dart';
 import 'package:pocketfi/views/tabs/timeline/transactions/add_new_transactions/create_new_post_view.dart';
-import 'package:pocketfi/views/tabs/timeline/users_posts_view.dart';
+import 'package:pocketfi/views/tabs/timeline/transactions/transactions_tab.dart';
 
 class TimelinePage extends ConsumerStatefulWidget {
   const TimelinePage({super.key});
@@ -116,7 +115,7 @@ class _MainViewState extends ConsumerState<TimelinePage>
         ),
         body: TabBarView(
           children: [
-            const UserPostsView(),
+            const TransactionsTab(),
             const Center(
               child: Text('Charts'),
             ),

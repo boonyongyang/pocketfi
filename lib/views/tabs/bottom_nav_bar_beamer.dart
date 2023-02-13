@@ -136,18 +136,18 @@ class TabD extends BeamLocation<BeamState> {
   @override
   List<BeamPage> buildPages(BuildContext context, BeamState state) => [
         const BeamPage(
-          key: ValueKey('d'),
-          title: 'Tab D',
+          key: ValueKey('account'),
+          title: 'Account',
           type: BeamPageType.noTransition,
-          // child: RootScreen(label: 'D', detailsPath: '/d/details'),
+          // child: RootScreen(label: 'Account', detailsPath: '/account/details'),
           child: AccountPage(),
         ),
         if (state.uri.pathSegments.length == 2)
           const BeamPage(
-            key: ValueKey('d/settings'),
-            title: 'Profile settings',
+            key: ValueKey('account/settings'),
+            title: 'Account settings',
             child: SettingsPage(),
-            // child: DetailsScreen(label: 'D'),
+            // child: DetailsScreen(label: 'Account Details'),
           ),
       ];
 }
@@ -194,9 +194,9 @@ class _ScaffoldWithBottomNavBarState extends State<ScaffoldWithBottomNavBar> {
       },
     ),
     BeamerDelegate(
-      initialPath: '/d',
+      initialPath: '/account',
       locationBuilder: (routeInformation, _) {
-        if (routeInformation.location!.contains('/d')) {
+        if (routeInformation.location!.contains('/account')) {
           return TabD(routeInformation);
         }
         return NotFound(path: routeInformation.location!);
@@ -215,7 +215,7 @@ class _ScaffoldWithBottomNavBarState extends State<ScaffoldWithBottomNavBar> {
       _currentIndex = 1;
     } else if (uriString.contains('/c')) {
       _currentIndex = 2;
-    } else if (uriString.contains('/d')) {
+    } else if (uriString.contains('/account')) {
       _currentIndex = 3;
     }
   }
@@ -240,44 +240,6 @@ class _ScaffoldWithBottomNavBarState extends State<ScaffoldWithBottomNavBar> {
           ),
         ],
       ),
-      // bottomNavigationBar: BottomNavigationBar(
-      //   backgroundColor: Colors.black,
-      //   unselectedItemColor: Colors.grey,
-      //   selectedItemColor: Colors.red,
-      //   currentIndex: _currentIndex,
-      //   items: const [
-      //     BottomNavigationBarItem(
-      //       label: 'Section A',
-      //       icon: Icon(
-      //         Icons.timeline,
-      //       ),
-      //     ),
-      //     BottomNavigationBarItem(
-      //       label: 'Section B',
-      //       icon: Icon(
-      //         Icons.wallet,
-      //       ),
-      //     ),
-      //     BottomNavigationBarItem(
-      //       label: 'Section C',
-      //       icon: Icon(
-      //         Icons.attach_money,
-      //       ),
-      //     ),
-      //     BottomNavigationBarItem(
-      //       label: 'Section D',
-      //       icon: Icon(
-      //         Icons.person,
-      //       ),
-      //     ),
-      //   ],
-      //   onTap: (index) {
-      //     if (index != _currentIndex) {
-      //       setState(() => _currentIndex = index);
-      //       _routerDelegates[_currentIndex].update(rebuild: false);
-      //     }
-      //   },
-      // ),
       bottomNavigationBar: NavigationBar(
         height: 60,
         selectedIndex: _currentIndex,
