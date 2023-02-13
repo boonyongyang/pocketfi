@@ -12,11 +12,11 @@ class DividerWithMargins extends StatelessWidget {
     return Column(
       children: const [
         SizedBox(
-          height: 40,
+          height: 20,
         ),
         Divider(),
         SizedBox(
-          height: 40,
+          height: 20,
         )
       ],
     );
