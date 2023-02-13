@@ -5,10 +5,10 @@ import 'package:pocketfi/views/components/animations/empty_contents_animation_vi
 import 'package:pocketfi/views/components/animations/error_animation_view.dart';
 import 'package:pocketfi/views/components/animations/loading_animation_view.dart';
 import 'package:pocketfi/views/components/animations/welcome_app_animation_view.dart';
-import 'package:pocketfi/views/main/timeline/create_new_posts/add_new_transaction.dart';
 import 'package:pocketfi/views/tabs/account/account_page.dart';
 import 'package:pocketfi/views/tabs/account/setting_page.dart';
 import 'package:pocketfi/views/tabs/timeline/timeline_page.dart';
+import 'package:pocketfi/views/tabs/timeline/transactions/add_new_transactions/add_new_transaction.dart';
 
 class BottomNavBarBeamer extends StatelessWidget {
   const BottomNavBarBeamer({super.key});

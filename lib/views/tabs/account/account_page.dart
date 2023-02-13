@@ -1,4 +1,3 @@
-import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/state/auth/providers/auth_state_provider.dart';
@@ -67,19 +66,26 @@ class _AccountPageBodyState extends ConsumerState<AccountPageBody> {
           const SizedBox(height: 20),
           AccountPageMenu(
             text: "My Account",
-            // icon: "assets/icons/User Icon.svg",
             icon: const Icon(Icons.person),
             press: () => {},
           ),
           AccountPageMenu(
+            text: "Wallets",
+            icon: const Icon(Icons.wallet),
+            press: () {},
+          ),
+          AccountPageMenu(
+            text: "Categories",
+            icon: const Icon(Icons.category),
+            press: () {},
+          ),
+          AccountPageMenu(
             text: "Notifications",
-            // icon: "assets/icons/Bell.svg",
             icon: const Icon(Icons.notifications),
             press: () {},
           ),
           AccountPageMenu(
             text: "Settings",
-            // icon: "assets/icons/Settings.svg",
             icon: const Icon(Icons.settings),
             // press: () => Beamer.of(context).beamToNamed('/d/settings'),
             press: () => Navigator.of(context, rootNavigator: true).push(
@@ -91,13 +97,11 @@ class _AccountPageBodyState extends ConsumerState<AccountPageBody> {
           ),
           AccountPageMenu(
             text: "Help Center",
-            // icon: "assets/icons/Question mark.svg",
             icon: const Icon(Icons.help),
             press: () {},
           ),
           AccountPageMenu(
             text: "Log Out",
-            // icon: "assets/icons/Log out.svg",
             icon: const Icon(Icons.logout),
             press: () async {
               final shouldLogOut =
