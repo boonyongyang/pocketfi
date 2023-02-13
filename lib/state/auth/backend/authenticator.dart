@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:pocketfi/state/auth/models/auth_result.dart';
 
-import '../../posts/typedefs/user_id.dart';
+import '../../tabs/timeline/posts/typedefs/user_id.dart';
 import '../constants/constants.dart';
 
 class Authenticator {

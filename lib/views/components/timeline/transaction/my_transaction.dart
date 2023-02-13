@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:pocketfi/state/posts/models/post.dart';
-import 'package:pocketfi/state/timeline/transaction/models/transaction_type.dart';
+import 'package:pocketfi/state/tabs/timeline/posts/models/post.dart';
+import 'package:pocketfi/state/tabs/timeline/transaction/models/transaction_type.dart';
 
 class MyTransaction extends ConsumerWidget {
   final String? description;
@@ -61,6 +61,25 @@ class MyTransaction extends ConsumerWidget {
                             )),
                         Row(
                           children: [
+                            // list of ActionChip with different tags
+                            // const ActionChip(
+                            //   label: Text('Food'),
+                            //   onPressed: null,
+                            // ),
+                            // const SizedBox(
+                            //   width: 5,
+                            // ),
+                            // const ActionChip(
+                            //   label: Text('Parking'),
+                            //   onPressed: null,
+                            // ),
+                            // const SizedBox(
+                            //   width: 5,
+                            // ),
+                            // const ActionChip(
+                            //   label: Text('Dinner'),
+                            //   onPressed: null,
+                            // ),
                             ActionChip(
                               // avatar: CircleAvatar(
                               //   backgroundColor: Colors.grey.shade800,

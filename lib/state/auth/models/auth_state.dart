@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart' show immutable;
-import 'package:pocketfi/state/posts/typedefs/user_id.dart';
+import 'package:pocketfi/state/tabs/timeline/posts/typedefs/user_id.dart';
 import 'auth_result.dart';
 
 @immutable

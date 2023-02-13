@@ -4,7 +4,7 @@ import 'package:pocketfi/state/constants/firebase_field_name.dart';
 import 'package:pocketfi/state/user_info/models/user_info_payload.dart';
 
 import '../../constants/firebase_collection_name.dart';
-import '../../posts/typedefs/user_id.dart';
+import '../../tabs/timeline/posts/typedefs/user_id.dart';
 
 @immutable
 class UserInfoStorage {

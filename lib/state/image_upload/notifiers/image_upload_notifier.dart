@@ -12,9 +12,9 @@ import 'package:pocketfi/state/image_upload/extensions/get_collection_name_from_
 import 'package:pocketfi/state/image_upload/extensions/get_image_data_aspect_ratio.dart';
 import 'package:pocketfi/state/image_upload/models/file_type.dart';
 import 'package:pocketfi/state/image_upload/typedefs/is_loading.dart';
-import 'package:pocketfi/state/post_settings/models/post_setting.dart';
-import 'package:pocketfi/state/posts/models/post_payload.dart';
-import 'package:pocketfi/state/posts/typedefs/user_id.dart';
+import 'package:pocketfi/state/tabs/timeline/posts/post_settings/models/post_setting.dart';
+import 'package:pocketfi/state/tabs/timeline/posts/models/post_payload.dart';
+import 'package:pocketfi/state/tabs/timeline/posts/typedefs/user_id.dart';
 import 'package:uuid/uuid.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 

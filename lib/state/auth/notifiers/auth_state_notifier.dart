@@ -3,7 +3,7 @@ import 'package:pocketfi/state/auth/backend/authenticator.dart';
 import 'package:pocketfi/state/auth/models/auth_result.dart';
 import 'package:pocketfi/state/auth/models/auth_state.dart';
 
-import '../../posts/typedefs/user_id.dart';
+import '../../tabs/timeline/posts/typedefs/user_id.dart';
 import '../../user_info/backend/user_info_storage.dart';
 
 class AuthStateNotifier extends StateNotifier<AuthState> {
