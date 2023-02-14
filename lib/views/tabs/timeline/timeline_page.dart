@@ -29,7 +29,7 @@ class _MainViewState extends ConsumerState<TimelinePage>
       length: 3,
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: AppColorsForAll.mainColor1,
+          backgroundColor: AppSwatches.mainColor1,
           title: Center(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -103,8 +103,8 @@ class _MainViewState extends ConsumerState<TimelinePage>
           ),
           // actions: [],
           bottom: const TabBar(
-            indicatorColor: AppColorsForAll.mainColor2,
-            labelColor: AppColorsForAll.mainColor2,
+            indicatorColor: AppSwatches.mainColor2,
+            labelColor: AppSwatches.mainColor2,
             unselectedLabelColor: Colors.grey,
             tabs: [
               Tab(icon: FaIcon(FontAwesomeIcons.moneyBills)),
@@ -136,7 +136,7 @@ class _MainViewState extends ConsumerState<TimelinePage>
             Expanded(child: Container()),
             FloatingActionButton(
               heroTag: 'scan receipt',
-              backgroundColor: AppColorsForAll.subColor2,
+              backgroundColor: AppSwatches.subColor2,
               child: const Icon(Icons.camera_alt),
               onPressed: () =>
                   // Beamer.of(context).beamToNamed('/timeline/details'),
@@ -148,7 +148,7 @@ class _MainViewState extends ConsumerState<TimelinePage>
             const SizedBox(height: 16),
             FloatingActionButton(
               heroTag: 'bookmarks',
-              backgroundColor: AppColorsForAll.subColor2,
+              backgroundColor: AppSwatches.subColor2,
               child: const Icon(Icons.bookmarks),
               onPressed: () =>
                   Beamer.of(context).beamToNamed('/timeline/details'),
@@ -156,7 +156,7 @@ class _MainViewState extends ConsumerState<TimelinePage>
             const SizedBox(height: 16),
             FloatingActionButton(
               heroTag: 'add new expense',
-              backgroundColor: AppColorsForAll.subColor2,
+              backgroundColor: AppSwatches.subColor2,
               child: const Icon(Icons.add),
               onPressed: () async {
                 final imageFile =

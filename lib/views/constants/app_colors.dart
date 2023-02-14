@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pocketfi/views/constants/material_color.dart';
 
 @immutable
-class AppColorsForAll {
+class AppSwatches {
   static const mainColor1 = Color(0xFF0F3D66); // Dark blue
   static const mainColor2 = Color(0xFFF8B319); // Dark Yellow
   static const subColor1 = Color(0xFF51779E); // Light Blue
@@ -15,5 +15,5 @@ class AppColorsForAll {
   static final mainMaterialColor1 = generateMaterialColor(mainColor1);
   static final mainMaterialColor2 = generateMaterialColor(mainColor2);
 
-  const AppColorsForAll._();
+  const AppSwatches._();
 }

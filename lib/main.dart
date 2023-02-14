@@ -39,7 +39,7 @@ class App extends StatelessWidget {
       title: 'Home Page',
       theme: ThemeData(
         brightness: Brightness.light,
-        primarySwatch: AppColorsForAll.mainMaterialColor1,
+        primarySwatch: AppSwatches.mainMaterialColor1,
         indicatorColor: Colors.white10,
         // textTheme: const TextTheme(
         // TODO: create constants for these please!

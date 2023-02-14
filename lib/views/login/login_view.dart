@@ -40,7 +40,7 @@ class LoginView extends ConsumerWidget {
                 child: Text(
                   Strings.welcomeToAppName,
                   style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                        color: AppColorsForAll.mainColor1,
+                        color: AppSwatches.mainColor1,
                       ),
                 ),
               ),

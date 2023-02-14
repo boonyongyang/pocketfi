@@ -28,7 +28,7 @@ class BottomNavBarBeamer extends StatelessWidget {
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: AppColorsForAll.mainMaterialColor1,
+        primarySwatch: AppSwatches.mainMaterialColor1,
       ),
       routerDelegate: routerDelegate,
       routeInformationParser: BeamerParser(),
