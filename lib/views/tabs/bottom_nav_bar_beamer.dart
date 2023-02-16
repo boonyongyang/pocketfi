@@ -8,6 +8,7 @@ import 'package:pocketfi/views/components/animations/welcome_app_animation_view.
 import 'package:pocketfi/views/constants/app_colors.dart';
 import 'package:pocketfi/views/tabs/account/account_page.dart';
 import 'package:pocketfi/views/tabs/account/setting_page.dart';
+import 'package:pocketfi/views/tabs/budget/budget_page.dart';
 import 'package:pocketfi/views/tabs/timeline/timeline_page.dart';
 import 'package:pocketfi/views/tabs/timeline/transactions/add_new_transactions/add_new_transaction.dart';
 
@@ -91,16 +92,17 @@ class TabB extends BeamLocation<BeamState> {
   @override
   List<BeamPage> buildPages(BuildContext context, BeamState state) => [
         const BeamPage(
-          key: ValueKey('b'),
-          title: 'Tab B',
+          key: ValueKey('budget'),
+          title: 'Budget',
           type: BeamPageType.noTransition,
-          child: RootScreen(label: 'B', detailsPath: '/b/details'),
+          // child: RootScreen(label: 'Budget', detailsPath: '/b/details'),
+          child: BudgetPage(),
           // child: BudgetPage(),
         ),
         if (state.uri.pathSegments.length == 2)
           const BeamPage(
-            key: ValueKey('b/details'),
-            title: 'Details B',
+            key: ValueKey('budget/details'),
+            title: 'Budget Details',
             child: DetailsScreen(label: 'B'),
           ),
       ];
