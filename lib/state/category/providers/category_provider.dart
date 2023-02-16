@@ -15,7 +15,7 @@ const expenseCategories = [
     color: AppSwatches.white,
     icon: Icon(
       Icons.restaurant,
-      color: AppSwatches.beauty,
+      color: AppSwatches.foodAndDrink,
     ),
   ),
   Category(
@@ -23,7 +23,7 @@ const expenseCategories = [
     color: AppSwatches.white,
     icon: Icon(
       Icons.directions_bus,
-      color: AppSwatches.beauty,
+      color: AppSwatches.transport,
     ),
   ),
   Category(
@@ -31,7 +31,7 @@ const expenseCategories = [
     color: AppSwatches.white,
     icon: Icon(
       Icons.shopping_cart,
-      color: AppSwatches.beauty,
+      color: AppSwatches.shopping,
     ),
   ),
   Category(
@@ -39,7 +39,7 @@ const expenseCategories = [
     color: AppSwatches.white,
     icon: Icon(
       Icons.movie,
-      color: AppSwatches.beauty,
+      color: AppSwatches.entertainment,
     ),
   ),
   Category(
@@ -47,7 +47,7 @@ const expenseCategories = [
     color: AppSwatches.white,
     icon: Icon(
       Icons.local_hospital,
-      color: AppSwatches.beauty,
+      color: AppSwatches.healthcare,
     ),
   ),
   Category(
@@ -55,7 +55,7 @@ const expenseCategories = [
     color: AppSwatches.white,
     icon: Icon(
       Icons.school,
-      color: AppSwatches.beauty,
+      color: AppSwatches.education,
     ),
   ),
   Category(
@@ -63,10 +63,159 @@ const expenseCategories = [
     color: AppSwatches.white,
     icon: Icon(
       Icons.more_horiz,
-      color: AppSwatches.beauty,
+      color: AppSwatches.other,
     ),
   ),
 ];
+
+enum ExpenseCategory {
+  shopping(
+    name: "Shopping",
+    icons: Icon(
+      Icons.shopping_bag,
+      color: AppSwatches.white,
+    ),
+    color: AppSwatches.shopping,
+  ),
+  foodAndDrink(
+    name: "Food and Drinks",
+    icons: Icon(
+      Icons.restaurant,
+      color: AppSwatches.white,
+    ),
+    color: AppSwatches.foodAndDrink,
+  ),
+  groceries(
+    name: "Groceries",
+    icons: Icon(
+      Icons.local_grocery_store,
+      color: AppSwatches.white,
+    ),
+    color: AppSwatches.groceries,
+  ),
+  beauty(
+    name: "Beauty",
+    icons: Icon(
+      Icons.face,
+      color: AppSwatches.white,
+    ),
+    color: AppSwatches.beauty,
+  ),
+  entertainment(
+    name: "Entertainment",
+    icons: Icon(
+      Icons.movie,
+      color: AppSwatches.white,
+    ),
+    color: AppSwatches.entertainment,
+  ),
+  healthcare(
+    name: "Healthcare",
+    icons: Icon(
+      Icons.medical_services,
+      color: AppSwatches.white,
+    ),
+    color: AppSwatches.healthcare,
+  ),
+  home(
+    name: "Home",
+    icons: Icon(
+      Icons.home,
+      color: AppSwatches.white,
+    ),
+    color: AppSwatches.home,
+  ),
+  billsAndFees(
+    name: "Bills and Fees",
+    icons: Icon(
+      Icons.money,
+      color: AppSwatches.white,
+    ),
+    color: AppSwatches.billsAndFees,
+  ),
+  familyAndPersonal(
+    name: "Family and Personal",
+    icons: Icon(
+      Icons.family_restroom,
+      color: AppSwatches.white,
+    ),
+    color: AppSwatches.familyAndPersonal,
+  ),
+  travel(
+    name: "Travel",
+    icons: Icon(
+      Icons.airplanemode_active,
+      color: AppSwatches.white,
+    ),
+    color: AppSwatches.travel,
+  ),
+  other(
+    name: "Other",
+    icons: Icon(
+      Icons.more_horiz,
+      color: AppSwatches.white,
+    ),
+    color: AppSwatches.other,
+  ),
+  education(
+    name: "Education",
+    icons: Icon(
+      Icons.school,
+      color: AppSwatches.white,
+    ),
+    color: AppSwatches.education,
+  ),
+  car(
+    name: "Car",
+    icons: Icon(
+      Icons.directions_car,
+      color: AppSwatches.white,
+    ),
+    color: AppSwatches.car,
+  ),
+  gift(
+    name: "Gift",
+    icons: Icon(
+      Icons.card_giftcard,
+      color: AppSwatches.white,
+    ),
+    color: AppSwatches.gift,
+  ),
+  transport(
+    name: "Transport",
+    icons: Icon(
+      Icons.directions_bus,
+      color: AppSwatches.white,
+    ),
+    color: AppSwatches.transport,
+  ),
+  work(
+    name: "Work",
+    icons: Icon(
+      Icons.work,
+      color: AppSwatches.white,
+    ),
+    color: AppSwatches.work,
+  ),
+  sportsAndHobbies(
+    name: "Pets",
+    icons: Icon(
+      Icons.sports_baseball,
+      color: AppSwatches.white,
+    ),
+    color: AppSwatches.sportsAndHobbies,
+  );
+
+  final String name;
+  final Icon icons;
+  final Color color;
+
+  const ExpenseCategory({
+    required this.name,
+    required this.icons,
+    required this.color,
+  });
+}
 
 final incomeCategoriesProvider = Provider<List<Category>>((ref) {
   // currently hard code here first, these would be the default categories

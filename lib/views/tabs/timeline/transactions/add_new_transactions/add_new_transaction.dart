@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:pocketfi/state/category/models/category.dart';
+import 'package:pocketfi/state/category/notifiers/category_state_notifier.dart';
+import 'package:pocketfi/state/category/providers/category_provider.dart';
 // import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
-class AddNewTransaction extends StatefulWidget {
+class AddNewTransaction extends ConsumerStatefulWidget {
   const AddNewTransaction({super.key});
 
   @override
   AddNewTransactionState createState() => AddNewTransactionState();
 }
 
-class AddNewTransactionState extends State<AddNewTransaction> {
+class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
   final _amountController = TextEditingController();
   final _noteController = TextEditingController();
 
@@ -56,6 +60,8 @@ class AddNewTransactionState extends State<AddNewTransaction> {
 
   @override
   Widget build(BuildContext context) {
+    final categories = ref.watch(expenseCategoriesProvider);
+    final selectedCategory = ref.watch(selectedCategoryProvider);
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -96,23 +102,91 @@ class AddNewTransactionState extends State<AddNewTransaction> {
                   color: Colors.red[300],
                   child: Row(
                     children: [
-                      CircleAvatar(
-                        backgroundColor: Theme.of(context).primaryColor,
-                        child: const Icon(
-                          Icons.restaurant,
-                          color: Colors.white,
-                        ),
+                      // CircleAvatar(
+                      //   backgroundColor: Theme.of(context).primaryColor,
+                      //   child: const Icon(
+                      //     Icons.restaurant,
+                      //     color: Colors.white,
+                      //   ),
+                      // ),
+
+                      DropdownButton<Category>(
+                        value: selectedCategory,
+                        items: categories
+                            .map((category) => DropdownMenuItem<Category>(
+                                  value: category,
+                                  onTap: () {
+                                    // show snackbar
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(SnackBar(
+                                      content: Text(
+                                          'Selected category: ${category.name}'),
+                                      duration: const Duration(seconds: 1),
+                                      action: SnackBarAction(
+                                          label: 'Undo',
+                                          onPressed: () {
+                                            // show alert dialog
+                                            showDialog(
+                                                context: context,
+                                                builder: (context) {
+                                                  return AlertDialog(
+                                                    title: const Text('Undo'),
+                                                    content: const Text(
+                                                        'Are you sure you want to undo?'),
+                                                    actions: [
+                                                      TextButton(
+                                                          onPressed: () {
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                          },
+                                                          child: const Text(
+                                                              'Cancel')),
+                                                      TextButton(
+                                                          onPressed: () {
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                            ref
+                                                                .read(selectedCategoryProvider
+                                                                    .notifier)
+                                                                .state = category;
+                                                          },
+                                                          child: const Text(
+                                                              'Undo'))
+                                                    ],
+                                                  );
+                                                });
+                                          }),
+                                    ));
+                                  },
+                                  child: Row(
+                                    children: [
+                                      CircleAvatar(
+                                        backgroundColor: category.color,
+                                        child: category.icon,
+                                      ),
+                                      const SizedBox(width: 10.0),
+                                      Text(category.name),
+                                    ],
+                                  ),
+                                ))
+                            .toList(),
+                        onChanged: (Category? category) {
+                          ref.read(selectedCategoryProvider.notifier).state =
+                              category!;
+                        },
                       ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      const Text(
-                        'Food and Drinks',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+                      // const SizedBox(
+                      //   width: 10,
+                      // ),
+                      // Text(
+                      //   selectedCategory.name,
+                      //   style: const TextStyle(
+                      //     fontSize: 16,
+                      //     fontWeight: FontWeight.bold,
+                      //   ),
+                      // ),
                       const Spacer(),
                       const Text('RM 0.0',
                           style: TextStyle(
@@ -222,17 +296,17 @@ class AddNewTransactionState extends State<AddNewTransaction> {
                         ),
                       ],
                     ),
-                    ElevatedButton(
-                      child: const Text('Categories'),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => const AddNewTransaction(),
-                          ),
-                        );
-                      },
-                    ),
+                    // ElevatedButton(
+                    //   child: const Text('Categories'),
+                    //   onPressed: () {
+                    //     Navigator.push(
+                    //       context,
+                    //       MaterialPageRoute(
+                    //         builder: (_) => const AddNewTransaction(),
+                    //       ),
+                    //     );
+                    //   },
+                    // ),
                     ElevatedButton(
                       child: const Text('Add Expense'),
                       onPressed: () {
