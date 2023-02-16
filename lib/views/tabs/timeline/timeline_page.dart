@@ -138,7 +138,7 @@ class _MainViewState extends ConsumerState<TimelinePage>
               backgroundColor: const Color(0xFFFCD46A),
               child: const Icon(Icons.camera_alt),
               onPressed: () =>
-                  // Beamer.of(context).beamToNamed('/timeline/details'),
+                  // Beamer.of(context).beamToNamed('/timeline/overview'),
                   ScaffoldMessenger.of(context).showSnackBar(
                 // SnackBar(content: Text('Value is ${current.state}')),
                 SnackBar(content: Text('Value is $ref')),
@@ -150,7 +150,7 @@ class _MainViewState extends ConsumerState<TimelinePage>
               backgroundColor: const Color(0xFFFCD46A),
               child: const Icon(Icons.bookmarks),
               onPressed: () =>
-                  Beamer.of(context).beamToNamed('/timeline/details'),
+                  Beamer.of(context).beamToNamed('/timeline/overview'),
             ),
             const SizedBox(height: 16),
             FloatingActionButton(
@@ -183,7 +183,7 @@ class _MainViewState extends ConsumerState<TimelinePage>
                   ),
                 );
 
-                // Beamer.of(context).beamToNamed('/timeline/details'),
+                // Beamer.of(context).beamToNamed('/timeline/overview'),
 
                 // Navigator.of(context, rootNavigator: true).push(
                 //   MaterialPageRoute(

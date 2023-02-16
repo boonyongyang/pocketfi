@@ -22,7 +22,7 @@ class TransactionsTab extends ConsumerWidget {
         ref.refresh(userPostsProvider);
         return Future.delayed(
           const Duration(
-            seconds: 1,
+            milliseconds: 500,
           ),
         );
       },
