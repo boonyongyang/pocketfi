@@ -4,6 +4,8 @@ import 'package:pocketfi/state/category/models/category_setting.dart';
 import 'package:pocketfi/views/constants/app_colors.dart';
 import 'package:pocketfi/views/tabs/budget/budget_tile.dart';
 import 'package:pocketfi/views/tabs/budget/create_new_budget_button.dart';
+import 'package:pocketfi/views/tabs/budget/create_new_budget_view.dart';
+import 'package:pocketfi/views/tabs/budget/wallet_page.dart';
 
 class BudgetPage extends ConsumerStatefulWidget {
   const BudgetPage({
@@ -23,7 +25,14 @@ class _BudgetPageState extends ConsumerState<BudgetPage> {
         actions: [
           IconButton(
             icon: const Icon(Icons.wallet),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const WalletPage(),
+                ),
+              );
+            },
           ),
         ],
       ),
@@ -123,7 +132,14 @@ class _BudgetPageState extends ConsumerState<BudgetPage> {
                 ),
                 onPressed:
                     // ref.read(authStateProvider.notifier).loginWithFacebook,
-                    () {},
+                    () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const CreateNewBudgetView(),
+                    ),
+                  );
+                },
                 child: const CreateNewBudgetButton(),
               ),
             ),
