@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pocketfi/views/constants/strings.dart';
 
 class CreateNewBudgetButton extends StatelessWidget {
   const CreateNewBudgetButton({super.key});
@@ -8,7 +9,7 @@ class CreateNewBudgetButton extends StatelessWidget {
     return const SizedBox(
       // width: 150,
       child: Text(
-        'Create New Budget',
+        Strings.createNewBudget,
         style: TextStyle(
           fontSize: 17,
         ),
