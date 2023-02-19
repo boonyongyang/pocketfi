@@ -5,7 +5,7 @@ import 'package:pocketfi/views/constants/app_colors.dart';
 import 'package:pocketfi/views/tabs/budget/budget_tile.dart';
 import 'package:pocketfi/views/tabs/budget/create_new_budget_button.dart';
 import 'package:pocketfi/views/tabs/budget/create_new_budget_view.dart';
-import 'package:pocketfi/views/tabs/budget/wallet_page.dart';
+import 'package:pocketfi/views/tabs/budget/wallet/wallet_page.dart';
 
 class BudgetPage extends ConsumerStatefulWidget {
   const BudgetPage({
