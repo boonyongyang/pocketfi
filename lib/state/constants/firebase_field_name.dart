@@ -16,5 +16,9 @@ class FirebaseFieldName {
   static const categoryColor = 'category_color';
   static const categoryIcon = 'category_icon';
 
+  static const walletId = 'wallet_id';
+  static const walletName = 'wallet_name';
+  static const walletBalance = 'wallet_balance';
+
   const FirebaseFieldName._(); // private constructor
 }
