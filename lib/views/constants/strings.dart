@@ -36,5 +36,18 @@ class Strings {
   static const signUpOn = 'Sign up on ';
   static const orCreateAnAccountOn = ' or create an account on ';
 
+  // budget
+  static const budget = 'Budget';
+  static const total = 'Total';
+  static const createNewBudget = 'Create New Budget';
+  static const budgetName = 'Budget Name';
+  static const amount = "Amount";
+  static const currency = 'Currency';
+  static const createNewWallet = 'Create New Wallet';
+  static const walletName = 'Wallet Name';
+  static const walletBalance = 'Wallet Balance';
+  static const noWalletsYet = 'No wallets available yet';
+  static const saveChanges = 'Save Changes';
+
   const Strings._();
 }
