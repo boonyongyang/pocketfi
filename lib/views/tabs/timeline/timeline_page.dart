@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -7,8 +9,11 @@ import 'package:pocketfi/state/image_upload/models/file_type.dart';
 import 'package:pocketfi/state/tabs/timeline/posts/post_settings/providers/post_setting_provider.dart';
 import 'package:pocketfi/views/components/animations/lottie_animation_view.dart';
 import 'package:pocketfi/views/components/animations/models/lottie_animation.dart';
+import 'package:pocketfi/views/tabs/timeline/transactions/add_new_transactions/add_new_transaction.dart';
 import 'package:pocketfi/views/tabs/timeline/transactions/add_new_transactions/create_new_post_view.dart';
+import 'package:pocketfi/views/tabs/timeline/transactions/receipts/scan_receipt.dart';
 import 'package:pocketfi/views/tabs/timeline/transactions/transactions_tab.dart';
+// import 'package:google_ml_kit/google_ml_kit.dart';
 
 class TimelinePage extends ConsumerStatefulWidget {
   const TimelinePage({super.key});
@@ -17,7 +22,7 @@ class TimelinePage extends ConsumerStatefulWidget {
   ConsumerState<ConsumerStatefulWidget> createState() => _MainViewState();
 }
 
-var indexProvider = StateProvider<int>((ref) => 0);
+// var indexProvider = StateProvider<int>((ref) => 0);
 
 class _MainViewState extends ConsumerState<TimelinePage>
     with AutomaticKeepAliveClientMixin<TimelinePage> {
@@ -139,9 +144,16 @@ class _MainViewState extends ConsumerState<TimelinePage>
               child: const Icon(Icons.camera_alt),
               onPressed: () =>
                   // Beamer.of(context).beamToNamed('/timeline/overview'),
-                  ScaffoldMessenger.of(context).showSnackBar(
-                // SnackBar(content: Text('Value is ${current.state}')),
-                SnackBar(content: Text('Value is $ref')),
+
+                  //     ScaffoldMessenger.of(context).showSnackBar(
+                  //   // SnackBar(content: Text('Value is ${current.state}')),
+                  //   SnackBar(content: Text('Value is $ref')),
+                  // ),
+
+                  Navigator.of(context, rootNavigator: true).push(
+                MaterialPageRoute(
+                  builder: (context) => const ScanReceipt(),
+                ),
               ),
             ),
             const SizedBox(height: 16),
@@ -157,41 +169,49 @@ class _MainViewState extends ConsumerState<TimelinePage>
               heroTag: 'add new expense',
               backgroundColor: const Color(0xFFFCD46A),
               child: const Icon(Icons.add),
-              onPressed: () async {
-                final imageFile =
-                    await ImagePickerHelper.pickImageFromGallery();
-                if (imageFile == null) {
-                  // no image available so return early
-                  return;
-                }
+              onPressed: () =>
+                  // push to addnewtransaction page
+                  Navigator.of(context, rootNavigator: true).push(
+                MaterialPageRoute(
+                  builder: (context) => const AddNewTransaction(),
+                ),
+              ),
 
-                // refresh the provider so it does not contain the previous post's setting
-                ref.refresh(postSettingProvider);
+              // onPressed: () async {
+              //   final imageFile =
+              //       await ImagePickerHelper.pickImageFromGallery();
+              //   if (imageFile == null) {
+              //     // no image available so return early
+              //     return;
+              //   }
 
-                // go to the screen to create a new post
-                if (!mounted) {
-                  return;
-                }
+              //   // refresh the provider so it does not contain the previous post's setting
+              //   ref.refresh(postSettingProvider);
 
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => CreateNewPostView(
-                      fileToPost: imageFile,
-                      fileType: FileType.image,
-                    ),
-                  ),
-                );
+              //   // go to the screen to create a new post
+              //   if (!mounted) {
+              //     return;
+              //   }
 
-                // Beamer.of(context).beamToNamed('/timeline/overview'),
+              //   Navigator.push(
+              //     context,
+              //     MaterialPageRoute(
+              //       builder: (_) => CreateNewPostView(
+              //         fileToPost: imageFile,
+              //         fileType: FileType.image,
+              //       ),
+              //     ),
+              //   );
 
-                // Navigator.of(context, rootNavigator: true).push(
-                //   MaterialPageRoute(
-                //     builder: (context) => const SettingsPage(),
-                //     fullscreenDialog: true,
-                //   ),
-                // );
-              },
+              // Beamer.of(context).beamToNamed('/timeline/overview'),
+
+              // Navigator.of(context, rootNavigator: true).push(
+              //   MaterialPageRoute(
+              //     builder: (context) => const SettingsPage(),
+              //     fullscreenDialog: true,
+              //   ),
+              // );
+              // },
             ),
           ],
         ),

@@ -20,7 +20,8 @@ class CategoryNotifier extends StateNotifier<List<Category>> {
         )
         .toList();
 
-    // run through all the categories and if the isSelected is true, then cahnge the color of the icon from black to white
+    // run through all the categories and if the isSelected is true,
+    // then cahnge the color of the icon from black to white
     // if the isSelected is false, then change the color of the icon from white to black
   }
 }

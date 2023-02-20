@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:google_mlkit_entity_extraction/google_mlkit_entity_extraction.dart';
+// import 'package:google_mlkit_entity_extraction/google_mlkit_entity_extraction.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -59,7 +59,7 @@ class _ScanReceiptState extends State<ScanReceipt> {
                                 borderRadius: BorderRadius.circular(8.0)),
                           ),
                           onPressed: () {
-                            getImage(ImageSource.gallery);
+                            scanReceiptText(ImageSource.gallery);
                           },
                           child: Container(
                             margin: const EdgeInsets.symmetric(
@@ -93,7 +93,7 @@ class _ScanReceiptState extends State<ScanReceipt> {
                                 borderRadius: BorderRadius.circular(8.0)),
                           ),
                           onPressed: () {
-                            getImage(ImageSource.camera);
+                            scanReceiptText(ImageSource.camera);
                           },
                           child: Container(
                             margin: const EdgeInsets.symmetric(
@@ -142,7 +142,7 @@ class _ScanReceiptState extends State<ScanReceipt> {
     );
   }
 
-  void getImage(ImageSource source) async {
+  void scanReceiptText(ImageSource source) async {
     try {
       final pickedImage = await ImagePicker().pickImage(source: source);
       if (pickedImage != null) {
@@ -190,7 +190,8 @@ class _ScanReceiptState extends State<ScanReceipt> {
     final RecognizedText recognisedText =
         await textRecognizer.processImage(inputImage);
 
-    List<String?> regexExtraction = extractPrices(recognisedText);
+    // TODO -> uncomment this
+    // List<String?> regexExtraction = extractPrices(recognisedText);
 
     String scannedText = "";
     for (TextBlock block in recognisedText.blocks) {
@@ -199,24 +200,24 @@ class _ScanReceiptState extends State<ScanReceipt> {
       }
     }
 
-    // final entityExtractor = GoogleMlKit.nlp.entityExtractor(EntityExtractorLanguage.english);
-    final entityExtractor =
-        EntityExtractor(language: EntityExtractorLanguage.english);
-    final List<EntityAnnotation> annotations =
-        await entityExtractor.annotateText(recognisedText.text);
-    String scannedEntities = '';
-    for (final annotation in annotations) {
-      scannedEntities += '${annotation.text}\n';
-      for (final entity in annotation.entities) {
-        scannedEntities += '${entity.type} : ${entity.rawValue}\n\n';
-      }
-    }
+    // TODO -> uncomment this
+    //   final entityExtractor =
+    //       EntityExtractor(language: EntityExtractorLanguage.english);
+    //   final List<EntityAnnotation> annotations =
+    //       await entityExtractor.annotateText(recognisedText.text);
+    //   String scannedEntities = '';
+    //   for (final annotation in annotations) {
+    //     scannedEntities += '${annotation.text}\n';
+    //     for (final entity in annotation.entities) {
+    //       scannedEntities += '${entity.type} : ${entity.rawValue}\n\n';
+    //     }
+    //   }
     textRecognizer.close();
-    entityExtractor.close();
+    //   entityExtractor.close();
     setState(() {
       this.scannedText = scannedText;
-      this.scannedEntities = scannedEntities;
-      this.regexExtraction = regexExtraction;
+      // this.scannedEntities = scannedEntities;
+      // this.regexExtraction = regexExtraction;
       textScanning = false;
     });
   }
@@ -233,31 +234,31 @@ class _ScanReceiptState extends State<ScanReceipt> {
   //   return prices;
   // }
 
-  final RegExp priceRegex =
-      RegExp(r"(RM|MYR)?\s?(\d+(\.\d{2})?|\.\d{2})", caseSensitive: false);
-
-  List<String> extractPrices(RecognizedText recognizedText) {
-    final List<String> matches = <String>[];
-    for (TextBlock block in recognizedText.blocks) {
-      for (TextLine line in block.lines) {
-        for (TextElement element in line.elements) {
-          String text = element.text;
-          final RegExpMatch? match = priceRegex.firstMatch(text);
-          if (match != null) {
-            final String? price = match.group(0);
-            matches.add(price!);
-          }
-        }
-      }
-    }
-    return matches
-        .where((price) =>
-            price.contains('MYR') ||
-            price.contains('RM') ||
-            price.startsWith('.') ||
-            (price.contains('.') && price.split('.').last.length == 2))
-        .toList();
-  }
+  // TODO -> uncomment this
+  // final RegExp priceRegex =
+  //     RegExp(r"(RM|MYR)?\s?(\d+(\.\d{2})?|\.\d{2})", caseSensitive: false);
+  // List<String> extractPrices(RecognizedText recognizedText) {
+  //   final List<String> matches = <String>[];
+  //   for (TextBlock block in recognizedText.blocks) {
+  //     for (TextLine line in block.lines) {
+  //       for (TextElement element in line.elements) {
+  //         String text = element.text;
+  //         final RegExpMatch? match = priceRegex.firstMatch(text);
+  //         if (match != null) {
+  //           final String? price = match.group(0);
+  //           matches.add(price!);
+  //         }
+  //       }
+  //     }
+  //   }
+  //   return matches
+  //       .where((price) =>
+  //           price.contains('MYR') ||
+  //           price.contains('RM') ||
+  //           price.startsWith('.') ||
+  //           (price.contains('.') && price.split('.').last.length == 2))
+  //       .toList();
+  // }
 
   // // todo this is for text recognition with each word
   // void getRecognisedText(XFile image) async {
