@@ -1,3 +1,4 @@
+import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/state/tabs/budget/wallet/provider/user_wallets_provider.dart';
@@ -6,8 +7,9 @@ import 'package:pocketfi/views/components/animations/error_animation_view.dart';
 import 'package:pocketfi/views/components/animations/loading_animation_view.dart';
 import 'package:pocketfi/views/constants/app_colors.dart';
 import 'package:pocketfi/views/constants/strings.dart';
-import 'package:pocketfi/views/tabs/budget/wallet/create_new_wallet_button.dart';
+import 'package:pocketfi/views/constants/button_widget.dart';
 import 'package:pocketfi/views/tabs/budget/wallet/create_new_wallet_view.dart';
+import 'package:pocketfi/views/tabs/budget/wallet/wallet_details_view.dart';
 import 'package:pocketfi/views/tabs/budget/wallet/wallet_tiles.dart';
 
 class WalletPage extends ConsumerStatefulWidget {
@@ -58,12 +60,13 @@ class _WalletPageState extends ConsumerState<WalletPage> {
                     return WalletTiles(
                       wallet: wallet,
                       onTap: () {
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //     builder: (_) => const CreateNewWalletView(),
-                        //   ),
-                        // );
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const WalletDetailsView(),
+                          ),
+                        );
+
                         // show snackbar code
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
@@ -169,14 +172,18 @@ class CreateNewWalletButtonWidget extends StatelessWidget {
           ),
         ),
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (_) => const CreateNewWalletView(),
-            ),
-          );
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(
+          //     builder: (_) => const CreateNewWalletView(),
+          //   ),
+          // );
+
+          Beamer.of(context).beamToNamed('budget/wallet');
         },
-        child: const CreateNewWalletButton(),
+        child: const ButtonWidget(
+          text: Strings.createNewWallet,
+        ),
       ),
     );
   }
