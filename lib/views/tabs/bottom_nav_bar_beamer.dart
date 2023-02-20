@@ -6,9 +6,13 @@ import 'package:pocketfi/views/components/animations/error_animation_view.dart';
 import 'package:pocketfi/views/components/animations/loading_animation_view.dart';
 import 'package:pocketfi/views/components/animations/welcome_app_animation_view.dart';
 import 'package:pocketfi/views/constants/app_colors.dart';
+import 'package:pocketfi/views/constants/strings.dart';
 import 'package:pocketfi/views/tabs/account/account_page.dart';
 import 'package:pocketfi/views/tabs/account/setting_page.dart';
 import 'package:pocketfi/views/tabs/budget/budget_page.dart';
+import 'package:pocketfi/views/tabs/budget/create_new_budget_view.dart';
+import 'package:pocketfi/views/tabs/budget/wallet/create_new_wallet_view.dart';
+import 'package:pocketfi/views/tabs/budget/wallet/wallet_page.dart';
 import 'package:pocketfi/views/tabs/timeline/timeline_page.dart';
 import 'package:pocketfi/views/tabs/timeline/transactions/add_new_transactions/add_new_transaction.dart';
 
@@ -87,7 +91,10 @@ class TabA extends BeamLocation<BeamState> {
 class TabB extends BeamLocation<BeamState> {
   TabB(super.routeInformation);
   @override
-  List<String> get pathPatterns => ['/*'];
+  List<String> get pathPatterns => [
+        '/*',
+        '/budget/wallet',
+      ];
 
   @override
   List<BeamPage> buildPages(BuildContext context, BeamState state) => [
@@ -99,11 +106,23 @@ class TabB extends BeamLocation<BeamState> {
           child: BudgetPage(),
           // child: BudgetPage(),
         ),
-        if (state.uri.pathSegments.length == 2)
+        if (state.uri.pathSegments.contains('createNewBudget'))
           const BeamPage(
-            key: ValueKey('budget/details'),
-            title: 'Budget Details',
-            child: DetailsScreen(label: 'B'),
+            key: ValueKey('budget/createNewBudget'),
+            title: Strings.createNewBudget,
+            child: CreateNewBudgetView(),
+          ),
+        if (state.uri.pathSegments.contains('wallet'))
+          const BeamPage(
+            key: ValueKey('budget-wallet'),
+            title: 'Wallet',
+            child: WalletPage(),
+          ),
+        if (state.uri.pathSegments.contains('createNewWallet'))
+          const BeamPage(
+            key: ValueKey('budget/wallet/createNewWallet'),
+            title: Strings.createNewWallet,
+            child: CreateNewWalletView(),
           ),
       ];
 }
