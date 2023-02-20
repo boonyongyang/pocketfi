@@ -1,3 +1,4 @@
+import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -5,7 +6,7 @@ import 'package:pocketfi/state/auth/providers/user_id_provider.dart';
 import 'package:pocketfi/state/tabs/budget/wallet/provider/create_new_wallet_provider.dart';
 import 'package:pocketfi/views/constants/app_colors.dart';
 import 'package:pocketfi/views/constants/strings.dart';
-import 'package:pocketfi/views/tabs/budget/wallet/create_new_wallet_button.dart';
+import 'package:pocketfi/views/constants/button_widget.dart';
 
 class CreateNewWalletView extends StatefulHookConsumerWidget {
   // final String walletId;
@@ -101,15 +102,39 @@ class _CreateNewWalletViewState extends ConsumerState<CreateNewWalletView> {
                 ),
               ),
               onPressed: isCreateButtonEnabled.value
-                  ? () {
-                      _createNewWalletController(
-                        walletNameController,
-                        initialBalanceController,
-                        ref,
+                  ? () async {
+                      // _createNewWalletController(
+                      //   walletNameController,
+                      //   initialBalanceController,
+                      //   ref,
+                      // );
+                      final userId = ref.read(
+                        userIdProvider,
                       );
+                      if (userId == null) {
+                        return;
+                      }
+                      final message = walletNameController.text;
+                      final amount = initialBalanceController.text;
+                      // hook the UI to the imageUploadProvider for uploading the post
+                      // hooking the UI to the provider will cause the UI to rebuild
+                      final isUploaded = await ref
+                          .read(createNewWalletProvider.notifier)
+                          .createNewWallet(
+                            userId: userId,
+                            walletName: message,
+                            walletBalance: double.parse(amount),
+                          );
+                      if (isUploaded && mounted) {
+                        // if the post is uploaded, then pop the screen
+                        // Navigator.of(context).pop();
+                        Beamer.of(context).beamBack();
+                      }
                     }
                   : null,
-              child: const CreateNewWalletButton(),
+              child: const ButtonWidget(
+                text: Strings.createNewWallet,
+              ),
             ),
           ),
           // ),
