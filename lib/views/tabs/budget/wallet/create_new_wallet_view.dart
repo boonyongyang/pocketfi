@@ -103,33 +103,33 @@ class _CreateNewWalletViewState extends ConsumerState<CreateNewWalletView> {
               ),
               onPressed: isCreateButtonEnabled.value
                   ? () async {
-                      // _createNewWalletController(
-                      //   walletNameController,
-                      //   initialBalanceController,
-                      //   ref,
-                      // );
-                      final userId = ref.read(
-                        userIdProvider,
+                      _createNewWalletController(
+                        walletNameController,
+                        initialBalanceController,
+                        ref,
                       );
-                      if (userId == null) {
-                        return;
-                      }
-                      final message = walletNameController.text;
-                      final amount = initialBalanceController.text;
-                      // hook the UI to the imageUploadProvider for uploading the post
-                      // hooking the UI to the provider will cause the UI to rebuild
-                      final isUploaded = await ref
-                          .read(createNewWalletProvider.notifier)
-                          .createNewWallet(
-                            userId: userId,
-                            walletName: message,
-                            walletBalance: double.parse(amount),
-                          );
-                      if (isUploaded && mounted) {
-                        // if the post is uploaded, then pop the screen
-                        // Navigator.of(context).pop();
-                        Beamer.of(context).beamBack();
-                      }
+                      // final userId = ref.read(
+                      //   userIdProvider,
+                      // );
+                      // if (userId == null) {
+                      //   return;
+                      // }
+                      // final message = walletNameController.text;
+                      // final amount = initialBalanceController.text;
+                      // // hook the UI to the imageUploadProvider for uploading the post
+                      // // hooking the UI to the provider will cause the UI to rebuild
+                      // final isUploaded = await ref
+                      //     .read(createNewWalletProvider.notifier)
+                      //     .createNewWallet(
+                      //       userId: userId,
+                      //       walletName: message,
+                      //       walletBalance: double.parse(amount),
+                      //     );
+                      // if (isUploaded && mounted) {
+                      //   // if the post is uploaded, then pop the screen
+                      //   // Navigator.of(context).pop();
+                      //   Beamer.of(context).beamBack();
+                      // }
                     }
                   : null,
               child: const ButtonWidget(
@@ -165,7 +165,9 @@ class _CreateNewWalletViewState extends ConsumerState<CreateNewWalletView> {
     if (isCreated && mounted) {
       nameController.clear();
       balanceController.clear();
-      Navigator.of(context).pop();
+      // Navigator.of(context).pop();
+      // Beamer.of(context).beamBack();
+      Navigator.of(context).maybePop();
     }
   }
 }

@@ -6,9 +6,6 @@ import 'package:pocketfi/views/constants/app_colors.dart';
 import 'package:pocketfi/views/constants/button_widget.dart';
 import 'package:pocketfi/views/constants/strings.dart';
 import 'package:pocketfi/views/tabs/budget/budget_tile.dart';
-import 'package:pocketfi/views/tabs/budget/create_new_budget_view.dart';
-import 'package:pocketfi/views/tabs/budget/wallet/create_new_wallet_view.dart';
-import 'package:pocketfi/views/tabs/budget/wallet/wallet_page.dart';
 
 class BudgetPage extends ConsumerStatefulWidget {
   const BudgetPage({
@@ -28,17 +25,22 @@ class _BudgetPageState extends ConsumerState<BudgetPage> {
         actions: [
           IconButton(
             icon: const Icon(Icons.wallet),
-            onPressed: () {
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(
-              //     // builder: (_) => const WalletPage(),
-              //     builder: (_) => const CreateNewWalletView(),
-              //   ),
-              // );
+            onPressed: () =>
+                // {
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //     // builder: (_) => const WalletPage(),
+                //     builder: (_) => const CreateNewWalletView(),
+                //   ),
+                // );
 
-              Beamer.of(context).beamToNamed("/budget/2");
-            },
+                context.beamToNamed("wallet"),
+            // },
+            // BeamerButton(
+            //   beamer: beamer,
+            //   uri: '/budget/wallet',
+            //   child: const Icon(Icons.wallet),
           ),
         ],
       ),
@@ -138,15 +140,16 @@ class _BudgetPageState extends ConsumerState<BudgetPage> {
                 ),
                 onPressed:
                     // ref.read(authStateProvider.notifier).loginWithFacebook,
-                    () {
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (_) => const CreateNewBudgetView(),
-                  //   ),
-                  // );
-                  context.beamToNamed("/budget/wallet");
-                },
+                    () =>
+                        // {
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (_) => const CreateNewBudgetView(),
+                        //   ),
+                        // );
+                        context.beamToNamed("createNewBudget"),
+                // },
                 child: const ButtonWidget(
                   text: Strings.createNewBudget,
                 ),

@@ -171,7 +171,9 @@ class CreateNewWalletButtonWidget extends StatelessWidget {
             ),
           ),
         ),
-        onPressed: () {
+        onPressed: ()
+            // =>
+            {
           // Navigator.push(
           //   context,
           //   MaterialPageRoute(
@@ -179,7 +181,7 @@ class CreateNewWalletButtonWidget extends StatelessWidget {
           //   ),
           // );
 
-          Beamer.of(context).beamToNamed('budget/wallet');
+          context.beamToNamed('createNewWallet');
         },
         child: const ButtonWidget(
           text: Strings.createNewWallet,
