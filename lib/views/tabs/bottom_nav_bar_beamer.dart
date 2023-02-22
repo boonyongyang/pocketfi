@@ -12,6 +12,7 @@ import 'package:pocketfi/views/tabs/account/setting_page.dart';
 import 'package:pocketfi/views/tabs/budget/budget_page.dart';
 import 'package:pocketfi/views/tabs/budget/create_new_budget_view.dart';
 import 'package:pocketfi/views/tabs/budget/wallet/create_new_wallet_view.dart';
+// import 'package:pocketfi/views/tabs/budget/wallet/create_new_wallet_view.dart';
 import 'package:pocketfi/views/tabs/budget/wallet/wallet_page.dart';
 import 'package:pocketfi/views/tabs/timeline/timeline_page.dart';
 import 'package:pocketfi/views/tabs/timeline/transactions/add_new_transactions/add_new_transaction.dart';
@@ -20,6 +21,7 @@ class BottomNavBarBeamer extends StatelessWidget {
   const BottomNavBarBeamer({super.key});
 
   static final routerDelegate = BeamerDelegate(
+    // locationBuilder: simpleLocationBuilder
     initialPath: '/timeline',
     locationBuilder: RoutesLocationBuilder(
       routes: {
@@ -88,12 +90,15 @@ class TabA extends BeamLocation<BeamState> {
 }
 
 /// Location defining the pages for the second tab
-class TabB extends BeamLocation<BeamState> {
-  TabB(super.routeInformation);
+class BudgetLocation extends BeamLocation<BeamState> {
+  BudgetLocation(super.routeInformation);
   @override
   List<String> get pathPatterns => [
+        // '/budget/:path*',
+        // '/budget/wallet/:path*',
+        // '/budget/createNewBudget',
+        // '/wallet/createNewWallet',
         '/*',
-        '/budget/wallet',
       ];
 
   @override
@@ -108,19 +113,19 @@ class TabB extends BeamLocation<BeamState> {
         ),
         if (state.uri.pathSegments.contains('createNewBudget'))
           const BeamPage(
-            key: ValueKey('budget/createNewBudget'),
+            key: ValueKey('/createNewBudget'),
             title: Strings.createNewBudget,
             child: CreateNewBudgetView(),
           ),
         if (state.uri.pathSegments.contains('wallet'))
           const BeamPage(
-            key: ValueKey('budget-wallet'),
+            key: ValueKey('/wallet'),
             title: 'Wallet',
             child: WalletPage(),
           ),
         if (state.uri.pathSegments.contains('createNewWallet'))
           const BeamPage(
-            key: ValueKey('budget/wallet/createNewWallet'),
+            key: ValueKey('/createNewWallet'),
             title: Strings.createNewWallet,
             child: CreateNewWalletView(),
           ),
@@ -200,10 +205,10 @@ class _ScaffoldWithBottomNavBarState extends State<ScaffoldWithBottomNavBar> {
       },
     ),
     BeamerDelegate(
-      initialPath: '/b',
+      initialPath: '/budget',
       locationBuilder: (routeInformation, _) {
-        if (routeInformation.location!.contains('/b')) {
-          return TabB(routeInformation);
+        if (routeInformation.location!.contains('/budget')) {
+          return BudgetLocation(routeInformation);
         }
         return NotFound(path: routeInformation.location!);
       },
@@ -235,7 +240,7 @@ class _ScaffoldWithBottomNavBarState extends State<ScaffoldWithBottomNavBar> {
     // _currentIndex = uriString.contains('/timeline') ? 0 : 1;
     if (uriString.contains('/timeline')) {
       _currentIndex = 0;
-    } else if (uriString.contains('/b')) {
+    } else if (uriString.contains('/budget')) {
       _currentIndex = 1;
     } else if (uriString.contains('/c')) {
       _currentIndex = 2;

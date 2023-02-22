@@ -56,15 +56,16 @@ class _MainViewState extends ConsumerState<TimelinePage>
                       return;
                     }
 
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => CreateNewPostView(
-                          fileToPost: videoFile,
-                          fileType: FileType.video,
-                        ),
-                      ),
-                    );
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //     builder: (_) => CreateNewPostView(
+                    //       fileToPost: videoFile,
+                    //       fileType: FileType.video,
+                    //     ),
+                    //   ),
+                    // );
+                    context.beamToNamed('/timeline/transactions');
                   },
                 ),
                 Center(
