@@ -139,7 +139,7 @@ class _MainViewState extends ConsumerState<TimelinePage>
           children: [
             Expanded(child: Container()),
             FloatingActionButton(
-              heroTag: 'scan receipt',
+              heroTag: 'scan_receipt',
               backgroundColor: const Color(0xFFFCD46A),
               child: const Icon(Icons.camera_alt),
               onPressed: () =>
@@ -166,7 +166,7 @@ class _MainViewState extends ConsumerState<TimelinePage>
             ),
             const SizedBox(height: 16),
             FloatingActionButton(
-              heroTag: 'add new expense',
+              heroTag: 'add_new_expense',
               backgroundColor: const Color(0xFFFCD46A),
               child: const Icon(Icons.add),
               onPressed: () =>

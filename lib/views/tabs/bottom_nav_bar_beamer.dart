@@ -55,7 +55,7 @@ class TabA extends BeamLocation<BeamState> {
         ),
         if (state.uri.pathSegments.length == 2)
           const BeamPage(
-            type: BeamPageType.slideTransition,
+            // type: BeamPageType.slideTransition,
             key: ValueKey('timeline/overview'),
             title: 'Overview Details',
             child: AddNewTransaction(),
@@ -64,7 +64,7 @@ class TabA extends BeamLocation<BeamState> {
         if (state.uri.pathSegments.length == 3)
           const BeamPage(
             fullScreenDialog: true,
-            type: BeamPageType.fadeTransition,
+            // type: BeamPageType.fadeTransition,
             key: ValueKey('timeline/overview/selectcategory'),
             title: 'Select Category',
             child: DetailsScreen(label: 'Select Category'),

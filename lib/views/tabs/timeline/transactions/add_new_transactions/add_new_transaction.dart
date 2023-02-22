@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:auto_size_text_field/auto_size_text_field.dart';
 import 'package:flutter/material.dart';
+// import 'package:flutter_layout_grid/flutter_layout_grid.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/state/category/models/category.dart';
 import 'package:pocketfi/state/category/notifiers/category_state_notifier.dart';
@@ -10,16 +11,17 @@ import 'package:pocketfi/state/image_upload/helpers/image_picker_helper.dart';
 import 'package:pocketfi/state/image_upload/models/file_type.dart';
 import 'package:pocketfi/state/image_upload/models/thumbnail_request.dart';
 import 'package:pocketfi/state/tabs/timeline/posts/post_settings/providers/post_setting_provider.dart';
+import 'package:pocketfi/state/tabs/timeline/transaction/constants/constants.dart';
 import 'package:pocketfi/state/tabs/timeline/transaction/models/tag.dart';
 import 'package:pocketfi/views/components/file_thumbnail_view.dart';
 import 'package:pocketfi/views/constants/app_colors.dart';
+import 'package:pocketfi/views/tabs/timeline/transactions/add_new_transactions/full_screen_image_dialog.dart';
 import 'package:pocketfi/views/tabs/timeline/transactions/add_new_transactions/transaction_date_picker.dart';
 
 import 'package:pocketfi/views/tabs/timeline/transactions/add_new_transactions/transaction_switcher.dart';
 import 'dart:math' as math;
 
 import 'package:image/image.dart' as img;
-import 'package:pocketfi/views/tabs/timeline/transactions/add_new_transactions/zoomable_image.dart';
 
 class AddNewTransaction extends StatefulHookConsumerWidget {
   // final File fileToPost;
@@ -39,7 +41,7 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
   final _noteController = TextEditingController();
 
   File? _imageFile;
-  bool _isImageZoomed = false;
+  // bool _isImageZoomed = false;
 
   // create tags
   List<TagChip> tags = [
@@ -117,6 +119,12 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
   Widget build(BuildContext context) {
     // final width = MediaQuery.of(context).size.width;
 
+    // var size = MediaQuery.of(context).size;
+
+    /*24 is for notification bar on Android*/
+    // final double itemHeight = (size.height - kToolbarHeight - 24) / 2;
+    // final double itemWidth = size.width / 2;
+
     final categories = ref.watch(expenseCategoriesProvider);
     final selectedCategory = ref.watch(selectedCategoryProvider);
 
@@ -128,7 +136,7 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
         shadowColor: Colors.transparent,
         centerTitle: true,
         title: const Text(
-          'New Transaction',
+          Constants.newTransaction,
           style: TextStyle(
             color: AppSwatches.mainColor1,
             fontSize: 20,
@@ -187,32 +195,158 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    DropdownButton<Category>(
-                      underline: const SizedBox(),
-                      value: selectedCategory,
-                      items: categories
-                          .map((category) => DropdownMenuItem<Category>(
-                                value: category,
-                                onTap: () =>
-                                    showSnackbarTest(context, category),
-                                child: Row(
-                                  children: [
-                                    CircleAvatar(
-                                      backgroundColor: category.color,
-                                      child: category.icon,
-                                    ),
-                                    const SizedBox(width: 8.0),
-                                    Text(category.name),
-                                  ],
+                    // create bottom sheet
+                    const SizedBox(width: 8.0),
+                    Builder(
+                      builder: (context) {
+                        return Center(
+                          child: GestureDetector(
+                            onTap: () {
+                              showModalBottomSheet(
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.vertical(
+                                    top: Radius.circular(16.0),
+                                  ),
                                 ),
-                              ))
-                          .toList(),
-                      onChanged: (Category? category) {
-                        ref.read(selectedCategoryProvider.notifier).state =
-                            category!;
+                                barrierColor: Colors.black.withOpacity(0.5),
+                                context: context,
+                                builder: (context) {
+                                  return SizedBox(
+                                    height: 300,
+                                    child: Column(
+                                      children: [
+                                        const SizedBox(height: 8.0),
+                                        const Text(Constants.selectCategory),
+                                        const SizedBox(height: 8.0),
+
+                                        // // use flutter layout grid package to create grid
+                                        // flutter_layout_grid
+                                        // LayoutGrid(
+                                        //   columnGap: 8,
+                                        //   rowGap: 8,
+                                        //   columnSizes: const [
+                                        //     FlexibleTrackSize(1),
+                                        //     FlexibleTrackSize(1),
+                                        //     FlexibleTrackSize(1),
+                                        //     FlexibleTrackSize(1),
+                                        //   ],
+                                        //   rowSizes: const [
+                                        //     FlexibleTrackSize(1),
+                                        //     FlexibleTrackSize(1),
+                                        //     FlexibleTrackSize(1),
+                                        //     FlexibleTrackSize(1),
+                                        //     FlexibleTrackSize(1),
+                                        //   ],
+                                        //   children: [
+                                        //     for (var category in categories)
+                                        //       GestureDetector(
+                                        //         onTap: () {
+                                        //           ref
+                                        //               .read(
+                                        //                   selectedCategoryProvider
+                                        //                       .notifier)
+                                        //               .state = category;
+                                        //           Navigator.of(context).pop();
+                                        //         },
+                                        //         child: Container(
+                                        //           decoration: BoxDecoration(
+                                        //             color: category.color,
+                                        //             borderRadius:
+                                        //                 BorderRadius.circular(
+                                        //                     8),
+                                        //           ),
+                                        //           child: Center(
+                                        //             child: category.icon,
+                                        //           ),
+                                        //         ),
+                                        //       ),
+                                        //   ],
+                                        // ),
+
+                                        Expanded(
+                                          child: GridView.builder(
+                                            gridDelegate:
+                                                const SliverGridDelegateWithFixedCrossAxisCount(
+                                              crossAxisCount: 4,
+                                              crossAxisSpacing: 8.0,
+                                              mainAxisSpacing: 8.0,
+                                            ),
+                                            itemCount: categories.length,
+                                            itemBuilder: (context, index) {
+                                              return ListTile(
+                                                onTap: () {
+                                                  ref
+                                                      .read(
+                                                          selectedCategoryProvider
+                                                              .notifier)
+                                                      .state = categories[index];
+                                                  Navigator.of(context).pop();
+                                                },
+                                                leading: Column(
+                                                  children: [
+                                                    CircleAvatar(
+                                                      backgroundColor:
+                                                          categories[index]
+                                                              .color,
+                                                      child: categories[index]
+                                                          .icon,
+                                                    ),
+                                                    Text(
+                                                        categories[index].name),
+                                                  ],
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                            child: Row(
+                              children: [
+                                CircleAvatar(
+                                  backgroundColor: selectedCategory.color,
+                                  child: selectedCategory.icon,
+                                ),
+                                const SizedBox(width: 8.0),
+                                Text(selectedCategory.name),
+                              ],
+                            ),
+                          ),
+                        );
                       },
                     ),
+
+                    // DropdownButton<Category>(
+                    //   underline: const SizedBox(),
+                    //   value: selectedCategory,
+                    //   items: categories
+                    //       .map((category) => DropdownMenuItem<Category>(
+                    //             value: category,
+                    //             onTap: () =>
+                    //                 showSnackbarTest(context, category),
+                    //             child: Row(
+                    //               children: [
+                    //                 CircleAvatar(
+                    //                   backgroundColor: category.color,
+                    //                   child: category.icon,
+                    //                 ),
+                    //                 const SizedBox(width: 8.0),
+                    //                 Text(category.name),
+                    //               ],
+                    //             ),
+                    //           ))
+                    //       .toList(),
+                    //   onChanged: (Category? category) {
+                    //     ref.read(selectedCategoryProvider.notifier).state =
+                    //         category!;
+                    //   },
+                    // ),
                     const Spacer(),
                     const Icon(Icons.wallet, color: AppSwatches.mainColor1),
                     const SizedBox(width: 8.0),
@@ -234,6 +368,7 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
                       },
                       value: _selectedWallet,
                     ),
+                    const SizedBox(width: 8.0),
                   ],
                 ),
               ),
@@ -282,7 +417,7 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
                               displayPhoto(imageFile);
                             },
                             child: const Text(
-                              'add a photo',
+                              Constants.addAPhoto,
                             ),
                           ),
                         ),
@@ -295,58 +430,63 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
                       //     FileType.image,
                       //   ),
                       // ),
-
-                      Stack(
-                        children: [
-                          // existing content goes here
-                          InkWell(
-                            onTap: () {
-                              showModalBottomSheet(
-                                context: context,
-                                builder: (context) {
-                                  return SizedBox(
-                                    height: MediaQuery.of(context).size.height *
-                                        0.7,
-                                    child: ZoomableImage(
-                                      imagePath: _imageFile!.path,
-                                    ),
-                                  );
-                                },
-                              );
-                            },
-                            child: Container(
-                              width: double.infinity,
-                              height: 150,
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  image: FileImage(_imageFile!),
-                                  fit: BoxFit.cover,
-                                ),
-                                borderRadius: BorderRadius.circular(8.0),
-                              ),
+                      InkWell(
+                        onTap: () {
+                          // bottom sheet
+                          // showModalBottomSheet(
+                          //   elevation: 2, // does nothing?
+                          //   shape: const RoundedRectangleBorder(
+                          //     borderRadius: BorderRadius.vertical(
+                          //       top: Radius.circular(16.0),
+                          //     ),
+                          //   ),
+                          //   barrierColor: Colors.black.withOpacity(0.5),
+                          //   backgroundColor: Colors.transparent,
+                          //   context: context,
+                          //   builder: (context) {
+                          //     return Padding(
+                          //       padding: EdgeInsets.only(
+                          //           bottom: itemHeight * 0.45),
+                          //       child: InkWell(
+                          //         onTap: () => Navigator.of(context).pop(),
+                          //         child: SizedBox(
+                          //           height:
+                          //               MediaQuery.of(context).size.height *
+                          //                   0.7,
+                          //           // child: ZoomableImage(
+                          //           //   imagePath: _imageFile!.path,
+                          //           // ),
+                          //           child: Image.file(
+                          //             File(_imageFile!.path),
+                          //             fit: BoxFit.contain,
+                          //           ),
+                          //         ),
+                          //       ),
+                          //     );
+                          //   },
+                          // );
+                          // full screen image
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  FullScreenImageDialog(imageFile: _imageFile!),
+                              fullscreenDialog: true,
                             ),
+                          );
+                        },
+                        child: Container(
+                          width: double.infinity,
+                          height: 150,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: FileImage(_imageFile!),
+                              fit: BoxFit.cover,
+                            ),
+                            borderRadius: BorderRadius.circular(8.0),
                           ),
-                        ],
+                        ),
                       ),
-                    // Hero(
-                    //   tag: 'imageHero',
-                    //   child: GestureDetector(
-                    //     onTap: () {
-                    //       // Navigate back to the previous screen
-                    //       Navigator.pop(context);
-                    //     },
-                    //     child: Image.file(_imageFile!),
-                    //   ),
-                    // ),
                     const SizedBox(height: 8.0),
-                    // const Text(
-                    //   'Tags',
-                    //   style: TextStyle(
-                    //     fontSize: 16,
-                    //     fontWeight: FontWeight.bold,
-                    //     color: AppSwatches.mainColor1,
-                    //   ),
-                    // ),
                     Row(
                       children: [
                         const Icon(
@@ -369,13 +509,15 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
                                     label: Text(tag.label),
                                     selected: selectedTags.contains(tag),
                                     onSelected: (selected) {
-                                      setState(() {
-                                        if (selected) {
-                                          selectedTags.add(tag);
-                                        } else {
-                                          selectedTags.remove(tag);
-                                        }
-                                      });
+                                      setState(
+                                        () {
+                                          if (selected) {
+                                            selectedTags.add(tag);
+                                          } else {
+                                            selectedTags.remove(tag);
+                                          }
+                                        },
+                                      );
                                     },
                                   ),
                               ],
@@ -439,17 +581,18 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
     // FileThumbnailView(
     //   thumbnailRequest: thumbnailRequest,
     // );
-    Hero(
-      tag: 'imageHero',
-      child: FileThumbnailView(
-        thumbnailRequest: ThumbnailRequest(
-          imageFile,
-          FileType.image,
-        ),
+    // Hero(
+    // tag: 'imageHero',
+    // child:
+    FileThumbnailView(
+      thumbnailRequest: ThumbnailRequest(
+        imageFile,
+        FileType.image,
       ),
+      // ),
     );
 
-    final cropImageFile = _cropAndShrinkImage(imageFile, 150);
+    final cropImageFile = _cropAndShrinkImage(imageFile);
 
     // setState to display the thumbnail
     setState(() {
@@ -458,7 +601,7 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
     });
   }
 
-  File _cropAndShrinkImage(File imageFile, int maxWidth) {
+  File _cropAndShrinkImage(File imageFile) {
     // Load the image from the file
     final rawImage = img.decodeImage(imageFile.readAsBytesSync());
 
@@ -466,7 +609,8 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
     final double aspectRatio = rawImage!.width / rawImage.height;
 
     // Calculate the new height of the image
-    final int newHeight = (maxWidth / aspectRatio).round();
+    // make height higher than 500
+    final int newHeight = math.max(500, rawImage.height);
 
     // Calculate the amount to crop from the top and bottom of the image
     final int cropAmount = math.max(0, rawImage.height - newHeight) ~/ 2;
@@ -481,11 +625,11 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
     );
 
     // Resize the image to the desired width
-    final resizedImage = img.copyResize(croppedImage, width: maxWidth);
+    final resizedImage = img.copyResize(croppedImage, width: 500);
 
     // Convert the image to a file
     final newImageFile = File('${imageFile.path}_cropped.jpg')
-      ..writeAsBytesSync(img.encodeJpg(resizedImage, quality: 85));
+      ..writeAsBytesSync(img.encodeJpg(resizedImage, quality: 100));
 
     return newImageFile;
   }

@@ -12,6 +12,19 @@ class Constants {
   static const incomeColor = 0xFF4CAF50;
   static const transferColor = 0xFF9E9E9E;
 
+  static const expenseIcon = Icons.arrow_downward;
+  static const incomeIcon = Icons.arrow_upward;
+  static const transferIcon = Icons.compare_arrows;
+
+  static const selectCategory = 'Select Category';
+  static const addAPhoto = 'Add a photo';
+  static const writeANote = 'Write a note';
+  static const newTransaction = 'New Transaction';
+  static const editTransaction = 'Edit Transaction';
+
+  const Constants._();
+}
+
   // static const Iterable<Category> expenseCategories = [
   //   Category(
   //     name: 'Food',
@@ -55,8 +68,6 @@ class Constants {
   // static const incomeStorageKey = 'income';
   // static const transferStorageKey = 'transfer';
 
-  const Constants._();
-}
 
 // num ExpenseCategory {
 //   food(

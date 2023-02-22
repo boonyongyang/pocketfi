@@ -58,11 +58,11 @@ class App extends StatelessWidget {
         // primarySwatch: Colors.orange,
         // indicatorColor: Colors.orange,
       ),
-      darkTheme: ThemeData(
-        brightness: Brightness.dark,
-        primarySwatch: Colors.deepOrange,
-        indicatorColor: Colors.deepOrange,
-      ),
+      // darkTheme: ThemeData(
+      //   brightness: Brightness.dark,
+      //   primarySwatch: Colors.deepOrange,
+      //   indicatorColor: Colors.deepOrange,
+      // ),
       debugShowCheckedModeBanner: false,
       home: Consumer(
         builder: (context, ref, child) {
