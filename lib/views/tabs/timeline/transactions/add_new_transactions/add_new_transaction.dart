@@ -17,18 +17,10 @@ import 'package:pocketfi/views/components/file_thumbnail_view.dart';
 import 'package:pocketfi/views/constants/app_colors.dart';
 import 'package:pocketfi/views/tabs/timeline/transactions/add_new_transactions/full_screen_image_dialog.dart';
 import 'package:pocketfi/views/tabs/timeline/transactions/add_new_transactions/transaction_date_picker.dart';
-
 import 'package:pocketfi/views/tabs/timeline/transactions/add_new_transactions/transaction_switcher.dart';
-import 'dart:math' as math;
-
-import 'package:image/image.dart' as img;
 
 class AddNewTransaction extends StatefulHookConsumerWidget {
-  // final File fileToPost;
-  // final FileType fileType;
   const AddNewTransaction({
-    // this.fileToPost,
-    // this.fileType,
     super.key,
   });
 
@@ -41,9 +33,7 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
   final _noteController = TextEditingController();
 
   File? _imageFile;
-  // bool _isImageZoomed = false;
 
-  // create tags
   List<TagChip> tags = [
     TagChip(
       label: 'Lunch',
@@ -97,34 +87,23 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
     ),
   ];
 
-  // selected tags
   List<TagChip> selectedTags = [];
 
   String _selectedRecurrence = 'Never';
   String _selectedWallet = 'Personal';
 
-  void _submitData() {
-    final enteredAmount = double.parse(_amountController.text);
-    final enteredNote = _noteController.text;
+  // void _submitData() {
+  //   final enteredAmount = double.parse(_amountController.text);
+  //   final enteredNote = _noteController.text;
 
-    if (enteredAmount <= 0 || enteredNote.isEmpty) {
-      return;
-    }
-
-    // Your code to handle adding the expense to the data source goes here
-    Navigator.of(context).pop();
-  }
+  //   if (enteredAmount <= 0 || enteredNote.isEmpty) {
+  //     return;
+  //   }
+  //   Navigator.of(context).pop();
+  // }
 
   @override
   Widget build(BuildContext context) {
-    // final width = MediaQuery.of(context).size.width;
-
-    // var size = MediaQuery.of(context).size;
-
-    /*24 is for notification bar on Android*/
-    // final double itemHeight = (size.height - kToolbarHeight - 24) / 2;
-    // final double itemWidth = size.width / 2;
-
     final categories = ref.watch(expenseCategoriesProvider);
     final selectedCategory = ref.watch(selectedCategoryProvider);
 
@@ -321,32 +300,6 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
                         );
                       },
                     ),
-
-                    // DropdownButton<Category>(
-                    //   underline: const SizedBox(),
-                    //   value: selectedCategory,
-                    //   items: categories
-                    //       .map((category) => DropdownMenuItem<Category>(
-                    //             value: category,
-                    //             onTap: () =>
-                    //                 showSnackbarTest(context, category),
-                    //             child: Row(
-                    //               children: [
-                    //                 CircleAvatar(
-                    //                   backgroundColor: category.color,
-                    //                   child: category.icon,
-                    //                 ),
-                    //                 const SizedBox(width: 8.0),
-                    //                 Text(category.name),
-                    //               ],
-                    //             ),
-                    //           ))
-                    //       .toList(),
-                    //   onChanged: (Category? category) {
-                    //     ref.read(selectedCategoryProvider.notifier).state =
-                    //         category!;
-                    //   },
-                    // ),
                     const Spacer(),
                     const Icon(Icons.wallet, color: AppSwatches.mainColor1),
                     const SizedBox(width: 8.0),
@@ -379,14 +332,6 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    // TextField(
-                    //   decoration: const InputDecoration(labelText: 'Amount'),
-                    //   controller: _amountController,
-                    //   keyboardType: const TextInputType.numberWithOptions(
-                    //     decimal: true,
-                    //   ),
-                    //   onSubmitted: (_) => _submitData(),
-                    // ),
                     const TransactionDatePicker(),
                     WriteOptionalNote(noteController: _noteController),
                     Row(
@@ -401,19 +346,15 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
                               final imageFile = await ImagePickerHelper
                                   .pickImageFromGallery();
                               if (imageFile == null) {
-                                // no image available so return early
                                 return;
                               }
 
-                              // refresh the provider so it does not contain the previous post's setting
                               ref.refresh(postSettingProvider);
 
-                              // go to the screen to create a new post
                               if (!mounted) {
                                 return;
                               }
 
-                              // display thumnail of the image
                               displayPhoto(imageFile);
                             },
                             child: const Text(
@@ -424,47 +365,8 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
                       ],
                     ),
                     if (_imageFile != null)
-                      // FileThumbnailView(
-                      //   thumbnailRequest: ThumbnailRequest(
-                      //     _imageFile!,
-                      //     FileType.image,
-                      //   ),
-                      // ),
                       InkWell(
                         onTap: () {
-                          // bottom sheet
-                          // showModalBottomSheet(
-                          //   elevation: 2, // does nothing?
-                          //   shape: const RoundedRectangleBorder(
-                          //     borderRadius: BorderRadius.vertical(
-                          //       top: Radius.circular(16.0),
-                          //     ),
-                          //   ),
-                          //   barrierColor: Colors.black.withOpacity(0.5),
-                          //   backgroundColor: Colors.transparent,
-                          //   context: context,
-                          //   builder: (context) {
-                          //     return Padding(
-                          //       padding: EdgeInsets.only(
-                          //           bottom: itemHeight * 0.45),
-                          //       child: InkWell(
-                          //         onTap: () => Navigator.of(context).pop(),
-                          //         child: SizedBox(
-                          //           height:
-                          //               MediaQuery.of(context).size.height *
-                          //                   0.7,
-                          //           // child: ZoomableImage(
-                          //           //   imagePath: _imageFile!.path,
-                          //           // ),
-                          //           child: Image.file(
-                          //             File(_imageFile!.path),
-                          //             fit: BoxFit.contain,
-                          //           ),
-                          //         ),
-                          //       ),
-                          //     );
-                          //   },
-                          // );
                           // full screen image
                           Navigator.of(context).push(
                             MaterialPageRoute(
@@ -535,7 +437,7 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
                             content: Text('Expense added'),
                           ),
                         );
-                        _submitData();
+                        // _submitData();
                       },
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(
@@ -573,65 +475,17 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
   void displayPhoto(File imageFile) {
     // display thumnail of the image
     debugPrint('image file path: ${imageFile.path}');
-    // final thumbnailRequest = ThumbnailRequest(
-    //   imageFile,
-    //   FileType.image,
-    // );
-
-    // FileThumbnailView(
-    //   thumbnailRequest: thumbnailRequest,
-    // );
-    // Hero(
-    // tag: 'imageHero',
-    // child:
     FileThumbnailView(
       thumbnailRequest: ThumbnailRequest(
         imageFile,
         FileType.image,
       ),
-      // ),
     );
 
-    final cropImageFile = _cropAndShrinkImage(imageFile);
-
-    // setState to display the thumbnail
     setState(() {
-      _imageFile = cropImageFile;
+      _imageFile = imageFile;
       debugPrint('show Picture');
     });
-  }
-
-  File _cropAndShrinkImage(File imageFile) {
-    // Load the image from the file
-    final rawImage = img.decodeImage(imageFile.readAsBytesSync());
-
-    // Calculate the aspect ratio of the image
-    final double aspectRatio = rawImage!.width / rawImage.height;
-
-    // Calculate the new height of the image
-    // make height higher than 500
-    final int newHeight = math.max(500, rawImage.height);
-
-    // Calculate the amount to crop from the top and bottom of the image
-    final int cropAmount = math.max(0, rawImage.height - newHeight) ~/ 2;
-
-// Crop the image
-    final croppedImage = img.copyCrop(
-      rawImage,
-      x: 0,
-      y: cropAmount,
-      width: rawImage.width,
-      height: rawImage.height - (cropAmount * 2),
-    );
-
-    // Resize the image to the desired width
-    final resizedImage = img.copyResize(croppedImage, width: 500);
-
-    // Convert the image to a file
-    final newImageFile = File('${imageFile.path}_cropped.jpg')
-      ..writeAsBytesSync(img.encodeJpg(resizedImage, quality: 100));
-
-    return newImageFile;
   }
 
   Row selectReccurence() {
@@ -689,7 +543,6 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
       action: SnackBarAction(
           label: 'Undo',
           onPressed: () {
-            // show alert dialog
             showDialog(
                 context: context,
                 builder: (context) {
