@@ -103,8 +103,8 @@ class BudgetLocation extends BeamLocation<BeamState> {
 
   @override
   List<BeamPage> buildPages(BuildContext context, BeamState state) => [
-        BeamPage(
-          key: const ValueKey('budget'),
+        const BeamPage(
+          key: ValueKey('budget'),
           title: 'Budget',
           type: BeamPageType.noTransition,
           // child: RootScreen(label: 'Budget', detailsPath: '/b/details'),
