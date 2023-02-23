@@ -138,17 +138,15 @@ class _BudgetPageState extends ConsumerState<BudgetPage> {
                     ),
                   ),
                 ),
-                onPressed:
-                    // ref.read(authStateProvider.notifier).loginWithFacebook,
-                    () =>
-                        // {
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //     builder: (_) => const CreateNewBudgetView(),
-                        //   ),
-                        // );
-                        context.beamToNamed("createNewBudget"),
+                onPressed: () =>
+                    // {
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //     builder: (_) => const CreateNewBudgetView(),
+                    //   ),
+                    // );
+                    context.beamToNamed("createNewBudget"),
                 // },
                 child: const ButtonWidget(
                   text: Strings.createNewBudget,
