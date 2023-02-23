@@ -1,6 +1,10 @@
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:pocketfi/state/tabs/budget/wallet/models/wallet.dart';
+import 'package:pocketfi/state/tabs/budget/wallet/models/wallet_request.dart';
+import 'package:pocketfi/state/tabs/budget/wallet/provider/specific_wallet_provider.dart';
 import 'package:pocketfi/state/tabs/budget/wallet/provider/user_wallets_provider.dart';
 import 'package:pocketfi/views/components/animations/empty_contents_with_text_animation_view.dart';
 import 'package:pocketfi/views/components/animations/error_animation_view.dart';
@@ -14,11 +18,11 @@ import 'package:pocketfi/views/tabs/budget/wallet/wallet_tiles.dart';
 
 class WalletPage extends ConsumerStatefulWidget {
   // final Iterable<Wallet> wallets;
+  // final Wallet wallet;
 
   const WalletPage({
     super.key,
-
-    // required this.wallets,
+    // required this.wallet,
   });
 
   @override
@@ -29,6 +33,14 @@ class _WalletPageState extends ConsumerState<WalletPage> {
   @override
   Widget build(BuildContext context) {
     final wallets = ref.watch(userWalletsProvider);
+
+    // final request = useState(
+    //   RequestForWallets(
+    //     walletId: widget.wallet.walletId,
+    //   ),
+    // );
+
+    // final specificWallet = ref.watch(specificWalletProvider(request.value));
 
     return Scaffold(
       appBar: AppBar(
@@ -60,12 +72,25 @@ class _WalletPageState extends ConsumerState<WalletPage> {
                     return WalletTiles(
                       wallet: wallet,
                       onTap: () {
+                        // specificWallet.when(data: (specificWallet) {
+                        // final walletId = specificWallet.wallet.walletId;
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (_) => const WalletDetailsView(),
+                            builder: (_) => WalletDetailsView(
+                              wallet: wallet,
+                            ),
                           ),
                         );
+                        // }, error: (Object error, StackTrace stackTrace) {
+                        //   return const ErrorAnimationView();
+                        // }, loading: () {
+                        //   const Center(
+                        //     child: CircularProgressIndicator(),
+                        //   );
+                        // });
+
+                        // );
 
                         // show snackbar code
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -171,9 +196,7 @@ class CreateNewWalletButtonWidget extends StatelessWidget {
             ),
           ),
         ),
-        onPressed: ()
-            // =>
-            {
+        onPressed: () {
           // Navigator.push(
           //   context,
           //   MaterialPageRoute(
@@ -181,7 +204,7 @@ class CreateNewWalletButtonWidget extends StatelessWidget {
           //   ),
           // );
 
-          context.beamToNamed('createNewWallet');
+          Beamer.of(context).beamToNamed('budget/wallet');
         },
         child: const ButtonWidget(
           text: Strings.createNewWallet,

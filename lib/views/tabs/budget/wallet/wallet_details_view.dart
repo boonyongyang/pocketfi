@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/state/auth/providers/user_id_provider.dart';
+import 'package:pocketfi/state/tabs/budget/wallet/models/wallet.dart';
 import 'package:pocketfi/state/tabs/budget/wallet/provider/create_new_wallet_provider.dart';
-import 'package:pocketfi/state/tabs/budget/wallet/provider/user_wallets_provider.dart';
 import 'package:pocketfi/views/constants/app_colors.dart';
 import 'package:pocketfi/views/constants/strings.dart';
 import 'package:pocketfi/views/constants/button_widget.dart';
 
 class WalletDetailsView extends StatefulHookConsumerWidget {
-  // final String walletId;
+  final Wallet wallet;
 
   const WalletDetailsView({
     super.key,
-    // required this.walletId,
+    required this.wallet,
   });
 
   @override
@@ -24,22 +24,21 @@ class WalletDetailsView extends StatefulHookConsumerWidget {
 class _WalletDetailsViewState extends ConsumerState<WalletDetailsView> {
   @override
   Widget build(BuildContext context) {
-    final walletNameController = useTextEditingController();
-    final initialBalanceController = useTextEditingController();
+    final walletNameController = useTextEditingController(
+      text: widget.wallet.walletName,
+    );
+    final initialBalanceController = useTextEditingController(
+      text: widget.wallet.walletBalance.toString(),
+    );
 
     final isCreateButtonEnabled = useState(false);
-    // final request = useState(
-    //   RequestForWallets(
-    //     userId: widget.userId,
-    //   ),
-    // );
-
-    final wallets = ref.watch(userWalletsProvider);
 
     useEffect(
       () {
         void listener() {
           isCreateButtonEnabled.value = walletNameController.text.isNotEmpty;
+          // walletNameController.text = widget.wallet.walletName;
+          // initialBalanceController.text = widget.wallet.initialBalance;
         }
 
         walletNameController.addListener(listener);
@@ -58,14 +57,27 @@ class _WalletDetailsViewState extends ConsumerState<WalletDetailsView> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(Strings.createNewWallet),
+        title: const Text('Wallet Details'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.delete_rounded),
+            onPressed: () {
+              // _createNewWalletController(
+              //   walletNameController,
+              //   initialBalanceController,
+              //   ref,
+              // );
+            },
+          ),
+        ],
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: TextField(
+            child: TextFormField(
+              // initialValue: widget.wallet.walletName,
               controller: walletNameController,
               decoration: const InputDecoration(
                 labelText: Strings.walletName,
@@ -75,7 +87,8 @@ class _WalletDetailsViewState extends ConsumerState<WalletDetailsView> {
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: TextField(
+            child: TextFormField(
+              // initialValue: widget.wallet.walletBalance.toString(),
               controller: initialBalanceController,
               keyboardType: TextInputType.number,
               decoration: const InputDecoration(
@@ -88,6 +101,7 @@ class _WalletDetailsViewState extends ConsumerState<WalletDetailsView> {
           //   child: Align(
           //     alignment: Alignment.bottomCenter,
           //     child:
+
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: ElevatedButton(
