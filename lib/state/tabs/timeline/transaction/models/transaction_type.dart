@@ -7,7 +7,7 @@ enum TransactionType {
   expense(
     symbol: Constants.expenseSymbol,
     color: Color(Constants.expenseColor),
-    // categories: Constants.expenseCategories,,
+    // categories: getExpenseCategories(),
   ),
   income(
     symbol: Constants.incomeSymbol,
@@ -22,6 +22,9 @@ enum TransactionType {
 
   final String symbol;
   final Color color;
+  // final List<Category> categories;
+  // a list of generic of categories with enum of either expense, income, or transfer
+
   // final Iterable<Category> categories;
   // final ExpenseCategory categories;
 

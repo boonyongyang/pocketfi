@@ -4,10 +4,25 @@ import 'package:pocketfi/state/category/providers/category_provider.dart';
 
 final selectedCategoryProvider = StateProvider<Category>(
   (ref) => expenseCategories.first,
+  // (ref) {
+  //   if (transaction == TransactionType.expense) {
+  //     return expenseCategories.first;
+  //   } else {
+  //     return incomeCategories.first;
+  //   }
+  // },
 );
 
 class CategoryNotifier extends StateNotifier<List<Category>> {
   CategoryNotifier() : super(expenseCategories);
+  // CategoryNotifier() : super(expenseCategories) {
+  //   if (transaction == TransactionType.expense) {
+  //     return expenseCategories.first;
+  //   } else {
+  //     return incomeCategories.first;
+  //   }
+  // },
+  // }
 
   void setCategory(Category category, bool isSelected) {
     state = state

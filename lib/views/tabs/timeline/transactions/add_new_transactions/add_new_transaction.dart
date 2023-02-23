@@ -104,33 +104,37 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
 
   @override
   Widget build(BuildContext context) {
-    final categories = ref.watch(expenseCategoriesProvider);
+    final categories = ref.watch(categoriesProvider);
     final selectedCategory = ref.watch(selectedCategoryProvider);
 
     return Scaffold(
-      extendBodyBehindAppBar: true,
+      // extendBodyBehindAppBar: true,
       appBar: AppBar(
         // elevation: 0,
-        backgroundColor: Colors.transparent,
+        // backgroundColor: Colors.transparent,
+        backgroundColor: AppSwatches.mainColor1,
         shadowColor: Colors.transparent,
         centerTitle: true,
         title: const Text(
           Constants.newTransaction,
           style: TextStyle(
-            color: AppSwatches.mainColor1,
+            color: AppSwatches.white,
             fontSize: 20,
           ),
         ),
         leading: IconButton(
-          icon: const Icon(Icons.close),
+          icon: const Icon(
+            Icons.close,
+            color: AppSwatches.white,
+          ),
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
       body: SingleChildScrollView(
         child: Container(
-          // color: Colors.transparent,
+          // color: Colors.grey,
           padding: EdgeInsets.only(
-            top: 50,
+            // top: 50,
             left: 0,
             right: 0,
             bottom: MediaQuery.of(context).viewInsets.bottom + 10,
@@ -138,7 +142,7 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
           child: Column(
             children: [
               Padding(
-                padding: const EdgeInsets.only(top: 40.0),
+                padding: const EdgeInsets.only(top: 4.0),
                 child: Transform.scale(
                     scale: 0.83, child: const TransactionSwitcher()),
               ),
@@ -155,7 +159,7 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
                   ),
                   decoration: const InputDecoration(
                     border: InputBorder.none,
-                    hintText: '0.0',
+                    hintText: Constants.zeroAmount,
                   ),
                   controller: _amountController,
                   style: const TextStyle(

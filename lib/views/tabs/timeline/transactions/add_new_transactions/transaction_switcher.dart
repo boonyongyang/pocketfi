@@ -13,7 +13,6 @@ class _TransactionSwitcherState extends State<TransactionSwitcher> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      // animationDuration: const Duration(milliseconds: 3000),
       length: 3,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -22,13 +21,12 @@ class _TransactionSwitcherState extends State<TransactionSwitcher> {
             Container(
               height: 45.0,
               decoration: BoxDecoration(
-                // apply shadow to the tab bar
                 boxShadow: [
                   BoxShadow(
                     color: Colors.grey.withOpacity(0.5),
                     spreadRadius: 1,
                     blurRadius: 5,
-                    offset: const Offset(0, 3), // changes position of shadow
+                    offset: const Offset(0, 3),
                   ),
                 ],
                 color: Colors.white,

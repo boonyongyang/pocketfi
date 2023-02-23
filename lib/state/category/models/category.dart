@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:pocketfi/state/category/providers/category_provider.dart';
+import 'package:pocketfi/views/constants/app_colors.dart';
 
 class Category {
   final String name;

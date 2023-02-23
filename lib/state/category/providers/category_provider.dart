@@ -2,15 +2,39 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/state/category/models/category.dart';
 import 'package:pocketfi/state/category/notifiers/category_state_notifier.dart';
+import 'package:pocketfi/state/tabs/timeline/transaction/models/transaction_type.dart';
 import 'package:pocketfi/views/constants/app_colors.dart';
 
-final expenseCategoriesProvider =
+List<Category> getCategories(TransactionType transaction) {
+  if (transaction == TransactionType.expense) {
+    return expenseCategories;
+  } else {
+    return incomeCategories;
+  }
+}
+
+final categoriesProvider =
     StateNotifierProvider<CategoryNotifier, List<Category>>(
   (_) => CategoryNotifier(),
 );
 
 final expenseCategories = [
   for (final category in ExpenseCategory.values)
+    Category(
+      name: category.name,
+      color: category.color,
+      icon: category.icons,
+    ),
+];
+
+// final incomeCategoriesProvider = Provider<List<Category>>((ref) {
+//   // currently hard code here first, these would be the default categories
+//   // TODO: need to allow users to custom their own categories
+//   return incomeCategories;
+// });
+
+final incomeCategories = [
+  for (final category in IncomeCategory.values)
     Category(
       name: category.name,
       color: category.color,
@@ -166,21 +190,6 @@ enum ExpenseCategory {
     required this.color,
   });
 }
-
-// final incomeCategoriesProvider = Provider<List<Category>>((ref) {
-//   // currently hard code here first, these would be the default categories
-//   // TODO: need to allow users to custom their own categories
-//   return incomeCategories;
-// });
-
-final incomeCategories = [
-  for (final category in IncomeCategory.values)
-    Category(
-      name: category.name,
-      color: category.color,
-      icon: category.icons,
-    ),
-];
 
 // create enums for incomeCategories with name, icon and color
 enum IncomeCategory {
