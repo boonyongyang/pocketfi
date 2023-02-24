@@ -2,23 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/state/category/models/category.dart';
 import 'package:pocketfi/state/category/notifiers/category_state_notifier.dart';
-import 'package:pocketfi/state/tabs/timeline/transaction/models/transaction_type.dart';
 import 'package:pocketfi/views/constants/app_colors.dart';
-
-List<Category> getCategories(TransactionType transaction) {
-  if (transaction == TransactionType.expense) {
-    return expenseCategories;
-  } else {
-    return incomeCategories;
-  }
-}
 
 final categoriesProvider =
     StateNotifierProvider<CategoryNotifier, List<Category>>(
   (_) => CategoryNotifier(),
 );
 
-final expenseCategories = [
+final expenseCategoriesProvider = Provider<List<Category>>(
+  (ref) => expenseCategories,
+);
+
+final incomeCategoriesProvider = Provider<List<Category>>(
+  (ref) => incomeCategories,
+);
+
+List<Category> expenseCategories = [
   for (final category in ExpenseCategory.values)
     Category(
       name: category.name,
@@ -27,13 +26,7 @@ final expenseCategories = [
     ),
 ];
 
-// final incomeCategoriesProvider = Provider<List<Category>>((ref) {
-//   // currently hard code here first, these would be the default categories
-//   // TODO: need to allow users to custom their own categories
-//   return incomeCategories;
-// });
-
-final incomeCategories = [
+List<Category> incomeCategories = [
   for (final category in IncomeCategory.values)
     Category(
       name: category.name,
@@ -44,7 +37,7 @@ final incomeCategories = [
 
 enum ExpenseCategory {
   foodAndDrink(
-    name: "Food and Drinks",
+    name: "asdf and Drinks",
     icons: Icon(
       Icons.restaurant,
       color: AppSwatches.white,
@@ -191,7 +184,6 @@ enum ExpenseCategory {
   });
 }
 
-// create enums for incomeCategories with name, icon and color
 enum IncomeCategory {
   salary(
     name: "Salary",

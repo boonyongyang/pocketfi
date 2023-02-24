@@ -13,13 +13,16 @@ import 'package:pocketfi/state/image_upload/models/thumbnail_request.dart';
 import 'package:pocketfi/state/tabs/timeline/posts/post_settings/providers/post_setting_provider.dart';
 import 'package:pocketfi/state/tabs/timeline/transaction/constants/constants.dart';
 import 'package:pocketfi/state/tabs/timeline/transaction/models/tag.dart';
+import 'package:pocketfi/state/tabs/timeline/transaction/models/transaction_type.dart';
+import 'package:pocketfi/state/tabs/timeline/transaction/notifiers/transaction_state_notifier.dart';
 import 'package:pocketfi/views/components/file_thumbnail_view.dart';
 import 'package:pocketfi/views/constants/app_colors.dart';
+import 'package:pocketfi/views/tabs/timeline/transactions/add_new_transactions/category_selector.dart';
 import 'package:pocketfi/views/tabs/timeline/transactions/add_new_transactions/full_screen_image_dialog.dart';
 import 'package:pocketfi/views/tabs/timeline/transactions/add_new_transactions/transaction_date_picker.dart';
-import 'package:pocketfi/views/tabs/timeline/transactions/add_new_transactions/transaction_switcher.dart';
+import 'package:pocketfi/views/tabs/timeline/transactions/add_new_transactions/select_transaction_type.dart';
 
-class AddNewTransaction extends StatefulHookConsumerWidget {
+class AddNewTransaction extends ConsumerStatefulWidget {
   const AddNewTransaction({
     super.key,
   });
@@ -105,6 +108,7 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
   @override
   Widget build(BuildContext context) {
     final categories = ref.watch(categoriesProvider);
+
     final selectedCategory = ref.watch(selectedCategoryProvider);
 
     return Scaffold(
@@ -144,7 +148,7 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
               Padding(
                 padding: const EdgeInsets.only(top: 4.0),
                 child: Transform.scale(
-                    scale: 0.83, child: const TransactionSwitcher()),
+                    scale: 0.83, child: const SelectTransactionType()),
               ),
               SizedBox(
                 width: 250,
@@ -290,16 +294,8 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
                                 },
                               );
                             },
-                            child: Row(
-                              children: [
-                                CircleAvatar(
-                                  backgroundColor: selectedCategory.color,
-                                  child: selectedCategory.icon,
-                                ),
-                                const SizedBox(width: 8.0),
-                                Text(selectedCategory.name),
-                              ],
-                            ),
+                            child: CategorySelector(
+                                selectedCategory: selectedCategory),
                           ),
                         );
                       },

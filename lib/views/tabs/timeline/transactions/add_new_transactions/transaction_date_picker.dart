@@ -39,13 +39,19 @@ class TransactionDatePickerState extends State<TransactionDatePicker> {
   }
 
   void _previousDay() {
-    HapticFeedback.vibrate();
+    // HapticFeedback.vibrate();
+    // ios haptic feedback
+    HapticFeedback.lightImpact();
+    HapticFeedback.selectionClick();
+
     // SystemSound.play(SystemSoundType.click);
     _updateSelectedDate(_selectedDate.subtract(const Duration(days: 1)));
   }
 
   void _nextDay() {
-    HapticFeedback.vibrate();
+    // HapticFeedback.vibrate();
+    HapticFeedback.heavyImpact();
+
     _updateSelectedDate(_selectedDate.add(const Duration(days: 1)));
   }
 
