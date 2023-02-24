@@ -16,7 +16,7 @@ import 'package:pocketfi/views/tabs/budget/wallet/create_new_wallet_view.dart';
 import 'package:pocketfi/views/tabs/budget/wallet/wallet_details_view.dart';
 import 'package:pocketfi/views/tabs/budget/wallet/wallet_tiles.dart';
 
-class WalletPage extends ConsumerStatefulWidget {
+class WalletPage extends ConsumerWidget {
   // final Iterable<Wallet> wallets;
   // final Wallet wallet;
 
@@ -26,12 +26,7 @@ class WalletPage extends ConsumerStatefulWidget {
   });
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _WalletPageState();
-}
-
-class _WalletPageState extends ConsumerState<WalletPage> {
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final wallets = ref.watch(userWalletsProvider);
 
     // final request = useState(
@@ -49,80 +44,87 @@ class _WalletPageState extends ConsumerState<WalletPage> {
       body:
           // SafeArea(
           //   child:
-          Flex(
-        direction: Axis.vertical,
-        children: [
-          Expanded(
-            flex: 4,
-            child: wallets.when(data: (wallets) {
-              if (wallets.isEmpty) {
-                return const EmptyContentsWithTextAnimationView(
-                    text: Strings.noWalletsYet);
-                // CreateNewWalletButtonWidget(),
-              }
-              return RefreshIndicator(
-                onRefresh: () async {
-                  ref.refresh(userWalletsProvider);
-                },
-                child: ListView.builder(
-                  padding: const EdgeInsets.all(8.0),
-                  itemCount: wallets.length,
-                  itemBuilder: (context, index) {
-                    final wallet = wallets.elementAt(index);
-                    return WalletTiles(
-                      wallet: wallet,
-                      onTap: () {
-                        // specificWallet.when(data: (specificWallet) {
-                        // final walletId = specificWallet.wallet.walletId;
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => WalletDetailsView(
-                              wallet: wallet,
-                            ),
-                          ),
-                        );
-                        // }, error: (Object error, StackTrace stackTrace) {
-                        //   return const ErrorAnimationView();
-                        // }, loading: () {
-                        //   const Center(
-                        //     child: CircularProgressIndicator(),
-                        //   );
-                        // });
-
-                        // );
-
-                        // show snackbar code
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Wallet tapped'),
-                          ),
-                        );
-                      },
-                    );
+          RefreshIndicator(
+        onRefresh: () async {
+          return await ref.refresh(userWalletsProvider);
+          // return Future.delayed(const Duration(seconds: 1));
+        },
+        child: Flex(
+          direction: Axis.vertical,
+          children: [
+            Expanded(
+              flex: 4,
+              child: wallets.when(data: (wallets) {
+                if (wallets.isEmpty) {
+                  return const EmptyContentsWithTextAnimationView(
+                      text: Strings.noWalletsYet);
+                  // CreateNewWalletButtonWidget(),
+                }
+                return RefreshIndicator(
+                  onRefresh: () async {
+                    ref.refresh(userWalletsProvider);
+                    return Future.delayed(const Duration(seconds: 1));
                   },
-                ),
-              );
-            }, error: ((error, stackTrace) {
-              return const ErrorAnimationView();
-            }), loading: () {
-              return const LoadingAnimationView();
-            }),
-          ),
-          const Expanded(
-            flex: 0,
-            child: Align(
-              alignment: Alignment.bottomCenter,
-              child: Padding(
-                padding: EdgeInsets.all(8.0),
-                child: SizedBox(
-                  width: double.infinity,
-                  child: CreateNewWalletButtonWidget(),
+                  child: ListView.builder(
+                    padding: const EdgeInsets.all(8.0),
+                    itemCount: wallets.length,
+                    itemBuilder: (context, index) {
+                      final wallet = wallets.elementAt(index);
+                      return WalletTiles(
+                        wallet: wallet,
+                        onTap: () {
+                          // specificWallet.when(data: (specificWallet) {
+                          // final walletId = specificWallet.wallet.walletId;
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => WalletDetailsView(
+                                wallet: wallet,
+                              ),
+                            ),
+                          );
+                          // }, error: (Object error, StackTrace stackTrace) {
+                          //   return const ErrorAnimationView();
+                          // }, loading: () {
+                          //   const Center(
+                          //     child: CircularProgressIndicator(),
+                          //   );
+                          // });
+
+                          // );
+
+                          // show snackbar code
+                          // ScaffoldMessenger.of(context).showSnackBar(
+                          //   const SnackBar(
+                          //     content: Text('Wallet tapped'),
+                          //   ),
+                          // );
+                        },
+                      );
+                    },
+                  ),
+                );
+              }, error: ((error, stackTrace) {
+                return const ErrorAnimationView();
+              }), loading: () {
+                return const LoadingAnimationView();
+              }),
+            ),
+            const Expanded(
+              flex: 0,
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: CreateNewWalletButtonWidget(),
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
       // )
       // SingleChildScrollView(
@@ -204,7 +206,7 @@ class CreateNewWalletButtonWidget extends StatelessWidget {
           //   ),
           // );
 
-          Beamer.of(context).beamToNamed('budget/wallet');
+          Beamer.of(context).beamToNamed('createNewWallet');
         },
         child: const ButtonWidget(
           text: Strings.createNewWallet,
