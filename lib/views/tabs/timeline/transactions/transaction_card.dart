@@ -4,17 +4,13 @@ import 'package:pocketfi/state/tabs/timeline/transaction/models/transaction_type
 
 class TransactionCard extends StatelessWidget {
   final Post post;
-  // final String? description;
-  // final String money;
   final TransactionType transactionType;
   final VoidCallback onTapped;
   const TransactionCard({
     Key? key,
     required this.post,
     required this.onTapped,
-    // required this.money,
     required this.transactionType,
-    // this.description,
   }) : super(key: key);
 
   @override
@@ -83,19 +79,22 @@ class TransactionCard extends StatelessWidget {
                               //   onPressed: null,
                               // ),
                               ActionChip(
-                                // avatar: CircleAvatar(
-                                //   backgroundColor: Colors.grey.shade800,
-                                //   child: const Text('A'),
-                                // ),
+                                visualDensity: const VisualDensity(
+                                    horizontal: -4.0, vertical: -4.0),
+                                // materialTapTargetSize:
+                                //     MaterialTapTargetSize.shrinkWrap,
                                 label: const Text('Lunch'),
                                 onPressed: () =>
                                     ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
-                                    content: Text('Lunch'),
+                                    content: Text('Lunch!'),
                                   ),
                                 ),
                               ),
+                              const SizedBox(width: 5),
                               const Chip(
+                                visualDensity: VisualDensity(
+                                    horizontal: -4.0, vertical: -4.0),
                                 label: Text('Foodpanda'),
                               ),
                             ],

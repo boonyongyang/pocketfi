@@ -64,25 +64,17 @@ class TabA extends BeamLocation<BeamState> {
         ),
         if (state.uri.pathSegments.length == 2)
           const BeamPage(
-            type: BeamPageType.slideTransition,
-            key: ValueKey('timeline/addnewexpense'),
-            title: 'Timeline Details',
-            child: AddTransactionPage(),
+            // type: BeamPageType.slideTransition,
+            key: ValueKey('timeline/overview'),
+            title: 'Overview Details',
+            child: AddNewTransaction(),
+            // child: AddNewExpensePage(),
           ),
-        // if (state.)
-        //   const BeamPage(
-        //     type: BeamPageType.slideTransition,
-        //     key: ValueKey('timeline/overview'),
-        //     title: 'Overview Details',
-        //     child: RootScreen(
-        //         label: 'Overview',
-        //         detailsPath: '/timeline/addnewexpense/selectcategory'),
-        //   ),
         if (state.uri.pathSegments.length == 3)
           const BeamPage(
-            // fullScreenDialog: true,
-            type: BeamPageType.fadeTransition,
-            key: ValueKey('timeline/addnewexpense/selectcategory'),
+            fullScreenDialog: true,
+            // type: BeamPageType.fadeTransition,
+            key: ValueKey('timeline/overview/selectcategory'),
             title: 'Select Category',
             child: DetailsScreen(label: 'Select Category'),
           ),

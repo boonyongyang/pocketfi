@@ -23,7 +23,7 @@ class TransactionsListView extends StatelessWidget {
           // maxHeight: 600.0,
           ),
       child: ListView.builder(
-        shrinkWrap: true,
+        // shrinkWrap: true,
         padding: const EdgeInsets.all(8.0),
         // gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         //   crossAxisCount: 1, // number of columns
