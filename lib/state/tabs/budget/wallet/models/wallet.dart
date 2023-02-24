@@ -9,7 +9,9 @@ class Wallet {
   final String walletName;
   final double walletBalance;
   final DateTime createdAt;
+  // maybe a list idk
   final UserId userId;
+  // final Category category;
 
   Wallet(Map<String, dynamic> json, {required this.walletId})
       : walletName = json[FirebaseFieldName.walletName],
