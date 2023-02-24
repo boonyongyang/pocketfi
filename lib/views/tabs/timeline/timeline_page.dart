@@ -8,6 +8,7 @@ import 'package:pocketfi/state/tabs/timeline/posts/post_settings/providers/post_
 import 'package:pocketfi/views/components/animations/lottie_animation_view.dart';
 import 'package:pocketfi/views/components/animations/models/lottie_animation.dart';
 import 'package:pocketfi/views/tabs/timeline/transactions/add_new_transactions/add_new_transaction.dart';
+import 'package:pocketfi/views/constants/app_colors.dart';
 import 'package:pocketfi/views/tabs/timeline/transactions/add_new_transactions/create_new_post_view.dart';
 import 'package:pocketfi/views/tabs/timeline/transactions/receipts/scan_receipt.dart';
 import 'package:pocketfi/views/tabs/timeline/transactions/transactions_tab.dart';
@@ -28,7 +29,7 @@ class _MainViewState extends ConsumerState<TimelinePage>
       length: 3,
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: const Color(0xFF0F3D66),
+          backgroundColor: AppSwatches.mainColor1,
           title: Center(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -55,15 +56,16 @@ class _MainViewState extends ConsumerState<TimelinePage>
                       return;
                     }
 
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => CreateNewPostView(
-                          fileToPost: videoFile,
-                          fileType: FileType.video,
-                        ),
-                      ),
-                    );
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //     builder: (_) => CreateNewPostView(
+                    //       fileToPost: videoFile,
+                    //       fileType: FileType.video,
+                    //     ),
+                    //   ),
+                    // );
+                    context.beamToNamed('/timeline/transactions');
                   },
                 ),
                 Center(
@@ -102,8 +104,8 @@ class _MainViewState extends ConsumerState<TimelinePage>
           ),
           // actions: [],
           bottom: const TabBar(
-            indicatorColor: Color(0xFFF8B319),
-            labelColor: Color(0xFFF8B319),
+            indicatorColor: AppSwatches.mainColor2,
+            labelColor: AppSwatches.mainColor2,
             unselectedLabelColor: Colors.grey,
             tabs: [
               Tab(icon: FaIcon(FontAwesomeIcons.moneyBills)),
@@ -146,7 +148,7 @@ class _MainViewState extends ConsumerState<TimelinePage>
             const SizedBox(height: 16),
             FloatingActionButton(
               heroTag: 'bookmarks',
-              backgroundColor: const Color(0xFFFCD46A),
+              backgroundColor: AppSwatches.subColor2,
               child: const Icon(Icons.bookmarks),
               onPressed: () =>
                   Beamer.of(context).beamToNamed('/timeline/overview'),

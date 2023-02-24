@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/state/auth/providers/is_logged_in_provider.dart';
 import 'package:pocketfi/state/providers/is_loading_provider.dart';
 import 'package:pocketfi/views/components/loading/loading_screen.dart';
+import 'package:pocketfi/views/constants/app_colors.dart';
 import 'package:pocketfi/views/login/login_view.dart';
 import 'package:pocketfi/views/tabs/bottom_nav_bar_beamer.dart';
 import 'firebase_options.dart';
@@ -38,23 +39,24 @@ class App extends StatelessWidget {
       title: 'Home Page',
       theme: ThemeData(
         brightness: Brightness.light,
-        primarySwatch: Colors.amber,
+        primarySwatch: AppSwatches.mainMaterialColor1,
         indicatorColor: Colors.white10,
-        textTheme: const TextTheme(
-            // headline1: TextStyle(color: Colors.deepPurpleAccent),
-            // headline2: TextStyle(color: Colors.deepPurpleAccent),
-            // bodyText2: TextStyle(color: Colors.deepPurpleAccent),
-            // subtitle1: TextStyle(color: Colors.pinkAccent),
-            // subtitle2: TextStyle(color: Colors.pinkAccent),
-            // bodyText1: TextStyle(color: Colors.pinkAccent),
-            // caption: TextStyle(color: Colors.pinkAccent),
-            // overline: TextStyle(color: Colors.pinkAccent),
-            // button: TextStyle(color: Colors.pinkAccent),
-            // headline3: TextStyle(color: Colors.pinkAccent),
-            // headline4: TextStyle(color: Colors.pinkAccent),
-            // headline5: TextStyle(color: Colors.pinkAccent),
-            // headline6: TextStyle(color: Colors.pinkAccent),
-            ),
+        // textTheme: const TextTheme(
+        // TODO: create constants for these please!
+        // headline1: TextStyle(color: Colors.deepPurpleAccent),
+        // headline2: TextStyle(color: Colors.deepPurpleAccent),
+        // bodyText2: TextStyle(color: Colors.deepPurpleAccent),
+        // subtitle1: TextStyle(color: Colors.pinkAccent),
+        // subtitle2: TextStyle(color: Colors.pinkAccent),
+        // bodyText1: TextStyle(color: Colors.pinkAccent),
+        // caption: TextStyle(color: Colors.pinkAccent),
+        // overline: TextStyle(color: Colors.pinkAccent),
+        // button: TextStyle(color: Colors.pinkAccent),
+        // headline3: TextStyle(color: Colors.pinkAccent),
+        // headline4: TextStyle(color: Colors.pinkAccent),
+        // headline5: TextStyle(color: Colors.pinkAccent),
+        // headline6: TextStyle(color: Colors.pinkAccent),
+        // ),
         // primarySwatch: Colors.orange,
         // indicatorColor: Colors.orange,
       ),

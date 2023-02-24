@@ -13,5 +13,7 @@ class FirebaseCollectionName {
   static const tags = 'tags';
   static const bookmarks = 'bookmarks';
 
+  static const wallets = 'wallets';
+
   const FirebaseCollectionName._(); // private constructor
 }
