@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:pocketfi/extensions/haptic_feedback_service.dart';
 import 'package:pocketfi/views/constants/app_colors.dart';
 
 class TransactionDatePicker extends StatefulWidget {
@@ -39,19 +39,12 @@ class TransactionDatePickerState extends State<TransactionDatePicker> {
   }
 
   void _previousDay() {
-    // HapticFeedback.vibrate();
-    // ios haptic feedback
-    HapticFeedback.lightImpact();
-    HapticFeedback.selectionClick();
-
-    // SystemSound.play(SystemSoundType.click);
+    HapticFeedbackService.lightImpact();
     _updateSelectedDate(_selectedDate.subtract(const Duration(days: 1)));
   }
 
   void _nextDay() {
-    // HapticFeedback.vibrate();
-    HapticFeedback.heavyImpact();
-
+    HapticFeedbackService.lightImpact();
     _updateSelectedDate(_selectedDate.add(const Duration(days: 1)));
   }
 
@@ -89,7 +82,6 @@ class TransactionDatePickerState extends State<TransactionDatePicker> {
             Icons.calendar_today_rounded,
             color: AppSwatches.mainColor1,
           ),
-          // const Text('Date: '),
           TextButton(
             onPressed: () => _selectDate(context),
             child: Text(

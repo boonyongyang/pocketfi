@@ -15,45 +15,8 @@ final selectedCategoryProvider = StateProvider<Category?>((ref) {
   }
 });
 
-// final selectedCategoryProvider = StateProvider<Category>(
-//   (ref) => expenseCategories.first,
-// (ref) {
-//   if (transaction == TransactionType.expense) {
-//     return expenseCategories.first;
-//   } else {
-//     return incomeCategories.first;
-//   }
-// },
-// );
-
-// void updateSelectedCategory(Category category) {
-//   selectedCategoryProvider.notifier = category;
-// }
-
 class CategoryNotifier extends StateNotifier<List<Category>> {
   CategoryNotifier() : super(expenseCategories);
-
-  // set selectedCategoryProvider(Category category) {
-  //   state = state
-  //       .map(
-  //         (thisCategory) => thisCategory.name == category.name
-  //             ? thisCategory.copyWith(
-  //                 isSelected: true,
-  //               )
-  //             : thisCategory.copyWith(
-  //                 isSelected: false,
-  //               ),
-  //       )
-  //       .toList();
-  // }
-
-  // void getTransactionCategories(TransactionType transactionType) {
-  //   if (transactionType == TransactionType.expense) {
-  //     state = expenseCategories;
-  //   } else {
-  //     state = incomeCategories;
-  //   }
-  // }
 
   void updateCategoriesList(List<Category> categories) {
     state = categories;

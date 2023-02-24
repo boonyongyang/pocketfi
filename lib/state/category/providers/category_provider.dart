@@ -37,7 +37,7 @@ List<Category> incomeCategories = [
 
 enum ExpenseCategory {
   foodAndDrink(
-    name: "asdf and Drinks",
+    name: "Food and Drinks",
     icons: Icon(
       Icons.restaurant,
       color: AppSwatches.white,

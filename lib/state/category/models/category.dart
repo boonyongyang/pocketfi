@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pocketfi/state/category/providers/category_provider.dart';
-import 'package:pocketfi/views/constants/app_colors.dart';
 
 class Category {
   final String name;
@@ -15,6 +13,8 @@ class Category {
     this.isSelected = false,
   });
 
+// todo : this is not used yet, should it be for CRUD Category?
+// todo : is the isSelected property needed?
   Category copyWith({
     required bool isSelected,
   }) =>

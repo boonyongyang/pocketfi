@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/state/category/models/category.dart';
 import 'package:pocketfi/state/category/providers/category_provider.dart';
-import 'package:pocketfi/state/tabs/timeline/transaction/models/transaction_type.dart';
 import 'package:pocketfi/state/tabs/timeline/transaction/notifiers/transaction_state_notifier.dart';
 import 'package:pocketfi/views/constants/app_colors.dart';
 
@@ -24,7 +23,6 @@ class SelectTransactionTypeState extends ConsumerState<SelectTransactionType>
     } else if (tabIndex == 1) {
       categoriesList = ref.watch(incomeCategoriesProvider);
     }
-// update the categoryProvider
     Future.delayed(
       Duration.zero,
       () {
@@ -33,8 +31,6 @@ class SelectTransactionTypeState extends ConsumerState<SelectTransactionType>
             .updateCategoriesList(categoriesList);
       },
     );
-    Future.delayed(Duration.zero, () {});
-    // ref.read(categoriesProvider.notifier).updateCategoriesList(categoriesList);
 
     return DefaultTabController(
       length: 3,
@@ -77,6 +73,7 @@ class SelectTransactionTypeState extends ConsumerState<SelectTransactionType>
                       ),
                     ],
                     onTap: (index) {
+                      // todo should update using transactiontype rather than index
                       ref
                           .read(transactionTypeProvider.notifier)
                           .setTransactionType(index);

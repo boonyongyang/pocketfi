@@ -8,7 +8,6 @@ import 'package:pocketfi/views/components/animations/welcome_app_animation_view.
 import 'package:pocketfi/views/tabs/account/account_page.dart';
 import 'package:pocketfi/views/tabs/account/setting_page.dart';
 import 'package:pocketfi/views/tabs/timeline/timeline_page.dart';
-import 'package:pocketfi/views/tabs/timeline/transactions/add_new_transactions/add_new_expense_page.dart';
 import 'package:pocketfi/views/tabs/timeline/transactions/add_new_transactions/add_new_transaction.dart';
 
 class BottomNavBarBeamer extends StatelessWidget {

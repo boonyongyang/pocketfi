@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -13,7 +11,6 @@ import 'package:pocketfi/views/tabs/timeline/transactions/add_new_transactions/a
 import 'package:pocketfi/views/tabs/timeline/transactions/add_new_transactions/create_new_post_view.dart';
 import 'package:pocketfi/views/tabs/timeline/transactions/receipts/scan_receipt.dart';
 import 'package:pocketfi/views/tabs/timeline/transactions/transactions_tab.dart';
-// import 'package:google_ml_kit/google_ml_kit.dart';
 
 class TimelinePage extends ConsumerStatefulWidget {
   const TimelinePage({super.key});
@@ -21,8 +18,6 @@ class TimelinePage extends ConsumerStatefulWidget {
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _MainViewState();
 }
-
-// var indexProvider = StateProvider<int>((ref) => 0);
 
 class _MainViewState extends ConsumerState<TimelinePage>
     with AutomaticKeepAliveClientMixin<TimelinePage> {
@@ -142,15 +137,7 @@ class _MainViewState extends ConsumerState<TimelinePage>
               heroTag: 'scan_receipt',
               backgroundColor: const Color(0xFFFCD46A),
               child: const Icon(Icons.camera_alt),
-              onPressed: () =>
-                  // Beamer.of(context).beamToNamed('/timeline/overview'),
-
-                  //     ScaffoldMessenger.of(context).showSnackBar(
-                  //   // SnackBar(content: Text('Value is ${current.state}')),
-                  //   SnackBar(content: Text('Value is $ref')),
-                  // ),
-
-                  Navigator.of(context, rootNavigator: true).push(
+              onPressed: () => Navigator.of(context, rootNavigator: true).push(
                 MaterialPageRoute(
                   builder: (context) => const ScanReceipt(),
                 ),
