@@ -4,6 +4,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/state/auth/providers/user_id_provider.dart';
 import 'package:pocketfi/state/tabs/budget/wallet/models/wallet.dart';
 import 'package:pocketfi/state/tabs/budget/wallet/provider/create_new_wallet_provider.dart';
+import 'package:pocketfi/state/tabs/budget/wallet/provider/delete_wallet_provider.dart';
+import 'package:pocketfi/state/tabs/budget/wallet/provider/update_wallet_provider.dart';
+import 'package:pocketfi/views/components/dialogs/alert_dialog_model.dart';
+import 'package:pocketfi/views/components/dialogs/delete_dialog.dart';
 import 'package:pocketfi/views/constants/app_colors.dart';
 import 'package:pocketfi/views/constants/strings.dart';
 import 'package:pocketfi/views/constants/button_widget.dart';
@@ -31,29 +35,29 @@ class _WalletDetailsViewState extends ConsumerState<WalletDetailsView> {
       text: widget.wallet.walletBalance.toString(),
     );
 
-    final isCreateButtonEnabled = useState(false);
+    // final isCreateButtonEnabled = useState(false);
 
-    useEffect(
-      () {
-        void listener() {
-          isCreateButtonEnabled.value = walletNameController.text.isNotEmpty;
-          // walletNameController.text = widget.wallet.walletName;
-          // initialBalanceController.text = widget.wallet.initialBalance;
-        }
+    // useEffect(
+    //   () {
+    //     void listener() {
+    //       // isCreateButtonEnabled.value = walletNameController.text.isNotEmpty;
+    //       // walletNameController.text = widget.wallet.walletName;
+    //       // initialBalanceController.text = widget.wallet.initialBalance;
+    //     }
 
-        walletNameController.addListener(listener);
-        // initialBalanceController.addListener(listener);
+    //     walletNameController.addListener(listener);
+    //     // initialBalanceController.addListener(listener);
 
-        return () {
-          walletNameController.removeListener(listener);
-          // initialBalanceController.removeListener(listener);
-        };
-      },
-      [
-        walletNameController,
-        // initialBalanceController,
-      ],
-    );
+    //     return () {
+    //       walletNameController.removeListener(listener);
+    //       // initialBalanceController.removeListener(listener);
+    //     };
+    //   },
+    //   [
+    //     walletNameController,
+    //     // initialBalanceController,
+    //   ],
+    // );
 
     return Scaffold(
       appBar: AppBar(
@@ -61,12 +65,20 @@ class _WalletDetailsViewState extends ConsumerState<WalletDetailsView> {
         actions: [
           IconButton(
             icon: const Icon(Icons.delete_rounded),
-            onPressed: () {
-              // _createNewWalletController(
-              //   walletNameController,
-              //   initialBalanceController,
-              //   ref,
-              // );
+            onPressed: () async {
+              final deletePost = await const DeleteDialog(
+                titleOfObjectToDelete: 'Wallet',
+              ).present(context);
+              if (deletePost == null) return;
+
+              if (deletePost) {
+                await ref
+                    .read(deleteWalletProvider.notifier)
+                    .deleteWallet(walletId: widget.wallet.walletId);
+                if (mounted) {
+                  Navigator.of(context).maybePop();
+                }
+              }
             },
           ),
         ],
@@ -115,15 +127,22 @@ class _WalletDetailsViewState extends ConsumerState<WalletDetailsView> {
                   ),
                 ),
               ),
-              onPressed: isCreateButtonEnabled.value
-                  ? () {
-                      _createNewWalletController(
-                        walletNameController,
-                        initialBalanceController,
-                        ref,
-                      );
-                    }
-                  : null,
+              onPressed: () {
+                _updateNewWalletController(
+                  walletNameController,
+                  initialBalanceController,
+                  ref,
+                );
+              },
+              // isCreateButtonEnabled.value
+              //     ? () {
+              //         _updateNewWalletController(
+              //           walletNameController,
+              //           initialBalanceController,
+              //           ref,
+              //         );
+              //       }
+              //     : null,
               child: const ButtonWidget(
                 text: Strings.saveChanges,
               ),
@@ -136,7 +155,7 @@ class _WalletDetailsViewState extends ConsumerState<WalletDetailsView> {
     );
   }
 
-  Future<void> _createNewWalletController(
+  Future<void> _updateNewWalletController(
     TextEditingController nameController,
     TextEditingController balanceController,
     WidgetRef ref,
@@ -148,16 +167,20 @@ class _WalletDetailsViewState extends ConsumerState<WalletDetailsView> {
     if (balanceController.text.isEmpty) {
       balanceController.text = '0.00';
     }
-    final isCreated =
-        await ref.read(createNewWalletProvider.notifier).createNewWallet(
-              userId: userId,
+    final isUpdated =
+        await ref.read(updateWalletProvider.notifier).updateWallet(
+              walletId: widget.wallet.walletId,
               walletName: nameController.text,
               walletBalance: double.parse(balanceController.text),
             );
-    if (isCreated && mounted) {
+    if (isUpdated && mounted) {
       nameController.clear();
       balanceController.clear();
-      Navigator.of(context).pop();
+      // Navigator.of(context).pop();
+      // Future.delayed(const Duration(seconds: 2), () {
+      //   Navigator.of(context).maybePop();
+      // });
+      Navigator.of(context).maybePop();
     }
   }
 }
