@@ -32,7 +32,7 @@ class _WalletDetailsViewState extends ConsumerState<WalletDetailsView> {
       text: widget.wallet.walletName,
     );
     final initialBalanceController = useTextEditingController(
-      text: widget.wallet.walletBalance.toString(),
+      text: widget.wallet.walletBalance.toStringAsFixed(2),
     );
 
     // final isCreateButtonEnabled = useState(false);
@@ -83,73 +83,197 @@ class _WalletDetailsViewState extends ConsumerState<WalletDetailsView> {
           ),
         ],
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+      body: Flex(
+        direction: Axis.vertical,
         children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextFormField(
-              // initialValue: widget.wallet.walletName,
-              controller: walletNameController,
-              decoration: const InputDecoration(
-                labelText: Strings.walletName,
-              ),
-              // autofocus: true,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextFormField(
-              // initialValue: widget.wallet.walletBalance.toString(),
-              controller: initialBalanceController,
-              keyboardType: TextInputType.number,
-              decoration: const InputDecoration(
-                labelText: Strings.walletBalance,
-              ),
-            ),
-          ),
-          // Expanded(
-          //   flex: 1,
-          //   child: Align(
-          //     alignment: Alignment.bottomCenter,
-          //     child:
-
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                fixedSize: const Size(80, 55),
-                backgroundColor: AppSwatches.mainColor1,
-                foregroundColor: AppSwatches.white,
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(25),
+          Expanded(
+            flex: 4,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Row(
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.only(left: 16.0, right: 32.0),
+                      child: SizedBox(
+                        width: 5,
+                        child: Icon(
+                          Icons.wallet,
+                          color: AppSwatches.mainColor1,
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextField(
+                          controller: walletNameController,
+                          decoration: const InputDecoration(
+                            labelText: Strings.walletName,
+                          ),
+                          autofocus: true,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.only(left: 16.0, right: 32.0),
+                      child: SizedBox(
+                        width: 5,
+                        child: Icon(
+                          Icons.money_rounded,
+                          color: AppSwatches.mainColor1,
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextField(
+                          controller: initialBalanceController,
+                          keyboardType: TextInputType.number,
+                          decoration: const InputDecoration(
+                            labelText: Strings.walletBalance,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.only(left: 16.0, right: 32.0),
+                      child: SizedBox(
+                        width: 5,
+                        child: Icon(
+                          Icons.category_rounded,
+                          color: AppSwatches.mainColor1,
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: const [
+                            Expanded(
+                              child: Text(
+                                'Visible Categories',
+                                style: TextStyle(
+                                  color: AppSwatches.mainColor1,
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ),
+                            Text(
+                              'XX',
+                              style: TextStyle(
+                                color: AppSwatches.mainColor1,
+                                fontSize: 16,
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Icon(
+                                Icons.arrow_forward_ios_rounded,
+                                color: AppSwatches.mainColor1,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.only(left: 16.0, right: 32.0),
+                      child: SizedBox(
+                        width: 5,
+                        child: Icon(
+                          Icons.people_alt_rounded,
+                          color: AppSwatches.mainColor1,
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: const [
+                            Expanded(
+                              child: Text(
+                                'Share Wallet with Other People',
+                                style: TextStyle(
+                                  color: AppSwatches.mainColor1,
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Icon(
+                                Icons.arrow_forward_ios_rounded,
+                                color: AppSwatches.mainColor1,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Expanded(
+                  flex: 1,
+                  child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            fixedSize: const Size(80, 55),
+                            backgroundColor: AppSwatches.mainColor1,
+                            foregroundColor: AppSwatches.white,
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(25),
+                              ),
+                            ),
+                          ),
+                          onPressed: () {
+                            _updateNewWalletController(
+                              walletNameController,
+                              initialBalanceController,
+                              ref,
+                            );
+                          },
+                          // isCreateButtonEnabled.value
+                          //     ? () {
+                          //         _updateNewWalletController(
+                          //           walletNameController,
+                          //           initialBalanceController,
+                          //           ref,
+                          //         );
+                          //       }
+                          //     : null,
+                          child: const ButtonWidget(
+                            text: Strings.saveChanges,
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
                 ),
-              ),
-              onPressed: () {
-                _updateNewWalletController(
-                  walletNameController,
-                  initialBalanceController,
-                  ref,
-                );
-              },
-              // isCreateButtonEnabled.value
-              //     ? () {
-              //         _updateNewWalletController(
-              //           walletNameController,
-              //           initialBalanceController,
-              //           ref,
-              //         );
-              //       }
-              //     : null,
-              child: const ButtonWidget(
-                text: Strings.saveChanges,
-              ),
+              ],
             ),
           ),
-          // ),
-          // ),
         ],
       ),
     );
