@@ -51,8 +51,20 @@ class WalletPage extends ConsumerWidget {
               flex: 4,
               child: wallets.when(data: (wallets) {
                 if (wallets.isEmpty) {
-                  return const EmptyContentsWithTextAnimationView(
-                      text: Strings.noWalletsYet);
+                  return const SingleChildScrollView(
+                    physics: AlwaysScrollableScrollPhysics(),
+                    child: EmptyContentsWithTextAnimationView(
+                        text: Strings.noWalletsYet),
+                  );
+                  // RefreshIndicator(
+                  //   child: const EmptyContentsWithTextAnimationView(
+                  //       text: Strings.noWalletsYet),
+                  //   onRefresh: () async {
+                  //     ref.refresh(userWalletsProvider);
+                  //     return Future.delayed(const Duration(seconds: 1));
+                  //   },
+                  // );
+
                   // CreateNewWalletButtonWidget(),
                 }
                 return RefreshIndicator(
@@ -78,13 +90,6 @@ class WalletPage extends ConsumerWidget {
                               ),
                             ),
                           );
-                          // }, error: (Object error, StackTrace stackTrace) {
-                          //   return const ErrorAnimationView();
-                          // }, loading: () {
-                          //   const Center(
-                          //     child: CircularProgressIndicator(),
-                          //   );
-                          // });
 
                           // );
 
