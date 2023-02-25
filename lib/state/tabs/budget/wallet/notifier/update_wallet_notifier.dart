@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/state/constants/firebase_collection_name.dart';
 import 'package:pocketfi/state/constants/firebase_field_name.dart';

@@ -13,6 +13,7 @@ import 'package:pocketfi/state/tabs/timeline/posts/post_settings/providers/post_
 import 'package:pocketfi/views/components/file_thumbnail_view.dart';
 import 'package:pocketfi/views/constants/strings.dart';
 
+// !! TO BE REMOVED
 class CreateNewPostView extends StatefulHookConsumerWidget {
   final File fileToPost;
   final FileType fileType;

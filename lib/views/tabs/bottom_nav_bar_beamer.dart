@@ -1,10 +1,5 @@
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
-import 'package:pocketfi/views/components/animations/data_not_found_animation_view.dart';
-import 'package:pocketfi/views/components/animations/empty_contents_animation_view.dart';
-import 'package:pocketfi/views/components/animations/error_animation_view.dart';
-import 'package:pocketfi/views/components/animations/loading_animation_view.dart';
-import 'package:pocketfi/views/components/animations/welcome_app_animation_view.dart';
 import 'package:pocketfi/views/constants/app_colors.dart';
 import 'package:pocketfi/views/constants/strings.dart';
 import 'package:pocketfi/views/tabs/account/account_page.dart';
@@ -12,8 +7,8 @@ import 'package:pocketfi/views/tabs/account/setting_page.dart';
 import 'package:pocketfi/views/tabs/budget/budget_page.dart';
 import 'package:pocketfi/views/tabs/budget/create_new_budget_view.dart';
 import 'package:pocketfi/views/tabs/budget/wallet/create_new_wallet_view.dart';
-// import 'package:pocketfi/views/tabs/budget/wallet/create_new_wallet_view.dart';
 import 'package:pocketfi/views/tabs/budget/wallet/wallet_page.dart';
+import 'package:pocketfi/views/tabs/temp_screens.dart';
 import 'package:pocketfi/views/tabs/timeline/timeline_page.dart';
 import 'package:pocketfi/views/tabs/timeline/transactions/add_new_transactions/add_new_transaction.dart';
 
@@ -57,7 +52,7 @@ class TabA extends BeamLocation<BeamState> {
   List<BeamPage> buildPages(BuildContext context, BeamState state) => [
         const BeamPage(
           key: ValueKey('timeline'),
-          title: 'Timeline',
+          title: Strings.timeline,
           type: BeamPageType.noTransition,
           // child: RootScreen(label: 'Timeline', detailsPath: '/timeline/details'),
           child: TimelinePage(),
@@ -97,7 +92,7 @@ class BudgetLocation extends BeamLocation<BeamState> {
   List<BeamPage> buildPages(BuildContext context, BeamState state) => [
         const BeamPage(
           key: ValueKey('budget'),
-          title: 'Budget',
+          title: Strings.budget,
           type: BeamPageType.noTransition,
           // child: RootScreen(label: 'Budget', detailsPath: '/b/details'),
           child: BudgetPage(),
@@ -158,7 +153,7 @@ class TabD extends BeamLocation<BeamState> {
   List<BeamPage> buildPages(BuildContext context, BeamState state) => [
         const BeamPage(
           key: ValueKey('account'),
-          title: 'Account',
+          title: Strings.account,
           type: BeamPageType.noTransition,
           // child: RootScreen(label: 'Account', detailsPath: '/account/details'),
           child: AccountPage(),
@@ -284,7 +279,7 @@ class _ScaffoldWithBottomNavBarState extends State<ScaffoldWithBottomNavBar> {
           NavigationDestination(
             selectedIcon: Icon(Icons.timeline),
             icon: Icon(Icons.timeline_outlined),
-            label: 'Timeline',
+            label: Strings.timeline,
           ),
           // ),
           // GestureDetector(
@@ -295,7 +290,7 @@ class _ScaffoldWithBottomNavBarState extends State<ScaffoldWithBottomNavBar> {
           NavigationDestination(
             selectedIcon: Icon(Icons.flood),
             icon: Icon(Icons.flood_outlined),
-            label: 'Budget',
+            label: Strings.budget,
           ),
           // ),
           // GestureDetector(
@@ -306,7 +301,7 @@ class _ScaffoldWithBottomNavBarState extends State<ScaffoldWithBottomNavBar> {
           NavigationDestination(
             selectedIcon: Icon(Icons.attach_money_rounded),
             icon: Icon(Icons.attach_money_outlined),
-            label: 'Finances',
+            label: Strings.finances,
           ),
           // ),
           // GestureDetector(
@@ -317,109 +312,10 @@ class _ScaffoldWithBottomNavBarState extends State<ScaffoldWithBottomNavBar> {
           NavigationDestination(
             selectedIcon: Icon(Icons.person),
             icon: Icon(Icons.person_outline),
-            label: 'Account',
+            label: Strings.account,
           ),
           // ),
         ],
-      ),
-    );
-  }
-}
-
-/// Widget for the root/initial pages in the bottom navigation bar.
-class RootScreen extends StatelessWidget {
-  /// Creates a RootScreen
-  const RootScreen({required this.label, required this.detailsPath, Key? key})
-      : super(key: key);
-
-  /// The label
-  final String label;
-
-  /// The path to the detail page
-  final String detailsPath;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Tab root - $label'),
-      ),
-      body: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Text('Screen $label',
-                  style: Theme.of(context).textTheme.titleLarge),
-              const Padding(padding: EdgeInsets.all(4)),
-              TextButton(
-                onPressed: () => Beamer.of(context).beamToNamed(detailsPath),
-                child: const Text('View details'),
-              ),
-              const WelcomeAppAnimationView(),
-              const EmptyContentsAnimationView(),
-              const LoadingAnimationView(),
-              const ErrorAnimationView(),
-              const DataNotFoundAnimationView(),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-/// The details screen for either the A or B screen.
-class DetailsScreen extends StatefulWidget {
-  // / Constructs a [DetailsScreen].
-  const DetailsScreen({
-    required this.label,
-    Key? key,
-  }) : super(key: key);
-
-  /// The label to display in the center of the screen.
-  final String label;
-
-  @override
-  State<StatefulWidget> createState() => DetailsScreenState();
-}
-
-/// The state for DetailsScreen
-class DetailsScreenState extends State<DetailsScreen> {
-  int _counter = 0;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-          // title: Text('Details Screen - ${widget.label}'),
-          leading: IconButton(
-        icon: const Icon(Icons.close),
-        onPressed: () => Beamer.of(context).beamBack(),
-      )),
-      body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Text('Details for ${widget.label} - Counter: $_counter',
-                style: Theme.of(context).textTheme.titleLarge),
-            const Padding(
-              padding: EdgeInsets.all(4),
-            ),
-            TextButton(
-              onPressed: () => setState(() => _counter++),
-              child: const Text('Increment counter'),
-            ),
-            const Padding(
-              padding: EdgeInsets.all(4),
-            ),
-            TextButton(
-              onPressed: () => setState(() => _counter--),
-              child: const Text('Decrement counter'),
-            ),
-          ],
-        ),
       ),
     );
   }

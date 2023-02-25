@@ -6,7 +6,6 @@ import 'base_text.dart';
 class LinkText extends BaseText {
   final VoidCallback onTapped;
 
-  // initialize link text
   const LinkText({
     required super.text,
     required this.onTapped,

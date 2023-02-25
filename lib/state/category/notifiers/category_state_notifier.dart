@@ -1,7 +1,7 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/state/category/models/category.dart';
 import 'package:pocketfi/state/category/providers/category_provider.dart';
-import 'package:pocketfi/state/tabs/timeline/transaction/notifiers/transaction_state_notifier.dart';
+import 'package:pocketfi/state/tabs/timeline/transaction/providers/transaction_provider.dart';
 
 final selectedCategoryProvider = StateProvider<Category?>((ref) {
   final transactionTypeIndex = ref.watch(transactionTypeProvider);

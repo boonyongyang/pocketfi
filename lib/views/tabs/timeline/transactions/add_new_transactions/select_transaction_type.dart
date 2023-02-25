@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/state/category/models/category.dart';
 import 'package:pocketfi/state/category/providers/category_provider.dart';
-import 'package:pocketfi/state/tabs/timeline/transaction/notifiers/transaction_state_notifier.dart';
+import 'package:pocketfi/state/tabs/timeline/transaction/providers/transaction_provider.dart';
 import 'package:pocketfi/views/constants/app_colors.dart';
 
 class SelectTransactionType extends ConsumerStatefulWidget {

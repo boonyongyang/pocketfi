@@ -11,8 +11,8 @@ class Strings {
   static const enterYourSearchTerm =
       'Enter your search term in order go get started. You can search in the description of all posts available in the system';
 
-  static const facebook = 'Facebook';
-  static const facebookSignupUrl = 'https://www.facebook.com/signup';
+  // static const facebook = 'Facebook';
+  // static const facebookSignupUrl = 'https://www.facebook.com/signup';
   static const google = 'Google';
   static const googleSignupUrl = 'https://accounts.google.com/signup';
   static const logIntoYourAccount =
@@ -31,12 +31,14 @@ class Strings {
 
   static const enterYourSearchTermHere = 'Enter your search term here';
 
-  // login view rich text at bottom
   static const dontHaveAnAccount = "Don't have an account?\n";
   static const signUpOn = 'Sign up on ';
-  static const orCreateAnAccountOn = ' or create an account on ';
+  // static const orCreateAnAccountOn = ' or create an account on ';
 
-  // budget
+  // * timeline
+  static const timeline = 'Timeline';
+
+  // * budget
   static const budget = 'Budget';
   static const total = 'Total';
   static const createNewBudget = 'Create New Budget';
@@ -48,6 +50,12 @@ class Strings {
   static const walletBalance = 'Wallet Balance';
   static const noWalletsYet = 'No wallets available yet';
   static const saveChanges = 'Save Changes';
+
+  // * finances
+  static const finances = 'Finances';
+
+  // * account
+  static const account = 'Account';
 
   const Strings._();
 }
