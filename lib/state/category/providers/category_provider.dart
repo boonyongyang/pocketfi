@@ -1,16 +1,41 @@
-import 'package:flutter/material.dart' show Color, Icon, Icons;
+import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:pocketfi/state/category/models/category.dart';
+import 'package:pocketfi/state/category/notifiers/category_state_notifier.dart';
 import 'package:pocketfi/views/constants/app_colors.dart';
 
-enum CategorySetting {
-  shopping(
-    name: "Shopping",
-    icons: Icon(
-      Icons.shopping_bag,
-      color: AppSwatches.white,
+final categoriesProvider =
+    StateNotifierProvider<CategoryNotifier, List<Category>>(
+  (_) => CategoryNotifier(),
+);
+
+final expenseCategoriesProvider = Provider<List<Category>>(
+  (ref) => expenseCategories,
+);
+
+final incomeCategoriesProvider = Provider<List<Category>>(
+  (ref) => incomeCategories,
+);
+
+List<Category> expenseCategories = [
+  for (final category in ExpenseCategory.values)
+    Category(
+      name: category.name,
+      color: category.color,
+      icon: category.icons,
     ),
-    color: AppSwatches.shopping,
-    // storageKey: Constants.expenseStorageKey,
-  ),
+];
+
+List<Category> incomeCategories = [
+  for (final category in IncomeCategory.values)
+    Category(
+      name: category.name,
+      color: category.color,
+      icon: category.icons,
+    ),
+];
+
+enum ExpenseCategory {
   foodAndDrink(
     name: "Food and Drinks",
     icons: Icon(
@@ -18,8 +43,14 @@ enum CategorySetting {
       color: AppSwatches.white,
     ),
     color: AppSwatches.foodAndDrink,
-
-    // storageKey: Constants.incomeStorageKey,
+  ),
+  shopping(
+    name: "Shopping",
+    icons: Icon(
+      Icons.shopping_bag,
+      color: AppSwatches.white,
+    ),
+    color: AppSwatches.shopping,
   ),
   groceries(
     name: "Groceries",
@@ -28,7 +59,6 @@ enum CategorySetting {
       color: AppSwatches.white,
     ),
     color: AppSwatches.groceries,
-    // storageKey: Constants.transferStorageKey,
   ),
   beauty(
     name: "Beauty",
@@ -37,7 +67,6 @@ enum CategorySetting {
       color: AppSwatches.white,
     ),
     color: AppSwatches.beauty,
-    // storageKey: Constants.transferStorageKey,
   ),
   entertainment(
     name: "Entertainment",
@@ -46,7 +75,6 @@ enum CategorySetting {
       color: AppSwatches.white,
     ),
     color: AppSwatches.entertainment,
-    // storageKey: Constants.transferStorageKey,
   ),
   healthcare(
     name: "Healthcare",
@@ -55,7 +83,6 @@ enum CategorySetting {
       color: AppSwatches.white,
     ),
     color: AppSwatches.healthcare,
-    // storageKey: Constants.transferStorageKey,
   ),
   home(
     name: "Home",
@@ -64,7 +91,6 @@ enum CategorySetting {
       color: AppSwatches.white,
     ),
     color: AppSwatches.home,
-    // storageKey: Constants.transferStorageKey,
   ),
   billsAndFees(
     name: "Bills and Fees",
@@ -73,7 +99,6 @@ enum CategorySetting {
       color: AppSwatches.white,
     ),
     color: AppSwatches.billsAndFees,
-    // storageKey: Constants.transferStorageKey,
   ),
   familyAndPersonal(
     name: "Family and Personal",
@@ -82,7 +107,6 @@ enum CategorySetting {
       color: AppSwatches.white,
     ),
     color: AppSwatches.familyAndPersonal,
-    // storageKey: Constants.transferStorageKey,
   ),
   travel(
     name: "Travel",
@@ -91,7 +115,6 @@ enum CategorySetting {
       color: AppSwatches.white,
     ),
     color: AppSwatches.travel,
-    // storageKey: Constants.transferStorageKey,
   ),
   other(
     name: "Other",
@@ -100,7 +123,6 @@ enum CategorySetting {
       color: AppSwatches.white,
     ),
     color: AppSwatches.other,
-    // storageKey: Constants.transferStorageKey,
   ),
   education(
     name: "Education",
@@ -109,7 +131,6 @@ enum CategorySetting {
       color: AppSwatches.white,
     ),
     color: AppSwatches.education,
-    // storageKey: Constants.transferStorageKey,
   ),
   car(
     name: "Car",
@@ -118,7 +139,6 @@ enum CategorySetting {
       color: AppSwatches.white,
     ),
     color: AppSwatches.car,
-    // storageKey: Constants.transferStorageKey,
   ),
   gift(
     name: "Gift",
@@ -127,7 +147,6 @@ enum CategorySetting {
       color: AppSwatches.white,
     ),
     color: AppSwatches.gift,
-    // storageKey: Constants.transferStorageKey,
   ),
   transport(
     name: "Transport",
@@ -136,7 +155,6 @@ enum CategorySetting {
       color: AppSwatches.white,
     ),
     color: AppSwatches.transport,
-    // storageKey: Constants.transferStorageKey,
   ),
   work(
     name: "Work",
@@ -145,7 +163,6 @@ enum CategorySetting {
       color: AppSwatches.white,
     ),
     color: AppSwatches.work,
-    // storageKey: Constants.transferStorageKey,
   ),
   sportsAndHobbies(
     name: "Pets",
@@ -154,18 +171,76 @@ enum CategorySetting {
       color: AppSwatches.white,
     ),
     color: AppSwatches.sportsAndHobbies,
-    // storageKey: Constants.transferStorageKey,
   );
 
   final String name;
   final Icon icons;
   final Color color;
-  // final String storageKey;
 
-  const CategorySetting({
+  const ExpenseCategory({
     required this.name,
     required this.icons,
     required this.color,
-    // required this.storageKey,
+  });
+}
+
+enum IncomeCategory {
+  salary(
+    name: "Salary",
+    icons: Icon(
+      Icons.work,
+      color: AppSwatches.white,
+    ),
+    color: AppSwatches.salary,
+  ),
+  selling(
+    name: "Selling",
+    icons: Icon(
+      Icons.sell_outlined,
+      color: AppSwatches.white,
+    ),
+    color: AppSwatches.selling,
+  ),
+  loan(
+    name: "Loan",
+    icons: Icon(
+      Icons.attach_money,
+      color: AppSwatches.white,
+    ),
+    color: AppSwatches.loan,
+  ),
+  business(
+    name: "Business",
+    icons: Icon(
+      Icons.attach_money,
+      color: AppSwatches.white,
+    ),
+    color: AppSwatches.business,
+  ),
+  gifts(
+    name: "Extra Income",
+    icons: Icon(
+      Icons.card_giftcard_outlined,
+      color: AppSwatches.white,
+    ),
+    color: AppSwatches.extraIncome,
+  ),
+  others(
+    name: "Other",
+    icons: Icon(
+      Icons.more_horiz,
+      color: AppSwatches.white,
+    ),
+    color: AppSwatches.other,
+  );
+
+  final String name;
+  final Icon icons;
+  final Color color;
+
+  const IncomeCategory({
+    required this.name,
+    required this.icons,
+    required this.color,
   });
 }

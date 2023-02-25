@@ -19,7 +19,6 @@ class BaseText {
     required String text,
     TextStyle? style = const TextStyle(),
   }) =>
-      // initialize base text
       BaseText(
         text: text,
         style: style,
@@ -33,7 +32,6 @@ class BaseText {
       decoration: TextDecoration.underline,
     ),
   }) =>
-      // initialize base text
       LinkText(
         text: text,
         onTapped: onTapped,

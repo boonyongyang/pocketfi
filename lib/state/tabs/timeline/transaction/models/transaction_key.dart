@@ -16,6 +16,7 @@ class TransactionKey {
   static const aspectRatio = 'aspect_ratio';
   static const thumbnailStorageId = 'thumbnail_storage_id';
   static const originalFileStorageId = 'original_file_storage_id';
+  // TODO: add tags
   // static const tags = 'tags';
   static const shared = 'shared';
 
