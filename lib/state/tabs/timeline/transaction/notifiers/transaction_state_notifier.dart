@@ -1,5 +1,4 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:pocketfi/state/tabs/timeline/transaction/models/transaction_type.dart';
 
 class TransactionTypeNotifier extends StateNotifier<int> {
   TransactionTypeNotifier() : super(0);
@@ -22,11 +21,3 @@ class TransactionTypeNotifier extends StateNotifier<int> {
   //   }
   // }
 }
-
-final transactionTypeProvider =
-    StateNotifierProvider<TransactionTypeNotifier, int>(
-        (ref) => TransactionTypeNotifier());
-
-// final selectedTransactionTypeProvider = StateProvider<int>(
-//   (ref) => ,
-// );

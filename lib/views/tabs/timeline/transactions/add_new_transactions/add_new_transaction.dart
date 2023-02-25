@@ -13,8 +13,6 @@ import 'package:pocketfi/state/image_upload/models/thumbnail_request.dart';
 import 'package:pocketfi/state/tabs/timeline/posts/post_settings/providers/post_setting_provider.dart';
 import 'package:pocketfi/state/tabs/timeline/transaction/constants/constants.dart';
 import 'package:pocketfi/state/tabs/timeline/transaction/models/tag.dart';
-import 'package:pocketfi/state/tabs/timeline/transaction/models/transaction_type.dart';
-import 'package:pocketfi/state/tabs/timeline/transaction/notifiers/transaction_state_notifier.dart';
 import 'package:pocketfi/views/components/file_thumbnail_view.dart';
 import 'package:pocketfi/views/constants/app_colors.dart';
 import 'package:pocketfi/views/tabs/timeline/transactions/add_new_transactions/category_selector.dart';

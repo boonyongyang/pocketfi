@@ -1,7 +1,7 @@
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:pocketfi/state/category/models/category_setting.dart';
+import 'package:pocketfi/state/category/providers/category_provider.dart';
 import 'package:pocketfi/views/constants/app_colors.dart';
 import 'package:pocketfi/views/constants/button_widget.dart';
 import 'package:pocketfi/views/constants/strings.dart';
@@ -105,9 +105,9 @@ class _BudgetPageState extends ConsumerState<BudgetPage> {
                   const Divider(),
                   BudgetTile(
                     budget: 12.00,
-                    categoryName: CategorySetting.foodAndDrink.name,
-                    categoryIcon: CategorySetting.foodAndDrink.icons,
-                    categoryColor: CategorySetting.foodAndDrink.color,
+                    categoryName: ExpenseCategory.foodAndDrink.name,
+                    categoryIcon: ExpenseCategory.foodAndDrink.icons,
+                    categoryColor: ExpenseCategory.foodAndDrink.color,
                   ),
                   // BudgetTile(
                   //   budget: 12.00,

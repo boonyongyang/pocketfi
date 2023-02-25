@@ -82,6 +82,7 @@ class CategorySelectorState extends State<CategorySelector>
   }
 }
 
+// TODO: this is without animation
 // class CategorySelector extends StatelessWidget {
 //   const CategorySelector({
 //     super.key,

@@ -11,6 +11,7 @@ class AppSwatches {
   static const red = Color(0xFFF1592A); // Red
   static const backgroundColor = Color(0xFFF9F9F9); // greyish white
   static const white = Color(0xFFFFFFFF); // white
+  static const transparent = Color(0x00FFFFFF); // white
 
 // type to Colors instead of Color
   static final mainMaterialColor1 = generateMaterialColor(mainColor1);

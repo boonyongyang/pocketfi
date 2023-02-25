@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:pocketfi/views/constants/app_colors.dart';
 
 class FullScreenImageDialog extends StatelessWidget {
   final File imageFile;
@@ -10,11 +11,13 @@ class FullScreenImageDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      surfaceTintColor: Colors.amber,
+      // surfaceTintColor: Colors.amber,
       insetPadding: const EdgeInsets.all(35),
-      // shadowColor: Colors.green,
-      backgroundColor: Colors.transparent,
+      shadowColor: AppSwatches.mainColor1,
+      backgroundColor: AppSwatches.transparent,
       child: InkWell(
+        splashColor: AppSwatches.transparent,
+        highlightColor: AppSwatches.transparent,
         onTap: () => Navigator.pop(context),
         child: Column(
           children: [
