@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
-import 'package:pocketfi/src/constants/button_widget.dart';
+import 'package:pocketfi/src/common_widgets/buttons/full_width_button_with_text.dart';
 import 'package:pocketfi/src/constants/strings.dart';
 import 'package:pocketfi/src/features/authentication/application/user_id_provider.dart';
 import 'package:pocketfi/src/features/budget/wallet/application/create_new_wallet_provider.dart';
@@ -254,7 +254,7 @@ class _CreateNewWalletViewState extends ConsumerState<CreateNewWalletView> {
                                   // }
                                 }
                               : null,
-                          child: const ButtonWidget(
+                          child: const FullWidthButtonWithText(
                             text: Strings.createNewWallet,
                           ),
                         ),

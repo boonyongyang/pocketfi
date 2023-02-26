@@ -4,12 +4,13 @@ import 'package:auto_size_text_field/auto_size_text_field.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter_layout_grid/flutter_layout_grid.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:pocketfi/src/common_widgets/buttons/full_width_button_with_text.dart';
 import 'package:pocketfi/src/common_widgets/file_thumbnail_view.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
+import 'package:pocketfi/src/constants/strings.dart';
 import 'package:pocketfi/src/features/category/application/category_providers.dart';
 import 'package:pocketfi/src/features/category/domain/category.dart';
 import 'package:pocketfi/src/features/timeline/posts/post_settings/application/post_setting_provider.dart';
-import 'package:pocketfi/src/features/timeline/transactions/constants.dart';
 import 'package:pocketfi/src/features/timeline/transactions/domain/tag.dart';
 import 'package:pocketfi/src/features/timeline/transactions/image_upload/domain/file_type.dart';
 import 'package:pocketfi/src/features/timeline/transactions/image_upload/domain/thumbnail_request.dart';
@@ -117,7 +118,7 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
         shadowColor: Colors.transparent,
         centerTitle: true,
         title: const Text(
-          Constants.newTransaction,
+          Strings.newTransaction,
           style: TextStyle(
             color: AppColors.white,
             fontSize: 20,
@@ -160,7 +161,7 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
                   ),
                   decoration: const InputDecoration(
                     border: InputBorder.none,
-                    hintText: Constants.zeroAmount,
+                    hintText: Strings.zeroAmount,
                   ),
                   controller: _amountController,
                   style: const TextStyle(
@@ -202,7 +203,7 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
                                     child: Column(
                                       children: [
                                         const SizedBox(height: 8.0),
-                                        const Text(Constants.selectCategory),
+                                        const Text(Strings.selectCategory),
                                         const SizedBox(height: 8.0),
 
                                         // // use flutter layout grid package to create grid
@@ -355,7 +356,7 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
                               displayPhoto(imageFile);
                             },
                             child: const Text(
-                              Constants.addAPhoto,
+                              Strings.addAPhoto,
                             ),
                           ),
                         ),
@@ -446,18 +447,7 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
                           borderRadius: BorderRadius.circular(30.0),
                         ),
                       ),
-                      child: const SizedBox(
-                        width: double.infinity,
-                        child: Text(
-                          'Save',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
+                      child: const FullWidthButtonWithText(text: 'Save'),
                     ),
                   ],
                 ),

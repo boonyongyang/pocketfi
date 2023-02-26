@@ -10,7 +10,7 @@ import 'package:pocketfi/src/features/shared/typedefs/is_loading.dart';
 import 'package:pocketfi/src/features/timeline/posts/domain/post_payload.dart';
 import 'package:pocketfi/src/features/timeline/posts/domain/typedefs/user_id.dart';
 import 'package:pocketfi/src/features/timeline/posts/post_settings/domain/post_setting.dart';
-import 'package:pocketfi/src/features/timeline/transactions/image_upload/constants.dart';
+import 'package:pocketfi/src/features/timeline/transactions/image_upload/image_constants.dart';
 import 'package:pocketfi/src/features/timeline/transactions/image_upload/domain/file_type.dart';
 import 'package:pocketfi/src/features/timeline/transactions/image_upload/exceptions/could_not_build_thumbnail_exception.dart';
 import 'package:pocketfi/src/features/timeline/transactions/image_upload/extensions/get_collection_name_from_file_type.dart';
@@ -49,7 +49,7 @@ class ImageUploadNotifier extends StateNotifier<IsLoading> {
         final thumbnail = img.copyResize(
           fileAsImage,
           // width: Constants.imageThumbnailWidth,
-          height: Constants.imageThumbnailHeight,
+          height: ImageConstants.imageThumbnailHeight,
         );
         // encode the thumbnail
         final thumbnailData = img.encodeJpg(thumbnail);
@@ -60,8 +60,8 @@ class ImageUploadNotifier extends StateNotifier<IsLoading> {
         final thumb = await VideoThumbnail.thumbnailData(
           video: file.path,
           imageFormat: ImageFormat.JPEG,
-          maxHeight: Constants.videoThumbnailMaxHeight,
-          quality: Constants.videoThumbnailQuality,
+          maxHeight: ImageConstants.videoThumbnailMaxHeight,
+          quality: ImageConstants.videoThumbnailQuality,
         );
         if (thumb == null) {
           isLoading = false;

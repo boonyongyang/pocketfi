@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-class ButtonWidget extends StatelessWidget {
+class FullWidthButtonWithText extends StatelessWidget {
   final String text;
-  const ButtonWidget({
+  const FullWidthButtonWithText({
     super.key,
     required this.text,
   });

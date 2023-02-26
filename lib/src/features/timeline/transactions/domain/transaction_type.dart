@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart' show Color;
-import 'package:pocketfi/src/features/timeline/transactions/constants.dart';
+import 'package:pocketfi/src/constants/app_colors.dart';
+import 'package:pocketfi/src/constants/strings.dart';
+// import 'package:pocketfi/src/features/timeline/transactions/strings.dart';
 
 enum TransactionType {
   expense(
-    symbol: Constants.expenseSymbol,
-    color: Color(Constants.expenseColor),
+    symbol: Strings.expenseSymbol,
+    color: Color(AppColors.expenseColor),
   ),
   income(
-    symbol: Constants.incomeSymbol,
-    color: Color(Constants.incomeColor),
+    symbol: Strings.incomeSymbol,
+    color: Color(AppColors.incomeColor),
   ),
   transfer(
-    symbol: Constants.transferSymbol,
-    color: Color(Constants.transferColor),
+    symbol: Strings.transferSymbol,
+    color: Color(AppColors.transferColor),
   );
 
   final String symbol;

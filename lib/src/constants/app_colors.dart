@@ -22,7 +22,11 @@ class AppColors {
   static final loginButtonColor = '#0F3D66'.htmlColorToColor();
   static const loginButtonTextColor = Colors.white;
   static final googleColor = '#ffffff'.htmlColorToColor();
-  // static final facebookColor = '#ffffff'.htmlColorToColor();
+
+// transactions
+  static const expenseColor = 0xFFF44336;
+  static const incomeColor = 0xFF4CAF50;
+  static const transferColor = 0xFF9E9E9E;
 
   // for expenses categories
   static const shopping = Color(0xFFD471E8);

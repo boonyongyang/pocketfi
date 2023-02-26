@@ -2,7 +2,7 @@ import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
-import 'package:pocketfi/src/constants/button_widget.dart';
+import 'package:pocketfi/src/common_widgets/buttons/full_width_button_with_text.dart';
 import 'package:pocketfi/src/constants/strings.dart';
 import 'package:pocketfi/src/features/budget/presentation/budget_tile.dart';
 import 'package:pocketfi/src/features/category/constants.dart';
@@ -165,7 +165,7 @@ class _BudgetPageState extends ConsumerState<BudgetPage> {
                           // );
                           context.beamToNamed("createNewBudget"),
                       // },
-                      child: const ButtonWidget(
+                      child: const FullWidthButtonWithText(
                         text: Strings.createNewBudget,
                       ),
                     ),

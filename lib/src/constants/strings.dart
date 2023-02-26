@@ -47,8 +47,28 @@ class Strings {
       'Are you sure that you want to log out of the app?';
   static const cancel = 'Cancel';
 
+  // * authentication
+  static const accountExistsWithDifferentCredential =
+      'account-exists-with-different-credential';
+  static const googleCom = 'google.com';
+  static const emailScope = 'email';
+
   // * timeline
   static const timeline = 'Timeline';
+
+  // transaction
+  static const expenseSymbol = '-';
+  static const incomeSymbol = '+';
+  static const transferSymbol = '⇄';
+  static const selectCategory = 'Select Category';
+  static const addAPhoto = 'Add a photo';
+  static const writeANote = 'Write a note';
+  static const newTransaction = 'New Transaction';
+  static const editTransaction = 'Edit Transaction';
+  static const zeroAmount = '0';
+
+  // bills
+  static const bills = 'Bills';
 
   // * budget
   static const budget = 'Budget';
@@ -68,6 +88,9 @@ class Strings {
 
   // * account
   static const account = 'Account';
+
+  // * categories
+  static const categories = 'Categories';
 
   const Strings._();
 }

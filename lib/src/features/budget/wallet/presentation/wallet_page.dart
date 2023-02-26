@@ -5,7 +5,7 @@ import 'package:pocketfi/src/common_widgets/animations/empty_contents_with_text_
 import 'package:pocketfi/src/common_widgets/animations/error_animation_view.dart';
 import 'package:pocketfi/src/common_widgets/animations/loading_animation_view.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
-import 'package:pocketfi/src/constants/button_widget.dart';
+import 'package:pocketfi/src/common_widgets/buttons/full_width_button_with_text.dart';
 import 'package:pocketfi/src/constants/strings.dart';
 import 'package:pocketfi/src/features/budget/wallet/application/user_wallets_provider.dart';
 import 'package:pocketfi/src/features/budget/wallet/presentation/wallet_details_view.dart';
@@ -208,7 +208,7 @@ class CreateNewWalletButtonWidget extends StatelessWidget {
 
           Beamer.of(context).beamToNamed('createNewWallet');
         },
-        child: const ButtonWidget(
+        child: const FullWidthButtonWithText(
           text: Strings.createNewWallet,
         ),
       ),
