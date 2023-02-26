@@ -1,16 +1,16 @@
-import 'package:pocketfi/src/features/timeline/posts/post_settings/constants.dart';
+import 'package:pocketfi/src/features/timeline/posts/post_settings/post_constants.dart';
 
 enum PostSetting {
   allowLikes(
-    title: Constants.allowLikesTitle,
-    description: Constants.allowLikesDescription,
-    storageKey: Constants.allowLikesStorageKey,
+    title: PostConstants.allowLikesTitle,
+    description: PostConstants.allowLikesDescription,
+    storageKey: PostConstants.allowLikesStorageKey,
   ),
 
   allowComments(
-    title: Constants.allowCommentsTitle,
-    description: Constants.allowCommentsDescription,
-    storageKey: Constants.allowCommentsStorageKey,
+    title: PostConstants.allowCommentsTitle,
+    description: PostConstants.allowCommentsDescription,
+    storageKey: PostConstants.allowCommentsStorageKey,
   );
 
   final String title;

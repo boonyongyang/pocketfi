@@ -1,5 +1,5 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:pocketfi/src/features/category/constants.dart';
+import 'package:pocketfi/src/features/category/domain/default_categories.dart';
 import 'package:pocketfi/src/features/category/data/category_state_notifier.dart';
 import 'package:pocketfi/src/features/category/domain/category.dart';
 import 'package:pocketfi/src/features/timeline/transactions/application/transaction_provider.dart';

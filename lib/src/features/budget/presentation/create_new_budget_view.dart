@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
+import 'package:pocketfi/src/constants/app_icons.dart';
 import 'package:pocketfi/src/constants/strings.dart';
 
 class CreateNewBudgetView extends StatefulHookConsumerWidget {
@@ -92,7 +93,7 @@ class _CreateNewBudgetViewState extends ConsumerState<CreateNewBudgetView> {
                       child: SizedBox(
                         width: 5,
                         child: Icon(
-                          Icons.wallet,
+                          AppIcons.wallet,
                           color: AppColors.mainColor1,
                         ),
                       ),
@@ -172,7 +173,7 @@ class _CreateNewBudgetViewState extends ConsumerState<CreateNewBudgetView> {
                       child: SizedBox(
                         width: 5,
                         child: Icon(
-                          Icons.wallet,
+                          AppIcons.wallet,
                           color: AppColors.mainColor1,
                         ),
                       ),

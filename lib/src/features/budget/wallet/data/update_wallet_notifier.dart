@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/constants/firebase_collection_name.dart';
 import 'package:pocketfi/src/constants/firebase_field_name.dart';
-import 'package:pocketfi/src/features/shared/typedefs/is_loading.dart';
+import 'package:pocketfi/src/constants/typedefs.dart';
 
 class UpdateWalletStateNotifier extends StateNotifier<IsLoading> {
   UpdateWalletStateNotifier() : super(false);
