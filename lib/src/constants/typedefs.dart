@@ -1,4 +1,5 @@
 typedef IsLoading = bool;
+typedef UserId = String;
 
 /// OR 
 // typedef LoadingState = bool;

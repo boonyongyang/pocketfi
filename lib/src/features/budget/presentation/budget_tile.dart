@@ -3,16 +3,18 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
 
 class BudgetTile extends ConsumerWidget {
-  final double budget;
-  final String categoryName;
-  final Icon categoryIcon;
-  final Color categoryColor;
+  final double totalBudgetAmount;
+  final double remainingAmount;
+  final String budgetName;
+  // final Icon categoryIcon;
+  // final Color categoryColor;
   const BudgetTile({
     super.key,
-    required this.budget,
-    required this.categoryName,
-    required this.categoryIcon,
-    required this.categoryColor,
+    required this.totalBudgetAmount,
+    required this.remainingAmount,
+    required this.budgetName,
+    // required this.categoryIcon,
+    // required this.categoryColor,
   });
 
   @override
@@ -44,17 +46,17 @@ class BudgetTile extends ConsumerWidget {
           child: Row(
             // mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Column(
-                children: [
-                  CircleAvatar(
-                    backgroundColor: categoryColor,
-                    child: categoryIcon,
-                  ),
-                ],
-              ),
-              const SizedBox(
-                width: 20,
-              ),
+              // Column(
+              //   children: [
+              //     CircleAvatar(
+              //       backgroundColor: categoryColor,
+              //       child: categoryIcon,
+              //     ),
+              //   ],
+              // ),
+              // const SizedBox(
+              //   width: 20,
+              // ),
               Expanded(
                 child: Column(
                   children: [
@@ -63,7 +65,7 @@ class BudgetTile extends ConsumerWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Text(
-                          categoryName,
+                          budgetName,
                           style: const TextStyle(
                             color: AppColors.mainColor1,
                             fontSize: 16,
@@ -72,7 +74,7 @@ class BudgetTile extends ConsumerWidget {
                         ),
                         const Spacer(),
                         Text(
-                          'RM $budget',
+                          'RM ${totalBudgetAmount.toStringAsFixed(2)}',
                           style: const TextStyle(
                             color: AppColors.mainColor1,
                             fontSize: 14,
@@ -86,10 +88,10 @@ class BudgetTile extends ConsumerWidget {
                     Row(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.end,
-                      children: const [
+                      children: [
                         Text(
-                          "RM XX.XX left",
-                          style: TextStyle(
+                          "RM ${remainingAmount.toStringAsFixed(2)} left",
+                          style: const TextStyle(
                             color: AppColors.mainColor2,
                             fontSize: 16,
                             fontWeight: FontWeight.bold,

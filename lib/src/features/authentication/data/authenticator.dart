@@ -3,8 +3,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:pocketfi/src/constants/strings.dart';
+import 'package:pocketfi/src/constants/typedefs.dart';
 import 'package:pocketfi/src/features/authentication/domain/auth_result.dart';
-import 'package:pocketfi/src/features/timeline/posts/domain/typedefs/user_id.dart';
 
 class Authenticator {
   const Authenticator();

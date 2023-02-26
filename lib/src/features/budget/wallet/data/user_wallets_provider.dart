@@ -12,8 +12,11 @@ final userWalletsProvider = StreamProvider.autoDispose<Iterable<Wallet>>((ref) {
   final controller = StreamController<Iterable<Wallet>>();
 
   final sub = FirebaseFirestore.instance
+      .collection(FirebaseCollectionName.users)
+      .doc(userId)
       .collection(FirebaseCollectionName.wallets)
       .where(FirebaseFieldName.userId, isEqualTo: userId)
+
       // .orderBy(FirebaseFieldName.createdAt,
       //     descending: true) //TODO: need to test
       .snapshots()
