@@ -1,11 +1,36 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart' show immutable;
+import 'package:flutter/material.dart' show Color;
+import 'package:pocketfi/src/constants/app_colors.dart';
+import 'package:pocketfi/src/constants/strings.dart';
 import 'package:pocketfi/src/features/timeline/transactions/domain/transaction_key.dart';
-import 'package:pocketfi/src/features/timeline/transactions/domain/transaction_type.dart';
+
+enum TransactionType {
+  expense(
+    symbol: Strings.expenseSymbol,
+    color: Color(AppColors.expenseColor),
+  ),
+  income(
+    symbol: Strings.incomeSymbol,
+    color: Color(AppColors.incomeColor),
+  ),
+  transfer(
+    symbol: Strings.transferSymbol,
+    color: Color(AppColors.transferColor),
+  );
+
+  final String symbol;
+  final Color color;
+
+  const TransactionType({
+    required this.symbol,
+    required this.color,
+  });
+}
 
 @immutable
 class Transaction {
-  final String transactionId;
+  // final String transactionId;
   final String userId;
   final double amount;
   // TODO: make to category
@@ -24,7 +49,7 @@ class Transaction {
   // final bool shared = false;
 
   Transaction({
-    required this.transactionId,
+    // required this.transactionId,
     required this.amount,
     required this.category,
     required Map<String, dynamic> json,

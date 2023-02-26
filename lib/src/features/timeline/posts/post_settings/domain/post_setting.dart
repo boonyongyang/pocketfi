@@ -1,4 +1,4 @@
-import 'package:pocketfi/src/features/timeline/posts/post_settings/post_constants.dart';
+import 'package:flutter/foundation.dart' show immutable;
 
 enum PostSetting {
   allowLikes(
@@ -22,4 +22,17 @@ enum PostSetting {
     required this.description,
     required this.storageKey,
   });
+}
+
+@immutable
+class PostConstants {
+  static const allowLikesTitle = 'Allow likes';
+  static const allowLikesDescription =
+      'By allowing likes, users will be able to press the like button on your post.';
+  static const allowLikesStorageKey = 'allow_likes';
+  static const allowCommentsTitle = 'Allow comments';
+  static const allowCommentsDescription =
+      'By allowing comments, users will be able to comment on your post.';
+  static const allowCommentsStorageKey = 'allow_comments';
+  const PostConstants._();
 }

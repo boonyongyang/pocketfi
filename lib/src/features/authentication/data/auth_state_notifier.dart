@@ -1,9 +1,9 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:pocketfi/src/constants/typedefs.dart';
 import 'package:pocketfi/src/features/authentication/data/authenticator.dart';
 import 'package:pocketfi/src/features/authentication/data/user_info_storage.dart';
 import 'package:pocketfi/src/features/authentication/domain/auth_result.dart';
 import 'package:pocketfi/src/features/authentication/domain/auth_state.dart';
-import 'package:pocketfi/src/features/timeline/posts/domain/typedefs/user_id.dart';
 
 class AuthStateNotifier extends StateNotifier<AuthState> {
   final _authenticator = const Authenticator();
