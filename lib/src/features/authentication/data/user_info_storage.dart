@@ -4,6 +4,7 @@ import 'package:pocketfi/src/constants/firebase_collection_name.dart';
 import 'package:pocketfi/src/constants/firebase_field_name.dart';
 import 'package:pocketfi/src/constants/typedefs.dart';
 import 'package:pocketfi/src/features/authentication/domain/user_info_payload.dart';
+import 'package:pocketfi/src/features/budget/wallet/domain/wallet_payload.dart';
 
 @immutable
 class UserInfoStorage {
@@ -43,13 +44,29 @@ class UserInfoStorage {
         email: email,
       );
 
+      final walletPayload = WalletPayload(
+        walletName: 'Personal',
+        walletBalance: 0.00,
+        userId: userId,
+      );
+      // TODO: Add category payload
+
       await FirebaseFirestore.instance
           .collection(
             FirebaseCollectionName.users,
           )
-          .add(
-            payload,
-          );
+          .doc(userId)
+          .set(payload);
+
+      await FirebaseFirestore.instance
+          .collection(
+            FirebaseCollectionName.users,
+          )
+          .doc(userId)
+          .collection(FirebaseCollectionName.wallets)
+          .add(walletPayload);
+
+      // TODO: Add default category to firebase
       return true;
     } catch (e) {
       return false;
