@@ -56,13 +56,6 @@ class UserInfoStorage {
             FirebaseCollectionName.users,
           )
           .doc(userId)
-          .set(payload);
-
-      await FirebaseFirestore.instance
-          .collection(
-            FirebaseCollectionName.users,
-          )
-          .doc(userId)
           .collection(FirebaseCollectionName.wallets)
           .add(walletPayload);
 

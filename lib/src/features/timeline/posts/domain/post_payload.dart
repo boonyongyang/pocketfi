@@ -1,6 +1,7 @@
 import 'dart:collection' show MapView;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart' show immutable;
+import 'package:pocketfi/src/constants/typedefs.dart';
 import 'package:pocketfi/src/features/timeline/posts/domain/post_key.dart';
 import 'package:pocketfi/src/constants/typedefs.dart';
 import 'package:pocketfi/src/features/timeline/posts/post_settings/domain/post_setting.dart';
