@@ -57,10 +57,10 @@ class SelectTransactionTypeState extends ConsumerState<SelectTransactionType>
                   return TabBar(
                     indicator: const BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(25.0)),
-                      color: AppSwatches.mainColor1,
+                      color: AppColors.mainColor1,
                     ),
-                    labelColor: AppSwatches.white,
-                    unselectedLabelColor: AppSwatches.mainColor1,
+                    labelColor: AppColors.white,
+                    unselectedLabelColor: AppColors.mainColor1,
                     tabs: const [
                       Tab(
                         text: 'Expense',

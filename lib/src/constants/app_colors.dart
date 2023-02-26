@@ -3,7 +3,7 @@ import 'package:pocketfi/src/constants/material_color.dart';
 import 'package:pocketfi/src/utils/extensions/string/as_html_color_to_color.dart';
 
 @immutable
-class AppSwatches {
+class AppColors {
   static const mainColor1 = Color(0xFF0F3D66); // Dark blue
   static const mainColor2 = Color(0xFFF8B319); // Dark Yellow
   static const subColor1 = Color(0xFF51779E); // Light Blue
@@ -50,5 +50,5 @@ class AppSwatches {
   static const loan = Color(0xFFD16B78);
   static const business = Color(0xFFF2A63A);
 
-  const AppSwatches._();
+  const AppColors._();
 }

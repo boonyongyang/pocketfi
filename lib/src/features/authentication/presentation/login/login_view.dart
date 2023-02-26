@@ -37,7 +37,7 @@ class LoginView extends ConsumerWidget {
                 child: Text(
                   Strings.welcomeToAppName,
                   style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                        color: AppSwatches.mainColor1,
+                        color: AppColors.mainColor1,
                       ),
                 ),
               ),
@@ -55,8 +55,8 @@ class LoginView extends ConsumerWidget {
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   fixedSize: const Size(80, 55),
-                  backgroundColor: AppSwatches.loginButtonColor,
-                  foregroundColor: AppSwatches.loginButtonTextColor,
+                  backgroundColor: AppColors.loginButtonColor,
+                  foregroundColor: AppColors.loginButtonTextColor,
                   shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(
                       Radius.circular(25),

@@ -65,7 +65,7 @@ class _BudgetPageState extends ConsumerState<BudgetPage> {
                             Text(
                               'Total',
                               style: TextStyle(
-                                color: AppSwatches.mainColor1,
+                                color: AppColors.mainColor1,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 20,
                               ),
@@ -75,7 +75,7 @@ class _BudgetPageState extends ConsumerState<BudgetPage> {
                             Text(
                               'RM XX.XX',
                               style: TextStyle(
-                                color: AppSwatches.mainColor1,
+                                color: AppColors.mainColor1,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 20,
                               ),
@@ -92,7 +92,7 @@ class _BudgetPageState extends ConsumerState<BudgetPage> {
                             Text(
                               'RM XX.XX left',
                               style: TextStyle(
-                                color: AppSwatches.mainColor2,
+                                color: AppColors.mainColor2,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 20,
                               ),
@@ -147,8 +147,8 @@ class _BudgetPageState extends ConsumerState<BudgetPage> {
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         fixedSize: const Size(80, 55),
-                        backgroundColor: AppSwatches.mainColor1,
-                        foregroundColor: AppSwatches.white,
+                        backgroundColor: AppColors.mainColor1,
+                        foregroundColor: AppColors.white,
                         shape: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(
                             Radius.circular(25),

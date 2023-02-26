@@ -75,7 +75,7 @@ class _CreateNewWalletViewState extends ConsumerState<CreateNewWalletView> {
                         width: 5,
                         child: Icon(
                           Icons.wallet,
-                          color: AppSwatches.mainColor1,
+                          color: AppColors.mainColor1,
                         ),
                       ),
                     ),
@@ -101,7 +101,7 @@ class _CreateNewWalletViewState extends ConsumerState<CreateNewWalletView> {
                         width: 5,
                         child: Icon(
                           Icons.money_rounded,
-                          color: AppSwatches.mainColor1,
+                          color: AppColors.mainColor1,
                         ),
                       ),
                     ),
@@ -127,7 +127,7 @@ class _CreateNewWalletViewState extends ConsumerState<CreateNewWalletView> {
                         width: 5,
                         child: Icon(
                           Icons.category_rounded,
-                          color: AppSwatches.mainColor1,
+                          color: AppColors.mainColor1,
                         ),
                       ),
                     ),
@@ -140,7 +140,7 @@ class _CreateNewWalletViewState extends ConsumerState<CreateNewWalletView> {
                               child: Text(
                                 'Visible Categories',
                                 style: TextStyle(
-                                  color: AppSwatches.mainColor1,
+                                  color: AppColors.mainColor1,
                                   fontSize: 16,
                                 ),
                               ),
@@ -148,7 +148,7 @@ class _CreateNewWalletViewState extends ConsumerState<CreateNewWalletView> {
                             Text(
                               'XX',
                               style: TextStyle(
-                                color: AppSwatches.mainColor1,
+                                color: AppColors.mainColor1,
                                 fontSize: 16,
                               ),
                             ),
@@ -156,7 +156,7 @@ class _CreateNewWalletViewState extends ConsumerState<CreateNewWalletView> {
                               padding: EdgeInsets.all(8.0),
                               child: Icon(
                                 Icons.arrow_forward_ios_rounded,
-                                color: AppSwatches.mainColor1,
+                                color: AppColors.mainColor1,
                               ),
                             ),
                           ],
@@ -173,7 +173,7 @@ class _CreateNewWalletViewState extends ConsumerState<CreateNewWalletView> {
                         width: 5,
                         child: Icon(
                           Icons.people_alt_rounded,
-                          color: AppSwatches.mainColor1,
+                          color: AppColors.mainColor1,
                         ),
                       ),
                     ),
@@ -186,7 +186,7 @@ class _CreateNewWalletViewState extends ConsumerState<CreateNewWalletView> {
                               child: Text(
                                 'Share Wallet with Other People',
                                 style: TextStyle(
-                                  color: AppSwatches.mainColor1,
+                                  color: AppColors.mainColor1,
                                   fontSize: 16,
                                 ),
                               ),
@@ -195,7 +195,7 @@ class _CreateNewWalletViewState extends ConsumerState<CreateNewWalletView> {
                               padding: EdgeInsets.all(8.0),
                               child: Icon(
                                 Icons.arrow_forward_ios_rounded,
-                                color: AppSwatches.mainColor1,
+                                color: AppColors.mainColor1,
                               ),
                             ),
                           ],
@@ -215,8 +215,8 @@ class _CreateNewWalletViewState extends ConsumerState<CreateNewWalletView> {
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             fixedSize: const Size(80, 55),
-                            backgroundColor: AppSwatches.mainColor1,
-                            foregroundColor: AppSwatches.white,
+                            backgroundColor: AppColors.mainColor1,
+                            foregroundColor: AppColors.white,
                             shape: const RoundedRectangleBorder(
                               borderRadius: BorderRadius.all(
                                 Radius.circular(25),

@@ -80,7 +80,7 @@ class TransactionDatePickerState extends State<TransactionDatePicker> {
         children: [
           const Icon(
             Icons.calendar_today_rounded,
-            color: AppSwatches.mainColor1,
+            color: AppColors.mainColor1,
           ),
           TextButton(
             onPressed: () => _selectDate(context),

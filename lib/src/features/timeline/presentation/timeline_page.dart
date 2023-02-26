@@ -29,7 +29,7 @@ class _MainViewState extends ConsumerState<TimelinePage>
       length: 3,
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: AppSwatches.mainColor1,
+          backgroundColor: AppColors.mainColor1,
           title: Center(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -104,8 +104,8 @@ class _MainViewState extends ConsumerState<TimelinePage>
           ),
           // actions: [],
           bottom: const TabBar(
-            indicatorColor: AppSwatches.mainColor2,
-            labelColor: AppSwatches.mainColor2,
+            indicatorColor: AppColors.mainColor2,
+            labelColor: AppColors.mainColor2,
             unselectedLabelColor: Colors.grey,
             tabs: [
               Tab(icon: FaIcon(FontAwesomeIcons.moneyBills)),
@@ -148,7 +148,7 @@ class _MainViewState extends ConsumerState<TimelinePage>
             const SizedBox(height: 16),
             FloatingActionButton(
               heroTag: 'bookmarks',
-              backgroundColor: AppSwatches.subColor2,
+              backgroundColor: AppColors.subColor2,
               child: const Icon(Icons.bookmarks),
               onPressed: () =>
                   Beamer.of(context).beamToNamed('/timeline/overview'),

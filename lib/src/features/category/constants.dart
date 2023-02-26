@@ -25,137 +25,137 @@ enum ExpenseCategory {
     name: "Food and Drinks",
     icons: Icon(
       Icons.restaurant,
-      color: AppSwatches.white,
+      color: AppColors.white,
     ),
-    color: AppSwatches.foodAndDrink,
+    color: AppColors.foodAndDrink,
   ),
   shopping(
     name: "Shopping",
     icons: Icon(
       Icons.shopping_bag,
-      color: AppSwatches.white,
+      color: AppColors.white,
     ),
-    color: AppSwatches.shopping,
+    color: AppColors.shopping,
   ),
   groceries(
     name: "Groceries",
     icons: Icon(
       Icons.local_grocery_store,
-      color: AppSwatches.white,
+      color: AppColors.white,
     ),
-    color: AppSwatches.groceries,
+    color: AppColors.groceries,
   ),
   beauty(
     name: "Beauty",
     icons: Icon(
       Icons.face,
-      color: AppSwatches.white,
+      color: AppColors.white,
     ),
-    color: AppSwatches.beauty,
+    color: AppColors.beauty,
   ),
   entertainment(
     name: "Entertainment",
     icons: Icon(
       Icons.movie,
-      color: AppSwatches.white,
+      color: AppColors.white,
     ),
-    color: AppSwatches.entertainment,
+    color: AppColors.entertainment,
   ),
   healthcare(
     name: "Healthcare",
     icons: Icon(
       Icons.medical_services,
-      color: AppSwatches.white,
+      color: AppColors.white,
     ),
-    color: AppSwatches.healthcare,
+    color: AppColors.healthcare,
   ),
   home(
     name: "Home",
     icons: Icon(
       Icons.home,
-      color: AppSwatches.white,
+      color: AppColors.white,
     ),
-    color: AppSwatches.home,
+    color: AppColors.home,
   ),
   billsAndFees(
     name: "Bills and Fees",
     icons: Icon(
       Icons.money,
-      color: AppSwatches.white,
+      color: AppColors.white,
     ),
-    color: AppSwatches.billsAndFees,
+    color: AppColors.billsAndFees,
   ),
   familyAndPersonal(
     name: "Family and Personal",
     icons: Icon(
       Icons.family_restroom,
-      color: AppSwatches.white,
+      color: AppColors.white,
     ),
-    color: AppSwatches.familyAndPersonal,
+    color: AppColors.familyAndPersonal,
   ),
   travel(
     name: "Travel",
     icons: Icon(
       Icons.airplanemode_active,
-      color: AppSwatches.white,
+      color: AppColors.white,
     ),
-    color: AppSwatches.travel,
+    color: AppColors.travel,
   ),
   other(
     name: "Other",
     icons: Icon(
       Icons.more_horiz,
-      color: AppSwatches.white,
+      color: AppColors.white,
     ),
-    color: AppSwatches.other,
+    color: AppColors.other,
   ),
   education(
     name: "Education",
     icons: Icon(
       Icons.school,
-      color: AppSwatches.white,
+      color: AppColors.white,
     ),
-    color: AppSwatches.education,
+    color: AppColors.education,
   ),
   car(
     name: "Car",
     icons: Icon(
       Icons.directions_car,
-      color: AppSwatches.white,
+      color: AppColors.white,
     ),
-    color: AppSwatches.car,
+    color: AppColors.car,
   ),
   gift(
     name: "Gift",
     icons: Icon(
       Icons.card_giftcard,
-      color: AppSwatches.white,
+      color: AppColors.white,
     ),
-    color: AppSwatches.gift,
+    color: AppColors.gift,
   ),
   transport(
     name: "Transport",
     icons: Icon(
       Icons.directions_bus,
-      color: AppSwatches.white,
+      color: AppColors.white,
     ),
-    color: AppSwatches.transport,
+    color: AppColors.transport,
   ),
   work(
     name: "Work",
     icons: Icon(
       Icons.work,
-      color: AppSwatches.white,
+      color: AppColors.white,
     ),
-    color: AppSwatches.work,
+    color: AppColors.work,
   ),
   sportsAndHobbies(
     name: "Pets",
     icons: Icon(
       Icons.sports_baseball,
-      color: AppSwatches.white,
+      color: AppColors.white,
     ),
-    color: AppSwatches.sportsAndHobbies,
+    color: AppColors.sportsAndHobbies,
   );
 
   final String name;
@@ -174,49 +174,49 @@ enum IncomeCategory {
     name: "Salary",
     icons: Icon(
       Icons.work,
-      color: AppSwatches.white,
+      color: AppColors.white,
     ),
-    color: AppSwatches.salary,
+    color: AppColors.salary,
   ),
   selling(
     name: "Selling",
     icons: Icon(
       Icons.sell_outlined,
-      color: AppSwatches.white,
+      color: AppColors.white,
     ),
-    color: AppSwatches.selling,
+    color: AppColors.selling,
   ),
   loan(
     name: "Loan",
     icons: Icon(
       Icons.attach_money,
-      color: AppSwatches.white,
+      color: AppColors.white,
     ),
-    color: AppSwatches.loan,
+    color: AppColors.loan,
   ),
   business(
     name: "Business",
     icons: Icon(
       Icons.attach_money,
-      color: AppSwatches.white,
+      color: AppColors.white,
     ),
-    color: AppSwatches.business,
+    color: AppColors.business,
   ),
   gifts(
     name: "Extra Income",
     icons: Icon(
       Icons.card_giftcard_outlined,
-      color: AppSwatches.white,
+      color: AppColors.white,
     ),
-    color: AppSwatches.extraIncome,
+    color: AppColors.extraIncome,
   ),
   others(
     name: "Other",
     icons: Icon(
       Icons.more_horiz,
-      color: AppSwatches.white,
+      color: AppColors.white,
     ),
-    color: AppSwatches.other,
+    color: AppColors.other,
   );
 
   final String name;

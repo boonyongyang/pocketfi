@@ -113,20 +113,20 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
       appBar: AppBar(
         // elevation: 0,
         // backgroundColor: Colors.transparent,
-        backgroundColor: AppSwatches.mainColor1,
+        backgroundColor: AppColors.mainColor1,
         shadowColor: Colors.transparent,
         centerTitle: true,
         title: const Text(
           Constants.newTransaction,
           style: TextStyle(
-            color: AppSwatches.white,
+            color: AppColors.white,
             fontSize: 20,
           ),
         ),
         leading: IconButton(
           icon: const Icon(
             Icons.close,
-            color: AppSwatches.white,
+            color: AppColors.white,
           ),
           onPressed: () => Navigator.of(context).pop(),
         ),
@@ -166,7 +166,7 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
                   style: const TextStyle(
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
-                    color: AppSwatches.red,
+                    color: AppColors.red,
                   ),
                 ),
               ),
@@ -174,7 +174,7 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
                   style: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.bold,
-                    color: AppSwatches.mainColor1,
+                    color: AppColors.mainColor1,
                   )),
               Padding(
                 padding: const EdgeInsets.all(16.0),
@@ -298,7 +298,7 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
                       },
                     ),
                     const Spacer(),
-                    const Icon(Icons.wallet, color: AppSwatches.mainColor1),
+                    const Icon(Icons.wallet, color: AppColors.mainColor1),
                     const SizedBox(width: 8.0),
                     DropdownButton<String>(
                       items: const [
@@ -334,7 +334,7 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
                     Row(
                       children: [
                         const Icon(Icons.photo_camera_outlined,
-                            color: AppSwatches.mainColor1),
+                            color: AppColors.mainColor1),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: TextButton(
@@ -390,7 +390,7 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
                       children: [
                         const Icon(
                           Icons.catching_pokemon_sharp,
-                          color: AppSwatches.mainColor1,
+                          color: AppColors.mainColor1,
                         ),
                         Expanded(
                           child: SingleChildScrollView(
@@ -404,7 +404,7 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
                                 for (final tag in tags)
                                   FilterChip(
                                     showCheckmark: false,
-                                    selectedColor: AppSwatches.mainColor2,
+                                    selectedColor: AppColors.mainColor2,
                                     label: Text(tag.label),
                                     selected: selectedTags.contains(tag),
                                     onSelected: (selected) {
@@ -441,7 +441,7 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
                           // horizontal: width * 0.35,
                           vertical: 4,
                         ),
-                        backgroundColor: AppSwatches.mainColor2,
+                        backgroundColor: AppColors.mainColor2,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30.0),
                         ),
@@ -579,7 +579,7 @@ class WriteOptionalNote extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        const Icon(Icons.note_add_outlined, color: AppSwatches.mainColor1),
+        const Icon(Icons.note_add_outlined, color: AppColors.mainColor1),
         ConstrainedBox(
           constraints: const BoxConstraints(
             maxWidth: 250,

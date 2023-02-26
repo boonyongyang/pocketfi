@@ -39,7 +39,7 @@ class GoogleButton extends StatelessWidget {
         children: [
           FaIcon(
             FontAwesomeIcons.google,
-            color: AppSwatches.googleColor,
+            color: AppColors.googleColor,
           ),
           const SizedBox(width: 10.0),
           const Text(Strings.google),

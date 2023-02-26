@@ -190,8 +190,8 @@ class CreateNewWalletButtonWidget extends StatelessWidget {
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           fixedSize: const Size(80, 55),
-          backgroundColor: AppSwatches.mainColor1,
-          foregroundColor: AppSwatches.white,
+          backgroundColor: AppColors.mainColor1,
+          foregroundColor: AppColors.white,
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(
               Radius.circular(25),

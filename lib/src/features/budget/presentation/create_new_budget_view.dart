@@ -93,7 +93,7 @@ class _CreateNewBudgetViewState extends ConsumerState<CreateNewBudgetView> {
                         width: 5,
                         child: Icon(
                           Icons.wallet,
-                          color: AppSwatches.mainColor1,
+                          color: AppColors.mainColor1,
                         ),
                       ),
                     ),
@@ -118,7 +118,7 @@ class _CreateNewBudgetViewState extends ConsumerState<CreateNewBudgetView> {
                         width: 5,
                         child: Icon(
                           Icons.money_rounded,
-                          color: AppSwatches.mainColor1,
+                          color: AppColors.mainColor1,
                         ),
                       ),
                     ),
@@ -173,7 +173,7 @@ class _CreateNewBudgetViewState extends ConsumerState<CreateNewBudgetView> {
                         width: 5,
                         child: Icon(
                           Icons.wallet,
-                          color: AppSwatches.mainColor1,
+                          color: AppColors.mainColor1,
                         ),
                       ),
                     ),

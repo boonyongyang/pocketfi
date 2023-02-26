@@ -49,7 +49,7 @@ class WalletTiles extends ConsumerWidget {
                 child: Column(
                   children: const [
                     CircleAvatar(
-                      backgroundColor: AppSwatches.subColor1,
+                      backgroundColor: AppColors.subColor1,
                       child: Icon(Icons.wallet),
                     ),
                   ],
@@ -89,7 +89,7 @@ class WalletTiles extends ConsumerWidget {
                             style: const TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
-                              color: AppSwatches.mainColor2,
+                              color: AppColors.mainColor2,
                             ),
                           ),
                         ],
@@ -104,7 +104,7 @@ class WalletTiles extends ConsumerWidget {
                   children: const [
                     Icon(
                       Icons.arrow_forward_ios_rounded,
-                      color: AppSwatches.mainColor1,
+                      color: AppColors.mainColor1,
                     ),
                   ],
                 ),

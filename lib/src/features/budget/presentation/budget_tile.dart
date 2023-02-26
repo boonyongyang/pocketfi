@@ -65,7 +65,7 @@ class BudgetTile extends ConsumerWidget {
                         Text(
                           categoryName,
                           style: const TextStyle(
-                            color: AppSwatches.mainColor1,
+                            color: AppColors.mainColor1,
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                           ),
@@ -74,7 +74,7 @@ class BudgetTile extends ConsumerWidget {
                         Text(
                           'RM $budget',
                           style: const TextStyle(
-                            color: AppSwatches.mainColor1,
+                            color: AppColors.mainColor1,
                             fontSize: 14,
                           ),
                         ),
@@ -90,7 +90,7 @@ class BudgetTile extends ConsumerWidget {
                         Text(
                           "RM XX.XX left",
                           style: TextStyle(
-                            color: AppSwatches.mainColor2,
+                            color: AppColors.mainColor2,
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                           ),

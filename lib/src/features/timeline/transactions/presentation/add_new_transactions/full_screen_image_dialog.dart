@@ -13,11 +13,11 @@ class FullScreenImageDialog extends StatelessWidget {
     return Dialog(
       // surfaceTintColor: Colors.amber,
       insetPadding: const EdgeInsets.all(35),
-      shadowColor: AppSwatches.mainColor1,
-      backgroundColor: AppSwatches.transparent,
+      shadowColor: AppColors.mainColor1,
+      backgroundColor: AppColors.transparent,
       child: InkWell(
-        splashColor: AppSwatches.transparent,
-        highlightColor: AppSwatches.transparent,
+        splashColor: AppColors.transparent,
+        highlightColor: AppColors.transparent,
         onTap: () => Navigator.pop(context),
         child: Column(
           children: [
