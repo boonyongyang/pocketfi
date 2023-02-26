@@ -6,7 +6,7 @@ import 'package:image/image.dart' as img;
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/constants/firebase_collection_name.dart';
-import 'package:pocketfi/src/features/shared/typedefs/is_loading.dart';
+import 'package:pocketfi/src/constants/typedefs.dart';
 import 'package:pocketfi/src/features/timeline/posts/domain/post_payload.dart';
 import 'package:pocketfi/src/features/timeline/posts/domain/typedefs/user_id.dart';
 import 'package:pocketfi/src/features/timeline/posts/post_settings/domain/post_setting.dart';

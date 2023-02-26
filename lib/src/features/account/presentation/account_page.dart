@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/common_widgets/dialogs/alert_dialog_model.dart';
 import 'package:pocketfi/src/common_widgets/dialogs/logout_dialog.dart';
+import 'package:pocketfi/src/constants/app_icons.dart';
 import 'package:pocketfi/src/features/account/presentation/setting_page.dart';
 import 'package:pocketfi/src/features/authentication/application/auth_state_provider.dart';
 
@@ -71,7 +72,7 @@ class _AccountPageBodyState extends ConsumerState<AccountPageBody> {
           ),
           AccountPageMenu(
             text: "Wallets",
-            icon: const Icon(Icons.wallet),
+            icon: const Icon(AppIcons.wallet),
             press: () {},
           ),
           AccountPageMenu(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
+import 'package:pocketfi/src/constants/app_icons.dart';
 import 'package:pocketfi/src/features/budget/wallet/domain/wallet.dart';
 
 class WalletTiles extends ConsumerWidget {
@@ -50,7 +51,7 @@ class WalletTiles extends ConsumerWidget {
                   children: const [
                     CircleAvatar(
                       backgroundColor: AppColors.subColor1,
-                      child: Icon(Icons.wallet),
+                      child: Icon(AppIcons.wallet),
                     ),
                   ],
                 ),

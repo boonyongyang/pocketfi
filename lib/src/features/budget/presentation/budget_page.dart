@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/common_widgets/buttons/full_width_button_with_text.dart';
+import 'package:pocketfi/src/constants/app_icons.dart';
 import 'package:pocketfi/src/constants/strings.dart';
 import 'package:pocketfi/src/features/budget/presentation/budget_tile.dart';
-import 'package:pocketfi/src/features/category/constants.dart';
+import 'package:pocketfi/src/features/category/domain/default_categories.dart';
 
 class BudgetPage extends ConsumerStatefulWidget {
   const BudgetPage({
@@ -24,7 +25,7 @@ class _BudgetPageState extends ConsumerState<BudgetPage> {
         title: const Text('Budget'),
         actions: [
           IconButton(
-            icon: const Icon(Icons.wallet),
+            icon: const Icon(AppIcons.wallet),
             onPressed: () =>
                 // {
                 // Navigator.push(
