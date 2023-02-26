@@ -3,7 +3,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/constants/firebase_collection_name.dart';
 import 'package:pocketfi/src/features/budget/wallet/domain/wallet_payload.dart';
 import 'package:pocketfi/src/constants/typedefs.dart';
-import 'package:pocketfi/src/features/timeline/posts/domain/typedefs/user_id.dart';
 
 class CreateNewWalletNotifier extends StateNotifier<IsLoading> {
   CreateNewWalletNotifier() : super(false);
