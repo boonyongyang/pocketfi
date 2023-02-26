@@ -49,7 +49,7 @@ class UserInfoStorage {
         walletBalance: 0.00,
         userId: userId,
       );
-      // TODO: Add category payload
+      // TODO: Add category payload, differentiate default and custom
 
       await FirebaseFirestore.instance
           .collection(
