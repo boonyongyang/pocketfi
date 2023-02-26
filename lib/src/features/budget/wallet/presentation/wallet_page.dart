@@ -7,7 +7,7 @@ import 'package:pocketfi/src/common_widgets/animations/loading_animation_view.da
 import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/common_widgets/buttons/full_width_button_with_text.dart';
 import 'package:pocketfi/src/constants/strings.dart';
-import 'package:pocketfi/src/features/budget/wallet/application/user_wallets_provider.dart';
+import 'package:pocketfi/src/features/budget/wallet/data/user_wallets_provider.dart';
 import 'package:pocketfi/src/features/budget/wallet/presentation/wallet_details_view.dart';
 import 'package:pocketfi/src/features/budget/wallet/presentation/wallet_tiles.dart';
 

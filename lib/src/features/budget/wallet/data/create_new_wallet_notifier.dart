@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/constants/firebase_collection_name.dart';
+import 'package:pocketfi/src/constants/firebase_field_name.dart';
 import 'package:pocketfi/src/features/budget/wallet/domain/wallet_payload.dart';
 import 'package:pocketfi/src/constants/typedefs.dart';
 
@@ -23,10 +24,15 @@ class CreateNewWalletNotifier extends StateNotifier<IsLoading> {
       userId: userId,
     );
     try {
+      // final docId = await FirebaseFirestore.instance
+      //     .collection(FirebaseCollectionName.users)
+      //     .where(FirebaseFieldName.userId, isEqualTo: userId)
+      //     .limit(1)
+      //     .get()
+      //     .then((value) => value.docs.first.id);
       await FirebaseFirestore.instance
           .collection(FirebaseCollectionName.users)
-          // get the document id of the user id
-          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .doc(userId)
           .collection(FirebaseCollectionName.wallets)
           .add(payload);
       return true;
