@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/state/category/models/category.dart';
 import 'package:pocketfi/state/category/notifiers/category_state_notifier.dart';
-import 'package:pocketfi/state/category/providers/category_provider.dart';
+import 'package:pocketfi/state/category/providers/category_providers.dart';
 import 'package:pocketfi/state/image_upload/helpers/image_picker_helper.dart';
 import 'package:pocketfi/state/image_upload/models/file_type.dart';
 import 'package:pocketfi/state/image_upload/models/thumbnail_request.dart';
@@ -15,7 +15,7 @@ import 'package:pocketfi/state/tabs/timeline/transaction/constants/constants.dar
 import 'package:pocketfi/state/tabs/timeline/transaction/models/tag.dart';
 import 'package:pocketfi/views/components/file_thumbnail_view.dart';
 import 'package:pocketfi/views/constants/app_colors.dart';
-import 'package:pocketfi/views/tabs/timeline/transactions/add_new_transactions/category_selector.dart';
+import 'package:pocketfi/views/tabs/timeline/transactions/add_new_transactions/category_selector_view.dart';
 import 'package:pocketfi/views/tabs/timeline/transactions/add_new_transactions/full_screen_image_dialog.dart';
 import 'package:pocketfi/views/tabs/timeline/transactions/add_new_transactions/transaction_date_picker.dart';
 import 'package:pocketfi/views/tabs/timeline/transactions/add_new_transactions/select_transaction_type.dart';
@@ -292,7 +292,7 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
                                 },
                               );
                             },
-                            child: CategorySelector(
+                            child: CategorySelectorView(
                                 selectedCategory: selectedCategory),
                           ),
                         );

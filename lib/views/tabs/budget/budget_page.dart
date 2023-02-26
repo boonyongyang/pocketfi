@@ -1,7 +1,7 @@
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:pocketfi/state/category/providers/category_provider.dart';
+import 'package:pocketfi/state/category/constants/constants.dart';
 import 'package:pocketfi/views/constants/app_colors.dart';
 import 'package:pocketfi/views/constants/button_widget.dart';
 import 'package:pocketfi/views/constants/strings.dart';

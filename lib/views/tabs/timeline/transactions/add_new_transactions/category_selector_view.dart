@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pocketfi/state/category/models/category.dart';
 
-class CategorySelector extends StatefulWidget {
-  const CategorySelector({
+class CategorySelectorView extends StatefulWidget {
+  const CategorySelectorView({
     Key? key,
     required this.selectedCategory,
   }) : super(key: key);
@@ -10,10 +10,10 @@ class CategorySelector extends StatefulWidget {
   final Category? selectedCategory;
 
   @override
-  CategorySelectorState createState() => CategorySelectorState();
+  CategorySelectorViewState createState() => CategorySelectorViewState();
 }
 
-class CategorySelectorState extends State<CategorySelector>
+class CategorySelectorViewState extends State<CategorySelectorView>
     with SingleTickerProviderStateMixin {
   late AnimationController _fadeController;
   late Animation<double> _opacityAnimation;
@@ -39,7 +39,7 @@ class CategorySelectorState extends State<CategorySelector>
   }
 
   @override
-  void didUpdateWidget(covariant CategorySelector oldWidget) {
+  void didUpdateWidget(covariant CategorySelectorView oldWidget) {
     super.didUpdateWidget(oldWidget);
 
     if (widget.selectedCategory == null && oldWidget.selectedCategory != null) {
