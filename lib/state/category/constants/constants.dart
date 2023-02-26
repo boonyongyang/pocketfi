@@ -1,21 +1,6 @@
-import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter/material.dart' show Icon, Icons, Color;
 import 'package:pocketfi/state/category/models/category.dart';
-import 'package:pocketfi/state/category/notifiers/category_state_notifier.dart';
 import 'package:pocketfi/views/constants/app_colors.dart';
-
-final categoriesProvider =
-    StateNotifierProvider<CategoryNotifier, List<Category>>(
-  (_) => CategoryNotifier(),
-);
-
-final expenseCategoriesProvider = Provider<List<Category>>(
-  (ref) => expenseCategories,
-);
-
-final incomeCategoriesProvider = Provider<List<Category>>(
-  (ref) => incomeCategories,
-);
 
 List<Category> expenseCategories = [
   for (final category in ExpenseCategory.values)
