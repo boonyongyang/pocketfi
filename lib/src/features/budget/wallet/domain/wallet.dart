@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart' show immutable;
 import 'package:pocketfi/src/constants/firebase_field_name.dart';
-import 'package:pocketfi/src/features/timeline/posts/domain/typedefs/user_id.dart';
+import 'package:pocketfi/src/constants/typedefs.dart';
 
 @immutable
 class Wallet {
