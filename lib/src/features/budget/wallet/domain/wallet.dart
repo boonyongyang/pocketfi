@@ -13,11 +13,17 @@ class Wallet {
   final UserId userId;
   // TODO add final Category category;
 
-  Wallet(Map<String, dynamic> json, {required this.walletId})
-      : walletName = json[FirebaseFieldName.walletName],
+  Wallet(Map<String, dynamic> json)
+      : walletId = json[FirebaseFieldName.walletId],
+        walletName = json[FirebaseFieldName.walletName],
         walletBalance = json[FirebaseFieldName.walletBalance],
         createdAt = (json[FirebaseFieldName.createdAt] as Timestamp).toDate(),
         userId = json[FirebaseFieldName.userId] as UserId;
+  // Wallet(Map<String, dynamic> json, {required this.walletId})
+  //     : walletName = json[FirebaseFieldName.walletName],
+  //       walletBalance = json[FirebaseFieldName.walletBalance],
+  //       createdAt = (json[FirebaseFieldName.createdAt] as Timestamp).toDate(),
+  //       userId = json[FirebaseFieldName.userId] as UserId;
 
   @override
   bool operator ==(covariant Wallet other) =>

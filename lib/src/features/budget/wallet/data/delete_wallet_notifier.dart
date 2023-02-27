@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/constants/firebase_collection_name.dart';
 import 'package:pocketfi/src/constants/typedefs.dart';
@@ -15,6 +16,8 @@ class DeleteWalletStateNotifier extends StateNotifier<IsLoading> {
       isLoading = true;
 
       final query = FirebaseFirestore.instance
+          .collection(FirebaseCollectionName.users)
+          .doc(FirebaseAuth.instance.currentUser!.uid)
           .collection(FirebaseCollectionName.wallets)
           .where(FieldPath.documentId, isEqualTo: walletId)
           .limit(1)
