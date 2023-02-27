@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:pocketfi/src/common_widgets/buttons/full_width_button_with_text.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/constants/app_icons.dart';
 import 'package:pocketfi/src/constants/strings.dart';
+import 'package:pocketfi/src/features/authentication/application/user_id_provider.dart';
+import 'package:pocketfi/src/features/budget/application/create_new_budget_provider.dart';
 
 class CreateNewBudgetView extends StatefulHookConsumerWidget {
   const CreateNewBudgetView({super.key});
@@ -49,39 +52,6 @@ class _CreateNewBudgetViewState extends ConsumerState<CreateNewBudgetView> {
       body: Flex(
         direction: Axis.vertical,
         children: [
-          // Expanded(
-          //   flex: 4,
-          //   child: Column(
-          //     crossAxisAlignment: CrossAxisAlignment.stretch,
-          //     children: const [
-          //       Padding(
-          //         padding: EdgeInsets.all(8.0),
-          //         child: Text(
-          //           "0.00",
-          //           textAlign: TextAlign.center,
-          //         ),
-          //       ),
-          //       Text(
-          //         'MYR',
-          //         textAlign: TextAlign.center,
-          //       ),
-          //     ],
-          //   ),
-          // ),
-          // Expanded(
-          //     child: Row(
-          //   children: [
-          //     DropdownButton(
-          //         items: <String>["Food and Drinks"]
-          //             .map<DropdownMenuItem<String>>((String value) {
-          //           return DropdownMenuItem<String>(
-          //             value: value,
-          //             child: Text(value),
-          //           );
-          //         }).toList(),
-          //         onChanged: (_) {}),
-          //   ],
-          // )),
           Expanded(
             flex: 4,
             child: Column(
@@ -218,8 +188,47 @@ class _CreateNewBudgetViewState extends ConsumerState<CreateNewBudgetView> {
               ],
             ),
           ),
+          FullWidthButtonWithText(
+              text: Strings.createNewBudget,
+              onPressed: isCreateButtonEnabled.value
+                  ? () async {
+                      _createNewWalletController(
+                        budgetNameController,
+                        amountController,
+                        ref,
+                      );
+                    }
+                  : null),
         ],
       ),
     );
+  }
+
+  Future<void> _createNewWalletController(
+    TextEditingController nameController,
+    TextEditingController balanceController,
+    WidgetRef ref,
+  ) async {
+    final userId = ref.read(userIdProvider);
+    if (userId == null) {
+      return;
+    }
+    if (balanceController.text.isEmpty) {
+      balanceController.text = '0.00';
+    }
+    final isCreated =
+        await ref.read(createNewBudgetProvider.notifier).createNewBudget(
+              userId: userId,
+              budgetName: nameController.text,
+              budgetAmount: double.parse(balanceController.text),
+              // walletId: '2023-02-27T21:08:26.256268',
+            );
+    if (isCreated && mounted) {
+      nameController.clear();
+      balanceController.clear();
+      // Navigator.of(context).pop();
+      // Beamer.of(context).beamBack();
+      Navigator.of(context).maybePop();
+    }
   }
 }

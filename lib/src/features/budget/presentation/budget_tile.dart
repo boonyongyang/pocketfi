@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
+import 'package:pocketfi/src/features/budget/domain/budget.dart';
 
 class BudgetTile extends ConsumerWidget {
-  final double totalBudgetAmount;
-  final double remainingAmount;
-  final String budgetName;
+  // final double totalBudgetAmount;
+  // final double remainingAmount;
+  // final String budgetName;
   // final Icon categoryIcon;
   // final Color categoryColor;
+  final Budget budget;
   const BudgetTile({
     super.key,
-    required this.totalBudgetAmount,
-    required this.remainingAmount,
-    required this.budgetName,
+    required this.budget,
+    // required this.totalBudgetAmount,
+    // required this.remainingAmount,
+    // required this.budgetName,
     // required this.categoryIcon,
     // required this.categoryColor,
   });
@@ -65,7 +68,7 @@ class BudgetTile extends ConsumerWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Text(
-                          budgetName,
+                          budget.budgetName,
                           style: const TextStyle(
                             color: AppColors.mainColor1,
                             fontSize: 16,
@@ -74,7 +77,7 @@ class BudgetTile extends ConsumerWidget {
                         ),
                         const Spacer(),
                         Text(
-                          'RM ${totalBudgetAmount.toStringAsFixed(2)}',
+                          'RM ${budget.budgetAmount.toStringAsFixed(2)}',
                           style: const TextStyle(
                             color: AppColors.mainColor1,
                             fontSize: 14,
@@ -90,7 +93,7 @@ class BudgetTile extends ConsumerWidget {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         Text(
-                          "RM ${remainingAmount.toStringAsFixed(2)} left",
+                          "RM ${budget.usedAmount.toStringAsFixed(2)} left",
                           style: const TextStyle(
                             color: AppColors.mainColor2,
                             fontSize: 16,
