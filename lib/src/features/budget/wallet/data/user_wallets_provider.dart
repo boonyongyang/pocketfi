@@ -23,7 +23,7 @@ final userWalletsProvider = StreamProvider.autoDispose<Iterable<Wallet>>((ref) {
       .listen((snapshot) {
     final document = snapshot.docs;
     final wallets = document.map(
-      (doc) => Wallet(walletId: doc.id, doc.data()),
+      (doc) => Wallet(doc.data()),
     );
 
 // .where((doc) => !doc.metadata.hasPendingWrites)

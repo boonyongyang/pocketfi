@@ -110,17 +110,21 @@ class WalletPage extends ConsumerWidget {
                 return const LoadingAnimationView();
               }),
             ),
-            const Expanded(
+            Expanded(
               flex: 0,
               child: Align(
                 alignment: Alignment.bottomCenter,
-                child: Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: SizedBox(
-                    width: double.infinity,
-                    child: CreateNewWalletButtonWidget(),
-                  ),
+                child: FullWidthButtonWithText(
+                  text: Strings.createNewWallet,
+                  onPressed: () => context.beamToNamed('createNewWallet'),
                 ),
+                // Padding(
+                //   padding: EdgeInsets.all(8.0),
+                //   child: SizedBox(
+                //     width: double.infinity,
+                //     child: CreateNewWalletButtonWidget(),
+                //   ),
+                // ),
               ),
             ),
           ],
@@ -180,38 +184,38 @@ class WalletPage extends ConsumerWidget {
   }
 }
 
-class CreateNewWalletButtonWidget extends StatelessWidget {
-  const CreateNewWalletButtonWidget({super.key});
+// class CreateNewWalletButtonWidget extends StatelessWidget {
+//   const CreateNewWalletButtonWidget({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          fixedSize: const Size(80, 55),
-          backgroundColor: AppColors.mainColor1,
-          foregroundColor: AppColors.white,
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(25),
-            ),
-          ),
-        ),
-        onPressed: () {
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(
-          //     builder: (_) => const CreateNewWalletView(),
-          //   ),
-          // );
+//   @override
+//   Widget build(BuildContext context) {
+//     return Padding(
+//       padding: const EdgeInsets.all(16.0),
+//       child: ElevatedButton(
+//         style: ElevatedButton.styleFrom(
+//           fixedSize: const Size(80, 55),
+//           backgroundColor: AppColors.mainColor1,
+//           foregroundColor: AppColors.white,
+//           shape: const RoundedRectangleBorder(
+//             borderRadius: BorderRadius.all(
+//               Radius.circular(25),
+//             ),
+//           ),
+//         ),
+//         onPressed: () {
+//           // Navigator.push(
+//           //   context,
+//           //   MaterialPageRoute(
+//           //     builder: (_) => const CreateNewWalletView(),
+//           //   ),
+//           // );
 
-          Beamer.of(context).beamToNamed('createNewWallet');
-        },
-        child: const FullWidthButtonWithText(
-          text: Strings.createNewWallet,
-        ),
-      ),
-    );
-  }
-}
+//           Beamer.of(context).beamToNamed('createNewWallet');
+//         },
+//         child: const FullWidthButtonWithText(
+//           text: Strings.createNewWallet,
+//         ),
+//       ),
+//     );
+//   }
+// }

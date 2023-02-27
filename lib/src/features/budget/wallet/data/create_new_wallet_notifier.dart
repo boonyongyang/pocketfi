@@ -5,6 +5,7 @@ import 'package:pocketfi/src/constants/firebase_collection_name.dart';
 import 'package:pocketfi/src/constants/firebase_field_name.dart';
 import 'package:pocketfi/src/features/budget/wallet/domain/wallet_payload.dart';
 import 'package:pocketfi/src/constants/typedefs.dart';
+import 'package:pocketfi/src/utils/document_id_from_current_date.dart';
 
 class CreateNewWalletNotifier extends StateNotifier<IsLoading> {
   CreateNewWalletNotifier() : super(false);
@@ -18,23 +19,21 @@ class CreateNewWalletNotifier extends StateNotifier<IsLoading> {
   }) async {
     isLoading = true;
 
+    final walletId = documentIdFromCurrentDate();
+
     final payload = WalletPayload(
+      walletId: walletId,
       walletName: walletName,
       walletBalance: walletBalance,
       userId: userId,
     );
     try {
-      // final docId = await FirebaseFirestore.instance
-      //     .collection(FirebaseCollectionName.users)
-      //     .where(FirebaseFieldName.userId, isEqualTo: userId)
-      //     .limit(1)
-      //     .get()
-      //     .then((value) => value.docs.first.id);
       await FirebaseFirestore.instance
           .collection(FirebaseCollectionName.users)
           .doc(userId)
           .collection(FirebaseCollectionName.wallets)
-          .add(payload);
+          .doc(walletId)
+          .set(payload);
       return true;
     } catch (e) {
       return false;
