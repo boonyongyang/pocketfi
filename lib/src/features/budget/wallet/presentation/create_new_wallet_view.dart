@@ -210,15 +210,16 @@ class _CreateNewWalletViewState extends ConsumerState<CreateNewWalletView> {
                   child: Align(
                     alignment: Alignment.bottomCenter,
                     child: FullWidthButtonWithText(
-                      text: Strings.createNewWallet,
-                      onPressed: () async {
-                        _createNewWalletController(
-                          walletNameController,
-                          initialBalanceController,
-                          ref,
-                        );
-                      },
-                    ),
+                        text: Strings.createNewWallet,
+                        onPressed: isCreateButtonEnabled.value
+                            ? () async {
+                                _createNewWalletController(
+                                  walletNameController,
+                                  initialBalanceController,
+                                  ref,
+                                );
+                              }
+                            : null),
                     // Padding(
                     //   padding: const EdgeInsets.all(16.0),
                     //   child: SizedBox(
