@@ -221,7 +221,7 @@ class _CreateNewBudgetViewState extends ConsumerState<CreateNewBudgetView> {
               userId: userId,
               budgetName: nameController.text,
               budgetAmount: double.parse(balanceController.text),
-              walletId: '2023-02-27T21:08:26.256268',
+              // walletId: '2023-02-27T21:08:26.256268',
             );
     if (isCreated && mounted) {
       nameController.clear();
