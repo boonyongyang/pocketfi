@@ -1,10 +1,16 @@
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:pocketfi/src/common_widgets/animations/empty_contents_with_text_animation_view.dart';
+import 'package:pocketfi/src/common_widgets/animations/error_animation_view.dart';
+import 'package:pocketfi/src/common_widgets/animations/loading_animation_view.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/common_widgets/buttons/full_width_button_with_text.dart';
 import 'package:pocketfi/src/constants/app_icons.dart';
 import 'package:pocketfi/src/constants/strings.dart';
+import 'package:pocketfi/src/features/authentication/application/user_id_provider.dart';
+import 'package:pocketfi/src/features/budget/application/total_amount_provider.dart';
+import 'package:pocketfi/src/features/budget/application/user_budgets_provider.dart';
 import 'package:pocketfi/src/features/budget/presentation/budget_tile.dart';
 import 'package:pocketfi/src/features/category/domain/default_categories.dart';
 
@@ -20,6 +26,9 @@ class BudgetPage extends ConsumerStatefulWidget {
 class _BudgetPageState extends ConsumerState<BudgetPage> {
   @override
   Widget build(BuildContext context) {
+    final budgets = ref.watch(userBudgetsProvider);
+    final totalAmount = ref.watch(totalAmountProvider).value;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Budget'),
@@ -62,8 +71,8 @@ class _BudgetPageState extends ConsumerState<BudgetPage> {
                     child: Column(
                       children: [
                         Row(
-                          children: const [
-                            Text(
+                          children: [
+                            const Text(
                               'Total',
                               style: TextStyle(
                                 color: AppColors.mainColor1,
@@ -71,11 +80,12 @@ class _BudgetPageState extends ConsumerState<BudgetPage> {
                                 fontSize: 20,
                               ),
                             ),
-                            Spacer(),
+                            const Spacer(),
                             // Calculation part
                             Text(
-                              'RM XX.XX',
-                              style: TextStyle(
+                              // 'RM XX.XX',
+                              'RM ${totalAmount?.toStringAsFixed(2)}',
+                              style: const TextStyle(
                                 color: AppColors.mainColor1,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 20,
@@ -104,12 +114,36 @@ class _BudgetPageState extends ConsumerState<BudgetPage> {
                     ),
                   ),
                   const Divider(),
-                  const BudgetTile(
-                    totalBudgetAmount: 12.00,
-                    budgetName: "Food",
-                    remainingAmount: 90.00,
-                    // categoryIcon: ExpenseCategory.foodAndDrink.icons,
-                    // categoryColor: ExpenseCategory.foodAndDrink.color,
+                  Expanded(
+                    flex: 4,
+                    child: budgets.when(data: (budgets) {
+                      if (budgets.isEmpty) {
+                        return const SingleChildScrollView(
+                          physics: AlwaysScrollableScrollPhysics(),
+                          child: EmptyContentsWithTextAnimationView(
+                              text: Strings.noBudgetsYet),
+                        );
+                      }
+                      return RefreshIndicator(
+                        onRefresh: () async {
+                          ref.refresh(userBudgetsProvider);
+                          return Future.delayed(const Duration(seconds: 1));
+                        },
+                        child: ListView.builder(
+                          itemCount: budgets.length,
+                          itemBuilder: (context, index) {
+                            final budget = budgets.elementAt(index);
+                            return BudgetTile(
+                              budget: budget,
+                            );
+                          },
+                        ),
+                      );
+                    }, error: ((error, stackTrace) {
+                      return const ErrorAnimationView();
+                    }), loading: () {
+                      return const LoadingAnimationView();
+                    }),
                   ),
                 ],
               ),
@@ -120,7 +154,10 @@ class _BudgetPageState extends ConsumerState<BudgetPage> {
                 alignment: Alignment.bottomCenter,
                 child: FullWidthButtonWithText(
                   text: Strings.createNewBudget,
-                  onPressed: () => context.beamToNamed("createNewBudget"),
+                  onPressed: () {
+                    context.beamToNamed("createNewBudget");
+                    debugPrint('totalAmount: $totalAmount');
+                  },
                   // },
                 ),
                 // Padding(

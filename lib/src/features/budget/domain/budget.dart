@@ -10,12 +10,14 @@ class Budget {
   final double usedAmount;
   // final double remainingAmount;
   final DateTime createdAt;
+  final String walletId;
 
   Budget(Map<String, dynamic> json)
       : budgetId = json[FirebaseFieldName.budgetId],
         budgetName = json[FirebaseFieldName.budgetName],
         budgetAmount = json[FirebaseFieldName.budgetAmount],
         usedAmount = json[FirebaseFieldName.usedAmount],
+        walletId = json[FirebaseFieldName.walletId],
         // remainingAmount = json[FirebaseFieldName.remainingAmount],
         createdAt = (json[FirebaseFieldName.createdAt] as Timestamp).toDate();
 

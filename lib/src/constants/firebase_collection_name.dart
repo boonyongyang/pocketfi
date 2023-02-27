@@ -15,5 +15,7 @@ class FirebaseCollectionName {
 
   static const wallets = 'wallets';
 
+  static const budgets = 'budgets';
+
   const FirebaseCollectionName._(); // private constructor
 }
