@@ -6,46 +6,44 @@ class FullWidthButtonWithText extends StatelessWidget {
   final VoidCallback? onPressed;
   final Color backgroundColor;
   final Color textColor;
+  final double padding;
+  final double height;
+
   const FullWidthButtonWithText({
     super.key,
     required this.text,
     required this.onPressed,
     this.backgroundColor = AppColors.mainColor1,
     this.textColor = Colors.white,
+    this.padding = 16.0,
+    this.height = 55.0,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          fixedSize: const Size(80, 55),
-          backgroundColor: backgroundColor,
-          foregroundColor: textColor,
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(25),
+    return SizedBox(
+      width: double.infinity,
+      child: Padding(
+        padding: EdgeInsets.all(padding),
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            fixedSize: Size(80, height),
+            backgroundColor: backgroundColor,
+            foregroundColor: textColor,
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(30),
+              ),
             ),
           ),
-        ),
-        onPressed: onPressed,
-        // {
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(
-        //     builder: (_) => const CreateNewBudgetView(),
-        //   ),
-        // );
-        // context.beamToNamed("createNewBudget"),
-        // },
-        child: SizedBox(
-          width: double.infinity,
-          child: Text(
-            text,
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontSize: 17,
+          onPressed: onPressed,
+          child: SizedBox(
+            child: Text(
+              text,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 17,
+              ),
             ),
           ),
         ),

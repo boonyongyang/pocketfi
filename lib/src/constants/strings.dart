@@ -69,6 +69,7 @@ class Strings {
   static const expense = 'Expense';
   static const income = 'Income';
   static const transfer = 'Transfer';
+  static const save = 'Save';
 
   // bills
   static const bills = 'Bills';

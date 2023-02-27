@@ -32,23 +32,21 @@ class CreateNewTransactionNotifier extends StateNotifier<IsLoading> {
       userId: userId,
       amount: amount,
       description: note,
-      // ! this is the problem --> need to do like the PostSettings one
+      // ! this is the problem --> need to do like the PostSettings one or just use category id instead
       category: expenseCategories.first.name,
       type: type,
     );
+
+    final walletId = FieldPath.documentId.toString();
+    debugPrint('walletId: $walletId');
+
     try {
-      // final docId = await FirebaseFirestore.instance
-      //     .collection(FirebaseCollectionName.users)
-      //     .where(FirebaseFieldName.userId, isEqualTo: userId)
-      //     .limit(1)
-      //     .get()
-      //     .then((value) => value.docs.first.id);
       await FirebaseFirestore.instance
           .collection(FirebaseCollectionName.users)
           .doc(userId)
           .collection(FirebaseCollectionName.wallets)
           //TODO: get wallet id docuemnt id
-          .doc('P5aYEc9Vj4Mj7JBwiixM')
+          .doc(walletId)
           .collection(FirebaseCollectionName.transactions)
           .add(payload);
       debugPrint('Transaction added');

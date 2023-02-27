@@ -437,16 +437,16 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
                     ),
                     selectReccurence(),
                     FullWidthButtonWithText(
-                      text: 'Save',
+                      padding: 0,
+                      text: Strings.save,
+                      backgroundColor: AppColors.mainColor2,
                       onPressed: isSaveButtonEnabled.value
                           ? () async {
-                              final userId = ref.read(
-                                userIdProvider,
-                              );
+                              final userId = ref.read(userIdProvider);
                               final type = ref.read(transactionTypeProvider);
 
                               debugPrint('userId is: $userId');
-                              debugPrint('tType is: $type');
+                              debugPrint('transactionType is: $type');
 
                               if (userId == null) {
                                 return;
@@ -458,7 +458,6 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
                               debugPrint('note is: $note');
                               debugPrint('amount is: $amount');
 
-                              // hook the UI to the imageUploadProvider for uploading the post
                               // hooking the UI to the provider will cause the UI to rebuild
                               final isCreated = await ref
                                   .read(createNewTransactionProvider.notifier)
@@ -485,28 +484,6 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
                             }
                           : null,
                     ),
-                    // ElevatedButton(
-                    //   onPressed: () {
-                    //     // show snackbar
-                    //     ScaffoldMessenger.of(context).showSnackBar(
-                    //       const SnackBar(
-                    //         content: Text('Expense added'),
-                    //       ),
-                    //     );
-                    //     // _submitData();
-                    //   },
-                    //   style: ElevatedButton.styleFrom(
-                    //     padding: const EdgeInsets.symmetric(
-                    //       // horizontal: width * 0.35,
-                    //       vertical: 4,
-                    //     ),
-                    //     backgroundColor: AppColors.mainColor2,
-                    //     shape: RoundedRectangleBorder(
-                    //       borderRadius: BorderRadius.circular(30.0),
-                    //     ),
-                    //   ),
-                    //   child: const FullWidthButtonWithText(text: 'Save'),
-                    // ),
                   ],
                 ),
               ),

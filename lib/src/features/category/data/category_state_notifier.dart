@@ -13,9 +13,6 @@ class CategoryNotifier extends StateNotifier<List<Category>> {
             ? incomeCategories
             : [];
   }
-  // void updateCategoriesList(List<Category> categoriesList) {
-  //   state = categoriesList;
-  // }
 
 // todo : this isnot used?
   // void setCategory(Category category, bool isSelected) {
