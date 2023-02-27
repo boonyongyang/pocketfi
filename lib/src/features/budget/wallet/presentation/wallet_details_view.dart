@@ -232,44 +232,45 @@ class _WalletDetailsViewState extends ConsumerState<WalletDetailsView> {
                   flex: 1,
                   child: Align(
                     alignment: Alignment.bottomCenter,
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            fixedSize: const Size(80, 55),
-                            backgroundColor: AppColors.mainColor1,
-                            foregroundColor: AppColors.white,
-                            shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(25),
-                              ),
-                            ),
-                          ),
-                          onPressed: () {
-                            _updateNewWalletController(
-                              walletNameController,
-                              initialBalanceController,
-                              ref,
-                            );
-                          },
-                          // isCreateButtonEnabled.value
-                          //     ? () {
-                          //         _updateNewWalletController(
-                          //           walletNameController,
-                          //           initialBalanceController,
-                          //           ref,
-                          //         );
-                          //       }
-                          //     : null,
-                          child: const FullWidthButtonWithText(
-                            text: Strings.saveChanges,
-                          ),
-                        ),
-                      ),
+                    child: FullWidthButtonWithText(
+                      text: Strings.saveChanges,
+                      onPressed: () {
+                        _updateNewWalletController(
+                          walletNameController,
+                          initialBalanceController,
+                          ref,
+                        );
+                      },
                     ),
                   ),
+                  // Padding(
+                  //   padding: const EdgeInsets.all(16.0),
+                  //   child: SizedBox(
+                  //     width: double.infinity,
+                  //     child: ElevatedButton(
+                  //       style: ElevatedButton.styleFrom(
+                  //         fixedSize: const Size(80, 55),
+                  //         backgroundColor: AppColors.mainColor1,
+                  //         foregroundColor: AppColors.white,
+                  //         shape: const RoundedRectangleBorder(
+                  //           borderRadius: BorderRadius.all(
+                  //             Radius.circular(25),
+                  //           ),
+                  //         ),
+                  //       ),
+                  //       onPressed: () {
+                  //         _updateNewWalletController(
+                  //           walletNameController,
+                  //           initialBalanceController,
+                  //           ref,
+                  //         );
+                  //       },
+                  //       child: const FullWidthButtonWithText(
+                  //         text: Strings.saveChanges,
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                 ),
               ],
             ),

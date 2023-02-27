@@ -209,58 +209,68 @@ class _CreateNewWalletViewState extends ConsumerState<CreateNewWalletView> {
                   flex: 1,
                   child: Align(
                     alignment: Alignment.bottomCenter,
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            fixedSize: const Size(80, 55),
-                            backgroundColor: AppColors.mainColor1,
-                            foregroundColor: AppColors.white,
-                            shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(25),
-                              ),
-                            ),
-                          ),
-                          onPressed: isCreateButtonEnabled.value
-                              ? () async {
-                                  _createNewWalletController(
-                                    walletNameController,
-                                    initialBalanceController,
-                                    ref,
-                                  );
-                                  // final userId = ref.read(
-                                  //   userIdProvider,
-                                  // );
-                                  // if (userId == null) {
-                                  //   return;
-                                  // }
-                                  // final message = walletNameController.text;
-                                  // final amount = initialBalanceController.text;
-                                  // // hook the UI to the imageUploadProvider for uploading the post
-                                  // // hooking the UI to the provider will cause the UI to rebuild
-                                  // final isUploaded = await ref
-                                  //     .read(createNewWalletProvider.notifier)
-                                  //     .createNewWallet(
-                                  //       userId: userId,
-                                  //       walletName: message,
-                                  //       walletBalance: double.parse(amount),
-                                  //     );
-                                  // if (isUploaded && mounted) {
-                                  //   // if the post is uploaded, then pop the screen
-                                  //   // Navigator.of(context).pop();
-                                  //   Beamer.of(context).beamBack();
-                                  // }
-                                }
-                              : null,
-                          child: const FullWidthButtonWithText(
-                            text: Strings.createNewWallet,
-                          ),
-                        ),
-                      ),
+                    child: FullWidthButtonWithText(
+                      text: Strings.createNewWallet,
+                      onPressed: () async {
+                        _createNewWalletController(
+                          walletNameController,
+                          initialBalanceController,
+                          ref,
+                        );
+                      },
                     ),
+                    // Padding(
+                    //   padding: const EdgeInsets.all(16.0),
+                    //   child: SizedBox(
+                    //     width: double.infinity,
+                    //     child: ElevatedButton(
+                    //       style: ElevatedButton.styleFrom(
+                    //         fixedSize: const Size(80, 55),
+                    //         backgroundColor: AppColors.mainColor1,
+                    //         foregroundColor: AppColors.white,
+                    //         shape: const RoundedRectangleBorder(
+                    //           borderRadius: BorderRadius.all(
+                    //             Radius.circular(25),
+                    //           ),
+                    //         ),
+                    //       ),
+                    //       onPressed: isCreateButtonEnabled.value
+                    //           ? () async {
+                    //               _createNewWalletController(
+                    //                 walletNameController,
+                    //                 initialBalanceController,
+                    //                 ref,
+                    //               );
+                    //               // final userId = ref.read(
+                    //               //   userIdProvider,
+                    //               // );
+                    //               // if (userId == null) {
+                    //               //   return;
+                    //               // }
+                    //               // final message = walletNameController.text;
+                    //               // final amount = initialBalanceController.text;
+                    //               // // hook the UI to the imageUploadProvider for uploading the post
+                    //               // // hooking the UI to the provider will cause the UI to rebuild
+                    //               // final isUploaded = await ref
+                    //               //     .read(createNewWalletProvider.notifier)
+                    //               //     .createNewWallet(
+                    //               //       userId: userId,
+                    //               //       walletName: message,
+                    //               //       walletBalance: double.parse(amount),
+                    //               //     );
+                    //               // if (isUploaded && mounted) {
+                    //               //   // if the post is uploaded, then pop the screen
+                    //               //   // Navigator.of(context).pop();
+                    //               //   Beamer.of(context).beamBack();
+                    //               // }
+                    //             }
+                    //           : null,
+                    //       child: const FullWidthButtonWithText(
+                    //         text: Strings.createNewWallet,
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
                   ),
                 ),
               ],
