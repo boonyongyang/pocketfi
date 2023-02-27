@@ -79,6 +79,7 @@ class Strings {
   static const total = 'Total';
   static const createNewBudget = 'Create New Budget';
   static const budgetName = 'Budget Name';
+  static const noBudgetsYet = 'No budgets available yet';
   static const amount = "Amount";
   static const currency = 'Currency';
   static const createNewWallet = 'Create New Wallet';
