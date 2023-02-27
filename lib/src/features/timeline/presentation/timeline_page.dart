@@ -136,7 +136,8 @@ class _MainViewState extends ConsumerState<TimelinePage>
           children: [
             Expanded(child: Container()),
             FloatingActionButton(
-              heroTag: 'scan_receipt',
+              // heroTag: 'scan_receipt',
+              heroTag: null,
               backgroundColor: const Color(0xFFFCD46A),
               child: const Icon(Icons.camera_alt),
               onPressed: () => Navigator.of(context, rootNavigator: true).push(
@@ -147,7 +148,8 @@ class _MainViewState extends ConsumerState<TimelinePage>
             ),
             const SizedBox(height: 16),
             FloatingActionButton(
-              heroTag: 'bookmarks',
+              // heroTag: 'bookmarks',
+              heroTag: null,
               backgroundColor: AppColors.subColor2,
               child: const Icon(Icons.bookmarks),
               onPressed: () =>
@@ -155,52 +157,15 @@ class _MainViewState extends ConsumerState<TimelinePage>
             ),
             const SizedBox(height: 16),
             FloatingActionButton(
-              heroTag: 'add_new_expense',
+              // heroTag: 'add_new_expense',
+              heroTag: null,
               backgroundColor: const Color(0xFFFCD46A),
               child: const Icon(Icons.add),
-              onPressed: () =>
-                  // push to addnewtransaction page
-                  Navigator.of(context, rootNavigator: true).push(
+              onPressed: () => Navigator.of(context, rootNavigator: true).push(
                 MaterialPageRoute(
                   builder: (context) => const AddNewTransaction(),
                 ),
               ),
-
-              // onPressed: () async {
-              //   final imageFile =
-              //       await ImagePickerHelper.pickImageFromGallery();
-              //   if (imageFile == null) {
-              //     // no image available so return early
-              //     return;
-              //   }
-
-              //   // refresh the provider so it does not contain the previous post's setting
-              //   ref.refresh(postSettingProvider);
-
-              //   // go to the screen to create a new post
-              //   if (!mounted) {
-              //     return;
-              //   }
-
-              //   Navigator.push(
-              //     context,
-              //     MaterialPageRoute(
-              //       builder: (_) => CreateNewPostView(
-              //         fileToPost: imageFile,
-              //         fileType: FileType.image,
-              //       ),
-              //     ),
-              //   );
-
-              // Beamer.of(context).beamToNamed('/timeline/overview'),
-
-              // Navigator.of(context, rootNavigator: true).push(
-              //   MaterialPageRoute(
-              //     builder: (context) => const SettingsPage(),
-              //     fullscreenDialog: true,
-              //   ),
-              // );
-              // },
             ),
           ],
         ),
