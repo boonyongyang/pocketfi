@@ -5,6 +5,7 @@ import 'package:pocketfi/src/constants/firebase_field_name.dart';
 import 'package:pocketfi/src/constants/typedefs.dart';
 import 'package:pocketfi/src/features/authentication/domain/user_info_payload.dart';
 import 'package:pocketfi/src/features/budget/wallet/domain/wallet_payload.dart';
+import 'package:pocketfi/src/utils/document_id_from_current_date.dart';
 
 @immutable
 class UserInfoStorage {
@@ -45,6 +46,7 @@ class UserInfoStorage {
       );
 
       final walletPayload = WalletPayload(
+        walletId: documentIdFromCurrentDate(),
         walletName: 'Personal',
         walletBalance: 0.00,
         userId: userId,
