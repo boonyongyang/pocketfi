@@ -8,15 +8,15 @@ import 'package:pocketfi/src/features/timeline/transactions/domain/transaction_k
 
 @immutable
 class TransactionPayload extends MapView<String, dynamic> {
-  TransactionPayload(
+  TransactionPayload({
     // final String transactionId,
-    final String userId,
-    final double amount,
+    required final String userId,
+    required final double amount,
     // TODO: make to category
-    final Category category,
-    final TransactionType type,
-    final DateTime createdAt,
-    final bool isBookmark,
+    required final String category,
+    required final TransactionType type,
+    //  final DateTime createdAt,
+    final bool isBookmark = false,
     final String? description,
     final String? thumbnailUrl, // image
     final String? fileUrl, // image
@@ -26,7 +26,7 @@ class TransactionPayload extends MapView<String, dynamic> {
     final String? originalFileStorageId, // image
     // final List<Tag> tags;
     // final bool shared = false;
-  ) : super(
+  }) : super(
           {
             // TransactionKey.userId: userId,
             TransactionKey.amount: amount,

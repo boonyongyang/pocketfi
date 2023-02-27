@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:auto_size_text_field/auto_size_text_field.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 // import 'package:flutter_layout_grid/flutter_layout_grid.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/common_widgets/buttons/full_width_button_with_text.dart';
@@ -9,9 +10,12 @@ import 'package:pocketfi/src/common_widgets/file_thumbnail_view.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/constants/app_icons.dart';
 import 'package:pocketfi/src/constants/strings.dart';
+import 'package:pocketfi/src/features/authentication/application/user_id_provider.dart';
 import 'package:pocketfi/src/features/category/application/category_providers.dart';
 import 'package:pocketfi/src/features/category/domain/category.dart';
 import 'package:pocketfi/src/features/timeline/posts/post_settings/application/post_setting_provider.dart';
+import 'package:pocketfi/src/features/timeline/transactions/application/transaction_provider.dart';
+import 'package:pocketfi/src/features/timeline/transactions/data/transaction_type_notifier.dart';
 import 'package:pocketfi/src/features/timeline/transactions/domain/tag.dart';
 import 'package:pocketfi/src/features/timeline/transactions/image_upload/domain/file_type.dart';
 import 'package:pocketfi/src/features/timeline/transactions/image_upload/domain/thumbnail_request.dart';
@@ -21,7 +25,7 @@ import 'package:pocketfi/src/features/timeline/transactions/presentation/add_new
 import 'package:pocketfi/src/features/timeline/transactions/presentation/add_new_transactions/select_transaction_type.dart';
 import 'package:pocketfi/src/features/timeline/transactions/presentation/add_new_transactions/transaction_date_picker.dart';
 
-class AddNewTransaction extends ConsumerStatefulWidget {
+class AddNewTransaction extends StatefulHookConsumerWidget {
   const AddNewTransaction({
     super.key,
   });
@@ -31,9 +35,6 @@ class AddNewTransaction extends ConsumerStatefulWidget {
 }
 
 class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
-  final _amountController = TextEditingController();
-  final _noteController = TextEditingController();
-
   File? _imageFile;
 
   List<TagChip> tags = [
@@ -94,21 +95,32 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
   String _selectedRecurrence = 'Never';
   String _selectedWallet = 'Personal';
 
-  // void _submitData() {
-  //   final enteredAmount = double.parse(_amountController.text);
-  //   final enteredNote = _noteController.text;
-
-  //   if (enteredAmount <= 0 || enteredNote.isEmpty) {
-  //     return;
-  //   }
-  //   Navigator.of(context).pop();
-  // }
-
   @override
   Widget build(BuildContext context) {
     final categories = ref.watch(categoriesProvider);
 
     final selectedCategory = ref.watch(selectedCategoryProvider);
+
+    final amountController = useTextEditingController();
+    final noteController = useTextEditingController();
+    final isSaveButtonEnabled = useState(false);
+
+    useEffect(
+      () {
+        void listener() {
+          isSaveButtonEnabled.value = amountController.text.isNotEmpty;
+        }
+
+        amountController.addListener(listener);
+
+        return () {
+          amountController.removeListener(listener);
+        };
+      },
+      [
+        amountController,
+      ],
+    );
 
     return Scaffold(
       // extendBodyBehindAppBar: true,
@@ -164,7 +176,7 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
                     border: InputBorder.none,
                     hintText: Strings.zeroAmount,
                   ),
-                  controller: _amountController,
+                  controller: amountController,
                   style: const TextStyle(
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
@@ -183,7 +195,6 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    // create bottom sheet
                     const SizedBox(width: 8.0),
                     Builder(
                       builder: (context) {
@@ -332,7 +343,7 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     const TransactionDatePicker(),
-                    WriteOptionalNote(noteController: _noteController),
+                    WriteOptionalNote(noteController: noteController),
                     Row(
                       children: [
                         const Icon(Icons.photo_camera_outlined,
@@ -366,7 +377,6 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
                     if (_imageFile != null)
                       InkWell(
                         onTap: () {
-                          // full screen image
                           Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (context) =>
@@ -397,11 +407,9 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
                         Expanded(
                           child: SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
-                            // color: Colors.grey,
                             child: Wrap(
                               direction: Axis.horizontal,
                               spacing: 8.0,
-                              // runSpacing: 0.0,
                               children: [
                                 for (final tag in tags)
                                   FilterChip(
@@ -429,40 +437,53 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
                     ),
                     selectReccurence(),
                     FullWidthButtonWithText(
-                      text: 'Save',
+                      padding: 0,
+                      text: Strings.save,
                       backgroundColor: AppColors.mainColor2,
-                      onPressed: () {
-                        // show snackbar
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Expense added'),
-                          ),
-                        );
-                        // _submitData();
-                      },
+                      onPressed: isSaveButtonEnabled.value
+                          ? () async {
+                              final userId = ref.read(userIdProvider);
+                              final type = ref.read(transactionTypeProvider);
+
+                              debugPrint('userId is: $userId');
+                              debugPrint('transactionType is: $type');
+
+                              if (userId == null) {
+                                return;
+                              }
+                              final note = noteController.text;
+                              final amount = amountController.text;
+                              // final selectedCategory =
+                              //     ref.read(selectedCategoryProvider).state;
+                              debugPrint('note is: $note');
+                              debugPrint('amount is: $amount');
+
+                              // hooking the UI to the provider will cause the UI to rebuild
+                              final isCreated = await ref
+                                  .read(createNewTransactionProvider.notifier)
+                                  .createNewTransaction(
+                                    userId: userId,
+                                    amount: double.parse(amount),
+                                    type: type,
+                                    note: note,
+                                  );
+                              debugPrint('isCreated is: $isCreated');
+
+                              if (isCreated && mounted) {
+                                noteController.clear();
+                                amountController.clear();
+                                Navigator.of(context).pop();
+
+                                // show snackbar to notify the user
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('Transaction added'),
+                                  ),
+                                );
+                              }
+                            }
+                          : null,
                     ),
-                    // ElevatedButton(
-                    //   onPressed: () {
-                    //     // show snackbar
-                    //     ScaffoldMessenger.of(context).showSnackBar(
-                    //       const SnackBar(
-                    //         content: Text('Expense added'),
-                    //       ),
-                    //     );
-                    //     // _submitData();
-                    //   },
-                    //   style: ElevatedButton.styleFrom(
-                    //     padding: const EdgeInsets.symmetric(
-                    //       // horizontal: width * 0.35,
-                    //       vertical: 4,
-                    //     ),
-                    //     backgroundColor: AppColors.mainColor2,
-                    //     shape: RoundedRectangleBorder(
-                    //       borderRadius: BorderRadius.circular(30.0),
-                    //     ),
-                    //   ),
-                    //   child: const FullWidthButtonWithText(text: 'Save'),
-                    // ),
                   ],
                 ),
               ),

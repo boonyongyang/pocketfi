@@ -1,11 +1,17 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/features/category/domain/category.dart';
+import 'package:pocketfi/src/features/category/domain/default_categories.dart';
+import 'package:pocketfi/src/features/timeline/transactions/domain/transaction.dart';
 
 class CategoryNotifier extends StateNotifier<List<Category>> {
   CategoryNotifier() : super([]);
 
-  void updateCategoriesList(List<Category> categoriesList) {
-    state = categoriesList;
+  void updateCategoriesList(TransactionType type) {
+    state = type == TransactionType.expense
+        ? expenseCategories
+        : type == TransactionType.income
+            ? incomeCategories
+            : [];
   }
 
 // todo : this isnot used?
