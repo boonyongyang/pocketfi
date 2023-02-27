@@ -78,6 +78,7 @@ class Strings {
   static const amount = "Amount";
   static const currency = 'Currency';
   static const createNewWallet = 'Create New Wallet';
+  static const wallet = 'Wallet';
   static const walletName = 'Wallet Name';
   static const walletBalance = 'Wallet Balance';
   static const noWalletsYet = 'No wallets available yet';
