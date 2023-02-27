@@ -436,7 +436,8 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
                       ],
                     ),
                     selectReccurence(),
-                    ElevatedButton(
+                    FullWidthButtonWithText(
+                      text: 'Save',
                       onPressed: isSaveButtonEnabled.value
                           ? () async {
                               final userId = ref.read(
@@ -483,17 +484,29 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
                               }
                             }
                           : null,
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 4,
-                        ),
-                        backgroundColor: AppColors.mainColor2,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30.0),
-                        ),
-                      ),
-                      child: const FullWidthButtonWithText(text: 'Save'),
                     ),
+                    // ElevatedButton(
+                    //   onPressed: () {
+                    //     // show snackbar
+                    //     ScaffoldMessenger.of(context).showSnackBar(
+                    //       const SnackBar(
+                    //         content: Text('Expense added'),
+                    //       ),
+                    //     );
+                    //     // _submitData();
+                    //   },
+                    //   style: ElevatedButton.styleFrom(
+                    //     padding: const EdgeInsets.symmetric(
+                    //       // horizontal: width * 0.35,
+                    //       vertical: 4,
+                    //     ),
+                    //     backgroundColor: AppColors.mainColor2,
+                    //     shape: RoundedRectangleBorder(
+                    //       borderRadius: BorderRadius.circular(30.0),
+                    //     ),
+                    //   ),
+                    //   child: const FullWidthButtonWithText(text: 'Save'),
+                    // ),
                   ],
                 ),
               ),

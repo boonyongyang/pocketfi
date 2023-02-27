@@ -118,37 +118,42 @@ class _BudgetPageState extends ConsumerState<BudgetPage> {
               flex: 0,
               child: Align(
                 alignment: Alignment.bottomCenter,
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        fixedSize: const Size(80, 55),
-                        backgroundColor: AppColors.mainColor1,
-                        foregroundColor: AppColors.white,
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(25),
-                          ),
-                        ),
-                      ),
-                      onPressed: () =>
-                          // {
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //     builder: (_) => const CreateNewBudgetView(),
-                          //   ),
-                          // );
-                          context.beamToNamed("createNewBudget"),
-                      // },
-                      child: const FullWidthButtonWithText(
-                        text: Strings.createNewBudget,
-                      ),
-                    ),
-                  ),
+                child: FullWidthButtonWithText(
+                  text: Strings.createNewBudget,
+                  onPressed: () => context.beamToNamed("createNewBudget"),
+                  // },
                 ),
+                // Padding(
+                //   padding: const EdgeInsets.all(16.0),
+                //   child: SizedBox(
+                //     width: double.infinity,
+                //     child: ElevatedButton(
+                //       style: ElevatedButton.styleFrom(
+                //         fixedSize: const Size(80, 55),
+                //         backgroundColor: AppColors.mainColor1,
+                //         foregroundColor: AppColors.white,
+                //         shape: const RoundedRectangleBorder(
+                //           borderRadius: BorderRadius.all(
+                //             Radius.circular(25),
+                //           ),
+                //         ),
+                //       ),
+                //       onPressed: () =>
+                //           // {
+                //           // Navigator.push(
+                //           //   context,
+                //           //   MaterialPageRoute(
+                //           //     builder: (_) => const CreateNewBudgetView(),
+                //           //   ),
+                //           // );
+                //           context.beamToNamed("createNewBudget"),
+                //       // },
+                //       child: const FullWidthButtonWithText(
+                //         text: Strings.createNewBudget,
+                //       ),
+                //     ),
+                //   ),
+                // ),
               ),
             ),
           ],
