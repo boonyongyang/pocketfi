@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
+import 'package:pocketfi/src/constants/strings.dart';
 import 'package:pocketfi/src/features/category/application/category_providers.dart';
-import 'package:pocketfi/src/features/category/domain/category.dart';
 import 'package:pocketfi/src/features/timeline/transactions/application/transaction_provider.dart';
 
 class SelectTransactionType extends ConsumerStatefulWidget {
@@ -17,18 +17,10 @@ class SelectTransactionTypeState extends ConsumerState<SelectTransactionType>
   @override
   Widget build(BuildContext context) {
     final tabIndex = ref.watch(transactionTypeProvider);
-    List<Category> categoriesList = [];
-    if (tabIndex == 0) {
-      categoriesList = ref.watch(expenseCategoriesProvider);
-    } else if (tabIndex == 1) {
-      categoriesList = ref.watch(incomeCategoriesProvider);
-    }
     Future.delayed(
       Duration.zero,
       () {
-        ref
-            .read(categoriesProvider.notifier)
-            .updateCategoriesList(categoriesList);
+        ref.read(categoriesProvider.notifier).updateCategoriesList(tabIndex);
       },
     );
 
@@ -62,25 +54,21 @@ class SelectTransactionTypeState extends ConsumerState<SelectTransactionType>
                     labelColor: AppColors.white,
                     unselectedLabelColor: AppColors.mainColor1,
                     tabs: const [
-                      Tab(
-                        text: 'Expense',
-                      ),
-                      Tab(
-                        text: 'Income',
-                      ),
-                      Tab(
-                        text: 'Transfer',
-                      ),
+                      Tab(text: Strings.expense),
+                      Tab(text: Strings.income),
+                      Tab(text: Strings.transfer),
                     ],
                     onTap: (index) {
-                      // todo should update using transactiontype rather than index
                       ref
                           .read(transactionTypeProvider.notifier)
                           .setTransactionType(index);
+
+                      final indexSelected = ref.read(transactionTypeProvider);
+                      debugPrint('index selected: $indexSelected');
                     },
                     controller: TabController(
                       length: 3,
-                      initialIndex: tabIndex,
+                      initialIndex: tabIndex.index,
                       vsync: this,
                     ),
                   );

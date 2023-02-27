@@ -66,6 +66,9 @@ class Strings {
   static const newTransaction = 'New Transaction';
   static const editTransaction = 'Edit Transaction';
   static const zeroAmount = '0';
+  static const expense = 'Expense';
+  static const income = 'Income';
+  static const transfer = 'Transfer';
 
   // bills
   static const bills = 'Bills';
