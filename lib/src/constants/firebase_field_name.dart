@@ -20,5 +20,11 @@ class FirebaseFieldName {
   static const walletName = 'wallet_name';
   static const walletBalance = 'wallet_balance';
 
+  static const budgetId = 'budget_id';
+  static const budgetName = 'budget_name';
+  static const budgetAmount = 'budget_amount';
+  static const usedAmount = 'used_amount';
+  static const remainingAmount = 'remaining_amount';
+
   const FirebaseFieldName._(); // private constructor
 }
