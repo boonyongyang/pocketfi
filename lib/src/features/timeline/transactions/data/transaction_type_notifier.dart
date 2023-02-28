@@ -6,6 +6,7 @@ import 'package:pocketfi/src/constants/typedefs.dart';
 import 'package:pocketfi/src/features/category/domain/default_categories.dart';
 import 'package:pocketfi/src/features/timeline/transactions/domain/transaction.dart';
 import 'package:pocketfi/src/features/timeline/transactions/domain/transaction_payload.dart';
+import 'package:pocketfi/src/utils/document_id_from_current_date.dart';
 
 class TransactionTypeNotifier extends StateNotifier<TransactionType> {
   TransactionTypeNotifier() : super(TransactionType.expense);
@@ -37,6 +38,8 @@ class CreateNewTransactionNotifier extends StateNotifier<IsLoading> {
         .get()
         .then((value) => value.docs.first.id);
 
+    final transactionId = documentIdFromCurrentDate();
+
     final payload = TransactionPayload(
       userId: userId,
       amount: amount,
@@ -53,7 +56,9 @@ class CreateNewTransactionNotifier extends StateNotifier<IsLoading> {
           .collection(FirebaseCollectionName.wallets)
           .doc(walletId)
           .collection(FirebaseCollectionName.transactions)
-          .add(payload);
+          .doc(transactionId)
+          .set(payload);
+      // .add(payload);
       debugPrint('Transaction added');
       return true;
     } catch (e) {
