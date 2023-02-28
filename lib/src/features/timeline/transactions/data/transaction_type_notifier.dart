@@ -45,7 +45,7 @@ class CreateNewTransactionNotifier extends StateNotifier<IsLoading> {
       amount: amount,
       description: note,
       // FIXME this is the problem --> need to do like the PostSettings one or just use category id instead
-      category: expenseCategories.first.name,
+      category: expenseCategories.last.name,
       type: type,
     );
 
