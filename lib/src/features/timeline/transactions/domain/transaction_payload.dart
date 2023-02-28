@@ -12,8 +12,7 @@ class TransactionPayload extends MapView<String, dynamic> {
     // final String transactionId,
     required final String userId,
     required final double amount,
-    // TODO: make to category
-    required final String category,
+    required final String categoryName,
     required final TransactionType type,
     //  final DateTime createdAt,
     final bool isBookmark = false,
@@ -30,7 +29,7 @@ class TransactionPayload extends MapView<String, dynamic> {
           {
             // TransactionKey.userId: userId,
             TransactionKey.amount: amount,
-            TransactionKey.category: category,
+            TransactionKey.categoryName: categoryName,
             TransactionKey.type: type.name,
             TransactionKey.createdAt: FieldValue.serverTimestamp(),
             TransactionKey.isBookmark: isBookmark,

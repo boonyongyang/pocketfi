@@ -14,10 +14,25 @@ final selectedCategoryProvider = StateProvider<Category?>(
     } else if (transactionTypeIndex == TransactionType.income) {
       return incomeCategories.first;
     } else {
-      return null;
+      return transferCategory;
+      // return null;
     }
   },
 );
+
+void resetCategoryState(WidgetRef ref) {
+  ref.read(selectedCategoryProvider.notifier).state = expenseCategories.first;
+}
+
+Category getCategoryWithCategoryName(String categoryName) {
+  return expenseCategories.firstWhere(
+    (category) => category.name == categoryName,
+    orElse: () => incomeCategories.firstWhere(
+      (category) => category.name == categoryName,
+      orElse: () => transferCategory,
+    ),
+  );
+}
 
 // * provide the appropriate category list based on the transaction type
 final categoriesProvider =

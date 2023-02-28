@@ -15,6 +15,7 @@ import 'package:pocketfi/src/features/category/domain/category.dart';
 import 'package:pocketfi/src/features/timeline/posts/post_settings/application/post_setting_provider.dart';
 import 'package:pocketfi/src/features/timeline/transactions/application/transaction_provider.dart';
 import 'package:pocketfi/src/features/timeline/transactions/domain/tag.dart';
+import 'package:pocketfi/src/features/timeline/transactions/domain/transaction.dart';
 import 'package:pocketfi/src/features/timeline/transactions/image_upload/domain/file_type.dart';
 import 'package:pocketfi/src/features/timeline/transactions/image_upload/domain/thumbnail_request.dart';
 import 'package:pocketfi/src/features/timeline/transactions/image_upload/helpers/image_picker_helper.dart';
@@ -76,7 +77,15 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
             Icons.close,
             color: AppColors.white,
           ),
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () {
+            // access ref inside the onPressed callback
+            // ref.read(selectedCategoryProvider.notifier).state = null;
+
+            Navigator.of(context).pop();
+            resetCategoryState(ref);
+            // reset transction type provider to expense
+            ref.read(transactionTypeProvider.notifier).setTransactionType(0);
+          },
         ),
       ),
       body: SingleChildScrollView(
@@ -89,7 +98,7 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
             children: [
               const SelectTransactionType(),
               TransactionAmountField(amountController: amountController),
-              const CurrencySelector(),
+              const SelectCurrency(),
               // * Select Category and Wallet
               Padding(
                 padding: const EdgeInsets.all(16.0),
@@ -127,10 +136,9 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
                     SaveButton(
                         isSaveButtonEnabled: isSaveButtonEnabled,
                         ref: ref,
-                        // ref: ref,
                         noteController: noteController,
                         amountController: amountController,
-                        // ref: ref,
+                        categoryName: selectedCategory,
                         mounted: mounted),
                   ],
                 ),
@@ -321,13 +329,13 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
 class SelectCategory extends StatelessWidget {
   const SelectCategory({
     super.key,
-    required this.categories,
     required this.ref,
+    required this.categories,
     required this.selectedCategory,
   });
 
-  final List<Category> categories;
   final WidgetRef ref;
+  final List<Category> categories;
   final Category? selectedCategory;
 
   @override
@@ -369,6 +377,9 @@ class SelectCategory extends StatelessWidget {
                                   ref
                                       .read(selectedCategoryProvider.notifier)
                                       .state = categories[index];
+
+                                  debugPrint(
+                                      'selected category: ${categories[index].name}');
                                   Navigator.of(context).pop();
                                 },
                                 leading: Column(
@@ -397,8 +408,8 @@ class SelectCategory extends StatelessWidget {
   }
 }
 
-class CurrencySelector extends StatelessWidget {
-  const CurrencySelector({
+class SelectCurrency extends StatelessWidget {
+  const SelectCurrency({
     super.key,
   });
 
@@ -490,6 +501,7 @@ class SaveButton extends StatelessWidget {
     required this.ref,
     required this.noteController,
     required this.amountController,
+    required this.categoryName,
     required this.mounted,
   });
 
@@ -497,6 +509,7 @@ class SaveButton extends StatelessWidget {
   final WidgetRef ref;
   final TextEditingController noteController;
   final TextEditingController amountController;
+  final Category? categoryName;
   final bool mounted;
 
   @override
@@ -527,11 +540,11 @@ class SaveButton extends StatelessWidget {
               final isCreated = await ref
                   .read(createNewTransactionProvider.notifier)
                   .createNewTransaction(
-                    userId: userId,
-                    amount: double.parse(amount),
-                    type: type,
-                    note: note,
-                  );
+                      userId: userId,
+                      amount: double.parse(amount),
+                      type: type,
+                      note: note,
+                      categoryName: categoryName!.name);
               debugPrint('isCreated is: $isCreated');
 
               if (isCreated && mounted) {

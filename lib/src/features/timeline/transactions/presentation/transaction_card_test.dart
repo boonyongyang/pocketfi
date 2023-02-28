@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pocketfi/src/features/category/application/category_providers.dart';
 import 'package:pocketfi/src/features/timeline/transactions/domain/transaction.dart';
 
 class TransactionCardTest extends StatelessWidget {
@@ -14,6 +15,7 @@ class TransactionCardTest extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final category = getCategoryWithCategoryName(transaction.categoryName);
     return GestureDetector(
       onTap: onTapped,
       child: Padding(
@@ -33,14 +35,9 @@ class TransactionCardTest extends StatelessWidget {
                   children: [
                     Container(
                       padding: const EdgeInsets.all(5),
-                      decoration: const BoxDecoration(
-                          shape: BoxShape.circle, color: Colors.amber),
-                      child: const Center(
-                        child: Icon(
-                          Icons.attach_money,
-                          color: Colors.white,
-                        ),
-                      ),
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle, color: category.color),
+                      child: Center(child: category.icon),
                     ),
                     const SizedBox(
                       width: 10,
@@ -51,7 +48,7 @@ class TransactionCardTest extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            transaction.category,
+                            transaction.categoryName,
                           ),
                           Row(
                             children: [

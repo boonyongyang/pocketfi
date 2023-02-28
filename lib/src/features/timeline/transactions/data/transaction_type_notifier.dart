@@ -25,6 +25,7 @@ class CreateNewTransactionNotifier extends StateNotifier<IsLoading> {
     required UserId userId,
     required double amount,
     required TransactionType type,
+    required String categoryName,
     String? note,
   }) async {
     isLoading = true;
@@ -44,8 +45,7 @@ class CreateNewTransactionNotifier extends StateNotifier<IsLoading> {
       userId: userId,
       amount: amount,
       description: note,
-      // FIXME this is the problem --> need to do like the PostSettings one or just use category id instead
-      category: expenseCategories.last.name,
+      categoryName: categoryName,
       type: type,
     );
 
@@ -58,8 +58,7 @@ class CreateNewTransactionNotifier extends StateNotifier<IsLoading> {
           .collection(FirebaseCollectionName.transactions)
           .doc(transactionId)
           .set(payload);
-      // .add(payload);
-      debugPrint('Transaction added');
+      debugPrint('Transaction added $payload');
       return true;
     } catch (e) {
       debugPrint('Error adding transaction: $e');

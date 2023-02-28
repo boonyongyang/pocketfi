@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:pocketfi/src/features/category/domain/category_key.dart';
 
 class Category {
-  final String name;
+  final String name; // id
   final Color color;
   final Icon icon;
   final bool isSelected;
@@ -34,4 +35,13 @@ class Category {
         name,
         isSelected,
       ]);
+
+  factory Category.fromJson(Map<String, dynamic> json) {
+    return Category(
+      name: json[CategoryKey.name],
+      color: Color(json[CategoryKey.color]),
+      icon: Icon(json[CategoryKey.icon]),
+      isSelected: json[CategoryKey.isSelected] ?? false,
+    );
+  }
 }
