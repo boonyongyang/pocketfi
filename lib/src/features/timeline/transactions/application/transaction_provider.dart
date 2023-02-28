@@ -47,6 +47,10 @@ final userTransactionsProvider =
           FirebaseCollectionName.wallets,
         )
         // FIXME get the selected walletId
+        .doc('2023-02-27T23:18:16.426104')
+        .collection(
+          FirebaseCollectionName.transactions,
+        )
         // sort the transactions by the createdAt field.
         .orderBy(
           FirebaseFieldName.createdAt,
