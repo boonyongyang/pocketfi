@@ -4,9 +4,7 @@ import 'package:pocketfi/src/common_widgets/animations/empty_contents_with_text_
 import 'package:pocketfi/src/common_widgets/animations/error_animation_view.dart';
 import 'package:pocketfi/src/common_widgets/animations/loading_animation_view.dart';
 import 'package:pocketfi/src/constants/strings.dart';
-import 'package:pocketfi/src/features/timeline/posts/application/user_posts_provider.dart';
 import 'package:pocketfi/src/features/timeline/transactions/application/transaction_provider.dart';
-import 'package:pocketfi/src/features/timeline/transactions/presentation/transactions_list_view.dart';
 import 'package:pocketfi/src/features/timeline/transactions/presentation/transactions_list_view_test.dart';
 
 class TestTab extends ConsumerWidget {
@@ -14,11 +12,11 @@ class TestTab extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // get the posts from the provider
+    // get the transaction from the provider
     // stream provider will automatically update the UI when the data changes
     final transactions = ref.watch(userTransactionsProvider);
 
-    // return a RefreshIndicator to allow the user to refresh the posts
+    // return a RefreshIndicator to allow the user to refresh the transaction
     return RefreshIndicator(
       onRefresh: () {
         ref.refresh(userTransactionsProvider);
@@ -28,17 +26,17 @@ class TestTab extends ConsumerWidget {
           ),
         );
       },
-      // return a different widget depending on the state of the posts
+      // return a different widget depending on the state of the transaction
       child: transactions.when(
-        // if the posts are loaded, return a list of posts
+        // if the transaction are loaded, return a list of transaction
         data: (trans) {
           if (trans.isEmpty) {
-            // if there are no posts, return an empty widget
+            // if there are no transaction, return an empty widget
             return const EmptyContentsWithTextAnimationView(
               text: Strings.youHaveNoPosts,
             );
           } else {
-            // if there are posts, return a list of posts
+            // if there are transaction, return a list of transaction
             return Container(
               padding: const EdgeInsets.only(top: 20),
               color: Colors.grey,
@@ -54,7 +52,7 @@ class TestTab extends ConsumerWidget {
           return const ErrorAnimationView();
         },
 
-        // if the posts are loading, return a loading widget
+        // if the transaction are loading, return a loading widget
         loading: () {
           return const LoadingAnimationView();
         },

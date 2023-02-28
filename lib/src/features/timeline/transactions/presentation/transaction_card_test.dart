@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pocketfi/src/features/timeline/posts/domain/post.dart';
 import 'package:pocketfi/src/features/timeline/transactions/domain/transaction.dart';
 
 class TransactionCardTest extends StatelessWidget {

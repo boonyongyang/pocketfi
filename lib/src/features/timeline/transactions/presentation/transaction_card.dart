@@ -104,11 +104,21 @@ class TransactionCard extends StatelessWidget {
                                 fontSize: 12,
                                 color: Colors.grey[700],
                               )),
-                          Image.network(
-                            post.thumbnailUrl ?? '',
-                            fit: BoxFit.cover,
-                            height: 100.0,
-                          ),
+                          // if thumbnailUrl is not null, show the image
+                          // else show a SizedBox
+                          if (post.thumbnailUrl != null)
+                            Image.network(
+                              post.thumbnailUrl ?? '',
+                              fit: BoxFit.cover,
+                              height: 100.0,
+                            )
+                          else
+                            const SizedBox(),
+                          // Image.network(
+                          //   post.thumbnailUrl ?? '',
+                          //   fit: BoxFit.cover,
+                          //   height: 100.0,
+                          // ),
                           Text(post.createdAt.toIso8601String()),
                         ],
                       ),
@@ -118,7 +128,7 @@ class TransactionCard extends StatelessWidget {
                 Text(
                   '${transactionType == TransactionType.expense ? '-' : '+'}MYR ${post.amount}',
                   style: TextStyle(
-                    //fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w600,
                     fontSize: 16,
                     color: transactionType == TransactionType.expense
                         ? Colors.red

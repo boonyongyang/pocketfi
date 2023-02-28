@@ -36,7 +36,7 @@ class TransactionsListView extends StatelessWidget {
             post: post,
             transactionType: TransactionType.expense,
             onTapped: () {
-              // navigate to the post details view
+              // TODO navigate to the post details view
 
               // Navigator.push(
               //   context,

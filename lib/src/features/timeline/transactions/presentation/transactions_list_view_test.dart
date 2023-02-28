@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pocketfi/src/features/timeline/posts/domain/post.dart';
 import 'package:pocketfi/src/features/timeline/transactions/domain/transaction.dart';
 import 'package:pocketfi/src/features/timeline/transactions/presentation/transaction_card_test.dart';
-import 'package:pocketfi/src/features/timeline/transactions/presentation/transaction_card.dart';
 
 class TransactionListViewTest extends StatelessWidget {
   final Iterable<Transaction> transactions;
