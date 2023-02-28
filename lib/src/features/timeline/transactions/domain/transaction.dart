@@ -3,7 +3,6 @@ import 'package:flutter/foundation.dart' show immutable;
 import 'package:flutter/material.dart' show Color;
 import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/constants/strings.dart';
-import 'package:pocketfi/src/features/category/domain/category.dart';
 import 'package:pocketfi/src/features/timeline/transactions/domain/tag.dart';
 import 'package:pocketfi/src/features/timeline/transactions/domain/transaction_key.dart';
 
@@ -38,6 +37,7 @@ class Transaction {
   final String categoryName;
   final TransactionType type;
   final DateTime createdAt;
+  final DateTime date;
   final bool isBookmark;
   final String? description;
   final String? thumbnailUrl; // image
@@ -62,6 +62,8 @@ class Transaction {
               transactionType.name == json[TransactionKey.type],
           orElse: () => TransactionType.expense,
         ),
+        date = (json[TransactionKey.date] as Timestamp?)?.toDate() ??
+            DateTime.now(),
         isBookmark = json[TransactionKey.isBookmark] ?? false,
         createdAt = (json[TransactionKey.createdAt] as Timestamp).toDate(),
         thumbnailUrl = json[TransactionKey.thumbnailUrl],

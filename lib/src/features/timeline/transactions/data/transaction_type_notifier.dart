@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/constants/firebase_collection_name.dart';
 import 'package:pocketfi/src/constants/typedefs.dart';
-import 'package:pocketfi/src/features/category/domain/default_categories.dart';
 import 'package:pocketfi/src/features/timeline/transactions/domain/transaction.dart';
 import 'package:pocketfi/src/features/timeline/transactions/domain/transaction_payload.dart';
 import 'package:pocketfi/src/utils/document_id_from_current_date.dart';
@@ -26,6 +25,7 @@ class CreateNewTransactionNotifier extends StateNotifier<IsLoading> {
     required double amount,
     required TransactionType type,
     required String categoryName,
+    required DateTime date,
     String? note,
   }) async {
     isLoading = true;
@@ -47,6 +47,7 @@ class CreateNewTransactionNotifier extends StateNotifier<IsLoading> {
       description: note,
       categoryName: categoryName,
       type: type,
+      date: date,
     );
 
     try {

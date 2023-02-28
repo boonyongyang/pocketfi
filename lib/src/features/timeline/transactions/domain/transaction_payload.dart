@@ -2,7 +2,6 @@ import 'dart:collection';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart' show immutable;
-import 'package:pocketfi/src/features/category/domain/category.dart';
 import 'package:pocketfi/src/features/timeline/transactions/domain/transaction.dart';
 import 'package:pocketfi/src/features/timeline/transactions/domain/transaction_key.dart';
 
@@ -14,7 +13,7 @@ class TransactionPayload extends MapView<String, dynamic> {
     required final double amount,
     required final String categoryName,
     required final TransactionType type,
-    //  final DateTime createdAt,
+    required final DateTime date,
     final bool isBookmark = false,
     final String? description,
     final String? thumbnailUrl, // image
@@ -32,6 +31,7 @@ class TransactionPayload extends MapView<String, dynamic> {
             TransactionKey.categoryName: categoryName,
             TransactionKey.type: type.name,
             TransactionKey.createdAt: FieldValue.serverTimestamp(),
+            TransactionKey.date: date,
             TransactionKey.isBookmark: isBookmark,
             TransactionKey.description: description,
             TransactionKey.thumbnailUrl: thumbnailUrl,

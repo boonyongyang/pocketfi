@@ -7,8 +7,9 @@ class TransactionKey {
   static const amount = 'amount';
   static const categoryName = 'categoryName';
   static const type = 'type';
-  static const isBookmark = 'is_bookmark';
   static const createdAt = 'created_at';
+  static const date = 'date';
+  static const isBookmark = 'is_bookmark';
   static const thumbnailUrl = 'thumbnail_url';
   static const fileUrl = 'file_url';
   static const fileType = 'file_type';

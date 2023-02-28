@@ -14,15 +14,15 @@ import 'package:pocketfi/src/features/category/application/category_providers.da
 import 'package:pocketfi/src/features/category/domain/category.dart';
 import 'package:pocketfi/src/features/timeline/posts/post_settings/application/post_setting_provider.dart';
 import 'package:pocketfi/src/features/timeline/transactions/application/transaction_provider.dart';
+import 'package:pocketfi/src/features/timeline/transactions/date_picker/application/selected_date_notifier.dart';
 import 'package:pocketfi/src/features/timeline/transactions/domain/tag.dart';
-import 'package:pocketfi/src/features/timeline/transactions/domain/transaction.dart';
 import 'package:pocketfi/src/features/timeline/transactions/image_upload/domain/file_type.dart';
 import 'package:pocketfi/src/features/timeline/transactions/image_upload/domain/thumbnail_request.dart';
 import 'package:pocketfi/src/features/timeline/transactions/image_upload/helpers/image_picker_helper.dart';
 import 'package:pocketfi/src/features/timeline/transactions/presentation/add_new_transactions/category_selector_view.dart';
 import 'package:pocketfi/src/features/timeline/transactions/presentation/add_new_transactions/full_screen_image_dialog.dart';
 import 'package:pocketfi/src/features/timeline/transactions/presentation/add_new_transactions/select_transaction_type.dart';
-import 'package:pocketfi/src/features/timeline/transactions/presentation/add_new_transactions/transaction_date_picker.dart';
+import 'package:pocketfi/src/features/timeline/transactions/date_picker/presentation/transaction_date_picker.dart';
 
 class AddNewTransaction extends StatefulHookConsumerWidget {
   const AddNewTransaction({
@@ -83,7 +83,6 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
 
             Navigator.of(context).pop();
             resetCategoryState(ref);
-            // reset transction type provider to expense
             ref.read(transactionTypeProvider.notifier).setTransactionType(0);
           },
         ),
@@ -125,6 +124,7 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
+                  // mainAxisSize: MainAxisSize.min,
                   children: [
                     const TransactionDatePicker(),
                     WriteOptionalNote(noteController: noteController),
@@ -133,13 +133,51 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
                     const SizedBox(height: 8.0),
                     selectTags(),
                     selectReccurence(),
-                    SaveButton(
-                        isSaveButtonEnabled: isSaveButtonEnabled,
-                        ref: ref,
-                        noteController: noteController,
-                        amountController: amountController,
-                        categoryName: selectedCategory,
-                        mounted: mounted),
+                    Center(
+                      child: Row(
+                        children: [
+                          // IconButton(
+                          //   icon: const Icon(
+                          //     Icons.bookmark_outline,
+                          //     color: AppColors.mainColor1,
+                          //   ),
+                          //   onPressed: () {
+                          //     ref
+                          //         .read(postSettingProvider.notifier)
+                          //         .toggleBookmark();
+                          //   },
+                          // ),
+                          Transform.scale(
+                            scale: 1.5,
+                            child: IconButton(
+                              splashRadius: 24 / 1.2,
+                              icon: const Icon(
+                                Icons.bookmark_outline,
+                                color: AppColors.mainColor1,
+                              ),
+                              onPressed: () {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('Bookmark'),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width - 100,
+                            child: SaveButton(
+                                isSaveButtonEnabled: isSaveButtonEnabled,
+                                ref: ref,
+                                noteController: noteController,
+                                amountController: amountController,
+                                categoryName: selectedCategory,
+                                mounted: mounted),
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -522,6 +560,7 @@ class SaveButton extends StatelessWidget {
           ? () async {
               final userId = ref.read(userIdProvider);
               final type = ref.read(transactionTypeProvider);
+              final date = ref.read(selectedDateProvider);
 
               debugPrint('userId is: $userId');
               debugPrint('transactionType is: $type');
@@ -544,13 +583,20 @@ class SaveButton extends StatelessWidget {
                       amount: double.parse(amount),
                       type: type,
                       note: note,
-                      categoryName: categoryName!.name);
+                      categoryName: categoryName!.name,
+                      date: date);
               debugPrint('isCreated is: $isCreated');
 
               if (isCreated && mounted) {
                 noteController.clear();
                 amountController.clear();
                 Navigator.of(context).pop();
+
+                // reset the state of the provider
+                resetCategoryState(ref);
+                ref
+                    .read(transactionTypeProvider.notifier)
+                    .setTransactionType(0);
 
                 // show snackbar to notify the user
                 ScaffoldMessenger.of(context).showSnackBar(
