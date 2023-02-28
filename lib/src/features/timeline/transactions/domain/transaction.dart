@@ -30,8 +30,8 @@ enum TransactionType {
 
 @immutable
 class Transaction {
-  // final String transactionId;
-  final String userId;
+  final String transactionId;
+  // final String userId;
   final double amount;
   // TODO: make to category
   final String category;
@@ -49,11 +49,12 @@ class Transaction {
   // final bool shared = false;
 
   Transaction({
-    // required this.transactionId,
-    required this.amount,
-    required this.category,
+    required this.transactionId,
     required Map<String, dynamic> json,
-  })  : userId = json[TransactionKey.userId],
+  })  :
+        // userId = json[TransactionKey.userId],
+        amount = json[TransactionKey.amount],
+        category = json[TransactionKey.category],
         description = json[TransactionKey.description],
         type = TransactionType.values.firstWhere(
           (transactionType) =>
