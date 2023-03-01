@@ -100,6 +100,7 @@ class _CreateNewBudgetViewState extends ConsumerState<CreateNewBudgetView> {
                         padding: const EdgeInsets.all(8.0),
                         child: TextField(
                           controller: amountController,
+                          keyboardType: TextInputType.number,
                           decoration: const InputDecoration(
                             labelText: Strings.amount,
                             hintText: "0.00",
@@ -171,7 +172,7 @@ class _CreateNewBudgetViewState extends ConsumerState<CreateNewBudgetView> {
                         bottom: 8.0,
                       ),
                       child: DropdownButton<String>(
-                        value: _getWallets().first.walletName,
+                        // value: _getWallets().first.walletName,
                         items: _getWallets().map((Wallet wallet) {
                           return DropdownMenuItem<String>(
                             value: wallet.walletName,

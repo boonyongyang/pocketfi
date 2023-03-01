@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:pocketfi/src/common_widgets/dialogs/alert_dialog_model.dart';
+import 'package:pocketfi/src/common_widgets/dialogs/already_exist_dialog.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/common_widgets/buttons/full_width_button_with_text.dart';
 import 'package:pocketfi/src/constants/app_icons.dart';
 import 'package:pocketfi/src/constants/strings.dart';
 import 'package:pocketfi/src/features/authentication/application/user_id_provider.dart';
 import 'package:pocketfi/src/features/budget/wallet/application/create_new_wallet_provider.dart';
+import 'package:pocketfi/src/features/budget/wallet/data/user_wallets_provider.dart';
+import 'package:pocketfi/src/features/budget/wallet/domain/wallet.dart';
 
 class CreateNewWalletView extends StatefulHookConsumerWidget {
   // final String walletId;
@@ -33,8 +37,6 @@ class _CreateNewWalletViewState extends ConsumerState<CreateNewWalletView> {
     //     userId: widget.userId,
     //   ),
     // );
-
-    // final wallets = ref.watch(userWalletsProvider);
 
     useEffect(
       () {
@@ -213,11 +215,18 @@ class _CreateNewWalletViewState extends ConsumerState<CreateNewWalletView> {
                         text: Strings.createNewWallet,
                         onPressed: isCreateButtonEnabled.value
                             ? () async {
-                                _createNewWalletController(
-                                  walletNameController,
-                                  // initialBalanceController,
-                                  ref,
-                                );
+                                if (await _checkWalletNameExists(
+                                    walletNameController.text)) {
+                                  AlreadyExistDialog(
+                                    itemName: walletNameController.text,
+                                  ).present(context);
+                                } else {
+                                  _createNewWalletController(
+                                    walletNameController,
+                                    // initialBalanceController,
+                                    ref,
+                                  );
+                                }
                               }
                             : null),
                     // Padding(
@@ -307,5 +316,24 @@ class _CreateNewWalletViewState extends ConsumerState<CreateNewWalletView> {
       // Beamer.of(context).beamBack();
       Navigator.of(context).maybePop();
     }
+  }
+
+  Future<bool> _checkWalletNameExists(
+    String nameController,
+  ) async {
+    debugPrint(nameController);
+    debugPrint('getWallet: ' + _getWallets().toString());
+    for (var wallet in _getWallets()) {
+      debugPrint('everywallet: ${wallet.walletName}');
+      if (nameController == wallet.walletName) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  Iterable<Wallet> _getWallets() {
+    final wallets = ref.read(userWalletsProvider);
+    return wallets.maybeWhen(orElse: () => [], data: (wallets) => wallets);
   }
 }
