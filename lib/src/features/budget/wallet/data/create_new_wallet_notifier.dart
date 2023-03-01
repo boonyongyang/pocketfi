@@ -24,7 +24,7 @@ class CreateNewWalletNotifier extends StateNotifier<IsLoading> {
     final payload = WalletPayload(
       walletId: walletId,
       walletName: walletName,
-      walletBalance: walletBalance,
+      // walletBalance: walletBalance,
       userId: userId,
     );
     try {
