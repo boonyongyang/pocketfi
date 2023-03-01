@@ -7,6 +7,17 @@ import 'package:pocketfi/src/constants/firebase_field_name.dart';
 import 'package:pocketfi/src/features/authentication/application/user_id_provider.dart';
 import 'package:pocketfi/src/features/budget/wallet/domain/wallet.dart';
 
+final selectedWalletProvider = StateProvider<Wallet?>(
+  (ref) {
+    // FIXME wallet should not be null, it should always return a default 'Personal' wallet
+    final wallets = ref.read(userWalletsProvider).value;
+    if (wallets == null) {
+      return null;
+    }
+    return wallets.first;
+  },
+);
+
 final userWalletsProvider = StreamProvider.autoDispose<Iterable<Wallet>>((ref) {
   final userId = ref.watch(userIdProvider);
   final controller = StreamController<Iterable<Wallet>>();

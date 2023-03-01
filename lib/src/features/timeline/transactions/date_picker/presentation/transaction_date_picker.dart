@@ -76,11 +76,12 @@ class TransactionDatePickerState extends ConsumerState<TransactionDatePicker> {
       context: context,
       initialDate: ref.read(selectedDateProvider),
       firstDate: DateTime(1900),
-      lastDate: DateTime.now(),
+      lastDate: DateTime.now().add(const Duration(days: 365)),
     );
 
     if (selectedDate != null) {
       ref.read(selectedDateProvider.notifier).updateSelectedDate(selectedDate);
+      // TODO: if selectedDate is in the future, make it a scheduled transaction
     }
   }
 

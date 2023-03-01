@@ -10,6 +10,8 @@ import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/constants/app_icons.dart';
 import 'package:pocketfi/src/constants/strings.dart';
 import 'package:pocketfi/src/features/authentication/application/user_id_provider.dart';
+import 'package:pocketfi/src/features/budget/wallet/data/user_wallets_provider.dart';
+import 'package:pocketfi/src/features/budget/wallet/domain/wallet.dart';
 import 'package:pocketfi/src/features/category/application/category_providers.dart';
 import 'package:pocketfi/src/features/category/domain/category.dart';
 import 'package:pocketfi/src/features/timeline/posts/post_settings/application/post_setting_provider.dart';
@@ -43,6 +45,9 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
   Widget build(BuildContext context) {
     final categories = ref.watch(categoriesProvider);
     final selectedCategory = ref.watch(selectedCategoryProvider);
+
+    final wallets = ref.watch(userWalletsProvider);
+    final selectedWallet = ref.watch(selectedWalletProvider);
 
     final amountController = useTextEditingController();
     final noteController = useTextEditingController();
@@ -112,7 +117,11 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
                     const Spacer(),
                     const Icon(AppIcons.wallet, color: AppColors.mainColor1),
                     const SizedBox(width: 8.0),
-                    selectWallet(),
+                    SelectWallet(
+                        ref: ref,
+                        selectedWallet: selectedWallet,
+                        wallets: wallets.value),
+                    // selectWallet(),
                     const SizedBox(width: 8.0),
                   ],
                 ),
@@ -168,12 +177,14 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
                           SizedBox(
                             width: MediaQuery.of(context).size.width - 100,
                             child: SaveButton(
-                                isSaveButtonEnabled: isSaveButtonEnabled,
-                                ref: ref,
-                                noteController: noteController,
-                                amountController: amountController,
-                                categoryName: selectedCategory,
-                                mounted: mounted),
+                              isSaveButtonEnabled: isSaveButtonEnabled,
+                              ref: ref,
+                              noteController: noteController,
+                              amountController: amountController,
+                              categoryName: selectedCategory,
+                              mounted: mounted,
+                              selectedWallet: selectedWallet,
+                            ),
                           ),
                         ],
                       ),
@@ -364,6 +375,71 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
   }
 }
 
+class SelectWallet extends ConsumerWidget {
+  const SelectWallet({
+    super.key,
+    required this.ref,
+    required this.wallets,
+    required this.selectedWallet,
+  });
+
+  final WidgetRef ref;
+  final Iterable<Wallet>? wallets;
+  final Wallet? selectedWallet;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    // final wallets = ref.watch(userWalletsProvider);
+    // final selectedWallet = ref.watch(selectedWalletProvider);
+
+    debugPrint('first wallets: ${selectedWallet?.walletName}');
+    final walletList = wallets?.toList();
+
+    return DropdownButton(
+      value: selectedWallet,
+      items: walletList?.map((wallet) {
+        return DropdownMenuItem(
+          value: wallet,
+          child: Text(wallet.walletName),
+        );
+      }).toList(),
+      onChanged: (selectedWallet) {
+        debugPrint('wallet tapped: ${selectedWallet?.walletName}');
+        ref.read(selectedWalletProvider.notifier).state = selectedWallet!;
+        debugPrint(
+            'selected wallet: ${ref.read(selectedWalletProvider)?.walletName}');
+      },
+    );
+
+    // return Center(
+    //   child: wallets.when(
+    //     data: (Iterable<Wallet> data) {
+    //       // final walletList = data?.toList() ?? [];
+    //       final walletList = data.toList();
+    //       return DropdownButton(
+    //         // value: walletList.isNotEmpty ? walletList.first : null,
+    //         value: selectedWallet,
+    //         items: walletList.map((wallet) {
+    //           return DropdownMenuItem(
+    //             value: wallet,
+    //             child: Text(wallet.walletName),
+    //           );
+    //         }).toList(),
+    //         onChanged: (selectedWallet) {
+    //           debugPrint('wallet tapped: ${selectedWallet?.walletName}');
+    //           ref.read(selectedWalletProvider.notifier).state = selectedWallet!;
+    //           debugPrint(
+    //               'selected wallet: ${ref.read(selectedWalletProvider)?.walletName}');
+    //         },
+    //       );
+    //     },
+    //     loading: () => const CircularProgressIndicator(),
+    //     error: (error, stackTrace) => Text('Error: $error'),
+    //   ),
+    // );
+  }
+}
+
 class SelectCategory extends StatelessWidget {
   const SelectCategory({
     super.key,
@@ -540,6 +616,7 @@ class SaveButton extends StatelessWidget {
     required this.noteController,
     required this.amountController,
     required this.categoryName,
+    required this.selectedWallet,
     required this.mounted,
   });
 
@@ -548,6 +625,7 @@ class SaveButton extends StatelessWidget {
   final TextEditingController noteController;
   final TextEditingController amountController;
   final Category? categoryName;
+  final Wallet? selectedWallet;
   final bool mounted;
 
   @override
@@ -575,6 +653,8 @@ class SaveButton extends StatelessWidget {
               debugPrint('note is: $note');
               debugPrint('amount is: $amount');
 
+              debugPrint('walletName is: ${selectedWallet!.walletId}');
+
               // hooking the UI to the provider will cause the UI to rebuild
               final isCreated = await ref
                   .read(createNewTransactionProvider.notifier)
@@ -584,6 +664,8 @@ class SaveButton extends StatelessWidget {
                       type: type,
                       note: note,
                       categoryName: categoryName!.name,
+                      // walletName: selectedWallet!.walletName,
+                      walletName: selectedWallet!.walletId,
                       date: date);
               debugPrint('isCreated is: $isCreated');
 

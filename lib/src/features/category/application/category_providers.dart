@@ -6,7 +6,7 @@ import 'package:pocketfi/src/features/timeline/transactions/application/transact
 import 'package:pocketfi/src/features/timeline/transactions/domain/transaction.dart';
 
 // * provide the first category based on the transaction type selected
-final selectedCategoryProvider = StateProvider<Category?>(
+final selectedCategoryProvider = StateProvider<Category>(
   (ref) {
     final transactionTypeIndex = ref.watch(transactionTypeProvider);
     if (transactionTypeIndex == TransactionType.expense) {

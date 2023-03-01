@@ -23,9 +23,10 @@ class CreateNewTransactionNotifier extends StateNotifier<IsLoading> {
   Future<bool> createNewTransaction({
     required UserId userId,
     required double amount,
+    required DateTime date,
     required TransactionType type,
     required String categoryName,
-    required DateTime date,
+    required String walletName, // should be id?
     String? note,
   }) async {
     isLoading = true;
@@ -44,10 +45,11 @@ class CreateNewTransactionNotifier extends StateNotifier<IsLoading> {
     final payload = TransactionPayload(
       userId: userId,
       amount: amount,
-      description: note,
-      categoryName: categoryName,
-      type: type,
       date: date,
+      type: type,
+      categoryName: categoryName,
+      // walletName: walletName,
+      description: note,
     );
 
     try {
@@ -55,7 +57,7 @@ class CreateNewTransactionNotifier extends StateNotifier<IsLoading> {
           .collection(FirebaseCollectionName.users)
           .doc(userId)
           .collection(FirebaseCollectionName.wallets)
-          .doc(walletId)
+          .doc(walletName)
           .collection(FirebaseCollectionName.transactions)
           .doc(transactionId)
           .set(payload);

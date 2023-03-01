@@ -12,6 +12,7 @@ class TransactionPayload extends MapView<String, dynamic> {
     required final String userId,
     required final double amount,
     required final String categoryName,
+    // required final String walletName,
     required final TransactionType type,
     required final DateTime date,
     final bool isBookmark = false,
