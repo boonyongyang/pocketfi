@@ -50,8 +50,11 @@ class WalletTiles extends ConsumerWidget {
                 child: Column(
                   children: const [
                     CircleAvatar(
-                      backgroundColor: AppColors.subColor1,
-                      child: Icon(AppIcons.wallet),
+                      backgroundColor: AppColors.subColor2,
+                      child: Icon(
+                        AppIcons.wallet,
+                        color: Colors.white,
+                      ),
                     ),
                   ],
                 ),
@@ -77,25 +80,25 @@ class WalletTiles extends ConsumerWidget {
                         ],
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        left: 8.0,
-                        top: 2.0,
-                        bottom: 8.0,
-                      ),
-                      child: Row(
-                        children: [
-                          Text(
-                            'RM ${wallet.walletBalance.toStringAsFixed(2)}',
-                            style: const TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: AppColors.mainColor2,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                    // Padding(
+                    //   padding: const EdgeInsets.only(
+                    //     left: 8.0,
+                    //     top: 2.0,
+                    //     bottom: 8.0,
+                    //   ),
+                    //   child: Row(
+                    //     children: [
+                    //       Text(
+                    //         'RM ${wallet.walletBalance.toStringAsFixed(2)}',
+                    //         style: const TextStyle(
+                    //           fontSize: 20,
+                    //           fontWeight: FontWeight.bold,
+                    //           color: AppColors.mainColor2,
+                    //         ),
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
                   ],
                 ),
               ),

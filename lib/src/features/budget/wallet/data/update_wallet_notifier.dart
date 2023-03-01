@@ -13,7 +13,7 @@ class UpdateWalletStateNotifier extends StateNotifier<IsLoading> {
   Future<bool> updateWallet({
     required String walletId,
     required String walletName,
-    required double walletBalance,
+    // required double walletBalance,
   }) async {
     try {
       isLoading = true;
@@ -30,12 +30,13 @@ class UpdateWalletStateNotifier extends StateNotifier<IsLoading> {
       await query.then(
         (query) async {
           for (final doc in query.docs) {
-            if (walletName != doc[FirebaseFieldName.walletName] ||
-                walletBalance != doc[FirebaseFieldName.walletBalance]) {
+            if (walletName != doc[FirebaseFieldName.walletName]
+                // || walletBalance != doc[FirebaseFieldName.walletBalance]
+                ) {
               await doc.reference.update(
                 {
                   FirebaseFieldName.walletName: walletName,
-                  FirebaseFieldName.walletBalance: walletBalance,
+                  // FirebaseFieldName.walletBalance: walletBalance,
                 },
               );
 
