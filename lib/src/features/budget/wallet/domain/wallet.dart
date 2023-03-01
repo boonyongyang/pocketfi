@@ -7,7 +7,7 @@ import 'package:pocketfi/src/constants/typedefs.dart';
 class Wallet {
   final String walletId;
   final String walletName;
-  final double walletBalance;
+  // final double walletBalance;
   final DateTime createdAt;
   // TODO maybe a list idk
   final UserId userId;
@@ -16,7 +16,7 @@ class Wallet {
   Wallet(Map<String, dynamic> json)
       : walletId = json[FirebaseFieldName.walletId],
         walletName = json[FirebaseFieldName.walletName],
-        walletBalance = json[FirebaseFieldName.walletBalance],
+        // walletBalance = json[FirebaseFieldName.walletBalance],
         createdAt = (json[FirebaseFieldName.createdAt] as Timestamp).toDate(),
         userId = json[FirebaseFieldName.userId] as UserId;
   // Wallet(Map<String, dynamic> json, {required this.walletId})
@@ -30,7 +30,7 @@ class Wallet {
       runtimeType == other.runtimeType &&
       other.walletId == walletId &&
       other.walletName == walletName &&
-      other.walletBalance == walletBalance &&
+      // other.walletBalance == walletBalance &&
       other.createdAt == createdAt &&
       other.userId == userId;
 
@@ -39,7 +39,7 @@ class Wallet {
         [
           walletId,
           walletName,
-          walletBalance,
+          // walletBalance,
           createdAt,
           userId,
         ],

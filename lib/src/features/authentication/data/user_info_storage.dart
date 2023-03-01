@@ -48,7 +48,7 @@ class UserInfoStorage {
       final walletPayload = WalletPayload(
         walletId: documentIdFromCurrentDate(),
         walletName: 'Personal',
-        walletBalance: 0.00,
+        // walletBalance: 0.00,
         userId: userId,
       );
       // TODO: Add category payload, differentiate default and custom

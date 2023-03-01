@@ -13,7 +13,16 @@ class DeleteWalletStateNotifier extends StateNotifier<IsLoading> {
     required String walletId,
   }) async {
     try {
+      final wallets = await FirebaseFirestore.instance
+          .collection(FirebaseCollectionName.users)
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .collection(FirebaseCollectionName.wallets)
+          .get();
       isLoading = true;
+
+      if (wallets.docs.length == 1) {
+        return false;
+      }
 
       final query = FirebaseFirestore.instance
           .collection(FirebaseCollectionName.users)

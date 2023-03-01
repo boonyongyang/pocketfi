@@ -12,6 +12,9 @@ import 'package:pocketfi/src/features/authentication/application/user_id_provide
 import 'package:pocketfi/src/features/budget/application/total_amount_provider.dart';
 import 'package:pocketfi/src/features/budget/application/user_budgets_provider.dart';
 import 'package:pocketfi/src/features/budget/presentation/budget_tile.dart';
+import 'package:pocketfi/src/features/budget/wallet/presentation/create_new_wallet_view.dart';
+import 'package:pocketfi/src/features/budget/wallet/presentation/wallet_page.dart';
+import 'package:pocketfi/src/features/budget/wallet/presentation/wallet_sheet.dart';
 import 'package:pocketfi/src/features/category/domain/default_categories.dart';
 
 class BudgetPage extends ConsumerStatefulWidget {
@@ -35,17 +38,27 @@ class _BudgetPageState extends ConsumerState<BudgetPage> {
         actions: [
           IconButton(
             icon: const Icon(AppIcons.wallet),
-            onPressed: () =>
-                // {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     // builder: (_) => const WalletPage(),
-                //     builder: (_) => const CreateNewWalletView(),
-                //   ),
-                // );
+            onPressed: () {
+              showModalBottomSheet(
+                context: context,
+                builder: (context) => const WalletSheet(),
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(16.0),
+                  ),
+                ),
+              );
+            },
+            // {
+            // Navigator.push(
+            //   context,
+            //   MaterialPageRoute(
+            //     // builder: (_) => const WalletPage(),
+            //     builder: (_) => const CreateNewWalletView(),
+            //   ),
+            // );
 
-                context.beamToNamed("wallet"),
+            // context.beamToNamed("wallet"),
             // },
             // BeamerButton(
             //   beamer: beamer,

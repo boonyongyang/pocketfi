@@ -9,7 +9,7 @@ import 'package:pocketfi/src/features/budget/domain/budget.dart';
 final userBudgetsProvider = StreamProvider.autoDispose<Iterable<Budget>>((ref) {
   final userId = ref.watch(userIdProvider);
   // !temporary only
-  const walletId = '2023-02-27T21:08:26.256268';
+  const walletId = '2023-03-01T12:02:23.282294';
   final controller = StreamController<Iterable<Budget>>();
 
   final sub = FirebaseFirestore.instance

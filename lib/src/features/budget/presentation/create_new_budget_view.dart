@@ -7,6 +7,8 @@ import 'package:pocketfi/src/constants/app_icons.dart';
 import 'package:pocketfi/src/constants/strings.dart';
 import 'package:pocketfi/src/features/authentication/application/user_id_provider.dart';
 import 'package:pocketfi/src/features/budget/application/create_new_budget_provider.dart';
+import 'package:pocketfi/src/features/budget/wallet/data/user_wallets_provider.dart';
+import 'package:pocketfi/src/features/budget/wallet/domain/wallet.dart';
 
 class CreateNewBudgetView extends StatefulHookConsumerWidget {
   const CreateNewBudgetView({super.key});
@@ -169,19 +171,29 @@ class _CreateNewBudgetViewState extends ConsumerState<CreateNewBudgetView> {
                         bottom: 8.0,
                       ),
                       child: DropdownButton<String>(
-                        value: "All wallet",
-                        items: <String>[
-                          "All wallet",
-                          "wallet 1",
-                          "wallet 2",
-                        ].map<DropdownMenuItem<String>>((String value) {
+                        value: _getWallets().first.walletName,
+                        items: _getWallets().map((Wallet wallet) {
                           return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
+                            value: wallet.walletName,
+                            child: Text(wallet.walletName),
                           );
                         }).toList(),
                         onChanged: (_) {},
                       ),
+                      // child: DropdownButton<String>(
+                      //   value: "All wallet",
+                      //   items: <String>[
+                      //     "All wallet",
+                      //     "wallet 1",
+                      //     "wallet 2",
+                      //   ].map<DropdownMenuItem<String>>((String value) {
+                      //     return DropdownMenuItem<String>(
+                      //       value: value,
+                      //       child: Text(value),
+                      //     );
+                      //   }).toList(),
+                      //   onChanged: (_) {},
+                      // ),
                     ),
                   ],
                 ),
@@ -230,5 +242,10 @@ class _CreateNewBudgetViewState extends ConsumerState<CreateNewBudgetView> {
       // Beamer.of(context).beamBack();
       Navigator.of(context).maybePop();
     }
+  }
+
+  Iterable<Wallet> _getWallets() {
+    final wallets = ref.watch(userWalletsProvider);
+    return wallets.valueOrNull ?? [];
   }
 }

@@ -25,7 +25,7 @@ class _CreateNewWalletViewState extends ConsumerState<CreateNewWalletView> {
   @override
   Widget build(BuildContext context) {
     final walletNameController = useTextEditingController();
-    final initialBalanceController = useTextEditingController();
+    // final initialBalanceController = useTextEditingController();
 
     final isCreateButtonEnabled = useState(false);
     // final request = useState(
@@ -94,32 +94,32 @@ class _CreateNewWalletViewState extends ConsumerState<CreateNewWalletView> {
                     ),
                   ],
                 ),
-                Row(
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.only(left: 16.0, right: 32.0),
-                      child: SizedBox(
-                        width: 5,
-                        child: Icon(
-                          Icons.money_rounded,
-                          color: AppColors.mainColor1,
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextField(
-                          controller: initialBalanceController,
-                          keyboardType: TextInputType.number,
-                          decoration: const InputDecoration(
-                            labelText: Strings.walletBalance,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                // Row(
+                //   children: [
+                //     const Padding(
+                //       padding: EdgeInsets.only(left: 16.0, right: 32.0),
+                //       child: SizedBox(
+                //         width: 5,
+                //         child: Icon(
+                //           Icons.money_rounded,
+                //           color: AppColors.mainColor1,
+                //         ),
+                //       ),
+                //     ),
+                //     Expanded(
+                //       child: Padding(
+                //         padding: const EdgeInsets.all(8.0),
+                //         child: TextField(
+                //           controller: initialBalanceController,
+                //           keyboardType: TextInputType.number,
+                //           decoration: const InputDecoration(
+                //             labelText: Strings.walletBalance,
+                //           ),
+                //         ),
+                //       ),
+                //     ),
+                //   ],
+                // ),
                 Row(
                   children: [
                     const Padding(
@@ -215,7 +215,7 @@ class _CreateNewWalletViewState extends ConsumerState<CreateNewWalletView> {
                             ? () async {
                                 _createNewWalletController(
                                   walletNameController,
-                                  initialBalanceController,
+                                  // initialBalanceController,
                                   ref,
                                 );
                               }
@@ -284,25 +284,25 @@ class _CreateNewWalletViewState extends ConsumerState<CreateNewWalletView> {
 
   Future<void> _createNewWalletController(
     TextEditingController nameController,
-    TextEditingController balanceController,
+    // TextEditingController balanceController,
     WidgetRef ref,
   ) async {
     final userId = ref.read(userIdProvider);
     if (userId == null) {
       return;
     }
-    if (balanceController.text.isEmpty) {
-      balanceController.text = '0.00';
-    }
+    // if (balanceController.text.isEmpty) {
+    //   balanceController.text = '0.00';
+    // }
     final isCreated =
         await ref.read(createNewWalletProvider.notifier).createNewWallet(
               userId: userId,
               walletName: nameController.text,
-              walletBalance: double.parse(balanceController.text),
+              // walletBalance: double.parse(balanceController.text),
             );
     if (isCreated && mounted) {
       nameController.clear();
-      balanceController.clear();
+      // balanceController.clear();
       // Navigator.of(context).pop();
       // Beamer.of(context).beamBack();
       Navigator.of(context).maybePop();
