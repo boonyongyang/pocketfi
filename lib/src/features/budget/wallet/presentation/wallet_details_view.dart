@@ -32,50 +32,15 @@ class _WalletDetailsViewState extends ConsumerState<WalletDetailsView> {
     final walletNameController = useTextEditingController(
       text: widget.wallet.walletName,
     );
-    // final initialBalanceController = useTextEditingController(
-    //   text: widget.wallet.walletBalance.toStringAsFixed(2),
-    // );
 
     final wallets = ref.watch(userWalletsProvider);
-
-    //get walletId when walletName is 'Personal'
-    // final walletId;
-    // if (widget.wallet.walletName == 'Personal') {
     final walletId =
         widget.wallet.walletName == 'Personal' ? widget.wallet.walletId : null;
-    // }
-
-    // final isCreateButtonEnabled = useState(false);
-
-    // useEffect(
-    //   () {
-    //     void listener() {
-    //       // isCreateButtonEnabled.value = walletNameController.text.isNotEmpty;
-    //       // walletNameController.text = widget.wallet.walletName;
-    //       // initialBalanceController.text = widget.wallet.initialBalance;
-    //     }
-
-    //     walletNameController.addListener(listener);
-    //     // initialBalanceController.addListener(listener);
-
-    //     return () {
-    //       walletNameController.removeListener(listener);
-    //       // initialBalanceController.removeListener(listener);
-    //     };
-    //   },
-    //   [
-    //     walletNameController,
-    //     // initialBalanceController,
-    //   ],
-    // );
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Wallet Details'),
         actions: [
-          // if (widget.wallet.walletName == 'Personal')
-          //   walletId = widget.wallet.walletId;
-
           if (wallets.valueOrNull != null && widget.wallet.walletId != walletId)
             IconButton(
               icon: const Icon(Icons.delete_rounded),
@@ -144,32 +109,6 @@ class _WalletDetailsViewState extends ConsumerState<WalletDetailsView> {
                       ),
                     ],
                   ),
-                  // Row(
-                  //   children: [
-                  //     const Padding(
-                  //       padding: EdgeInsets.only(left: 16.0, right: 32.0),
-                  //       child: SizedBox(
-                  //         width: 5,
-                  //         child: Icon(
-                  //           Icons.money_rounded,
-                  //           color: AppColors.mainColor1,
-                  //         ),
-                  //       ),
-                  //     ),
-                  //     Expanded(
-                  //       child: Padding(
-                  //         padding: const EdgeInsets.all(8.0),
-                  //         child: TextField(
-                  //           controller: initialBalanceController,
-                  //           keyboardType: TextInputType.number,
-                  //           decoration: const InputDecoration(
-                  //             labelText: Strings.walletBalance,
-                  //           ),
-                  //         ),
-                  //       ),
-                  //     ),
-                  //   ],
-                  // ),
                   Row(
                     children: [
                       const Padding(
@@ -255,50 +194,24 @@ class _WalletDetailsViewState extends ConsumerState<WalletDetailsView> {
                       ),
                     ],
                   ),
-                  Expanded(
-                    flex: 1,
-                    child: Align(
-                      alignment: Alignment.bottomCenter,
-                      child: FullWidthButtonWithText(
-                        text: Strings.saveChanges,
-                        onPressed: () {
-                          _updateNewWalletController(
-                            walletNameController,
-                            // initialBalanceController,
-                            ref,
-                          );
-                        },
-                      ),
-                    ),
-                    // Padding(
-                    //   padding: const EdgeInsets.all(16.0),
-                    //   child: SizedBox(
-                    //     width: double.infinity,
-                    //     child: ElevatedButton(
-                    //       style: ElevatedButton.styleFrom(
-                    //         fixedSize: const Size(80, 55),
-                    //         backgroundColor: AppColors.mainColor1,
-                    //         foregroundColor: AppColors.white,
-                    //         shape: const RoundedRectangleBorder(
-                    //           borderRadius: BorderRadius.all(
-                    //             Radius.circular(25),
-                    //           ),
-                    //         ),
-                    //       ),
-                    //       onPressed: () {
-                    //         _updateNewWalletController(
-                    //           walletNameController,
-                    //           initialBalanceController,
-                    //           ref,
-                    //         );
-                    //       },
-                    //       child: const FullWidthButtonWithText(
-                    //         text: Strings.saveChanges,
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
-                  ),
+                  widget.wallet.walletId != walletId
+                      ? Expanded(
+                          flex: 1,
+                          child: Align(
+                            alignment: Alignment.bottomCenter,
+                            child: FullWidthButtonWithText(
+                              text: Strings.saveChanges,
+                              onPressed: () {
+                                _updateNewWalletController(
+                                  walletNameController,
+                                  // initialBalanceController,
+                                  ref,
+                                );
+                              },
+                            ),
+                          ),
+                        )
+                      : const SizedBox(),
                 ],
               ),
             ),
@@ -317,9 +230,6 @@ class _WalletDetailsViewState extends ConsumerState<WalletDetailsView> {
     if (userId == null) {
       return;
     }
-    // if (balanceController.text.isEmpty) {
-    //   balanceController.text = '0.00';
-    // }
     final isUpdated =
         await ref.read(updateWalletProvider.notifier).updateWallet(
               walletId: widget.wallet.walletId,
@@ -328,17 +238,7 @@ class _WalletDetailsViewState extends ConsumerState<WalletDetailsView> {
             );
     if (isUpdated && mounted) {
       nameController.clear();
-      // balanceController.clear();
-      // Navigator.of(context).pop();
-      // Future.delayed(const Duration(seconds: 2), () {
-      //   Navigator.of(context).maybePop();
-      // });
       Navigator.of(context).maybePop();
     }
-  }
-
-  Iterable<Wallet> _getWallets() {
-    final wallets = ref.watch(userWalletsProvider);
-    return wallets.value ?? [];
   }
 }
