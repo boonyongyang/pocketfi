@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart' show immutable;
 import 'package:flutter/material.dart' show Color;
 import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/constants/strings.dart';
+import 'package:pocketfi/src/features/timeline/transactions/domain/tag.dart';
 import 'package:pocketfi/src/features/timeline/transactions/domain/transaction_key.dart';
 
 enum TransactionType {
@@ -30,14 +31,14 @@ enum TransactionType {
 
 @immutable
 class Transaction {
-  // final String transactionId;
-  final String userId;
+  final String transactionId;
+  // final String userId;
   final double amount;
-  // TODO: make to category
-  final String category;
+  final String categoryName;
   final TransactionType type;
   final DateTime createdAt;
-  final bool isBookmark = false;
+  final DateTime date;
+  final bool isBookmark;
   final String? description;
   final String? thumbnailUrl; // image
   final String? fileUrl; // image
@@ -46,36 +47,38 @@ class Transaction {
   final String? thumbnailStorageId; // image
   final String? originalFileStorageId; // image
   // final List<Tag> tags;
-  // final bool shared = false;
 
   Transaction({
-    // required this.transactionId,
-    required this.amount,
-    required this.category,
+    required this.transactionId,
     required Map<String, dynamic> json,
-  })  : userId = json[TransactionKey.userId],
+  })  :
+        // userId = json[TransactionKey.userId],
+        amount = json[TransactionKey.amount],
+        // categoryName = Category.fromJson(json[TransactionKey.category]),
+        categoryName = json[TransactionKey.categoryName],
         description = json[TransactionKey.description],
         type = TransactionType.values.firstWhere(
           (transactionType) =>
               transactionType.name == json[TransactionKey.type],
           orElse: () => TransactionType.expense,
         ),
+        date = (json[TransactionKey.date] as Timestamp?)?.toDate() ??
+            DateTime.now(),
+        isBookmark = json[TransactionKey.isBookmark] ?? false,
         createdAt = (json[TransactionKey.createdAt] as Timestamp).toDate(),
         thumbnailUrl = json[TransactionKey.thumbnailUrl],
         fileUrl = json[TransactionKey.fileUrl],
         filename = json[TransactionKey.fileName],
         aspectRatio = json[TransactionKey.aspectRatio],
         thumbnailStorageId = json[TransactionKey.thumbnailStorageId],
-        // isBookmark = json[TransactionKey.isBookmark],
         originalFileStorageId = json[TransactionKey.originalFileStorageId];
   // tags = [
   //   for (final tag in json[TransactionKey.tags])
   //     Tag(
-  //       tagId: tag[TagKey.tagId],
-  //       tagName: tag[TagKey.tagName],
-  //       tagColor: tag[TagKey.tagColor],
-  //       tagIcon: tag[TagKey.tagIcon],
+  //       tagId: tag['tagId'],
+  //       tagName: tag['tagName'],
+  //       tagColor: tag['tagColor'],
+  //       tagIcon: tag['tagIcon'],
   //     ),
-  // ],
-  // shared = json[TransactionKey.shared];
+  // ];
 }
