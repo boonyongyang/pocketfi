@@ -9,6 +9,7 @@ import 'package:pocketfi/src/features/authentication/application/user_id_provide
 import 'package:pocketfi/src/features/budget/application/create_new_budget_provider.dart';
 import 'package:pocketfi/src/features/budget/wallet/data/user_wallets_provider.dart';
 import 'package:pocketfi/src/features/budget/wallet/domain/wallet.dart';
+import 'package:pocketfi/src/features/timeline/transactions/presentation/add_new_transactions/add_new_transaction.dart';
 
 class CreateNewBudgetView extends StatefulHookConsumerWidget {
   const CreateNewBudgetView({super.key});
@@ -25,6 +26,9 @@ class _CreateNewBudgetViewState extends ConsumerState<CreateNewBudgetView> {
     final amountController = useTextEditingController();
 
     final isCreateButtonEnabled = useState(false);
+
+    final wallets = ref.watch(userWalletsProvider);
+    final selectedWallet = ref.watch(selectedWalletProvider);
 
     useEffect(
       () {
@@ -165,37 +169,42 @@ class _CreateNewBudgetViewState extends ConsumerState<CreateNewBudgetView> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(
-                        left: 8.0,
-                        right: 16.0,
-                        // top: 16.0,
-                        bottom: 8.0,
-                      ),
-                      child: DropdownButton<String>(
-                        // value: _getWallets().first.walletName,
-                        items: _getWallets().map((Wallet wallet) {
-                          return DropdownMenuItem<String>(
-                            value: wallet.walletName,
-                            child: Text(wallet.walletName),
-                          );
-                        }).toList(),
-                        onChanged: (_) {},
-                      ),
-                      // child: DropdownButton<String>(
-                      //   value: "All wallet",
-                      //   items: <String>[
-                      //     "All wallet",
-                      //     "wallet 1",
-                      //     "wallet 2",
-                      //   ].map<DropdownMenuItem<String>>((String value) {
-                      //     return DropdownMenuItem<String>(
-                      //       value: value,
-                      //       child: Text(value),
-                      //     );
-                      //   }).toList(),
-                      //   onChanged: (_) {},
-                      // ),
-                    ),
+                        padding: const EdgeInsets.only(
+                          left: 8.0,
+                          right: 16.0,
+                          // top: 16.0,
+                          bottom: 8.0,
+                        ),
+                        child: SelectWallet(
+                          ref: ref,
+                          wallets: wallets.value,
+                          selectedWallet: selectedWallet,
+                        )
+                        // DropdownButton<String>(
+                        //   // value: _getWallets().first.walletName,
+                        //   items: _getWallets().map((Wallet wallet) {
+                        //     return DropdownMenuItem<String>(
+                        //       value: wallet.walletName,
+                        //       child: Text(wallet.walletName),
+                        //     );
+                        //   }).toList(),
+                        //   onChanged: (_) {},
+                        // ),
+                        // child: DropdownButton<String>(
+                        //   value: "All wallet",
+                        //   items: <String>[
+                        //     "All wallet",
+                        //     "wallet 1",
+                        //     "wallet 2",
+                        //   ].map<DropdownMenuItem<String>>((String value) {
+                        //     return DropdownMenuItem<String>(
+                        //       value: value,
+                        //       child: Text(value),
+                        //     );
+                        //   }).toList(),
+                        //   onChanged: (_) {},
+                        // ),
+                        ),
                   ],
                 ),
               ],
