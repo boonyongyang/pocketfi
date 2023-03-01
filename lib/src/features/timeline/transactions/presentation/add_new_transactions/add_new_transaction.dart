@@ -18,6 +18,8 @@ import 'package:pocketfi/src/features/timeline/posts/post_settings/application/p
 import 'package:pocketfi/src/features/timeline/transactions/application/transaction_provider.dart';
 import 'package:pocketfi/src/features/timeline/transactions/date_picker/application/selected_date_notifier.dart';
 import 'package:pocketfi/src/features/timeline/transactions/domain/tag.dart';
+import 'package:pocketfi/src/features/timeline/transactions/image_upload/application/image_uploader_provider.dart';
+import 'package:pocketfi/src/features/timeline/transactions/image_upload/data/image_file_notifier.dart';
 import 'package:pocketfi/src/features/timeline/transactions/image_upload/domain/file_type.dart';
 import 'package:pocketfi/src/features/timeline/transactions/image_upload/domain/thumbnail_request.dart';
 import 'package:pocketfi/src/features/timeline/transactions/image_upload/helpers/image_picker_helper.dart';
@@ -184,6 +186,7 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
                               categoryName: selectedCategory,
                               mounted: mounted,
                               selectedWallet: selectedWallet,
+                              file: null,
                             ),
                           ),
                         ],
@@ -230,7 +233,8 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
             onPressed: () async {
               final imageFile = await ImagePickerHelper.pickImageFromGallery();
               if (imageFile == null) return;
-              ref.refresh(postSettingProvider);
+              ref.read(imageFileProvider.notifier).setImageFile(imageFile);
+              // ref.refresh(postSettingProvider);
               if (!mounted) return;
               displayPhoto(imageFile);
             },
@@ -243,6 +247,23 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
     );
   }
 
+  // void displayPhoto(File imageFile) {
+  //   // display thumnail of the image
+  //   debugPrint('image file path: ${imageFile.path}');
+
+  //   FileThumbnailView(
+  //     thumbnailRequest: ThumbnailRequest(
+  //       imageFile,
+  //       FileType.image,
+  //     ),
+  //   );
+
+  //   setState(() {
+  //     _imageFile = imageFile;
+  //     debugPrint('show Picture');
+  //   });
+  // }
+
   void displayPhoto(File imageFile) {
     // display thumnail of the image
     debugPrint('image file path: ${imageFile.path}');
@@ -254,20 +275,18 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
       ),
     );
 
-    setState(() {
-      _imageFile = imageFile;
-      debugPrint('show Picture');
-    });
+    ref.read(imageFileProvider.notifier).setImageFile(imageFile);
   }
 
   Widget showIfPhotoIsAdded() {
-    return (_imageFile != null)
+    final imageFile = ref.watch(imageFileProvider);
+    return (imageFile != null)
         ? InkWell(
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) =>
-                      FullScreenImageDialog(imageFile: _imageFile!),
+                      FullScreenImageDialog(imageFile: imageFile),
                   fullscreenDialog: true,
                 ),
               );
@@ -277,7 +296,7 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
               height: 150,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: FileImage(_imageFile!),
+                  image: FileImage(imageFile),
                   fit: BoxFit.cover,
                 ),
                 borderRadius: BorderRadius.circular(8.0),
@@ -617,6 +636,7 @@ class SaveButton extends StatelessWidget {
     required this.amountController,
     required this.categoryName,
     required this.selectedWallet,
+    required this.file,
     required this.mounted,
   });
 
@@ -626,6 +646,7 @@ class SaveButton extends StatelessWidget {
   final TextEditingController amountController;
   final Category? categoryName;
   final Wallet? selectedWallet;
+  final File? file;
   final bool mounted;
 
   @override
@@ -639,6 +660,7 @@ class SaveButton extends StatelessWidget {
               final userId = ref.read(userIdProvider);
               final type = ref.read(transactionTypeProvider);
               final date = ref.read(selectedDateProvider);
+              final file = ref.read(imageFileProvider);
 
               debugPrint('userId is: $userId');
               debugPrint('transactionType is: $type');
@@ -659,14 +681,16 @@ class SaveButton extends StatelessWidget {
               final isCreated = await ref
                   .read(createNewTransactionProvider.notifier)
                   .createNewTransaction(
-                      userId: userId,
-                      amount: double.parse(amount),
-                      type: type,
-                      note: note,
-                      categoryName: categoryName!.name,
-                      // walletName: selectedWallet!.walletName,
-                      walletName: selectedWallet!.walletId,
-                      date: date);
+                    userId: userId,
+                    amount: double.parse(amount),
+                    type: type,
+                    note: note,
+                    categoryName: categoryName!.name,
+                    // walletName: selectedWallet!.walletName,
+                    walletId: selectedWallet!.walletId,
+                    date: date,
+                    file: file,
+                  );
               debugPrint('isCreated is: $isCreated');
 
               if (isCreated && mounted) {
@@ -679,6 +703,9 @@ class SaveButton extends StatelessWidget {
                 ref
                     .read(transactionTypeProvider.notifier)
                     .setTransactionType(0);
+
+                // clear the imageFileProvider
+                ref.read(imageFileProvider.notifier).setImageFile(null);
 
                 // show snackbar to notify the user
                 ScaffoldMessenger.of(context).showSnackBar(

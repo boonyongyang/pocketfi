@@ -7,6 +7,7 @@ import 'package:pocketfi/src/constants/firebase_collection_name.dart';
 import 'package:pocketfi/src/constants/firebase_field_name.dart';
 import 'package:pocketfi/src/constants/typedefs.dart';
 import 'package:pocketfi/src/features/authentication/application/user_id_provider.dart';
+import 'package:pocketfi/src/features/budget/wallet/data/user_wallets_provider.dart';
 import 'package:pocketfi/src/features/timeline/transactions/domain/transaction.dart';
 import 'package:pocketfi/src/features/timeline/transactions/data/transaction_type_notifier.dart';
 
@@ -23,6 +24,8 @@ final userTransactionsProvider =
   (ref) {
     // get the user id.
     final userId = ref.watch(userIdProvider);
+
+    final walletId = ref.watch(selectedWalletProvider)?.walletId;
 
     // The StreamController is used to add the transactions to the stream.
     // manages the iterable of transactions.
@@ -47,7 +50,8 @@ final userTransactionsProvider =
           FirebaseCollectionName.wallets,
         )
         // FIXME get the selected walletId
-        .doc('2023-02-27T23:18:16.426104')
+        // .doc('2023-02-27T23:18:16.426104')
+        .doc(walletId)
         .collection(
           FirebaseCollectionName.transactions,
         )

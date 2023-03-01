@@ -19,7 +19,7 @@ class TransactionPayload extends MapView<String, dynamic> {
     final String? description,
     final String? thumbnailUrl, // image
     final String? fileUrl, // image
-    final String? filename, // image
+    final String? fileName, // image
     final double? aspectRatio, // image
     final String? thumbnailStorageId, // image
     final String? originalFileStorageId, // image
@@ -37,7 +37,7 @@ class TransactionPayload extends MapView<String, dynamic> {
             TransactionKey.description: description,
             TransactionKey.thumbnailUrl: thumbnailUrl,
             TransactionKey.fileUrl: fileUrl,
-            TransactionKey.fileName: filename,
+            TransactionKey.fileName: fileName,
             TransactionKey.aspectRatio: aspectRatio,
             TransactionKey.thumbnailStorageId: thumbnailStorageId,
             TransactionKey.originalFileStorageId: originalFileStorageId,
