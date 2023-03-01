@@ -28,6 +28,17 @@ class CreateNewWalletNotifier extends StateNotifier<IsLoading> {
       userId: userId,
     );
     try {
+      // final wallets = await FirebaseFirestore.instance
+      //     .collection(FirebaseCollectionName.users)
+      //     .doc(userId)
+      //     .collection(FirebaseCollectionName.wallets)
+      //     .get();
+
+      // if (wallets.docs.elementAt([FirebaseFieldName.walletName] as int) ==
+      //     walletName) {
+      //   return false;
+      // }
+
       await FirebaseFirestore.instance
           .collection(FirebaseCollectionName.users)
           .doc(userId)
