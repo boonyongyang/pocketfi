@@ -103,3 +103,19 @@ List<TagChip> tags = [
 ];
 
 List<TagChip> selectedTags = [];
+
+class Tag {
+  String tagId;
+  String tagName;
+  String tagColor;
+  String tagIcon;
+  bool isSelected;
+
+  Tag({
+    required this.tagId,
+    required this.tagName,
+    this.tagColor = '',
+    this.tagIcon = '',
+    this.isSelected = false,
+  });
+}

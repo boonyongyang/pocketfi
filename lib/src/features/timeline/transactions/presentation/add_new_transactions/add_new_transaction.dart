@@ -10,18 +10,23 @@ import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/constants/app_icons.dart';
 import 'package:pocketfi/src/constants/strings.dart';
 import 'package:pocketfi/src/features/authentication/application/user_id_provider.dart';
+import 'package:pocketfi/src/features/budget/wallet/data/user_wallets_provider.dart';
+import 'package:pocketfi/src/features/budget/wallet/domain/wallet.dart';
 import 'package:pocketfi/src/features/category/application/category_providers.dart';
 import 'package:pocketfi/src/features/category/domain/category.dart';
 import 'package:pocketfi/src/features/timeline/posts/post_settings/application/post_setting_provider.dart';
 import 'package:pocketfi/src/features/timeline/transactions/application/transaction_provider.dart';
+import 'package:pocketfi/src/features/timeline/transactions/date_picker/application/selected_date_notifier.dart';
 import 'package:pocketfi/src/features/timeline/transactions/domain/tag.dart';
+import 'package:pocketfi/src/features/timeline/transactions/image_upload/application/image_uploader_provider.dart';
+import 'package:pocketfi/src/features/timeline/transactions/image_upload/data/image_file_notifier.dart';
 import 'package:pocketfi/src/features/timeline/transactions/image_upload/domain/file_type.dart';
 import 'package:pocketfi/src/features/timeline/transactions/image_upload/domain/thumbnail_request.dart';
 import 'package:pocketfi/src/features/timeline/transactions/image_upload/helpers/image_picker_helper.dart';
 import 'package:pocketfi/src/features/timeline/transactions/presentation/add_new_transactions/category_selector_view.dart';
 import 'package:pocketfi/src/features/timeline/transactions/presentation/add_new_transactions/full_screen_image_dialog.dart';
 import 'package:pocketfi/src/features/timeline/transactions/presentation/add_new_transactions/select_transaction_type.dart';
-import 'package:pocketfi/src/features/timeline/transactions/presentation/add_new_transactions/transaction_date_picker.dart';
+import 'package:pocketfi/src/features/timeline/transactions/date_picker/presentation/transaction_date_picker.dart';
 
 class AddNewTransaction extends StatefulHookConsumerWidget {
   const AddNewTransaction({
@@ -42,6 +47,9 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
   Widget build(BuildContext context) {
     final categories = ref.watch(categoriesProvider);
     final selectedCategory = ref.watch(selectedCategoryProvider);
+
+    final wallets = ref.watch(userWalletsProvider);
+    final selectedWallet = ref.watch(selectedWalletProvider);
 
     final amountController = useTextEditingController();
     final noteController = useTextEditingController();
@@ -76,7 +84,14 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
             Icons.close,
             color: AppColors.white,
           ),
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () {
+            // access ref inside the onPressed callback
+            // ref.read(selectedCategoryProvider.notifier).state = null;
+
+            Navigator.of(context).pop();
+            resetCategoryState(ref);
+            ref.read(transactionTypeProvider.notifier).setTransactionType(0);
+          },
         ),
       ),
       body: SingleChildScrollView(
@@ -89,7 +104,7 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
             children: [
               const SelectTransactionType(),
               TransactionAmountField(amountController: amountController),
-              const CurrencySelector(),
+              const SelectCurrency(),
               // * Select Category and Wallet
               Padding(
                 padding: const EdgeInsets.all(16.0),
@@ -104,7 +119,11 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
                     const Spacer(),
                     const Icon(AppIcons.wallet, color: AppColors.mainColor1),
                     const SizedBox(width: 8.0),
-                    selectWallet(),
+                    SelectWallet(
+                        ref: ref,
+                        selectedWallet: selectedWallet,
+                        wallets: wallets.value),
+                    // selectWallet(),
                     const SizedBox(width: 8.0),
                   ],
                 ),
@@ -116,6 +135,7 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
+                  // mainAxisSize: MainAxisSize.min,
                   children: [
                     const TransactionDatePicker(),
                     WriteOptionalNote(noteController: noteController),
@@ -124,14 +144,54 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
                     const SizedBox(height: 8.0),
                     selectTags(),
                     selectReccurence(),
-                    SaveButton(
-                        isSaveButtonEnabled: isSaveButtonEnabled,
-                        ref: ref,
-                        // ref: ref,
-                        noteController: noteController,
-                        amountController: amountController,
-                        // ref: ref,
-                        mounted: mounted),
+                    Center(
+                      child: Row(
+                        children: [
+                          // IconButton(
+                          //   icon: const Icon(
+                          //     Icons.bookmark_outline,
+                          //     color: AppColors.mainColor1,
+                          //   ),
+                          //   onPressed: () {
+                          //     ref
+                          //         .read(postSettingProvider.notifier)
+                          //         .toggleBookmark();
+                          //   },
+                          // ),
+                          Transform.scale(
+                            scale: 1.5,
+                            child: IconButton(
+                              splashRadius: 24 / 1.2,
+                              icon: const Icon(
+                                Icons.bookmark_outline,
+                                color: AppColors.mainColor1,
+                              ),
+                              onPressed: () {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('Bookmark'),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width - 100,
+                            child: SaveButton(
+                              isSaveButtonEnabled: isSaveButtonEnabled,
+                              ref: ref,
+                              noteController: noteController,
+                              amountController: amountController,
+                              categoryName: selectedCategory,
+                              mounted: mounted,
+                              selectedWallet: selectedWallet,
+                              file: null,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -173,7 +233,8 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
             onPressed: () async {
               final imageFile = await ImagePickerHelper.pickImageFromGallery();
               if (imageFile == null) return;
-              ref.refresh(postSettingProvider);
+              ref.read(imageFileProvider.notifier).setImageFile(imageFile);
+              // ref.refresh(postSettingProvider);
               if (!mounted) return;
               displayPhoto(imageFile);
             },
@@ -186,6 +247,23 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
     );
   }
 
+  // void displayPhoto(File imageFile) {
+  //   // display thumnail of the image
+  //   debugPrint('image file path: ${imageFile.path}');
+
+  //   FileThumbnailView(
+  //     thumbnailRequest: ThumbnailRequest(
+  //       imageFile,
+  //       FileType.image,
+  //     ),
+  //   );
+
+  //   setState(() {
+  //     _imageFile = imageFile;
+  //     debugPrint('show Picture');
+  //   });
+  // }
+
   void displayPhoto(File imageFile) {
     // display thumnail of the image
     debugPrint('image file path: ${imageFile.path}');
@@ -197,20 +275,18 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
       ),
     );
 
-    setState(() {
-      _imageFile = imageFile;
-      debugPrint('show Picture');
-    });
+    ref.read(imageFileProvider.notifier).setImageFile(imageFile);
   }
 
   Widget showIfPhotoIsAdded() {
-    return (_imageFile != null)
+    final imageFile = ref.watch(imageFileProvider);
+    return (imageFile != null)
         ? InkWell(
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) =>
-                      FullScreenImageDialog(imageFile: _imageFile!),
+                      FullScreenImageDialog(imageFile: imageFile),
                   fullscreenDialog: true,
                 ),
               );
@@ -220,7 +296,7 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
               height: 150,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: FileImage(_imageFile!),
+                  image: FileImage(imageFile),
                   fit: BoxFit.cover,
                 ),
                 borderRadius: BorderRadius.circular(8.0),
@@ -318,16 +394,81 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
   }
 }
 
+class SelectWallet extends ConsumerWidget {
+  const SelectWallet({
+    super.key,
+    required this.ref,
+    required this.wallets,
+    required this.selectedWallet,
+  });
+
+  final WidgetRef ref;
+  final Iterable<Wallet>? wallets;
+  final Wallet? selectedWallet;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    // final wallets = ref.watch(userWalletsProvider);
+    // final selectedWallet = ref.watch(selectedWalletProvider);
+
+    debugPrint('first wallets: ${selectedWallet?.walletName}');
+    final walletList = wallets?.toList();
+
+    return DropdownButton(
+      value: selectedWallet,
+      items: walletList?.map((wallet) {
+        return DropdownMenuItem(
+          value: wallet,
+          child: Text(wallet.walletName),
+        );
+      }).toList(),
+      onChanged: (selectedWallet) {
+        debugPrint('wallet tapped: ${selectedWallet?.walletName}');
+        ref.read(selectedWalletProvider.notifier).state = selectedWallet!;
+        debugPrint(
+            'selected wallet: ${ref.read(selectedWalletProvider)?.walletName}');
+      },
+    );
+
+    // return Center(
+    //   child: wallets.when(
+    //     data: (Iterable<Wallet> data) {
+    //       // final walletList = data?.toList() ?? [];
+    //       final walletList = data.toList();
+    //       return DropdownButton(
+    //         // value: walletList.isNotEmpty ? walletList.first : null,
+    //         value: selectedWallet,
+    //         items: walletList.map((wallet) {
+    //           return DropdownMenuItem(
+    //             value: wallet,
+    //             child: Text(wallet.walletName),
+    //           );
+    //         }).toList(),
+    //         onChanged: (selectedWallet) {
+    //           debugPrint('wallet tapped: ${selectedWallet?.walletName}');
+    //           ref.read(selectedWalletProvider.notifier).state = selectedWallet!;
+    //           debugPrint(
+    //               'selected wallet: ${ref.read(selectedWalletProvider)?.walletName}');
+    //         },
+    //       );
+    //     },
+    //     loading: () => const CircularProgressIndicator(),
+    //     error: (error, stackTrace) => Text('Error: $error'),
+    //   ),
+    // );
+  }
+}
+
 class SelectCategory extends StatelessWidget {
   const SelectCategory({
     super.key,
-    required this.categories,
     required this.ref,
+    required this.categories,
     required this.selectedCategory,
   });
 
-  final List<Category> categories;
   final WidgetRef ref;
+  final List<Category> categories;
   final Category? selectedCategory;
 
   @override
@@ -369,6 +510,9 @@ class SelectCategory extends StatelessWidget {
                                   ref
                                       .read(selectedCategoryProvider.notifier)
                                       .state = categories[index];
+
+                                  debugPrint(
+                                      'selected category: ${categories[index].name}');
                                   Navigator.of(context).pop();
                                 },
                                 leading: Column(
@@ -397,8 +541,8 @@ class SelectCategory extends StatelessWidget {
   }
 }
 
-class CurrencySelector extends StatelessWidget {
-  const CurrencySelector({
+class SelectCurrency extends StatelessWidget {
+  const SelectCurrency({
     super.key,
   });
 
@@ -490,6 +634,9 @@ class SaveButton extends StatelessWidget {
     required this.ref,
     required this.noteController,
     required this.amountController,
+    required this.categoryName,
+    required this.selectedWallet,
+    required this.file,
     required this.mounted,
   });
 
@@ -497,6 +644,9 @@ class SaveButton extends StatelessWidget {
   final WidgetRef ref;
   final TextEditingController noteController;
   final TextEditingController amountController;
+  final Category? categoryName;
+  final Wallet? selectedWallet;
+  final File? file;
   final bool mounted;
 
   @override
@@ -509,6 +659,8 @@ class SaveButton extends StatelessWidget {
           ? () async {
               final userId = ref.read(userIdProvider);
               final type = ref.read(transactionTypeProvider);
+              final date = ref.read(selectedDateProvider);
+              final file = ref.read(imageFileProvider);
 
               debugPrint('userId is: $userId');
               debugPrint('transactionType is: $type');
@@ -523,6 +675,8 @@ class SaveButton extends StatelessWidget {
               debugPrint('note is: $note');
               debugPrint('amount is: $amount');
 
+              debugPrint('walletName is: ${selectedWallet!.walletId}');
+
               // hooking the UI to the provider will cause the UI to rebuild
               final isCreated = await ref
                   .read(createNewTransactionProvider.notifier)
@@ -531,6 +685,11 @@ class SaveButton extends StatelessWidget {
                     amount: double.parse(amount),
                     type: type,
                     note: note,
+                    categoryName: categoryName!.name,
+                    // walletName: selectedWallet!.walletName,
+                    walletId: selectedWallet!.walletId,
+                    date: date,
+                    file: file,
                   );
               debugPrint('isCreated is: $isCreated');
 
@@ -538,6 +697,15 @@ class SaveButton extends StatelessWidget {
                 noteController.clear();
                 amountController.clear();
                 Navigator.of(context).pop();
+
+                // reset the state of the provider
+                resetCategoryState(ref);
+                ref
+                    .read(transactionTypeProvider.notifier)
+                    .setTransactionType(0);
+
+                // clear the imageFileProvider
+                ref.read(imageFileProvider.notifier).setImageFile(null);
 
                 // show snackbar to notify the user
                 ScaffoldMessenger.of(context).showSnackBar(

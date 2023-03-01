@@ -2,7 +2,6 @@ import 'dart:collection';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart' show immutable;
-import 'package:pocketfi/src/features/category/domain/category.dart';
 import 'package:pocketfi/src/features/timeline/transactions/domain/transaction.dart';
 import 'package:pocketfi/src/features/timeline/transactions/domain/transaction_key.dart';
 
@@ -12,15 +11,15 @@ class TransactionPayload extends MapView<String, dynamic> {
     // final String transactionId,
     required final String userId,
     required final double amount,
-    // TODO: make to category
-    required final String category,
+    required final String categoryName,
+    // required final String walletName,
     required final TransactionType type,
-    //  final DateTime createdAt,
+    required final DateTime date,
     final bool isBookmark = false,
     final String? description,
     final String? thumbnailUrl, // image
     final String? fileUrl, // image
-    final String? filename, // image
+    final String? fileName, // image
     final double? aspectRatio, // image
     final String? thumbnailStorageId, // image
     final String? originalFileStorageId, // image
@@ -30,14 +29,15 @@ class TransactionPayload extends MapView<String, dynamic> {
           {
             // TransactionKey.userId: userId,
             TransactionKey.amount: amount,
-            TransactionKey.category: category,
+            TransactionKey.categoryName: categoryName,
             TransactionKey.type: type.name,
             TransactionKey.createdAt: FieldValue.serverTimestamp(),
+            TransactionKey.date: date,
             TransactionKey.isBookmark: isBookmark,
             TransactionKey.description: description,
             TransactionKey.thumbnailUrl: thumbnailUrl,
             TransactionKey.fileUrl: fileUrl,
-            TransactionKey.fileName: filename,
+            TransactionKey.fileName: fileName,
             TransactionKey.aspectRatio: aspectRatio,
             TransactionKey.thumbnailStorageId: thumbnailStorageId,
             TransactionKey.originalFileStorageId: originalFileStorageId,

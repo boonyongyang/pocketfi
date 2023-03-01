@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart' show Icon, Icons, Color;
 import 'package:pocketfi/src/constants/app_colors.dart';
+import 'package:pocketfi/src/constants/app_icons.dart';
 import 'package:pocketfi/src/features/category/domain/category.dart';
 
 List<Category> expenseCategories = [
@@ -19,6 +20,12 @@ List<Category> incomeCategories = [
       icon: category.icons,
     ),
 ];
+
+const transferCategory = Category(
+  name: 'Transfer',
+  color: Color(AppColors.transferColor),
+  icon: Icon(AppIcons.transferIcon),
+);
 
 enum ExpenseCategory {
   foodAndDrink(
