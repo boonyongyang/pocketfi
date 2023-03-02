@@ -52,8 +52,19 @@ class CreateNewTransactionNotifier extends StateNotifier<IsLoading> {
     //     .then((value) => value.docs.first.id);
 
     final transactionId = documentIdFromCurrentDate();
+
+    final TransactionPayload payload;
+
     try {
       if (file == null) {
+        payload = TransactionPayload(
+          userId: userId,
+          amount: amount,
+          date: date,
+          type: type,
+          categoryName: categoryName,
+          description: note,
+        );
       } else {
         late Uint8List thumbnailUint8List;
         // decode the image
@@ -105,13 +116,13 @@ class CreateNewTransactionNotifier extends StateNotifier<IsLoading> {
         // upload the original file
         final originalFileUploadTask = await originalFileRef.putFile(file);
         final originalFileStorageId = originalFileUploadTask.ref.name;
-        final payload = TransactionPayload(
+
+        payload = TransactionPayload(
           userId: userId,
           amount: amount,
           date: date,
           type: type,
           categoryName: categoryName,
-          // walletName: walletName,
           description: note,
           thumbnailUrl: await thumbnailRef.getDownloadURL(),
           fileUrl: await originalFileRef.getDownloadURL(),
@@ -120,17 +131,17 @@ class CreateNewTransactionNotifier extends StateNotifier<IsLoading> {
           thumbnailStorageId: thumbnailStorageId,
           originalFileStorageId: originalFileStorageId,
         );
-
-        await FirebaseFirestore.instance
-            .collection(FirebaseCollectionName.users)
-            .doc(userId)
-            .collection(FirebaseCollectionName.wallets)
-            .doc(walletId)
-            .collection(FirebaseCollectionName.transactions)
-            .doc(transactionId)
-            .set(payload);
-        debugPrint('Transaction added $payload');
       }
+
+      await FirebaseFirestore.instance
+          .collection(FirebaseCollectionName.users)
+          .doc(userId)
+          .collection(FirebaseCollectionName.wallets)
+          .doc(walletId)
+          .collection(FirebaseCollectionName.transactions)
+          .doc(transactionId)
+          .set(payload);
+      debugPrint('Transaction added $payload');
 
       return true;
     } catch (e) {

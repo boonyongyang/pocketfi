@@ -5,7 +5,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/common_widgets/animations/lottie_animation_view.dart';
 import 'package:pocketfi/src/common_widgets/animations/models/lottie_animation.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
+import 'package:pocketfi/src/features/category/application/category_providers.dart';
 import 'package:pocketfi/src/features/timeline/posts/post_settings/application/post_setting_provider.dart';
+import 'package:pocketfi/src/features/timeline/transactions/application/transaction_provider.dart';
 import 'package:pocketfi/src/features/timeline/transactions/image_upload/domain/file_type.dart';
 import 'package:pocketfi/src/features/timeline/transactions/image_upload/helpers/image_picker_helper.dart';
 import 'package:pocketfi/src/features/timeline/transactions/presentation/add_new_transactions/add_new_transaction.dart';
@@ -119,7 +121,7 @@ class _MainViewState extends ConsumerState<TimelinePage>
         body: TabBarView(
           children: [
             const TransactionsTab(),
-            TestTab(),
+            const TestTab(),
             Center(
               child: Column(
                 children: const [
@@ -156,16 +158,22 @@ class _MainViewState extends ConsumerState<TimelinePage>
             ),
             const SizedBox(height: 16),
             FloatingActionButton(
-              // heroTag: 'add_new_expense',
-              heroTag: null,
-              backgroundColor: const Color(0xFFFCD46A),
-              child: const Icon(Icons.add),
-              onPressed: () => Navigator.of(context, rootNavigator: true).push(
-                MaterialPageRoute(
-                  builder: (context) => const AddNewTransaction(),
-                ),
-              ),
-            ),
+                // heroTag: 'add_new_expense',
+                heroTag: null,
+                backgroundColor: const Color(0xFFFCD46A),
+                child: const Icon(Icons.add),
+                onPressed: () {
+                  resetCategoryState(ref);
+                  ref
+                      .read(transactionTypeProvider.notifier)
+                      .setTransactionType(0);
+
+                  Navigator.of(context, rootNavigator: true).push(
+                    MaterialPageRoute(
+                      builder: (context) => const AddNewTransaction(),
+                    ),
+                  );
+                }),
           ],
         ),
       ),
