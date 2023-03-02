@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:pocketfi/src/features/timeline/transactions/domain/transaction.dart';
-import 'package:pocketfi/src/features/timeline/transactions/presentation/transaction_card_test.dart';
+import 'package:pocketfi/src/features/timeline/transactions/presentation/transaction_card.dart';
 
-class TransactionListViewTest extends StatelessWidget {
+class TransactionListView extends StatelessWidget {
   final Iterable<Transaction> transactions;
 
-  const TransactionListViewTest({
+  const TransactionListView({
     Key? key,
     required this.transactions,
   }) : super(key: key);
@@ -32,7 +32,7 @@ class TransactionListViewTest extends StatelessWidget {
         itemBuilder: (context, index) {
           final transaction =
               transactions.elementAt(index); // get the post at the index
-          return TransactionCardTest(
+          return TransactionCard(
             transaction: transaction,
             transactionType: transaction.type,
             onTapped: () {

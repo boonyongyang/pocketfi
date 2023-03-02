@@ -68,12 +68,13 @@ class _AddNewCategoryPageState extends ConsumerState<EditCategorySheet> {
 
     return SizedBox(
       // max height is 90% of screen height
-      height: MediaQuery.of(context).size.height * 0.8,
+      height: MediaQuery.of(context).size.height * 0.94,
       child: Container(
         color: AppColors.transparent,
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround, //  see how
+        child: Wrap(
+          // spacing: 20,
+          runSpacing: 20,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -113,6 +114,7 @@ class _AddNewCategoryPageState extends ConsumerState<EditCategorySheet> {
                         action: SnackBarAction(
                           label: 'Undo',
                           onPressed: () {
+                            // FIXME : prob, can't access ancestor widgets
                             ref
                                 .read(categoriesProvider.notifier)
                                 .updateCategory(widget.category);

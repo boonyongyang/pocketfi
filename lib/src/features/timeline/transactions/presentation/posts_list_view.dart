@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:pocketfi/src/features/timeline/posts/domain/post.dart';
 import 'package:pocketfi/src/features/timeline/transactions/domain/transaction.dart';
-import 'package:pocketfi/src/features/timeline/transactions/presentation/transaction_card.dart';
+import 'package:pocketfi/src/features/timeline/transactions/presentation/post_card_view.dart';
 
-class TransactionsListView extends StatelessWidget {
+class PostsListView extends StatelessWidget {
   final Iterable<Post> posts;
 
-  const TransactionsListView({
+  const PostsListView({
     Key? key,
     required this.posts,
   }) : super(key: key);
@@ -32,7 +32,7 @@ class TransactionsListView extends StatelessWidget {
         itemCount: posts.length,
         itemBuilder: (context, index) {
           final post = posts.elementAt(index); // get the post at the index
-          return TransactionCard(
+          return PostCardView(
             post: post,
             transactionType: TransactionType.expense,
             onTapped: () {

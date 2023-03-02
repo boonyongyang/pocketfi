@@ -59,7 +59,7 @@ class CategoryPage extends ConsumerWidget {
       body: SingleChildScrollView(
         child: Container(
           // color: Colors.grey,
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,

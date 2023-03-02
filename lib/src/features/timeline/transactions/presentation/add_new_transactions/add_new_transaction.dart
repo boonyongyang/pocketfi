@@ -14,11 +14,9 @@ import 'package:pocketfi/src/features/budget/wallet/data/user_wallets_provider.d
 import 'package:pocketfi/src/features/budget/wallet/domain/wallet.dart';
 import 'package:pocketfi/src/features/category/application/category_providers.dart';
 import 'package:pocketfi/src/features/category/domain/category.dart';
-import 'package:pocketfi/src/features/timeline/posts/post_settings/application/post_setting_provider.dart';
 import 'package:pocketfi/src/features/timeline/transactions/application/transaction_provider.dart';
 import 'package:pocketfi/src/features/timeline/transactions/date_picker/application/selected_date_notifier.dart';
 import 'package:pocketfi/src/features/timeline/transactions/domain/tag.dart';
-import 'package:pocketfi/src/features/timeline/transactions/image_upload/application/image_uploader_provider.dart';
 import 'package:pocketfi/src/features/timeline/transactions/image_upload/data/image_file_notifier.dart';
 import 'package:pocketfi/src/features/timeline/transactions/image_upload/domain/file_type.dart';
 import 'package:pocketfi/src/features/timeline/transactions/image_upload/domain/thumbnail_request.dart';
