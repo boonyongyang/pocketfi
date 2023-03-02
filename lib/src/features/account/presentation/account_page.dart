@@ -5,6 +5,7 @@ import 'package:pocketfi/src/common_widgets/dialogs/logout_dialog.dart';
 import 'package:pocketfi/src/constants/app_icons.dart';
 import 'package:pocketfi/src/features/account/presentation/setting_page.dart';
 import 'package:pocketfi/src/features/authentication/application/auth_state_provider.dart';
+import 'package:pocketfi/src/features/category/presentation/category_page.dart';
 
 const kPrimaryColor = Color(0xFFFF7643);
 const kPrimaryLightColor = Color(0xFFFFECDF);
@@ -78,7 +79,12 @@ class _AccountPageBodyState extends ConsumerState<AccountPageBody> {
           AccountPageMenu(
             text: "Categories",
             icon: const Icon(Icons.category),
-            press: () {},
+            press: () => Navigator.of(context, rootNavigator: true).push(
+              MaterialPageRoute(
+                builder: (context) => const CategoryPage(),
+                fullscreenDialog: true,
+              ),
+            ),
           ),
           AccountPageMenu(
             text: "Notifications",

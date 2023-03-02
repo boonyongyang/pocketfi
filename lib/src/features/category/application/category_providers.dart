@@ -24,6 +24,10 @@ void resetCategoryState(WidgetRef ref) {
   ref.read(selectedCategoryProvider.notifier).state = expenseCategories.first;
 }
 
+// List<Category> showAllCategories(WidgetRef ref) {
+//   return [...expenseCategories, ...incomeCategories];
+// }
+
 Category getCategoryWithCategoryName(String categoryName) {
   return expenseCategories.firstWhere(
     (category) => category.name == categoryName,

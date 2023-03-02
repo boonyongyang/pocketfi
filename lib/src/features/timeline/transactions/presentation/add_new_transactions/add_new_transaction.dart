@@ -102,7 +102,9 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
           ),
           child: Column(
             children: [
-              const SelectTransactionType(),
+              const SelectTransactionType(
+                noOfTabs: 3,
+              ),
               TransactionAmountField(amountController: amountController),
               const SelectCurrency(),
               // * Select Category and Wallet
@@ -114,13 +116,13 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
                     const SizedBox(width: 8.0),
                     SelectCategory(
                         categories: categories,
-                        ref: ref,
+                        // ref: ref,
                         selectedCategory: selectedCategory),
                     const Spacer(),
                     const Icon(AppIcons.wallet, color: AppColors.mainColor1),
                     const SizedBox(width: 8.0),
                     SelectWallet(
-                        ref: ref,
+                        // ref: ref,
                         selectedWallet: selectedWallet,
                         wallets: wallets.value),
                     // selectWallet(),
@@ -158,22 +160,21 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
                           //         .toggleBookmark();
                           //   },
                           // ),
-                          Transform.scale(
-                            scale: 1.5,
-                            child: IconButton(
-                              splashRadius: 24 / 1.2,
-                              icon: const Icon(
-                                Icons.bookmark_outline,
-                                color: AppColors.mainColor1,
-                              ),
-                              onPressed: () {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text('Bookmark'),
-                                  ),
-                                );
-                              },
+                          IconButton(
+                            // splashRadius: 24 / 1.2,
+                            splashRadius: 22,
+                            icon: const Icon(
+                              Icons.bookmark_outline,
+                              color: AppColors.mainColor1,
+                              size: 32,
                             ),
+                            onPressed: () {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Bookmark'),
+                                ),
+                              );
+                            },
                           ),
 
                           SizedBox(
@@ -397,12 +398,12 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
 class SelectWallet extends ConsumerWidget {
   const SelectWallet({
     super.key,
-    required this.ref,
+    // required this.ref,
     required this.wallets,
     required this.selectedWallet,
   });
 
-  final WidgetRef ref;
+  // final WidgetRef ref;
   final Iterable<Wallet>? wallets;
   final Wallet? selectedWallet;
 
@@ -413,66 +414,70 @@ class SelectWallet extends ConsumerWidget {
 
     debugPrint('first wallets: ${selectedWallet?.walletName}');
     final walletList = wallets?.toList();
+    debugPrint('wallet list: ${walletList?.length}');
 
-    return DropdownButton(
-      value: selectedWallet,
-      items: walletList?.map((wallet) {
-        return DropdownMenuItem(
-          value: wallet,
-          child: Text(wallet.walletName),
+    return Consumer(
+      builder: (context, ref, child) {
+        return DropdownButton(
+          value: selectedWallet,
+          items: walletList?.map((wallet) {
+            return DropdownMenuItem(
+              value: wallet,
+              child: Text(wallet.walletName),
+            );
+          }).toList(),
+          onChanged: (selectedWallet) {
+            debugPrint('wallet tapped: ${selectedWallet?.walletName}');
+            ref.read(selectedWalletProvider.notifier).state = selectedWallet!;
+            debugPrint(
+                'selected wallet: ${ref.read(selectedWalletProvider)?.walletName}');
+          },
         );
-      }).toList(),
-      onChanged: (selectedWallet) {
-        debugPrint('wallet tapped: ${selectedWallet?.walletName}');
-        ref.read(selectedWalletProvider.notifier).state = selectedWallet!;
-        debugPrint(
-            'selected wallet: ${ref.read(selectedWalletProvider)?.walletName}');
       },
     );
-
-    // return Center(
-    //   child: wallets.when(
-    //     data: (Iterable<Wallet> data) {
-    //       // final walletList = data?.toList() ?? [];
-    //       final walletList = data.toList();
-    //       return DropdownButton(
-    //         // value: walletList.isNotEmpty ? walletList.first : null,
-    //         value: selectedWallet,
-    //         items: walletList.map((wallet) {
-    //           return DropdownMenuItem(
-    //             value: wallet,
-    //             child: Text(wallet.walletName),
-    //           );
-    //         }).toList(),
-    //         onChanged: (selectedWallet) {
-    //           debugPrint('wallet tapped: ${selectedWallet?.walletName}');
-    //           ref.read(selectedWalletProvider.notifier).state = selectedWallet!;
-    //           debugPrint(
-    //               'selected wallet: ${ref.read(selectedWalletProvider)?.walletName}');
-    //         },
-    //       );
-    //     },
-    //     loading: () => const CircularProgressIndicator(),
-    //     error: (error, stackTrace) => Text('Error: $error'),
-    //   ),
-    // );
   }
 }
+// return Center(
+//   child: wallets.when(
+//     data: (Iterable<Wallet> data) {
+//       // final walletList = data?.toList() ?? [];
+//       final walletList = data.toList();
+//       return DropdownButton(
+//         // value: walletList.isNotEmpty ? walletList.first : null,
+//         value: selectedWallet,
+//         items: walletList.map((wallet) {
+//           return DropdownMenuItem(
+//             value: wallet,
+//             child: Text(wallet.walletName),
+//           );
+//         }).toList(),
+//         onChanged: (selectedWallet) {
+//           debugPrint('wallet tapped: ${selectedWallet?.walletName}');
+//           ref.read(selectedWalletProvider.notifier).state = selectedWallet!;
+//           debugPrint(
+//               'selected wallet: ${ref.read(selectedWalletProvider)?.walletName}');
+//         },
+//       );
+//     },
+//     loading: () => const CircularProgressIndicator(),
+//     error: (error, stackTrace) => Text('Error: $error'),
+//   ),
+// );
 
-class SelectCategory extends StatelessWidget {
+class SelectCategory extends ConsumerWidget {
   const SelectCategory({
     super.key,
-    required this.ref,
+    // required this.ref,
     required this.categories,
     required this.selectedCategory,
   });
 
-  final WidgetRef ref;
+  // final WidgetRef ref;
   final List<Category> categories;
   final Category? selectedCategory;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Builder(
       builder: (context) {
         return Center(
