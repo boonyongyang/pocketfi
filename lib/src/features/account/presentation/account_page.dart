@@ -6,6 +6,7 @@ import 'package:pocketfi/src/constants/app_icons.dart';
 import 'package:pocketfi/src/features/account/presentation/setting_page.dart';
 import 'package:pocketfi/src/features/authentication/application/auth_state_provider.dart';
 import 'package:pocketfi/src/features/category/presentation/category_page.dart';
+import 'package:pocketfi/src/features/shared/tabs/tab_controller_notifiers.dart';
 
 const kPrimaryColor = Color(0xFFFF7643);
 const kPrimaryLightColor = Color(0xFFFFECDF);
@@ -74,7 +75,12 @@ class _AccountPageBodyState extends ConsumerState<AccountPageBody> {
           AccountPageMenu(
             text: "Wallets",
             icon: const Icon(AppIcons.wallet),
-            press: () {},
+            press: () => Navigator.of(context, rootNavigator: true).push(
+              MaterialPageRoute(
+                builder: (context) => const EgTabsPage(),
+                fullscreenDialog: true,
+              ),
+            ),
           ),
           AccountPageMenu(
             text: "Categories",
@@ -85,6 +91,11 @@ class _AccountPageBodyState extends ConsumerState<AccountPageBody> {
                 fullscreenDialog: true,
               ),
             ),
+          ),
+          AccountPageMenu(
+            text: "Tags",
+            icon: const Icon(Icons.label_important_outline),
+            press: () {},
           ),
           AccountPageMenu(
             text: "Notifications",
