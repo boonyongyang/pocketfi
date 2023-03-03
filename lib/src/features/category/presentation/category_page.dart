@@ -70,7 +70,7 @@ class CategoryPage extends ConsumerWidget {
               SizedBox(
                 height: MediaQuery.of(context).size.height,
                 // color: Colors.blueGrey,
-                child: ListView.builder(
+                child: ListView.separated(
                   itemCount: categoriesList.length,
                   itemBuilder: (context, index) {
                     return GestureDetector(
@@ -136,6 +136,9 @@ class CategoryPage extends ConsumerWidget {
                     //     trailing: const Icon(Icons.menu),
                     //   ),
                     // );
+                  },
+                  separatorBuilder: (BuildContext context, int index) {
+                    return const Divider();
                   },
                 ),
               ),

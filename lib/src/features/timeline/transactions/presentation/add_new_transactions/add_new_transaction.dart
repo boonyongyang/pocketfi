@@ -413,6 +413,7 @@ class SelectWallet extends ConsumerWidget {
     debugPrint('first wallets: ${selectedWallet?.walletName}');
     final walletList = wallets?.toList();
     debugPrint('wallet list: ${walletList?.length}');
+    debugPrint('wallet list: ${walletList?.toString()}');
 
     return Consumer(
       builder: (context, ref, child) {
@@ -508,7 +509,7 @@ class SelectCategory extends ConsumerWidget {
                             ),
                             itemCount: categories.length,
                             itemBuilder: (context, index) {
-                              return ListTile(
+                              return GestureDetector(
                                 onTap: () {
                                   ref
                                       .read(selectedCategoryProvider.notifier)
@@ -518,13 +519,20 @@ class SelectCategory extends ConsumerWidget {
                                       'selected category: ${categories[index].name}');
                                   Navigator.of(context).pop();
                                 },
-                                leading: Column(
+                                child: Column(
+                                  // mainAxisAlignment: MainAxisAlignment.center,
+                                  // mainAxisSize: MainAxisSize.min,
                                   children: [
                                     CircleAvatar(
+                                      // radius: 25,
                                       backgroundColor: categories[index].color,
                                       child: categories[index].icon,
                                     ),
-                                    Text(categories[index].name),
+                                    const SizedBox(height: 4.0),
+                                    Text(
+                                      categories[index].name,
+                                      softWrap: false,
+                                    ),
                                   ],
                                 ),
                               );
