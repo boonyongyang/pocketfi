@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/common_widgets/animations/empty_contents_with_text_animation_view.dart';
 import 'package:pocketfi/src/common_widgets/animations/error_animation_view.dart';
 import 'package:pocketfi/src/common_widgets/animations/loading_animation_view.dart';
+import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/constants/strings.dart';
 import 'package:pocketfi/src/features/budget/wallet/application/wallet_visibility.dart';
 import 'package:pocketfi/src/features/budget/wallet/data/user_wallets_provider.dart';
@@ -40,7 +41,18 @@ class TransactionsTab extends ConsumerWidget {
               color: Colors.grey,
               child: Column(
                 children: [
-                  TextButton(
+                  // border radius button
+                  ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(
+                        AppColors.mainColor1,
+                      ),
+                      shape: MaterialStateProperty.all(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30.0),
+                        ),
+                      ),
+                    ),
                     onPressed: () {
                       showModalBottomSheet(
                         context: context,
@@ -52,7 +64,7 @@ class TransactionsTab extends ConsumerWidget {
                         },
                       );
                     },
-                    child: const Text('Wallets 1/2'),
+                    child: const Text('Wallets (1/2)'),
                   ),
                   Expanded(
                     child: TransactionListView(
@@ -111,11 +123,13 @@ class WalletFilterState extends ConsumerState<WalletVisibilitySheet> {
                     style: Theme.of(context).textTheme.titleMedium),
                 const Spacer(),
                 IconButton(
+                  splashRadius: 24.0,
                   onPressed: () {
                     Navigator.pop(context);
                   },
                   icon: const Icon(
                     Icons.check_circle_outline,
+                    color: AppColors.mainColor1,
                     size: 28.0,
                   ),
                 ),

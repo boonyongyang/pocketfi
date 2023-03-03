@@ -14,6 +14,7 @@ import 'package:pocketfi/src/features/budget/wallet/data/user_wallets_provider.d
 import 'package:pocketfi/src/features/budget/wallet/domain/wallet.dart';
 import 'package:pocketfi/src/features/category/application/category_providers.dart';
 import 'package:pocketfi/src/features/category/domain/category.dart';
+import 'package:pocketfi/src/features/category/presentation/category_page.dart';
 import 'package:pocketfi/src/features/timeline/transactions/application/transaction_provider.dart';
 import 'package:pocketfi/src/features/timeline/transactions/date_picker/application/selected_date_notifier.dart';
 import 'package:pocketfi/src/features/timeline/transactions/domain/tag.dart';
@@ -114,7 +115,6 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
                     const SizedBox(width: 8.0),
                     SelectCategory(
                         categories: categories,
-                        // ref: ref,
                         selectedCategory: selectedCategory),
                     const Spacer(),
                     const Icon(AppIcons.wallet, color: AppColors.mainColor1),
@@ -496,44 +496,73 @@ class SelectCategory extends ConsumerWidget {
                     height: 400,
                     child: Column(
                       children: [
-                        const SizedBox(height: 8.0),
-                        const Text(Strings.selectCategory),
-                        const SizedBox(height: 8.0),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text(Strings.selectCategory,
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  )),
+                              IconButton(
+                                // icon: const Icon(Icons.add_outlined),
+                                icon: const Icon(Icons.settings),
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const CategoryPage(),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
                         Expanded(
                           child: GridView.builder(
                             gridDelegate:
                                 const SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 4,
                               crossAxisSpacing: 8.0,
-                              mainAxisSpacing: 8.0,
+                              // mainAxisSpacing: 8.0,
                             ),
                             itemCount: categories.length,
                             itemBuilder: (context, index) {
-                              return GestureDetector(
-                                onTap: () {
-                                  ref
-                                      .read(selectedCategoryProvider.notifier)
-                                      .state = categories[index];
+                              return Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    ref
+                                        .read(selectedCategoryProvider.notifier)
+                                        .state = categories[index];
 
-                                  debugPrint(
-                                      'selected category: ${categories[index].name}');
-                                  Navigator.of(context).pop();
-                                },
-                                child: Column(
-                                  // mainAxisAlignment: MainAxisAlignment.center,
-                                  // mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    CircleAvatar(
-                                      // radius: 25,
-                                      backgroundColor: categories[index].color,
-                                      child: categories[index].icon,
-                                    ),
-                                    const SizedBox(height: 4.0),
-                                    Text(
-                                      categories[index].name,
-                                      softWrap: false,
-                                    ),
-                                  ],
+                                    debugPrint(
+                                        'selected category: ${categories[index].name}');
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Column(
+                                    // mainAxisAlignment: MainAxisAlignment.center,
+                                    // mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      CircleAvatar(
+                                        radius: 20,
+                                        backgroundColor:
+                                            categories[index].color,
+                                        child: categories[index].icon,
+                                      ),
+                                      const SizedBox(height: 4.0),
+                                      Text(
+                                        categories[index].name,
+                                        style: const TextStyle(fontSize: 12.0),
+                                        softWrap: false,
+                                        overflow: TextOverflow.fade,
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               );
                             },
