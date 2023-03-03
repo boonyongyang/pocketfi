@@ -1,5 +1,6 @@
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/constants/strings.dart';
 import 'package:pocketfi/src/features/account/presentation/account_page.dart';
@@ -8,6 +9,7 @@ import 'package:pocketfi/src/features/budget/presentation/budget_page.dart';
 import 'package:pocketfi/src/features/budget/presentation/create_new_budget_view.dart';
 import 'package:pocketfi/src/features/budget/wallet/presentation/create_new_wallet_view.dart';
 import 'package:pocketfi/src/features/budget/wallet/presentation/wallet_page.dart';
+import 'package:pocketfi/src/features/finance/finances_page.dart';
 import 'package:pocketfi/src/features/timeline/presentation/timeline_page.dart';
 import 'package:pocketfi/src/features/timeline/transactions/presentation/add_new_transactions/add_new_transaction.dart';
 import 'package:pocketfi/src/routing/temp_screens.dart';
@@ -120,19 +122,19 @@ class BudgetLocation extends BeamLocation<BeamState> {
 }
 
 /// Location defining the pages for the third tab
-class TabC extends BeamLocation<BeamState> {
-  TabC(super.routeInformation);
+class FinanceLocation extends BeamLocation<BeamState> {
+  FinanceLocation(super.routeInformation);
   @override
   List<String> get pathPatterns => ['/*'];
 
   @override
   List<BeamPage> buildPages(BuildContext context, BeamState state) => [
         const BeamPage(
-          key: ValueKey('c'),
-          title: 'Tab C',
+          key: ValueKey('finances'),
+          // title: 'Finance',
           type: BeamPageType.noTransition,
-          child: RootScreen(label: 'C', detailsPath: '/c/details'),
-          // child: FinancesPage(),
+          // child: RootScreen(label: 'C', detailsPath: '/c/details'),
+          child: FinancesPage(),
         ),
         if (state.uri.pathSegments.length == 2)
           const BeamPage(
@@ -201,10 +203,10 @@ class _ScaffoldWithBottomNavBarState extends State<ScaffoldWithBottomNavBar> {
       },
     ),
     BeamerDelegate(
-      initialPath: '/c',
+      initialPath: '/finances',
       locationBuilder: (routeInformation, _) {
-        if (routeInformation.location!.contains('/c')) {
-          return TabC(routeInformation);
+        if (routeInformation.location!.contains('/finances')) {
+          return FinanceLocation(routeInformation);
         }
         return NotFound(path: routeInformation.location!);
       },
@@ -229,7 +231,7 @@ class _ScaffoldWithBottomNavBarState extends State<ScaffoldWithBottomNavBar> {
       _currentIndex = 0;
     } else if (uriString.contains('/budget')) {
       _currentIndex = 1;
-    } else if (uriString.contains('/c')) {
+    } else if (uriString.contains('/finances')) {
       _currentIndex = 2;
     } else if (uriString.contains('/account')) {
       _currentIndex = 3;
@@ -288,8 +290,10 @@ class _ScaffoldWithBottomNavBarState extends State<ScaffoldWithBottomNavBar> {
           //   },
           // child: const
           NavigationDestination(
-            selectedIcon: Icon(Icons.flood),
-            icon: Icon(Icons.flood_outlined),
+            // selectedIcon: Icon(Icons.flood),
+            selectedIcon: FaIcon(FontAwesomeIcons.solidMoneyBill1),
+            // icon: Icon(Icons.flood_outlined),
+            icon: FaIcon(FontAwesomeIcons.solidMoneyBill1),
             label: Strings.budget,
           ),
           // ),
