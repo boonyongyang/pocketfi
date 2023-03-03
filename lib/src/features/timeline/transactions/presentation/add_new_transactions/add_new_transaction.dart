@@ -120,9 +120,9 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
                     const Icon(AppIcons.wallet, color: AppColors.mainColor1),
                     const SizedBox(width: 8.0),
                     SelectWallet(
-                        // ref: ref,
-                        selectedWallet: selectedWallet,
-                        wallets: wallets.value),
+                      selectedWallet: selectedWallet,
+                      wallets: wallets.value,
+                    ),
                     // selectWallet(),
                     const SizedBox(width: 8.0),
                   ],

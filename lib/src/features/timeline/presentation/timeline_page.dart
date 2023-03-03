@@ -13,6 +13,7 @@ import 'package:pocketfi/src/features/timeline/transactions/image_upload/helpers
 import 'package:pocketfi/src/features/timeline/transactions/presentation/add_new_transactions/add_new_transaction.dart';
 import 'package:pocketfi/src/features/timeline/transactions/presentation/add_new_transactions/create_new_post_view.dart';
 import 'package:pocketfi/src/features/timeline/transactions/presentation/receipts/scan_receipt.dart';
+import 'package:pocketfi/src/features/timeline/transactions/presentation/show_all_transactions_tab.dart';
 import 'package:pocketfi/src/features/timeline/transactions/presentation/transactions_tab.dart';
 import 'package:pocketfi/src/features/timeline/transactions/presentation/post_tab.dart';
 
@@ -122,6 +123,7 @@ class _MainViewState extends ConsumerState<TimelinePage>
           children: [
             const PostsTab(),
             const TransactionsTab(),
+            // const ShowAllTransactionsTab(),
             Center(
               child: Column(
                 children: const [

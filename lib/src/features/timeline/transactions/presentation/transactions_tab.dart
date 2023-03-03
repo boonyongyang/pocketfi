@@ -4,6 +4,9 @@ import 'package:pocketfi/src/common_widgets/animations/empty_contents_with_text_
 import 'package:pocketfi/src/common_widgets/animations/error_animation_view.dart';
 import 'package:pocketfi/src/common_widgets/animations/loading_animation_view.dart';
 import 'package:pocketfi/src/constants/strings.dart';
+import 'package:pocketfi/src/features/budget/wallet/application/wallet_visibility.dart';
+import 'package:pocketfi/src/features/budget/wallet/data/user_wallets_provider.dart';
+import 'package:pocketfi/src/features/budget/wallet/domain/wallet.dart';
 import 'package:pocketfi/src/features/timeline/transactions/application/transaction_provider.dart';
 import 'package:pocketfi/src/features/timeline/transactions/presentation/transactions_list_view_test.dart';
 
@@ -12,11 +15,10 @@ class TransactionsTab extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // get the transaction from the provider
-    // stream provider will automatically update the UI when the data changes
     final transactions = ref.watch(userTransactionsProvider);
+    final wallets = ref.watch(userWalletsProvider).value;
+    final selectedWallet = ref.watch(selectedWalletProvider);
 
-    // return a RefreshIndicator to allow the user to refresh the transaction
     return RefreshIndicator(
       onRefresh: () {
         ref.refresh(userTransactionsProvider);
@@ -26,36 +28,137 @@ class TransactionsTab extends ConsumerWidget {
           ),
         );
       },
-      // return a different widget depending on the state of the transaction
       child: transactions.when(
-        // if the transaction are loaded, return a list of transaction
         data: (trans) {
           if (trans.isEmpty) {
-            // if there are no transaction, return an empty widget
             return const EmptyContentsWithTextAnimationView(
               text: Strings.youHaveNoPosts,
             );
           } else {
-            // if there are transaction, return a list of transaction
             return Container(
               padding: const EdgeInsets.only(top: 20),
               color: Colors.grey,
-              child: TransactionListView(
-                transactions: trans,
+              child: Column(
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      showModalBottomSheet(
+                        context: context,
+                        builder: (context) {
+                          return WalletVisibilitySheet(
+                            wallets: wallets?.toList(),
+                            selectedWallet: selectedWallet,
+                          );
+                        },
+                      );
+                    },
+                    child: const Text('Wallets 1/2'),
+                  ),
+                  Expanded(
+                    child: TransactionListView(
+                      transactions: trans,
+                    ),
+                  ),
+                ],
               ),
             );
           }
         },
-
-        // if there is an error, return an error widget
         error: (error, stackTrace) {
           return const ErrorAnimationView();
         },
-
-        // if the transaction are loading, return a loading widget
         loading: () {
           return const LoadingAnimationView();
         },
+      ),
+    );
+  }
+}
+
+class WalletVisibilitySheet extends ConsumerStatefulWidget {
+  const WalletVisibilitySheet({
+    Key? key,
+    required this.wallets,
+    required this.selectedWallet,
+  }) : super(key: key);
+
+  final List<Wallet>? wallets;
+  final Wallet? selectedWallet;
+
+  @override
+  WalletFilterState createState() => WalletFilterState();
+}
+
+class WalletFilterState extends ConsumerState<WalletVisibilitySheet> {
+  @override
+  Widget build(BuildContext context) {
+    final wallets = ref.watch(userWalletsProvider).value;
+    final walletVisibility = ref.watch(walletVisibilityProvider);
+
+    return SizedBox(
+      height: (wallets?.length ?? 1) * 100, // haha for fun only
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              vertical: 8.0,
+              horizontal: 12.0,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Text('Available Wallets',
+                    style: Theme.of(context).textTheme.titleMedium),
+                const Spacer(),
+                IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: const Icon(
+                    Icons.check_circle_outline,
+                    size: 28.0,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          ListView.separated(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            shrinkWrap: true,
+            itemCount: wallets?.length ?? 0,
+            itemBuilder: (context, index) {
+              final wallet = wallets?.toList()[index];
+              return ListTile(
+                leading: const Icon(Icons.wallet),
+                title: Text(wallet?.walletName ?? 'Null Wallet',
+                    style: Theme.of(context).textTheme.titleMedium),
+                trailing: IconButton(
+                    onPressed: () {
+                      ref
+                          .read(walletVisibilityProvider.notifier)
+                          .toggleVisibility(wallet!);
+                      for (var wallet
+                          in ref.watch(walletVisibilityProvider).entries) {
+                        debugPrint(
+                            'walletVisibility: ${wallet.key.walletName} ${wallet.value}');
+                      }
+                    },
+                    icon: Icon(
+                      walletVisibility[wallet] == true
+                          ? Icons.visibility
+                          : Icons.visibility_off,
+                      color: walletVisibility[wallet] == true
+                          ? Colors.green
+                          : Colors.grey,
+                      size: 32.0,
+                    )),
+              );
+            },
+            separatorBuilder: (BuildContext context, int index) {
+              return const Divider();
+            },
+          ),
+        ],
       ),
     );
   }
