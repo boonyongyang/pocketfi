@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:pocketfi/src/features/timeline/posts/domain/post.dart';
+import 'package:pocketfi/src/features/category/application/category_providers.dart';
 import 'package:pocketfi/src/features/timeline/transactions/domain/transaction.dart';
 
 class TransactionCard extends StatelessWidget {
-  final Post post;
+  final Transaction transaction;
   final TransactionType transactionType;
   final VoidCallback onTapped;
   const TransactionCard({
     Key? key,
-    required this.post,
+    required this.transaction,
     required this.onTapped,
     required this.transactionType,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final category = getCategoryWithCategoryName(transaction.categoryName);
     return GestureDetector(
       onTap: onTapped,
       child: Padding(
@@ -34,14 +35,9 @@ class TransactionCard extends StatelessWidget {
                   children: [
                     Container(
                       padding: const EdgeInsets.all(5),
-                      decoration: const BoxDecoration(
-                          shape: BoxShape.circle, color: Colors.amber),
-                      child: const Center(
-                        child: Icon(
-                          Icons.restaurant,
-                          color: Colors.white,
-                        ),
-                      ),
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle, color: category.color),
+                      child: Center(child: category.icon),
                     ),
                     const SizedBox(
                       width: 10,
@@ -51,12 +47,9 @@ class TransactionCard extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          // category
-                          const Text('Food and Drinks',
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Color(0xFF51779E),
-                              )),
+                          Text(
+                            transaction.categoryName,
+                          ),
                           Row(
                             children: [
                               // list of ActionChip with different tags
@@ -99,40 +92,41 @@ class TransactionCard extends StatelessWidget {
                               ),
                             ],
                           ),
-                          Text(post.message,
+                          Text(transaction.description ?? '',
                               style: TextStyle(
                                 fontSize: 12,
                                 color: Colors.grey[700],
                               )),
-                          // if thumbnailUrl is not null, show the image
-                          // else show a SizedBox
-                          if (post.thumbnailUrl != null)
+                          if (transaction.thumbnailUrl != null)
                             Image.network(
-                              post.thumbnailUrl ?? '',
+                              transaction.thumbnailUrl!,
+                              height: 100,
+                              // width: 100,
                               fit: BoxFit.cover,
-                              height: 100.0,
                             )
                           else
                             const SizedBox(),
                           // Image.network(
-                          //   post.thumbnailUrl ?? '',
+                          //   transaction.thumbnailUrl ?? '',
                           //   fit: BoxFit.cover,
                           //   height: 100.0,
                           // ),
-                          Text(post.createdAt.toIso8601String()),
+                          Text(transaction.createdAt.toIso8601String()),
                         ],
                       ),
                     ),
                   ],
                 ),
                 Text(
-                  '${transactionType == TransactionType.expense ? '-' : '+'}MYR ${post.amount}',
+                  '${transactionType == TransactionType.expense ? TransactionType.expense.symbol : transactionType == TransactionType.income ? TransactionType.income.symbol : TransactionType.transfer.symbol}MYR ${transaction.amount}',
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 16,
                     color: transactionType == TransactionType.expense
-                        ? Colors.red
-                        : Colors.green,
+                        ? TransactionType.expense.color
+                        : transactionType == TransactionType.income
+                            ? TransactionType.income.color
+                            : TransactionType.transfer.color,
                   ),
                 ),
               ],

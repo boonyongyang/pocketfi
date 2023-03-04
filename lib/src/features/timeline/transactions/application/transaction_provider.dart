@@ -22,13 +22,14 @@ final createNewTransactionProvider =
 final userTransactionsProvider =
     StreamProvider.autoDispose<Iterable<Transaction>>(
   (ref) {
-    // get the user id.
     final userId = ref.watch(userIdProvider);
+
+    // FIXME get the selected walletId, need to based on Wallet Visibility
+    // walletVisibilityProvider get boolean value for each wallet
+// also need to use collectionGroup I think
 
     final walletId = ref.watch(selectedWalletProvider)?.walletId;
 
-    // The StreamController is used to add the transactions to the stream.
-    // manages the iterable of transactions.
     final controller = StreamController<Iterable<Transaction>>();
 
     // The onListen callback is called when the stream is listened to.

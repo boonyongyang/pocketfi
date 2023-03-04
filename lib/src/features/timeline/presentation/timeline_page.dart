@@ -1,18 +1,18 @@
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:pocketfi/src/common_widgets/animations/lottie_animation_view.dart';
-import 'package:pocketfi/src/common_widgets/animations/models/lottie_animation.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
+import 'package:pocketfi/src/features/category/application/category_providers.dart';
 import 'package:pocketfi/src/features/timeline/posts/post_settings/application/post_setting_provider.dart';
+import 'package:pocketfi/src/features/timeline/transactions/application/transaction_provider.dart';
 import 'package:pocketfi/src/features/timeline/transactions/image_upload/domain/file_type.dart';
 import 'package:pocketfi/src/features/timeline/transactions/image_upload/helpers/image_picker_helper.dart';
 import 'package:pocketfi/src/features/timeline/transactions/presentation/add_new_transactions/add_new_transaction.dart';
 import 'package:pocketfi/src/features/timeline/transactions/presentation/add_new_transactions/create_new_post_view.dart';
 import 'package:pocketfi/src/features/timeline/transactions/presentation/receipts/scan_receipt.dart';
-import 'package:pocketfi/src/features/timeline/transactions/presentation/test_tab.dart';
+import 'package:pocketfi/src/features/timeline/transactions/presentation/temp_tab.dart';
 import 'package:pocketfi/src/features/timeline/transactions/presentation/transactions_tab.dart';
+import 'package:pocketfi/src/features/timeline/transactions/presentation/post_tab.dart';
 
 class TimelinePage extends ConsumerStatefulWidget {
   const TimelinePage({super.key});
@@ -104,36 +104,53 @@ class _MainViewState extends ConsumerState<TimelinePage>
             ),
           ),
           // actions: [],
-          bottom: const TabBar(
+          bottom: TabBar(
             indicatorColor: AppColors.mainColor2,
             labelColor: AppColors.mainColor2,
             unselectedLabelColor: Colors.grey,
             tabs: [
-              Tab(icon: FaIcon(FontAwesomeIcons.moneyBills)),
-              Tab(icon: FaIcon(FontAwesomeIcons.chartPie)),
-              // Tab(icon: FaIcon(FontAwesomeIcons.receipt)),
-              Tab(icon: Icon(Icons.receipt_long)),
+              Tab(
+                  child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  // FaIcon(FontAwesomeIcons.moneyBills),
+                  Text('Lists'),
+                ],
+              )),
+              Tab(
+                  child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  // FaIcon(FontAwesomeIcons.chartPie),
+                  Text('Categories'),
+                ],
+              )),
+              Tab(
+                  child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  // Icon(Icons.receipt_long),
+                  Text('Bills'),
+                ],
+              )),
+              // Tab(icon: FaIcon(FontAwesomeIcons.moneyBills)),
+              // Tab(icon: FaIcon(FontAwesomeIcons.chartPie)),
+              // Tab(icon: Icon(Icons.receipt_long)),
             ],
           ),
         ),
-        body: TabBarView(
+        body: const TabBarView(
           children: [
-            const TransactionsTab(),
-            TestTab(),
-            Center(
-              child: Column(
-                children: const [
-                  Text('Bills'),
-                  LottieAnimationView(animation: LottieAnimation.welcomeApp),
-                ],
-              ),
-            ),
+            PostsTab(),
+            TransactionsTab(),
+            TempTab(),
           ],
         ),
         floatingActionButton: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
+          // crossAxisAlignment: CrossAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            Expanded(child: Container()),
+            // Expanded(child: Container()),
             FloatingActionButton(
               // heroTag: 'scan_receipt',
               heroTag: null,
@@ -156,16 +173,22 @@ class _MainViewState extends ConsumerState<TimelinePage>
             ),
             const SizedBox(height: 16),
             FloatingActionButton(
-              // heroTag: 'add_new_expense',
-              heroTag: null,
-              backgroundColor: const Color(0xFFFCD46A),
-              child: const Icon(Icons.add),
-              onPressed: () => Navigator.of(context, rootNavigator: true).push(
-                MaterialPageRoute(
-                  builder: (context) => const AddNewTransaction(),
-                ),
-              ),
-            ),
+                // heroTag: 'add_new_expense',
+                heroTag: null,
+                backgroundColor: const Color(0xFFFCD46A),
+                child: const Icon(Icons.add),
+                onPressed: () {
+                  resetCategoryState(ref);
+                  ref
+                      .read(transactionTypeProvider.notifier)
+                      .setTransactionType(0);
+
+                  Navigator.of(context, rootNavigator: true).push(
+                    MaterialPageRoute(
+                      builder: (context) => const AddNewTransaction(),
+                    ),
+                  );
+                }),
           ],
         ),
       ),

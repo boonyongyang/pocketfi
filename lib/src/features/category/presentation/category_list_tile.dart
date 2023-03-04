@@ -1,4 +1,4 @@
-//todo this should be the one to represent each tile for the category list --> since GridView can't customise length i think, 
+// // todo this should be the one to represent each tile for the category list --> since GridView can't customise length i think, 
 
 // import 'package:flutter/material.dart';
 // import 'package:hooks_riverpod/hooks_riverpod.dart';

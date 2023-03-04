@@ -74,4 +74,36 @@ class UserInfoStorage {
       return false;
     }
   }
+
+  Future<bool> updateUserInfo({
+    required UserId userId,
+    required String displayName,
+    required String? email,
+  }) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection(
+            FirebaseCollectionName.users,
+          )
+          .doc(userId)
+          .update({
+        FirebaseFieldName.displayName: displayName,
+        FirebaseFieldName.email: email ?? '',
+      });
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<DocumentSnapshot<Map<String, dynamic>>> getUser(String uid) async {
+    final usersRef = FirebaseFirestore.instance.collection('users');
+    final userDoc = await usersRef.doc(uid).get();
+    return userDoc;
+  }
+
+// Usage:
+// final userDoc = await getUser('userUid');
+// final email = userDoc.data()!['email'];
+// final displayName = userDoc.data()!['display_name'];
 }

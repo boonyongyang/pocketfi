@@ -14,6 +14,24 @@ class CategoryNotifier extends StateNotifier<List<Category>> {
             : [];
   }
 
+  bool deleteCategory(Category category) {
+    return state.remove(category);
+  }
+
+  void updateCategory(Category category) {
+    state = state.map((existingCategory) {
+      if (existingCategory.name == category.name) {
+        return category;
+      } else {
+        return existingCategory;
+      }
+    }).toList();
+  }
+
+  // List<Category> showAllCategories() {
+  //   return state = [...expenseCategories, ...incomeCategories];
+  // }
+
 // todo : this isnot used?
   // void setCategory(Category category, bool isSelected) {
   //   state = state
