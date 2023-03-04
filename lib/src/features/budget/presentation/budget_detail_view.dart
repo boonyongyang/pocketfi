@@ -8,6 +8,7 @@ import 'package:pocketfi/src/common_widgets/dialogs/delete_dialog.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/constants/app_icons.dart';
 import 'package:pocketfi/src/constants/strings.dart';
+import 'package:pocketfi/src/features/budget/application/delete_budget_provider.dart';
 import 'package:pocketfi/src/features/budget/application/user_budgets_provider.dart';
 import 'package:pocketfi/src/features/budget/domain/budget.dart';
 import 'package:pocketfi/src/features/budget/wallet/data/user_wallets_provider.dart';
@@ -52,14 +53,14 @@ class _BudgetDetailsViewState extends ConsumerState<BudgetDetailsView> {
               ).present(context);
               if (deletePost == null) return;
 
-              // if (deletePost) {
-              //   await ref
-              //       .read(deletebudgetProvider.notifier)
-              //       .deletebudget(budgetId: widget.budget.walletId);
-              //   if (mounted) {
-              //     Navigator.of(context).maybePop();
-              //   }
-              // }
+              if (deletePost) {
+                await ref
+                    .read(deleteBudgetProvider.notifier)
+                    .deleteBudget(budgetId: widget.budget.budgetId);
+                if (mounted) {
+                  Navigator.of(context).maybePop();
+                }
+              }
             },
           ),
         ],
