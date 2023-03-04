@@ -8,15 +8,11 @@ import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/common_widgets/buttons/full_width_button_with_text.dart';
 import 'package:pocketfi/src/constants/app_icons.dart';
 import 'package:pocketfi/src/constants/strings.dart';
-import 'package:pocketfi/src/features/authentication/application/user_id_provider.dart';
 import 'package:pocketfi/src/features/budget/application/total_amount_provider.dart';
 import 'package:pocketfi/src/features/budget/application/user_budgets_provider.dart';
 import 'package:pocketfi/src/features/budget/presentation/budget_detail_view.dart';
 import 'package:pocketfi/src/features/budget/presentation/budget_tile.dart';
-import 'package:pocketfi/src/features/budget/wallet/presentation/create_new_wallet_view.dart';
-import 'package:pocketfi/src/features/budget/wallet/presentation/wallet_page.dart';
 import 'package:pocketfi/src/features/budget/wallet/presentation/wallet_sheet.dart';
-import 'package:pocketfi/src/features/category/domain/default_categories.dart';
 
 class BudgetPage extends ConsumerStatefulWidget {
   const BudgetPage({

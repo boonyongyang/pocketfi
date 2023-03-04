@@ -1,12 +1,8 @@
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:pocketfi/src/common_widgets/animations/lottie_animation_view.dart';
-import 'package:pocketfi/src/common_widgets/animations/models/lottie_animation.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/features/category/application/category_providers.dart';
-import 'package:pocketfi/src/features/shared/services/shared_preferences_service.dart';
 import 'package:pocketfi/src/features/timeline/posts/post_settings/application/post_setting_provider.dart';
 import 'package:pocketfi/src/features/timeline/transactions/application/transaction_provider.dart';
 import 'package:pocketfi/src/features/timeline/transactions/image_upload/domain/file_type.dart';
@@ -151,9 +147,10 @@ class _MainViewState extends ConsumerState<TimelinePage>
           ],
         ),
         floatingActionButton: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
+          // crossAxisAlignment: CrossAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            Expanded(child: Container()),
+            // Expanded(child: Container()),
             FloatingActionButton(
               // heroTag: 'scan_receipt',
               heroTag: null,

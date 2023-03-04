@@ -3,11 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/common_widgets/animations/empty_contents_with_text_animation_view.dart';
 import 'package:pocketfi/src/common_widgets/animations/error_animation_view.dart';
 import 'package:pocketfi/src/common_widgets/animations/loading_animation_view.dart';
-import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/constants/strings.dart';
-import 'package:pocketfi/src/features/budget/wallet/application/wallet_visibility.dart';
-import 'package:pocketfi/src/features/budget/wallet/data/user_wallets_provider.dart';
-import 'package:pocketfi/src/features/budget/wallet/domain/wallet.dart';
 import 'package:pocketfi/src/features/timeline/transactions/application/transaction_provider.dart';
 import 'package:pocketfi/src/features/timeline/transactions/presentation/transactions_list_view.dart';
 
@@ -17,8 +13,6 @@ class TransactionsTab extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final transactions = ref.watch(userTransactionsProvider);
-    final wallets = ref.watch(userWalletsProvider).value;
-    final selectedWallet = ref.watch(selectedWalletProvider);
 
     return RefreshIndicator(
       onRefresh: () {

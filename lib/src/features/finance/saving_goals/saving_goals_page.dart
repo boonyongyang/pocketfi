@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/common_widgets/buttons/full_width_button_with_text.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
-import 'package:pocketfi/src/constants/strings.dart';
 import 'package:pocketfi/src/features/finance/saving_goals/saving_goals_tiles.dart';
 
 class SavingGoalsPage extends ConsumerWidget {

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:pocketfi/main.dart';
 import 'package:pocketfi/src/common_widgets/buttons/full_width_button_with_text.dart';
 import 'package:pocketfi/src/common_widgets/dialogs/alert_dialog_model.dart';
 import 'package:pocketfi/src/common_widgets/dialogs/delete_dialog.dart';
@@ -11,8 +10,7 @@ import 'package:pocketfi/src/constants/strings.dart';
 import 'package:pocketfi/src/features/budget/application/delete_budget_provider.dart';
 import 'package:pocketfi/src/features/budget/application/user_budgets_provider.dart';
 import 'package:pocketfi/src/features/budget/domain/budget.dart';
-import 'package:pocketfi/src/features/budget/wallet/data/user_wallets_provider.dart';
-import 'package:pocketfi/src/features/timeline/transactions/presentation/add_new_transactions/add_new_transaction.dart';
+import 'package:pocketfi/src/features/budget/wallet/presentation/select_wallet_dropdownlist.dart';
 
 class BudgetDetailsView extends StatefulHookConsumerWidget {
   final Budget budget;
@@ -35,9 +33,6 @@ class _BudgetDetailsViewState extends ConsumerState<BudgetDetailsView> {
     final amountController = useTextEditingController(
       text: widget.budget.budgetAmount.toStringAsFixed(2),
     );
-
-    final wallets = ref.watch(userWalletsProvider);
-    final selectedWallet = ref.watch(selectedWalletProvider);
 
     final budgets = ref.watch(userBudgetsProvider);
 
@@ -154,8 +149,8 @@ class _BudgetDetailsViewState extends ConsumerState<BudgetDetailsView> {
                   ],
                 ),
                 Row(
-                  children: [
-                    const Padding(
+                  children: const [
+                    Padding(
                       padding: EdgeInsets.only(left: 16.0, right: 32.0),
                       child: SizedBox(
                         width: 5,
@@ -165,7 +160,7 @@ class _BudgetDetailsViewState extends ConsumerState<BudgetDetailsView> {
                         ),
                       ),
                     ),
-                    const Expanded(
+                    Expanded(
                       child: Padding(
                         padding: EdgeInsets.all(16.0),
                         child: Text(
@@ -179,46 +174,13 @@ class _BudgetDetailsViewState extends ConsumerState<BudgetDetailsView> {
                       ),
                     ),
                     Padding(
-                        padding: const EdgeInsets.only(
+                        padding: EdgeInsets.only(
                           left: 8.0,
                           right: 16.0,
                           // top: 16.0,
                           bottom: 8.0,
                         ),
-                        child: SelectWallet(
-                          ref: ref,
-                          wallets: wallets.value,
-                          selectedWallet: selectedWallet,
-                        )
-                        // DropdownButton<String>(
-                        //   // value: _getWallets().first.walletName,
-                        //   items: _getWallets().map((Wallet wallet) {
-                        //     return DropdownMenuItem<String>(
-                        //       value: wallet.walletName,
-                        //       child: Text(wallet.walletName),
-                        //     );
-                        //   }).toList(),
-                        //   onChanged: (_) {},
-                        // ),
-                        // child: DropdownButton<String>(
-                        //   value: "All wallet",
-                        //   items: <String>[
-                        //     "All wallet",
-                        //     "wallet 1",
-                        //     "wallet 2",
-                        //   ].map<DropdownMenuItem<String>>((String value) {
-                        //     return DropdownMenuItem<String>(
-                        //       value: value,
-                        //       child: Text(value),
-                        //     );
-                        //   }).toList(),
-                        //   onChanged: (_) {},
-                        // ),
-                        ),
-                    // Text(walletChosen.walletName,
-                    //     style: const TextStyle(
-                    //       fontSize: 15,
-                    //     )),
+                        child: SelectWalletDropdownList()),
                   ],
                 ),
               ],
