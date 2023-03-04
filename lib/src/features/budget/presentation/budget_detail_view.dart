@@ -1,59 +1,69 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:pocketfi/main.dart';
 import 'package:pocketfi/src/common_widgets/buttons/full_width_button_with_text.dart';
+import 'package:pocketfi/src/common_widgets/dialogs/alert_dialog_model.dart';
+import 'package:pocketfi/src/common_widgets/dialogs/delete_dialog.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/constants/app_icons.dart';
 import 'package:pocketfi/src/constants/strings.dart';
-import 'package:pocketfi/src/features/authentication/application/user_id_provider.dart';
-import 'package:pocketfi/src/features/budget/application/create_new_budget_provider.dart';
+import 'package:pocketfi/src/features/budget/application/delete_budget_provider.dart';
+import 'package:pocketfi/src/features/budget/application/user_budgets_provider.dart';
+import 'package:pocketfi/src/features/budget/domain/budget.dart';
 import 'package:pocketfi/src/features/budget/wallet/data/user_wallets_provider.dart';
-import 'package:pocketfi/src/features/budget/wallet/domain/wallet.dart';
 import 'package:pocketfi/src/features/timeline/transactions/presentation/add_new_transactions/add_new_transaction.dart';
 
-class CreateNewBudgetView extends StatefulHookConsumerWidget {
-  const CreateNewBudgetView({super.key});
+class BudgetDetailsView extends StatefulHookConsumerWidget {
+  final Budget budget;
+  const BudgetDetailsView({
+    super.key,
+    required this.budget,
+  });
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
-      _CreateNewBudgetViewState();
+      _BudgetDetailsViewState();
 }
 
-class _CreateNewBudgetViewState extends ConsumerState<CreateNewBudgetView> {
+class _BudgetDetailsViewState extends ConsumerState<BudgetDetailsView> {
   @override
   Widget build(BuildContext context) {
-    final budgetNameController = useTextEditingController();
-    final amountController = useTextEditingController();
-
-    final isCreateButtonEnabled = useState(false);
+    final budgetNameController = useTextEditingController(
+      text: widget.budget.budgetName,
+    );
+    final amountController = useTextEditingController(
+      text: widget.budget.budgetAmount.toStringAsFixed(2),
+    );
 
     final wallets = ref.watch(userWalletsProvider);
     final selectedWallet = ref.watch(selectedWalletProvider);
 
-    useEffect(
-      () {
-        void listener() {
-          isCreateButtonEnabled.value = budgetNameController.text.isNotEmpty &&
-              amountController.text.isNotEmpty;
-        }
-
-        budgetNameController.addListener(listener);
-        amountController.addListener(listener);
-
-        return () {
-          budgetNameController.removeListener(listener);
-          amountController.removeListener(listener);
-        };
-      },
-      [
-        budgetNameController,
-        amountController,
-      ],
-    );
+    final budgets = ref.watch(userBudgetsProvider);
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(Strings.createNewBudget),
+        title: const Text('Budget Details'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.delete_rounded),
+            onPressed: () async {
+              final deletePost = await const DeleteDialog(
+                titleOfObjectToDelete: 'Budget',
+              ).present(context);
+              if (deletePost == null) return;
+
+              if (deletePost) {
+                await ref
+                    .read(deleteBudgetProvider.notifier)
+                    .deleteBudget(budgetId: widget.budget.budgetId);
+                if (mounted) {
+                  Navigator.of(context).maybePop();
+                }
+              }
+            },
+          ),
+        ],
       ),
       body: Flex(
         direction: Axis.vertical,
@@ -205,57 +215,32 @@ class _CreateNewBudgetViewState extends ConsumerState<CreateNewBudgetView> {
                         //   onChanged: (_) {},
                         // ),
                         ),
+                    // Text(walletChosen.walletName,
+                    //     style: const TextStyle(
+                    //       fontSize: 15,
+                    //     )),
                   ],
                 ),
               ],
             ),
           ),
           FullWidthButtonWithText(
-              text: Strings.createNewBudget,
-              onPressed: isCreateButtonEnabled.value
-                  ? () async {
-                      _createNewWalletController(
-                        budgetNameController,
-                        amountController,
-                        ref,
-                      );
-                    }
-                  : null),
+            text: Strings.createNewBudget,
+            onPressed: () {},
+            // isCreateButtonEnabled.value
+            //     ? () async {
+            //         _createNewWalletController(
+            //           budgetNameController,
+            //           amountController,
+            //           ref,
+            //         );
+            //       }
+            // : null
+          ),
         ],
       ),
     );
   }
-
-  Future<void> _createNewWalletController(
-    TextEditingController nameController,
-    TextEditingController balanceController,
-    WidgetRef ref,
-  ) async {
-    final userId = ref.read(userIdProvider);
-    if (userId == null) {
-      return;
-    }
-    if (balanceController.text.isEmpty) {
-      balanceController.text = '0.00';
-    }
-    final isCreated =
-        await ref.read(createNewBudgetProvider.notifier).createNewBudget(
-              userId: userId,
-              budgetName: nameController.text,
-              budgetAmount: double.parse(balanceController.text),
-              // walletId: '2023-02-27T21:08:26.256268',
-            );
-    if (isCreated && mounted) {
-      nameController.clear();
-      balanceController.clear();
-      // Navigator.of(context).pop();
-      // Beamer.of(context).beamBack();
-      Navigator.of(context).maybePop();
-    }
-  }
-
-  Iterable<Wallet> _getWallets() {
-    final wallets = ref.watch(userWalletsProvider);
-    return wallets.valueOrNull ?? [];
-  }
+  // );
 }
+// }
