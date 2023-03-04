@@ -9,7 +9,6 @@ import 'package:pocketfi/src/constants/firebase_collection_name.dart';
 import 'package:pocketfi/src/constants/typedefs.dart';
 import 'package:pocketfi/src/features/timeline/transactions/domain/transaction.dart';
 import 'package:pocketfi/src/features/timeline/transactions/domain/transaction_payload.dart';
-import 'package:pocketfi/src/features/timeline/transactions/image_upload/domain/file_type.dart';
 import 'package:pocketfi/src/features/timeline/transactions/image_upload/exceptions/could_not_build_thumbnail_exception.dart';
 import 'package:pocketfi/src/features/timeline/transactions/image_upload/extensions/get_image_data_aspect_ratio.dart';
 import 'package:pocketfi/src/features/timeline/transactions/image_upload/image_constants.dart';

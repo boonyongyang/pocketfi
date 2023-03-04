@@ -1,15 +1,10 @@
-
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:pocketfi/src/common_widgets/animations/empty_contents_with_text_animation_view.dart';
 import 'package:pocketfi/src/common_widgets/animations/error_animation_view.dart';
 import 'package:pocketfi/src/common_widgets/animations/loading_animation_view.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
-import 'package:pocketfi/src/common_widgets/buttons/full_width_button_with_text.dart';
-import 'package:pocketfi/src/constants/strings.dart';
 import 'package:pocketfi/src/features/budget/wallet/data/user_wallets_provider.dart';
-import 'package:pocketfi/src/features/budget/wallet/domain/wallet.dart';
 import 'package:pocketfi/src/features/budget/wallet/presentation/wallet_details_view.dart';
 import 'package:pocketfi/src/features/budget/wallet/presentation/wallet_tiles.dart';
 

@@ -3,7 +3,6 @@ import 'package:flutter/foundation.dart' show immutable;
 import 'package:flutter/material.dart' show Color;
 import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/constants/strings.dart';
-import 'package:pocketfi/src/features/timeline/transactions/domain/tag.dart';
 import 'package:pocketfi/src/features/timeline/transactions/domain/transaction_key.dart';
 
 enum TransactionType {

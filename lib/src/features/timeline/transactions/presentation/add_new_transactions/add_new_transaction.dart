@@ -12,6 +12,7 @@ import 'package:pocketfi/src/constants/strings.dart';
 import 'package:pocketfi/src/features/authentication/application/user_id_provider.dart';
 import 'package:pocketfi/src/features/budget/wallet/data/user_wallets_provider.dart';
 import 'package:pocketfi/src/features/budget/wallet/domain/wallet.dart';
+import 'package:pocketfi/src/features/budget/wallet/presentation/select_wallet_dropdownlist.dart';
 import 'package:pocketfi/src/features/category/application/category_providers.dart';
 import 'package:pocketfi/src/features/category/domain/category.dart';
 import 'package:pocketfi/src/features/category/presentation/category_page.dart';
@@ -37,8 +38,6 @@ class AddNewTransaction extends StatefulHookConsumerWidget {
 }
 
 class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
-  File? _imageFile;
-
   String _selectedRecurrence = 'Never';
   String _selectedWallet = 'Personal';
 
@@ -47,7 +46,6 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
     final categories = ref.watch(categoriesProvider);
     final selectedCategory = ref.watch(selectedCategoryProvider);
 
-    final wallets = ref.watch(userWalletsProvider);
     final selectedWallet = ref.watch(selectedWalletProvider);
 
     final amountController = useTextEditingController();
@@ -119,11 +117,7 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
                     const Spacer(),
                     const Icon(AppIcons.wallet, color: AppColors.mainColor1),
                     const SizedBox(width: 8.0),
-                    SelectWallet(
-                      selectedWallet: selectedWallet,
-                      wallets: wallets.value,
-                    ),
-                    // selectWallet(),
+                    const SelectWalletDropdownList(),
                     const SizedBox(width: 8.0),
                   ],
                 ),
@@ -393,85 +387,13 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
   }
 }
 
-class SelectWallet extends ConsumerWidget {
-  const SelectWallet({
-    super.key,
-    // required this.ref,
-    required this.wallets,
-    required this.selectedWallet,
-  });
-
-  // final WidgetRef ref;
-  final Iterable<Wallet>? wallets;
-  final Wallet? selectedWallet;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    // final wallets = ref.watch(userWalletsProvider);
-    // final selectedWallet = ref.watch(selectedWalletProvider);
-
-    debugPrint('first wallets: ${selectedWallet?.walletName}');
-    final walletList = wallets?.toList();
-    debugPrint('wallet list: ${walletList?.length}');
-    debugPrint('wallet list: ${walletList?.toString()}');
-
-    return Consumer(
-      builder: (context, ref, child) {
-        return DropdownButton(
-          value: selectedWallet,
-          items: walletList?.map((wallet) {
-            return DropdownMenuItem(
-              value: wallet,
-              child: Text(wallet.walletName),
-            );
-          }).toList(),
-          onChanged: (selectedWallet) {
-            debugPrint('wallet tapped: ${selectedWallet?.walletName}');
-            ref.read(selectedWalletProvider.notifier).state = selectedWallet!;
-            debugPrint(
-                'selected wallet: ${ref.read(selectedWalletProvider)?.walletName}');
-          },
-        );
-      },
-    );
-  }
-}
-// return Center(
-//   child: wallets.when(
-//     data: (Iterable<Wallet> data) {
-//       // final walletList = data?.toList() ?? [];
-//       final walletList = data.toList();
-//       return DropdownButton(
-//         // value: walletList.isNotEmpty ? walletList.first : null,
-//         value: selectedWallet,
-//         items: walletList.map((wallet) {
-//           return DropdownMenuItem(
-//             value: wallet,
-//             child: Text(wallet.walletName),
-//           );
-//         }).toList(),
-//         onChanged: (selectedWallet) {
-//           debugPrint('wallet tapped: ${selectedWallet?.walletName}');
-//           ref.read(selectedWalletProvider.notifier).state = selectedWallet!;
-//           debugPrint(
-//               'selected wallet: ${ref.read(selectedWalletProvider)?.walletName}');
-//         },
-//       );
-//     },
-//     loading: () => const CircularProgressIndicator(),
-//     error: (error, stackTrace) => Text('Error: $error'),
-//   ),
-// );
-
 class SelectCategory extends ConsumerWidget {
   const SelectCategory({
     super.key,
-    // required this.ref,
     required this.categories,
     required this.selectedCategory,
   });
 
-  // final WidgetRef ref;
   final List<Category> categories;
   final Category? selectedCategory;
 

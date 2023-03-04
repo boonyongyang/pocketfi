@@ -322,7 +322,7 @@ class _CreateNewWalletViewState extends ConsumerState<CreateNewWalletView> {
     String nameController,
   ) async {
     debugPrint(nameController);
-    debugPrint('getWallet: ' + _getWallets().toString());
+    debugPrint('getWallet: ${_getWallets()}');
     for (var wallet in _getWallets()) {
       debugPrint('everywallet: ${wallet.walletName}');
       if (nameController == wallet.walletName) {
