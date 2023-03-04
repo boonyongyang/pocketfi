@@ -8,6 +8,7 @@ import 'package:pocketfi/src/constants/strings.dart';
 import 'package:pocketfi/src/features/budget/wallet/application/wallet_visibility.dart';
 import 'package:pocketfi/src/features/budget/wallet/data/user_wallets_provider.dart';
 import 'package:pocketfi/src/features/budget/wallet/domain/wallet.dart';
+import 'package:pocketfi/src/features/shared/services/shared_preferences_service.dart';
 import 'package:pocketfi/src/features/timeline/transactions/application/transaction_provider.dart';
 import 'package:pocketfi/src/features/timeline/transactions/presentation/transactions_list_view.dart';
 
@@ -94,10 +95,10 @@ class WalletVisibilitySheet extends ConsumerStatefulWidget {
   final Wallet? selectedWallet;
 
   @override
-  WalletFilterState createState() => WalletFilterState();
+  WalletVisibilityState createState() => WalletVisibilityState();
 }
 
-class WalletFilterState extends ConsumerState<WalletVisibilitySheet> {
+class WalletVisibilityState extends ConsumerState<WalletVisibilitySheet> {
   @override
   Widget build(BuildContext context) {
     final wallets = ref.watch(userWalletsProvider).value;
@@ -143,14 +144,40 @@ class WalletFilterState extends ConsumerState<WalletVisibilitySheet> {
                 title: Text(wallet?.walletName ?? 'Null Wallet',
                     style: Theme.of(context).textTheme.titleMedium),
                 trailing: IconButton(
-                    onPressed: () {
+                    onPressed: () async {
                       ref
                           .read(walletVisibilityProvider.notifier)
                           .toggleVisibility(wallet!);
+
+                      // final walletVisibilityString ;
+
+// * convert Map<Wallet,bool> to Map<String,bool>
+                      Map<Wallet, bool> walletMap =
+                          walletVisibility; // original map
+
+                      Map<String, bool> walletIdMap = {};
+
+                      for (final entry in walletMap.entries) {
+                        walletIdMap[entry.key.walletId] = entry.value;
+                      }
+// * convert Map<Wallet,bool> to Map<String,bool>
+
+                      if (await SharedPreferencesService
+                          .saveWalletVisibilitySettings(walletIdMap)) {
+                        debugPrint('Saved wallet visibility settings');
+                      }
+
+                      final getWalVisiPrefs = SharedPreferencesService
+                          .getWalletVisibilitySettings();
+
+                      debugPrint(
+                          'Get wallet visibility settings: ${getWalVisiPrefs.toString()}');
+
                       for (var wallet
                           in ref.watch(walletVisibilityProvider).entries) {
                         debugPrint(
-                            'walletVisibility: ${wallet.key.walletName} ${wallet.value}');
+                          'walletVisibility: ${wallet.key.walletName} ${wallet.value}',
+                        );
                       }
                     },
                     icon: Icon(
