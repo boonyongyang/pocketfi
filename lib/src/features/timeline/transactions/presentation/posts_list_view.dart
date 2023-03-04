@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:pocketfi/src/features/timeline/posts/domain/post.dart';
 import 'package:pocketfi/src/features/timeline/transactions/domain/transaction.dart';
-import 'package:pocketfi/src/features/timeline/transactions/presentation/transaction_card_test.dart';
+import 'package:pocketfi/src/features/timeline/transactions/presentation/post_card_view.dart';
 
-class TransactionListViewTest extends StatelessWidget {
-  final Iterable<Transaction> transactions;
+class PostsListView extends StatelessWidget {
+  final Iterable<Post> posts;
 
-  const TransactionListViewTest({
+  const PostsListView({
     Key? key,
-    required this.transactions,
+    required this.posts,
   }) : super(key: key);
 
   @override
@@ -28,15 +29,14 @@ class TransactionListViewTest extends StatelessWidget {
         //   mainAxisSpacing: 8.0, // vertical spacing
         //   crossAxisSpacing: 8.0, // horizontal spacing
         // ),
-        itemCount: transactions.length,
+        itemCount: posts.length,
         itemBuilder: (context, index) {
-          final transaction =
-              transactions.elementAt(index); // get the post at the index
-          return TransactionCardTest(
-            transaction: transaction,
-            transactionType: transaction.type,
+          final post = posts.elementAt(index); // get the post at the index
+          return PostCardView(
+            post: post,
+            transactionType: TransactionType.expense,
             onTapped: () {
-              // navigate to the post details view
+              // TODO navigate to the post details view
 
               // Navigator.push(
               //   context,

@@ -14,11 +14,10 @@ import 'package:pocketfi/src/features/budget/wallet/data/user_wallets_provider.d
 import 'package:pocketfi/src/features/budget/wallet/domain/wallet.dart';
 import 'package:pocketfi/src/features/category/application/category_providers.dart';
 import 'package:pocketfi/src/features/category/domain/category.dart';
-import 'package:pocketfi/src/features/timeline/posts/post_settings/application/post_setting_provider.dart';
+import 'package:pocketfi/src/features/category/presentation/category_page.dart';
 import 'package:pocketfi/src/features/timeline/transactions/application/transaction_provider.dart';
 import 'package:pocketfi/src/features/timeline/transactions/date_picker/application/selected_date_notifier.dart';
 import 'package:pocketfi/src/features/timeline/transactions/domain/tag.dart';
-import 'package:pocketfi/src/features/timeline/transactions/image_upload/application/image_uploader_provider.dart';
 import 'package:pocketfi/src/features/timeline/transactions/image_upload/data/image_file_notifier.dart';
 import 'package:pocketfi/src/features/timeline/transactions/image_upload/domain/file_type.dart';
 import 'package:pocketfi/src/features/timeline/transactions/image_upload/domain/thumbnail_request.dart';
@@ -102,7 +101,9 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
           ),
           child: Column(
             children: [
-              const SelectTransactionType(),
+              const SelectTransactionType(
+                noOfTabs: 3,
+              ),
               TransactionAmountField(amountController: amountController),
               const SelectCurrency(),
               // * Select Category and Wallet
@@ -114,15 +115,14 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
                     const SizedBox(width: 8.0),
                     SelectCategory(
                         categories: categories,
-                        ref: ref,
                         selectedCategory: selectedCategory),
                     const Spacer(),
                     const Icon(AppIcons.wallet, color: AppColors.mainColor1),
                     const SizedBox(width: 8.0),
                     SelectWallet(
-                        ref: ref,
-                        selectedWallet: selectedWallet,
-                        wallets: wallets.value),
+                      selectedWallet: selectedWallet,
+                      wallets: wallets.value,
+                    ),
                     // selectWallet(),
                     const SizedBox(width: 8.0),
                   ],
@@ -158,22 +158,21 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
                           //         .toggleBookmark();
                           //   },
                           // ),
-                          Transform.scale(
-                            scale: 1.5,
-                            child: IconButton(
-                              splashRadius: 24 / 1.2,
-                              icon: const Icon(
-                                Icons.bookmark_outline,
-                                color: AppColors.mainColor1,
-                              ),
-                              onPressed: () {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text('Bookmark'),
-                                  ),
-                                );
-                              },
+                          IconButton(
+                            // splashRadius: 24 / 1.2,
+                            splashRadius: 22,
+                            icon: const Icon(
+                              Icons.bookmark_outline,
+                              color: AppColors.mainColor1,
+                              size: 32,
                             ),
+                            onPressed: () {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Bookmark'),
+                                ),
+                              );
+                            },
                           ),
 
                           SizedBox(
@@ -397,12 +396,12 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
 class SelectWallet extends ConsumerWidget {
   const SelectWallet({
     super.key,
-    required this.ref,
+    // required this.ref,
     required this.wallets,
     required this.selectedWallet,
   });
 
-  final WidgetRef ref;
+  // final WidgetRef ref;
   final Iterable<Wallet>? wallets;
   final Wallet? selectedWallet;
 
@@ -413,66 +412,71 @@ class SelectWallet extends ConsumerWidget {
 
     debugPrint('first wallets: ${selectedWallet?.walletName}');
     final walletList = wallets?.toList();
+    debugPrint('wallet list: ${walletList?.length}');
+    debugPrint('wallet list: ${walletList?.toString()}');
 
-    return DropdownButton(
-      value: selectedWallet,
-      items: walletList?.map((wallet) {
-        return DropdownMenuItem(
-          value: wallet,
-          child: Text(wallet.walletName),
+    return Consumer(
+      builder: (context, ref, child) {
+        return DropdownButton(
+          value: selectedWallet,
+          items: walletList?.map((wallet) {
+            return DropdownMenuItem(
+              value: wallet,
+              child: Text(wallet.walletName),
+            );
+          }).toList(),
+          onChanged: (selectedWallet) {
+            debugPrint('wallet tapped: ${selectedWallet?.walletName}');
+            ref.read(selectedWalletProvider.notifier).state = selectedWallet!;
+            debugPrint(
+                'selected wallet: ${ref.read(selectedWalletProvider)?.walletName}');
+          },
         );
-      }).toList(),
-      onChanged: (selectedWallet) {
-        debugPrint('wallet tapped: ${selectedWallet?.walletName}');
-        ref.read(selectedWalletProvider.notifier).state = selectedWallet!;
-        debugPrint(
-            'selected wallet: ${ref.read(selectedWalletProvider)?.walletName}');
       },
     );
-
-    // return Center(
-    //   child: wallets.when(
-    //     data: (Iterable<Wallet> data) {
-    //       // final walletList = data?.toList() ?? [];
-    //       final walletList = data.toList();
-    //       return DropdownButton(
-    //         // value: walletList.isNotEmpty ? walletList.first : null,
-    //         value: selectedWallet,
-    //         items: walletList.map((wallet) {
-    //           return DropdownMenuItem(
-    //             value: wallet,
-    //             child: Text(wallet.walletName),
-    //           );
-    //         }).toList(),
-    //         onChanged: (selectedWallet) {
-    //           debugPrint('wallet tapped: ${selectedWallet?.walletName}');
-    //           ref.read(selectedWalletProvider.notifier).state = selectedWallet!;
-    //           debugPrint(
-    //               'selected wallet: ${ref.read(selectedWalletProvider)?.walletName}');
-    //         },
-    //       );
-    //     },
-    //     loading: () => const CircularProgressIndicator(),
-    //     error: (error, stackTrace) => Text('Error: $error'),
-    //   ),
-    // );
   }
 }
+// return Center(
+//   child: wallets.when(
+//     data: (Iterable<Wallet> data) {
+//       // final walletList = data?.toList() ?? [];
+//       final walletList = data.toList();
+//       return DropdownButton(
+//         // value: walletList.isNotEmpty ? walletList.first : null,
+//         value: selectedWallet,
+//         items: walletList.map((wallet) {
+//           return DropdownMenuItem(
+//             value: wallet,
+//             child: Text(wallet.walletName),
+//           );
+//         }).toList(),
+//         onChanged: (selectedWallet) {
+//           debugPrint('wallet tapped: ${selectedWallet?.walletName}');
+//           ref.read(selectedWalletProvider.notifier).state = selectedWallet!;
+//           debugPrint(
+//               'selected wallet: ${ref.read(selectedWalletProvider)?.walletName}');
+//         },
+//       );
+//     },
+//     loading: () => const CircularProgressIndicator(),
+//     error: (error, stackTrace) => Text('Error: $error'),
+//   ),
+// );
 
-class SelectCategory extends StatelessWidget {
+class SelectCategory extends ConsumerWidget {
   const SelectCategory({
     super.key,
-    required this.ref,
+    // required this.ref,
     required this.categories,
     required this.selectedCategory,
   });
 
-  final WidgetRef ref;
+  // final WidgetRef ref;
   final List<Category> categories;
   final Category? selectedCategory;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Builder(
       builder: (context) {
         return Center(
@@ -492,37 +496,73 @@ class SelectCategory extends StatelessWidget {
                     height: 400,
                     child: Column(
                       children: [
-                        const SizedBox(height: 8.0),
-                        const Text(Strings.selectCategory),
-                        const SizedBox(height: 8.0),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text(Strings.selectCategory,
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  )),
+                              IconButton(
+                                // icon: const Icon(Icons.add_outlined),
+                                icon: const Icon(Icons.settings),
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const CategoryPage(),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
                         Expanded(
                           child: GridView.builder(
                             gridDelegate:
                                 const SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 4,
                               crossAxisSpacing: 8.0,
-                              mainAxisSpacing: 8.0,
+                              // mainAxisSpacing: 8.0,
                             ),
                             itemCount: categories.length,
                             itemBuilder: (context, index) {
-                              return ListTile(
-                                onTap: () {
-                                  ref
-                                      .read(selectedCategoryProvider.notifier)
-                                      .state = categories[index];
+                              return Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    ref
+                                        .read(selectedCategoryProvider.notifier)
+                                        .state = categories[index];
 
-                                  debugPrint(
-                                      'selected category: ${categories[index].name}');
-                                  Navigator.of(context).pop();
-                                },
-                                leading: Column(
-                                  children: [
-                                    CircleAvatar(
-                                      backgroundColor: categories[index].color,
-                                      child: categories[index].icon,
-                                    ),
-                                    Text(categories[index].name),
-                                  ],
+                                    debugPrint(
+                                        'selected category: ${categories[index].name}');
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Column(
+                                    // mainAxisAlignment: MainAxisAlignment.center,
+                                    // mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      CircleAvatar(
+                                        radius: 20,
+                                        backgroundColor:
+                                            categories[index].color,
+                                        child: categories[index].icon,
+                                      ),
+                                      const SizedBox(height: 4.0),
+                                      Text(
+                                        categories[index].name,
+                                        style: const TextStyle(fontSize: 12.0),
+                                        softWrap: false,
+                                        overflow: TextOverflow.fade,
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               );
                             },
