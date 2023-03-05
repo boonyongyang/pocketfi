@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart' show immutable;
 import 'package:pocketfi/src/constants/firebase_field_name.dart';
+import 'package:pocketfi/src/constants/typedefs.dart';
 
 @immutable
 class Budget {
@@ -11,6 +12,7 @@ class Budget {
   // final double remainingAmount;
   final DateTime createdAt;
   final String walletId;
+  final UserId userId;
 
   Budget(Map<String, dynamic> json)
       : budgetId = json[FirebaseFieldName.budgetId],
@@ -18,6 +20,7 @@ class Budget {
         budgetAmount = json[FirebaseFieldName.budgetAmount],
         usedAmount = json[FirebaseFieldName.usedAmount],
         walletId = json[FirebaseFieldName.walletId],
+        userId = json[FirebaseFieldName.userId] as UserId,
         // remainingAmount = json[FirebaseFieldName.remainingAmount],
         createdAt = (json[FirebaseFieldName.createdAt] as Timestamp).toDate();
 
@@ -28,6 +31,8 @@ class Budget {
       other.budgetName == budgetName &&
       other.budgetAmount == budgetAmount &&
       other.createdAt == createdAt &&
+      other.walletId == walletId &&
+      other.userId == userId &&
       other.usedAmount == usedAmount;
   // other.remainingAmount == remainingAmount;
 
@@ -38,6 +43,8 @@ class Budget {
           budgetName,
           budgetAmount,
           createdAt,
+          walletId,
+          userId,
           // remainingAmount,
           usedAmount,
         ],
