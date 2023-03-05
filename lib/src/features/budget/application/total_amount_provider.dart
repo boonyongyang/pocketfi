@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/constants/firebase_collection_name.dart';
+import 'package:pocketfi/src/constants/firebase_field_name.dart';
 import 'package:pocketfi/src/features/authentication/application/user_id_provider.dart';
 import 'package:pocketfi/src/features/budget/domain/budget.dart';
 
@@ -12,12 +13,19 @@ final totalAmountProvider = StreamProvider.autoDispose<double>((ref) {
   const walletId = '2023-03-01T12:02:23.282294';
   final controller = StreamController<double>();
 
-  final sub = FirebaseFirestore.instance
+  final refs = FirebaseFirestore.instance
       .collection(FirebaseCollectionName.users)
-      .doc(userId)
-      .collection(FirebaseCollectionName.wallets)
-      .doc(walletId)
-      .collection(FirebaseCollectionName.budgets)
+      .doc(userId);
+  // .where(FirebaseFieldName.userId, isEqualTo: userId)
+  // .snapshots();
+  final sub = FirebaseFirestore.instance
+      // .collection(FirebaseCollectionName.users)
+      // .doc(userId)
+      // .collection(FirebaseCollectionName.wallets)
+      // .doc(walletId)
+      // .collection(FirebaseCollectionName.budgets)
+      .collectionGroup(FirebaseCollectionName.budgets)
+      .where(FirebaseFieldName.userId, isEqualTo: userId)
       .snapshots()
       .listen((snapshot) {
     final document = snapshot.docs;
