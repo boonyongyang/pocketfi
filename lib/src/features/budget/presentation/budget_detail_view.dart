@@ -187,7 +187,7 @@ class _BudgetDetailsViewState extends ConsumerState<BudgetDetailsView> {
             ),
           ),
           FullWidthButtonWithText(
-            text: Strings.createNewBudget,
+            text: 'Save Changes',
             onPressed: () {},
             // isCreateButtonEnabled.value
             //     ? () async {
