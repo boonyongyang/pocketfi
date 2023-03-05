@@ -66,8 +66,8 @@ class _BudgetPageState extends ConsumerState<BudgetPage> {
       ),
       body: RefreshIndicator(
         onRefresh: () async {
-          // return await ref.refresh(userWalletsProvider);
-          // return Future.delayed(const Duration(seconds: 1));
+          ref.refresh(userBudgetsProvider);
+          return Future.delayed(const Duration(seconds: 1));
         },
         child: Flex(
           direction: Axis.vertical,
@@ -134,30 +134,24 @@ class _BudgetPageState extends ConsumerState<BudgetPage> {
                               text: Strings.noBudgetsYet),
                         );
                       }
-                      return RefreshIndicator(
-                        onRefresh: () async {
-                          ref.refresh(userBudgetsProvider);
-                          return Future.delayed(const Duration(seconds: 1));
-                        },
-                        child: ListView.builder(
-                          itemCount: budgets.length,
-                          itemBuilder: (context, index) {
-                            final budget = budgets.elementAt(index);
-                            return BudgetTile(
-                              budget: budget,
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (_) => BudgetDetailsView(
-                                      budget: budget,
-                                    ),
+                      return ListView.builder(
+                        itemCount: budgets.length,
+                        itemBuilder: (context, index) {
+                          final budget = budgets.elementAt(index);
+                          return BudgetTile(
+                            budget: budget,
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => BudgetDetailsView(
+                                    budget: budget,
                                   ),
-                                );
-                              },
-                            );
-                          },
-                        ),
+                                ),
+                              );
+                            },
+                          );
+                        },
                       );
                     }, error: ((error, stackTrace) {
                       return const ErrorAnimationView();
