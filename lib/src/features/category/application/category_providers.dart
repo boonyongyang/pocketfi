@@ -28,7 +28,7 @@ void resetCategoryState(WidgetRef ref) {
 //   return [...expenseCategories, ...incomeCategories];
 // }
 
-Category getCategoryWithCategoryName(String categoryName) {
+Category getCategoryWithCategoryName(String? categoryName) {
   return expenseCategories.firstWhere(
     (category) => category.name == categoryName,
     orElse: () => incomeCategories.firstWhere(

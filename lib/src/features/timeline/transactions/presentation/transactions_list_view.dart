@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:pocketfi/src/features/timeline/transactions/date_picker/application/selected_date_notifier.dart';
 import 'package:pocketfi/src/features/timeline/transactions/domain/transaction.dart';
+import 'package:pocketfi/src/features/timeline/transactions/presentation/edit_transaction.dart';
 import 'package:pocketfi/src/features/timeline/transactions/presentation/transaction_card.dart';
+import 'package:pocketfi/src/features/timeline/transactions/presentation/update_transaction.dart';
 
-class TransactionListView extends StatelessWidget {
+class TransactionListView extends ConsumerWidget {
   final Iterable<Transaction> transactions;
 
   const TransactionListView({
@@ -11,7 +15,7 @@ class TransactionListView extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Container(
       color: const Color(0xFFE1DCDC),
       constraints: const BoxConstraints(
@@ -36,25 +40,28 @@ class TransactionListView extends StatelessWidget {
             transaction: transaction,
             transactionType: transaction.type,
             onTapped: () {
-              // navigate to the post details view
+              // debugPrint('selectedDate is ${transaction.date}');
+              // debugPrint('now  is ${DateTime.now()}');
 
               // Navigator.push(
               //   context,
               //   MaterialPageRoute(
-              //     builder: (context) => PostDetailsView(
-              //       post: post,
+              //     builder: (_) => UpdateTransaction(
+              //       transaction: transaction,
               //     ),
               //   ),
               // );
 
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(
-              //     builder: (_) => PostCommentsView(
-              //       postId: post.postId,
-              //     ),
-              //   ),
-              // );
+              ref
+                  .read(selectedTransactionProvider.notifier)
+                  .setTransaction(transaction);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  // builder: (_) => const EditTransaction(),
+                  builder: (_) => const UpdateTransaction(),
+                ),
+              );
             },
           );
         },

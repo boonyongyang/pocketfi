@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:pocketfi/src/features/category/application/category_providers.dart';
 import 'package:pocketfi/src/features/timeline/transactions/domain/transaction.dart';
 
@@ -16,6 +17,7 @@ class TransactionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final category = getCategoryWithCategoryName(transaction.categoryName);
+
     return GestureDetector(
       onTap: onTapped,
       child: Padding(
@@ -112,6 +114,8 @@ class TransactionCard extends StatelessWidget {
                           //   height: 100.0,
                           // ),
                           Text(transaction.createdAt.toIso8601String()),
+                          // format date to dd/mm/yyyy
+                          Text(DateFormat('d MMM').format(transaction.date)),
                         ],
                       ),
                     ),

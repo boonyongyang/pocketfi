@@ -17,7 +17,8 @@ import 'package:pocketfi/src/features/category/application/category_providers.da
 import 'package:pocketfi/src/features/category/domain/category.dart';
 import 'package:pocketfi/src/features/category/presentation/category_page.dart';
 import 'package:pocketfi/src/features/timeline/transactions/application/transaction_provider.dart';
-import 'package:pocketfi/src/features/timeline/transactions/date_picker/presentation/add_transaction_date_picker.dart';
+import 'package:pocketfi/src/features/timeline/transactions/data/transaction_type_notifier.dart';
+import 'package:pocketfi/src/features/timeline/transactions/date_picker/application/selected_date_notifier.dart';
 import 'package:pocketfi/src/features/timeline/transactions/domain/tag.dart';
 import 'package:pocketfi/src/features/timeline/transactions/domain/transaction.dart';
 import 'package:pocketfi/src/features/timeline/transactions/image_upload/data/image_file_notifier.dart';
@@ -28,30 +29,43 @@ import 'package:pocketfi/src/features/timeline/transactions/presentation/add_new
 import 'package:pocketfi/src/features/timeline/transactions/presentation/add_new_transactions/full_screen_image_dialog.dart';
 import 'package:pocketfi/src/features/timeline/transactions/presentation/add_new_transactions/select_transaction_type.dart';
 import 'package:pocketfi/src/features/timeline/transactions/date_picker/presentation/transaction_date_picker.dart';
-import 'package:pocketfi/src/utils/haptic_feedback_service.dart';
 
-class AddNewTransaction extends StatefulHookConsumerWidget {
-  const AddNewTransaction({
+class UpdateTransaction extends StatefulHookConsumerWidget {
+  // final Transaction transaction;
+  const UpdateTransaction({
     super.key,
+    // required this.transaction,
   });
 
   @override
-  AddNewTransactionState createState() => AddNewTransactionState();
+  UpdateTransactionState createState() => UpdateTransactionState();
 }
 
-class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
+class UpdateTransactionState extends ConsumerState<UpdateTransaction> {
   String _selectedRecurrence = 'Never';
 
   @override
   Widget build(BuildContext context) {
+    final selectedTransaction = ref.watch(selectedTransactionProvider);
+    // final selectedDate = ref.watch(getDateProvider);
+
+    // final reset = selectedDate != selectedTransaction.date
+    //     ? widget.transaction.date
+    //     : selectedDate;
+
+    final transaction = selectedTransaction;
     final categories = ref.watch(categoriesProvider);
     final selectedCategory = ref.watch(selectedCategoryProvider);
 
     final selectedWallet = ref.watch(selectedWalletProvider);
 
-    final amountController = useTextEditingController();
-    final noteController = useTextEditingController();
-    final isSaveButtonEnabled = useState(false);
+    //test
+
+    final amountController =
+        useTextEditingController(text: selectedTransaction?.amount.toString());
+    final noteController =
+        useTextEditingController(text: selectedTransaction?.description);
+    final isSaveButtonEnabled = useState(true);
 
     useEffect(
       () {
@@ -63,6 +77,8 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
       [amountController],
     );
 
+    debugPrint('transaction date: ${selectedTransaction?.date}');
+
     return Scaffold(
       // extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -71,7 +87,7 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
         shadowColor: Colors.transparent,
         centerTitle: true,
         title: const Text(
-          Strings.newTransaction,
+          Strings.editTransaction,
           style: TextStyle(
             color: AppColors.white,
             fontSize: 20,
@@ -83,13 +99,30 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
             color: AppColors.white,
           ),
           onPressed: () {
-            // ref.read(selectedCategoryProvider.notifier).state = null;
-
             Navigator.of(context).pop();
             resetCategoryState(ref);
+            // ref.read(selectedDateProvider);
             ref.read(transactionTypeProvider.notifier).setTransactionType(0);
           },
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(
+              Icons.delete,
+              color: AppColors.red,
+            ),
+            onPressed: () {
+              // ref.read(transactionTypeProvider.notifier).deleteTransaction(
+              //       transaction: transaction,
+              //       userId: ref.read(userIdProvider),
+              //     );
+              Navigator.of(context).pop();
+              resetCategoryState(ref);
+              // reset;
+              ref.read(transactionTypeProvider.notifier).setTransactionType(0);
+            },
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -99,7 +132,9 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
           ),
           child: Column(
             children: [
-              const SelectTransactionType(noOfTabs: 3),
+              const SelectTransactionType(
+                noOfTabs: 3,
+              ),
               TransactionAmountField(amountController: amountController),
               const SelectCurrency(),
               // * Select Category and Wallet
@@ -110,8 +145,10 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
                   children: [
                     const SizedBox(width: 8.0),
                     SelectCategory(
-                        categories: categories,
-                        selectedCategory: selectedCategory),
+                      categories: categories,
+                      selectedCategory: getCategoryWithCategoryName(
+                          selectedTransaction?.categoryName),
+                    ),
                     const Spacer(),
                     const Icon(AppIcons.wallet, color: AppColors.mainColor1),
                     const SizedBox(width: 8.0),
@@ -129,10 +166,9 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   // mainAxisSize: MainAxisSize.min,
                   children: [
-                    // TransactionDatePicker(
-                    //     // date: DateTime.now(),
-                    //     ),
-                    const AddTransactionDatePicker(),
+                    TransactionDatePicker(
+                      date: selectedTransaction?.date,
+                    ),
                     WriteOptionalNote(noteController: noteController),
                     addPhoto(),
                     showIfPhotoIsAdded(),
@@ -143,7 +179,6 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
                       child: Row(
                         children: [
                           IconButton(
-                            // splashRadius: 24 / 1.2,
                             splashRadius: 22,
                             icon: const Icon(
                               Icons.bookmark_outline,
@@ -167,7 +202,7 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
                               categoryName: selectedCategory,
                               mounted: mounted,
                               selectedWallet: selectedWallet,
-                              // date: ,
+                              date: selectedTransaction?.date,
                             ),
                           ),
                         ],
@@ -208,6 +243,7 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
   }
 
   void displayPhoto(File imageFile) {
+    // display thumnail of the image
     debugPrint('image file path: ${imageFile.path}');
 
     FileThumbnailView(
@@ -416,8 +452,6 @@ class SelectCategory extends ConsumerWidget {
                                     Navigator.of(context).pop();
                                   },
                                   child: Column(
-                                    // mainAxisAlignment: MainAxisAlignment.center,
-                                    // mainAxisSize: MainAxisSize.min,
                                     children: [
                                       CircleAvatar(
                                         radius: 20,
@@ -547,7 +581,7 @@ class SaveButton extends ConsumerWidget {
     required this.categoryName,
     required this.selectedWallet,
     required this.mounted,
-    // required this.date,
+    required this.date,
   });
 
   final ValueNotifier<bool> isSaveButtonEnabled;
@@ -556,7 +590,7 @@ class SaveButton extends ConsumerWidget {
   final Category? categoryName;
   final Wallet? selectedWallet;
   final bool mounted;
-  // final DateTime date;
+  final DateTime? date;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -568,7 +602,7 @@ class SaveButton extends ConsumerWidget {
           ? () async {
               final userId = ref.read(userIdProvider);
               final type = ref.read(transactionTypeProvider);
-              final date = ref.read(selectedDateTestProvider);
+              final selectedDate = ref.read(selectedDateProvider);
               final file = ref.read(imageFileProvider);
 
               debugPrint('userId is: $userId');
@@ -594,9 +628,8 @@ class SaveButton extends ConsumerWidget {
                     type: type,
                     note: note,
                     categoryName: categoryName!.name,
-                    // walletName: selectedWallet!.walletName,
                     walletId: selectedWallet!.walletId,
-                    date: date,
+                    date: selectedDate,
                     file: file,
                   );
               debugPrint('isCreated is: $isCreated');

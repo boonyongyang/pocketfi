@@ -10,6 +10,7 @@ import 'package:pocketfi/src/features/authentication/application/user_id_provide
 import 'package:pocketfi/src/features/budget/wallet/data/user_wallets_provider.dart';
 import 'package:pocketfi/src/features/timeline/transactions/domain/transaction.dart';
 import 'package:pocketfi/src/features/timeline/transactions/data/transaction_type_notifier.dart';
+import 'package:pocketfi/src/features/timeline/transactions/domain/transaction_key.dart';
 
 final transactionTypeProvider =
     StateNotifierProvider<TransactionTypeNotifier, TransactionType>(
@@ -42,65 +43,41 @@ final userTransactionsProvider =
 
     // subscribe to the transactions collection.
     final sub = FirebaseFirestore.instance
-        // get the transactions collection.
-        .collection(
-          FirebaseCollectionName.users,
-        )
+        .collection(FirebaseCollectionName.users)
         .doc(userId)
-        .collection(
-          FirebaseCollectionName.wallets,
-        )
-        // FIXME get the selected walletId
+        .collection(FirebaseCollectionName.wallets)
         // .doc('2023-02-27T23:18:16.426104')
         .doc(walletId)
-        .collection(
-          FirebaseCollectionName.transactions,
-        )
-        // sort the transactions by the createdAt field.
+        .collection(FirebaseCollectionName.transactions)
         .orderBy(
-          FirebaseFieldName.createdAt,
+          FirebaseFieldName.date,
           descending: true, // descending order.
         )
-        // filter the transactions by the user id.
-        // todo - this one no need to add right
         // .where(
         //   TransactionKey.userId,
         //   isEqualTo: userId,
         // )
         .snapshots()
-        // listen for changes.
         .listen(
       (snapshot) {
-        final documents = snapshot.docs; // get the documents of the snapshot
-        final transactions =
-            documents // get the transactions from the documents.
-                .where(
-                  // filter the documents that have no pending writes.
-                  // this is used to avoid displaying the transactions that are being created.
-                  // the transactions that are being created will have pending writes.
-                  (doc) => !doc.metadata.hasPendingWrites,
-                )
-                .map(
-                  // map the documents to transactions.
-                  (doc) => Transaction(
-                    transactionId: doc.id,
-                    json: doc.data(),
-                  ),
-                );
-        // add the transactions to the stream.
+        final documents = snapshot.docs;
+        final transactions = documents
+            .where(
+              (doc) => !doc.metadata.hasPendingWrites,
+            )
+            .map(
+              (doc) => Transaction(
+                transactionId: doc.id,
+                json: doc.data(),
+              ),
+            );
         controller.sink.add(transactions);
       },
     );
-
-    // cancel the subscription when the stream is closed.
     ref.onDispose(() {
-      // cancel the subscription.
       sub.cancel();
-      // close the stream.
       controller.close();
     });
-
-    // return the stream of transactions.
     return controller.stream;
   },
 );
