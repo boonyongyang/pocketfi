@@ -51,36 +51,14 @@ class _CheckBoxInListViewState extends ConsumerState<CheckBoxInListView> {
   @override
   Widget build(BuildContext context) {
     final users = ref.watch(usersListProvider).value?.toList();
-    // final userss = ref.watch(usersListProvider).value;
-    // for (var element in userss!) {
-    //   debugPrint('userss element: $element');
-
-    //   // userMap[element].add('isChecked': false);
-    // }
-    // final userMap = ref
-    //     .watch(setBoolValueProvider.notifier)
-    //     .changeToList(users, currentUserId!);
 
     final userList = ref.watch(getTempDataProvider).value?.toList();
-    // final userList = ref.watch(getTempDataProvider).value;
     List userMap = [];
-    // List multipleSelected = [];
     if (userList == null) return Container();
     for (var user in userList) {
       userMap.add(user);
       debugPrint('add user: $user');
-      // userMap[element].add('isChecked': false);
     }
-    // if (users == null) return Container();
-    // for (var user in users) {
-    //   userMap.add(user);
-    //   debugPrint('add user: $user');
-    //   // userMap[element].add('isChecked': false);
-    // }
-    // for (var element in userMap) {
-    //   element['isChecked'] = null;
-    //   debugPrint('element: $element');
-    // }
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -101,24 +79,10 @@ class _CheckBoxInListViewState extends ConsumerState<CheckBoxInListView> {
                       dense: true,
                       title: Text(eachUser.displayName),
                       subtitle: Text(eachUser.isChecked.toString()),
-                      // selected: ,
-                      // value: _value,
                       onChanged: (bool? newValue) {
-                        // eachUser.isChecked = newValue!;
-                        // setState(() {
-                        // debugPrint('userMap check: $userMap');
-                        // if (userMap[index]['isChecked'] == null) {
-                        //   userMap[index]['isChecked'] = false;
-                        // }
-                        // debugPrint('userMap done check: $userMap');
                         debugPrint('value: $newValue');
                         debugPrint('userMap before: $userMap');
-                        // if (newValue == true) {
-                        //   userMap[index]['isChecked'] = newValue;
-                        // } else if (newValue == false) {
-                        //   userMap[index]['isChecked'] = newValue;
-                        // }
-                        // });
+
                         newValue ??= false;
 
                         ref
@@ -127,60 +91,6 @@ class _CheckBoxInListViewState extends ConsumerState<CheckBoxInListView> {
 
                         debugPrint('userMap after: $userMap');
                         debugPrint('value after: $newValue');
-
-                        // debugPrint('eachUser.ischecked ; ${eachUser.isChecked}');
-                        // debugPrint('_value ; $_value');
-                        // for (var element in userMap) {
-                        //   element['isChecked'] = false;
-                        // }
-                        // debugPrint('eachUser.isChecked: ${eachUser.isChecked}');
-
-                        // debugPrint('newvalue ; $newValue');
-                        // setState(
-                        // () {
-                        // debugPrint(
-                        // 'eachUser.isChecked: ${eachUser.isChecked}');
-                        // userMap[index]["isChecked"] = newValue;
-                        // eachUser.isChecked = newValue!;
-                        // for (var element in userMap) {
-                        // eachUser.isChecked = newValue;
-                        // debugPrint('element newValue: $element');
-                        // }
-                        // debugPrint(
-                        // 'eachUser.isChecked: ${eachUser.isChecked}');
-
-                        // debugPrint('eachUser after: $eachUser');
-                        // debugPrint('userMap[index]after: ${userMap[index]}');
-                        // debugPrint('value set: $newValue');
-
-                        // if (newValue == null) {
-                        //   eachUser.isChecked = false;
-                        // }
-                        // eachUser.isChecked = newValue!;
-                        // if (newValue == true) {
-                        //   eachUser.isChecked = false;
-                        // } else {
-                        //   eachUser.isChecked  = true;
-                        // }
-                        // // _value = newValue!;
-                        // // debugPrint('_value with setstate ; $_value');
-                        // debugPrint('newvalue with setstate; $newValue');
-                        // debugPrint(
-                        //     'eachUser.ischecked with new value ; ${eachUser.isChecked}');
-                        // if (eachUser.isChecked == true) {
-                        //   eachUser.isChecked = false;
-                        //   eachUser.isChecked = newValue;
-                        // } else {
-                        //   eachUser.isChecked = true;
-                        //   eachUser.isChecked = newValue;
-                        // }
-                        // eachUser.isChecked = val!;
-                        // debugPrint('${userMap[index]['isChecked']}');
-
-                        // debugPrint('_value after setstate; $_value');
-                        // debugPrint(
-                        //     'eachUser.ischecked after setstate; ${eachUser.isChecked}');
-                        // debugPrint('newvalue after setstate; $newValue');
                       },
                       value: eachUser.isChecked,
                     );
@@ -192,115 +102,6 @@ class _CheckBoxInListViewState extends ConsumerState<CheckBoxInListView> {
         ),
       ),
     );
-
-    //   itemCount: userMap.length,
-    //   itemBuilder: (context, index) {
-    // return CheckboxListTile(
-    //   tristate: true,
-    //   title: Text(eachUser.displayName),
-    //   // subtitle: Text(checkListItems[index]["id"]),
-    //   // selected: ,
-    //   // value: eachUser.isChecked,
-    //   value: _value,
-    //   onChanged: (bool? newValue) {
-    //     // debugPrint('eachUser.ischecked ; ${eachUser.isChecked}');
-    //     debugPrint('_value ; $_value');
-    //     debugPrint('newvalue ; $newValue');
-    //     setState(
-    //       () {
-    //         // eachUser.isChecked = newValue!;
-    //         if (newValue == null) {
-    //           _value = false;
-    //         }
-    //         // if (newValue == true) {
-    //         //   _value = false;
-    //         // } else {
-    //         //   _value = true;
-    //         // }
-    //         _value = newValue!;
-    //         debugPrint('_value with setstate ; $_value');
-    //         debugPrint('newvalue with setstate; $newValue');
-    //         // debugPrint(
-    //         //     'eachUser.ischecked with new value ; ${eachUser.isChecked}');
-    //         // if (eachUser.isChecked == true) {
-    //         //   eachUser.isChecked = false;
-    //         //   eachUser.isChecked = newValue;
-    //         // } else {
-    //         //   eachUser.isChecked = true;
-    //         //   eachUser.isChecked = newValue;
-    //         // }
-    //         // eachUser.isChecked = val!;
-    //         // debugPrint('${userMap[index]['isChecked']}');
-    //         // if (multipleSelected.contains(eachUser)) {
-    //         //   multipleSelected.remove(eachUser);
-    //         // } else {
-    //         //   multipleSelected.add(eachUser);
-    //         // }
-    //         // debugPrint('$multipleSelected');
-    //       },
-    //     );
-    //     debugPrint('_value after setstate; $_value');
-    //     debugPrint('newvalue after setstate; $newValue');
-    //     // debugPrint(
-    //     //     'eachUser.ischecked after setstate; ${eachUser.isChecked}');
-    //   },
-    // );
-    // },
-    // );
-    // }
-    // child: ListView.builder(
-    //   itemCount: userMap.length,
-    //   itemBuilder: (context, index) {
-    //     final eachUser = userMap.elementAt(index);
-    //     return CheckboxListTile(
-    //       tristate: true,
-    //       title: Text(eachUser.displayName),
-    //       // subtitle: Text(checkListItems[index]["id"]),
-    //       // selected: ,
-    //       // value: eachUser.isChecked,
-    //       value: _value,
-    //       onChanged: (bool? newValue) {
-    //         // debugPrint('eachUser.ischecked ; ${eachUser.isChecked}');
-    //         debugPrint('_value ; $_value');
-    //         debugPrint('newvalue ; $newValue');
-    //         setState(
-    //           () {
-    //             // eachUser.isChecked = newValue!;
-    //             _value = newValue!;
-    //             debugPrint('_value with setstate ; $_value');
-    //             debugPrint('newvalue with setstate; $newValue');
-    //             // debugPrint(
-    //             //     'eachUser.ischecked with new value ; ${eachUser.isChecked}');
-    //             // if (eachUser.isChecked == true) {
-    //             //   eachUser.isChecked = false;
-    //             //   eachUser.isChecked = newValue;
-    //             // } else {
-    //             //   eachUser.isChecked = true;
-    //             //   eachUser.isChecked = newValue;
-    //             // }
-    //             // eachUser.isChecked = val!;
-    //             // debugPrint('${userMap[index]['isChecked']}');
-    //             // if (multipleSelected.contains(eachUser)) {
-    //             //   multipleSelected.remove(eachUser);
-    //             // } else {
-    //             //   multipleSelected.add(eachUser);
-    //             // }
-    //             // debugPrint('$multipleSelected');
-    //           },
-    //         );
-    //         debugPrint('_value after setstate; $_value');
-    //         debugPrint('newvalue after setstate; $newValue');
-    //         // debugPrint(
-    //         //     'eachUser.ischecked after setstate; ${eachUser.isChecked}');
-    //       },
-    //     );
-    //   },
-    // ),
-
-    //   },
-    //   loading: () => const LoadingAnimationView(),
-    //   error: (error, stack) => const ErrorAnimationView(),
-    // );
   }
 }
 

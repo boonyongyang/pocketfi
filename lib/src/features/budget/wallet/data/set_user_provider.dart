@@ -123,14 +123,6 @@ class SetBoolValue extends StateNotifier<bool> {
         'isChecked': value,
       });
     }
-
-    //   await FirebaseFirestore.instance
-    //       .collection('tempData')
-    //       .doc(user.userId)
-    //       .update({
-    //     'isChecked': value,
-    //   });
-    // }
   }
 }
 
