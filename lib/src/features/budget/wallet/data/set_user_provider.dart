@@ -58,13 +58,13 @@ class SetBoolValue extends StateNotifier<bool> {
 
   Future<void> addTempDataToFirebase(
     List<dynamic>? users,
-    // String currentUserId,
+    String currentUserId,
   ) async {
     if (users == null) return;
     for (var user in users) {
       await FirebaseFirestore.instance
-          // .collection(FirebaseCollectionName.users)
-          // .doc(currentUserId)
+          .collection(FirebaseCollectionName.users)
+          .doc(currentUserId)
           .collection('tempData')
           .doc(user.userId)
           .set({
@@ -135,12 +135,12 @@ final getTempDataProvider =
     StreamProvider.autoDispose<Iterable<TempUsers>>((ref) {
   // create a stream controller
   final controller = StreamController<Iterable<TempUsers>>();
-  // final userId = ref.watch(userIdProvider);
+  final userId = ref.watch(userIdProvider);
 
   // create a subscription to the user collection
   final sub = FirebaseFirestore.instance
-      // .collection(FirebaseCollectionName.users)
-      // .doc(userId)
+      .collection(FirebaseCollectionName.users)
+      .doc(userId)
       // get the users collection
       .collection('tempData')
       .snapshots()

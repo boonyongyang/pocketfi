@@ -4,12 +4,14 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/constants/firebase_collection_name.dart';
+import 'package:pocketfi/src/features/authentication/application/user_id_provider.dart';
 import 'package:pocketfi/src/features/authentication/domain/user_info_model.dart';
 
 final usersListProvider =
     StreamProvider.autoDispose<Iterable<UserInfoModel>>((ref) {
   // create a stream controller
   final controller = StreamController<Iterable<UserInfoModel>>();
+  final userId = ref.watch(userIdProvider);
 
   // create a subscription to the user collection
   final sub = FirebaseFirestore.instance

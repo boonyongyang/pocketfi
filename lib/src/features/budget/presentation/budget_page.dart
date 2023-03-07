@@ -9,7 +9,7 @@ import 'package:pocketfi/src/common_widgets/buttons/full_width_button_with_text.
 import 'package:pocketfi/src/constants/app_icons.dart';
 import 'package:pocketfi/src/constants/strings.dart';
 import 'package:pocketfi/src/features/authentication/application/user_id_provider.dart';
-import 'package:pocketfi/src/features/authentication/application/user_info_model_provider.dart';
+import 'package:pocketfi/src/features/authentication/application/user_list_provider.dart';
 import 'package:pocketfi/src/features/budget/application/total_amount_provider.dart';
 import 'package:pocketfi/src/features/budget/application/user_budgets_provider.dart';
 import 'package:pocketfi/src/features/budget/presentation/budget_detail_view.dart';
@@ -32,9 +32,6 @@ class _BudgetPageState extends ConsumerState<BudgetPage> {
   Widget build(BuildContext context) {
     final budgets = ref.watch(userBudgetsProvider);
     final totalAmount = ref.watch(totalAmountProvider).value;
-
-    final users = ref.watch(usersListProvider).value?.toList();
-    final currentUserId = ref.watch(userIdProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -229,23 +226,6 @@ class _BudgetPageState extends ConsumerState<BudgetPage> {
                         // builder: (_) => const MyStatefulWidget(),
                       ),
                     );
-                  },
-                ),
-              ),
-            ),
-            Expanded(
-              flex: 0,
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: FullWidthButtonWithText(
-                  text: 'add temp user',
-                  onPressed: () {
-                    ref
-                        .watch(setBoolValueProvider.notifier)
-                        .addTempDataToFirebase(
-                          users,
-                          // currentUserId!,
-                        );
                   },
                 ),
               ),

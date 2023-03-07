@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:pocketfi/src/common_widgets/animations/error_animation_view.dart';
-import 'package:pocketfi/src/common_widgets/animations/loading_animation_view.dart';
-import 'package:pocketfi/src/features/authentication/application/user_id_provider.dart';
-import 'package:pocketfi/src/features/authentication/application/user_info_model_provider.dart';
+import 'package:pocketfi/src/features/authentication/application/user_list_provider.dart';
 import 'package:pocketfi/src/features/budget/wallet/data/set_user_provider.dart';
 // import 'package:flutter/scheduler.dart' show timeDilation;
 
