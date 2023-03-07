@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:pocketfi/src/common_widgets/dialogs/alert_dialog_model.dart';
-import 'package:pocketfi/src/common_widgets/dialogs/already_exist_dialog.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/common_widgets/buttons/full_width_button_with_text.dart';
 import 'package:pocketfi/src/constants/app_icons.dart';
 import 'package:pocketfi/src/constants/strings.dart';
 import 'package:pocketfi/src/features/authentication/application/user_id_provider.dart';
+import 'package:pocketfi/src/features/authentication/application/user_list_provider.dart';
 import 'package:pocketfi/src/features/budget/wallet/application/create_new_wallet_provider.dart';
+import 'package:pocketfi/src/features/budget/wallet/data/set_user_provider.dart';
 import 'package:pocketfi/src/features/budget/wallet/data/user_wallets_provider.dart';
 import 'package:pocketfi/src/features/budget/wallet/domain/wallet.dart';
+import 'package:pocketfi/src/features/budget/wallet/presentation/share_wallet_sheet.dart';
 
 class CreateNewWalletView extends StatefulHookConsumerWidget {
   // final String walletId;
@@ -37,6 +38,11 @@ class _CreateNewWalletViewState extends ConsumerState<CreateNewWalletView> {
     //     userId: widget.userId,
     //   ),
     // );
+    var selectedUser = ref.watch(selectedUserProvider);
+    final currentUserId = ref.watch(userIdProvider);
+
+// for checkbox
+    final users = ref.watch(usersListProvider).value?.toList();
 
     useEffect(
       () {
@@ -168,45 +174,70 @@ class _CreateNewWalletViewState extends ConsumerState<CreateNewWalletView> {
                     ),
                   ],
                 ),
-                Row(
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.only(left: 16.0, right: 32.0),
-                      child: SizedBox(
-                        width: 5,
-                        child: Icon(
-                          Icons.people_alt_rounded,
-                          color: AppColors.mainColor1,
+                GestureDetector(
+                  onTap: () {
+                    ref
+                        .watch(setBoolValueProvider.notifier)
+                        .addTempDataToFirebase(
+                          users,
+                          currentUserId!,
+                        );
+                    showModalBottomSheet(
+                      context: context,
+                      builder: (context) => const ShareWalletSheet(),
+                    );
+                  },
+                  child: Row(
+                    children: [
+                      const Padding(
+                        padding: EdgeInsets.only(left: 16.0, right: 32.0),
+                        child: SizedBox(
+                          width: 5,
+                          child: Icon(
+                            Icons.people_alt_rounded,
+                            color: AppColors.mainColor1,
+                          ),
                         ),
                       ),
-                    ),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          children: const [
-                            Expanded(
-                              child: Text(
-                                'Share Wallet with Other People',
-                                style: TextStyle(
-                                  color: AppColors.mainColor1,
-                                  fontSize: 16,
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            children: const [
+                              Expanded(
+                                child: Text(
+                                  'Share Wallet with Other People',
+                                  style: TextStyle(
+                                    color: AppColors.mainColor1,
+                                    fontSize: 16,
+                                  ),
                                 ),
                               ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Icon(
-                                Icons.arrow_forward_ios_rounded,
-                                color: AppColors.mainColor1,
+                              Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Icon(
+                                  Icons.arrow_forward_ios_rounded,
+                                  color: AppColors.mainColor1,
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
+                // if (selectedUser != null)
+                //   Padding(
+                //     padding: const EdgeInsets.all(8.0),
+                //     child: Text(
+                //       selectedUser.displayName,
+                //       style: const TextStyle(
+                //         color: AppColors.mainColor1,
+                //         fontSize: 16,
+                //       ),
+                //     ),
+                //   ),
                 Expanded(
                   flex: 1,
                   child: Align(
@@ -215,18 +246,19 @@ class _CreateNewWalletViewState extends ConsumerState<CreateNewWalletView> {
                         text: Strings.createNewWallet,
                         onPressed: isCreateButtonEnabled.value
                             ? () async {
-                                if (await _checkWalletNameExists(
-                                    walletNameController.text)) {
-                                  AlreadyExistDialog(
-                                    itemName: walletNameController.text,
-                                  ).present(context);
-                                } else {
-                                  _createNewWalletController(
-                                    walletNameController,
-                                    // initialBalanceController,
-                                    ref,
-                                  );
-                                }
+                                // if (await _checkWalletNameExists(
+                                //     walletNameController.text)) {
+                                //   AlreadyExistDialog(
+                                //     itemName: walletNameController.text,
+                                //   ).present(context);
+                                // } else {
+                                _createNewWalletController(
+                                  walletNameController,
+                                  selectedUser,
+                                  // initialBalanceController,
+                                  ref,
+                                );
+                                // }
                               }
                             : null),
                     // Padding(
@@ -293,6 +325,7 @@ class _CreateNewWalletViewState extends ConsumerState<CreateNewWalletView> {
 
   Future<void> _createNewWalletController(
     TextEditingController nameController,
+    selectedUsers,
     // TextEditingController balanceController,
     WidgetRef ref,
   ) async {
@@ -307,6 +340,7 @@ class _CreateNewWalletViewState extends ConsumerState<CreateNewWalletView> {
         await ref.read(createNewWalletProvider.notifier).createNewWallet(
               userId: userId,
               walletName: nameController.text,
+              users: selectedUsers,
               // walletBalance: double.parse(balanceController.text),
             );
     if (isCreated && mounted) {
