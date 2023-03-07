@@ -3,7 +3,6 @@ import 'package:pocketfi/src/features/category/domain/default_categories.dart';
 import 'package:pocketfi/src/features/category/data/category_state_notifier.dart';
 import 'package:pocketfi/src/features/category/domain/category.dart';
 import 'package:pocketfi/src/features/timeline/transactions/application/transaction_providers.dart';
-import 'package:pocketfi/src/features/timeline/transactions/data/transaction_notifiers.dart';
 import 'package:pocketfi/src/features/timeline/transactions/domain/transaction.dart';
 
 // * provide the first category based on the transaction type selected
@@ -18,7 +17,6 @@ final selectedCategoryProvider = StateProvider<Category>(
       return incomeCategories.first;
     } else {
       return transferCategory;
-      // return null;
     }
   },
 );
@@ -26,10 +24,6 @@ final selectedCategoryProvider = StateProvider<Category>(
 void resetCategoryState(WidgetRef ref) {
   ref.read(selectedCategoryProvider.notifier).state = expenseCategories.first;
 }
-
-// List<Category> showAllCategories(WidgetRef ref) {
-//   return [...expenseCategories, ...incomeCategories];
-// }
 
 Category getCategoryWithCategoryName(String? categoryName) {
   return expenseCategories.firstWhere(

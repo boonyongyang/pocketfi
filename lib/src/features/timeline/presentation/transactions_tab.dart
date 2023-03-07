@@ -30,43 +30,14 @@ class TransactionsTab extends ConsumerWidget {
               text: Strings.youHaveNoPosts,
             );
           } else {
-            return Container(
-              padding: const EdgeInsets.only(top: 20),
-              color: Colors.grey,
-              child: Column(
-                children: [
-                  // border radius button
-                  // ElevatedButton(
-                  //   style: ButtonStyle(
-                  //     backgroundColor: MaterialStateProperty.all(
-                  //       AppColors.mainColor1,
-                  //     ),
-                  //     shape: MaterialStateProperty.all(
-                  //       RoundedRectangleBorder(
-                  //         borderRadius: BorderRadius.circular(30.0),
-                  //       ),
-                  //     ),
-                  //   ),
-                  //   onPressed: () {
-                  //     showModalBottomSheet(
-                  //       context: context,
-                  //       builder: (context) {
-                  //         return WalletVisibilitySheet(
-                  //           wallets: wallets?.toList(),
-                  //           selectedWallet: selectedWallet,
-                  //         );
-                  //       },
-                  //     );
-                  //   },
-                  //   child: const Text('Wallets (1/2)'),
-                  // ),
-                  Expanded(
-                    child: TransactionListView(
-                      transactions: trans,
-                    ),
+            return Column(
+              children: [
+                Expanded(
+                  child: TransactionListView(
+                    transactions: trans,
                   ),
-                ],
-              ),
+                ),
+              ],
             );
           }
         },

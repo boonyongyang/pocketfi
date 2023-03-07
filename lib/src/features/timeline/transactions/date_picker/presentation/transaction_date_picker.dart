@@ -1,206 +1,182 @@
-// import 'package:flutter/material.dart';
-// import 'package:hooks_riverpod/hooks_riverpod.dart';
-// import 'package:intl/intl.dart';
-// import 'package:pocketfi/src/constants/app_colors.dart';
-// import 'package:pocketfi/src/features/timeline/transactions/date_picker/application/selected_date_notifier.dart';
-// import 'package:pocketfi/src/utils/haptic_feedback_service.dart';
 
-// class TransactionDatePicker extends ConsumerStatefulWidget {
-//   const TransactionDatePicker({
-//     Key? key,
-//     this.date,
-//   }) : super(key: key);
-//   final DateTime? date;
+import 'dart:io';
 
-//   @override
-//   TransactionDatePickerState createState() => TransactionDatePickerState();
-// }
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:intl/intl.dart';
+import 'package:pocketfi/src/constants/app_colors.dart';
+import 'package:pocketfi/src/features/timeline/transactions/data/transaction_notifiers.dart';
+import 'package:pocketfi/src/features/timeline/transactions/date_picker/application/selected_date_notifier.dart';
+import 'package:pocketfi/src/utils/haptic_feedback_service.dart';
 
-// class TransactionDatePickerState extends ConsumerState<TransactionDatePicker> {
-//   void _selectDate(BuildContext context) async {
-//     final selectedDate = await showDatePicker(
-//       context: context,
-//       initialDate: ref.read(getDateProvider(widget.date)),
-//       firstDate: DateTime(1900),
-//       lastDate: DateTime.now().add(const Duration(days: 365)),
-//     );
+class TransactionDatePicker extends ConsumerStatefulWidget {
+  const TransactionDatePicker({super.key});
 
-//     if (selectedDate != null) {
-//       ref
-//           .read(getDateProvider(widget.date).notifier)
-//           .updateSelectedDate(selectedDate);
-//       // if selectedDate is in the future, make it a scheduled transaction
-//     }
-//   }
+  @override
+  AddTransactionDatePickerState createState() =>
+      AddTransactionDatePickerState();
+}
 
-//   void _previousDay() {
-//     HapticFeedbackService.lightImpact();
-//     ref.read(getDateProvider(widget.date).notifier).previousDay();
-//     debugPrint('prev: ${ref.read(getDateProvider(widget.date))}');
-//   }
+class AddTransactionDatePickerState
+    extends ConsumerState<TransactionDatePicker> {
+  // * select date using date picker
+  Future<void> _selectDate(BuildContext context, DateTime initialDate) async {
+    if (Platform.isIOS) {
+      showCupertinoModalPopup(
+        context: context,
+        builder: (context) {
+          return Container(
+            height: 300,
+            color: AppColors.white,
+            child: CupertinoDatePicker(
+              initialDateTime: initialDate,
+              minimumDate: DateTime(1990),
+              maximumDate: DateTime.now().add(const Duration(days: 365)),
+              mode: CupertinoDatePickerMode.date,
+              onDateTimeChanged: (DateTime newDate) {
+                HapticFeedbackService.mediumImpact();
+                setOrUpdateDate(newDate);
+                debugPrint('picked: $newDate');
+              },
+            ),
+          );
+        },
+      );
+    } else {
+      final DateTime? pickedDate = await showDatePicker(
+        context: context,
+        initialDate: initialDate,
+        firstDate: DateTime(1990),
+        lastDate: DateTime.now().add(const Duration(days: 365)),
+      );
+      if (pickedDate != null) {
+        // ref.read(transactionDateProvider.notifier).setDate(pickedDate);
+        HapticFeedbackService.mediumImpact();
+        setOrUpdateDate(pickedDate);
+        debugPrint('picked: $pickedDate');
+        // if selectedDate is in the future, make it a scheduled transaction
+      }
+    }
+  }
 
-//   void _nextDay() {
-//     HapticFeedbackService.lightImpact();
+  void _previousDay(DateTime selectedDate) {
+    HapticFeedbackService.lightImpact();
+    final newDate = selectedDate.subtract(const Duration(days: 1));
+    // if (isSelectedTransactionNull) {
+    //   ref.read(transactionDateProvider.notifier).setDate(newDate);
+    // } else {
+    //   ref.read(selectedTransactionProvider.notifier).updateDate(newDate, ref);
+    // }
+    setOrUpdateDate(newDate);
+    debugPrint('prev: $newDate');
+  }
 
-//     ref.read(getDateProvider(widget.date).notifier).nextDay();
-//     debugPrint('next: ${ref.read(getDateProvider(widget.date))}');
-//     debugPrint(widget.date.toString());
-//   }
+  void _nextDay(DateTime selectedDate) {
+    HapticFeedbackService.lightImpact();
+    final newDate = selectedDate.add(const Duration(days: 1));
+    // ref.read(transactionDateProvider.notifier).setDate(newDate);
+    setOrUpdateDate(newDate);
+    debugPrint('next: $newDate');
+  }
 
-//   String get _selectedDateText {
-//     final now = DateTime.now();
-//     final yesterday = DateTime(now.year, now.month, now.day - 1);
-//     final tomorrow = DateTime(now.year, now.month, now.day + 1);
+  // setOrUpdateDate
+  void setOrUpdateDate(DateTime newDate) {
+    isSelectedTransactionNull
+        ? ref.read(transactionDateProvider.notifier).setDate(newDate)
+        : ref
+            .read(selectedTransactionProvider.notifier)
+            .updateTransactionDate(newDate, ref);
+  }
 
-//     final selectedDate = ref.watch(getDateProvider(widget.date));
+  DateTime getSelectedDate() {
+    // if (ref.watch(selectedTransactionProvider) == null) {
+    //   return ref.watch(transactionDateProvider);
+    // } else {
+    //   return ref.watch(selectedTransactionProvider)!.date;
+    // }
 
-//     if (selectedDate.year == now.year &&
-//         selectedDate.month == now.month &&
-//         selectedDate.day == now.day) {
-//       return 'Today';
-//     } else if (selectedDate.year == yesterday.year &&
-//         selectedDate.month == yesterday.month &&
-//         selectedDate.day == yesterday.day) {
-//       return 'Yesterday';
-//     } else if (selectedDate.year == tomorrow.year &&
-//         selectedDate.month == tomorrow.month &&
-//         selectedDate.day == tomorrow.day) {
-//       return 'Tomorrow';
-//     } else {
-//       return DateFormat('EEE, d MMM').format(selectedDate);
-//     }
-//   }
+    return ref.watch(selectedTransactionProvider)?.date ??
+        ref.watch(transactionDateProvider);
+  }
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return Padding(
-//       padding: const EdgeInsets.symmetric(
-//         vertical: 12.0,
-//       ),
-//       child: Row(
-//         children: [
-//           const Icon(
-//             Icons.calendar_today_rounded,
-//             color: AppColors.mainColor1,
-//           ),
-//           TextButton(
-//             onPressed: () => _selectDate(context),
-//             child: Text(
-//               _selectedDateText,
-//             ),
-//           ),
-//           const Spacer(),
-//           IconButton(
-//             onPressed: _previousDay,
-//             icon: const Icon(Icons.arrow_back_ios_rounded),
-//           ),
-//           const SizedBox(width: 8.0),
-//           IconButton(
-//             onPressed: _nextDay,
-//             icon: const Icon(Icons.arrow_forward_ios_rounded),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }
+  String get _selectedDateText {
+    // final selectedDate = ref.watch(transactionDateProvider);
 
-// // class TransactionDatePicker extends ConsumerStatefulWidget {
-// //   const TransactionDatePicker({
-// //     Key? key,
-// //     this.date,
-// //   }) : super(key: key);
-// //   final DateTime? date;
+    final DateTime selectedDate = getSelectedDate();
+    // if (ref.watch(selectedTransactionProvider) == null) {
+    //   selectedDate = ref.watch(transactionDateProvider);
+    // } else {
+    //   selectedDate = ref.watch(selectedTransactionProvider)!.date;
+    // }
 
-// //   @override
-// //   TransactionDatePickerState createState() => TransactionDatePickerState();
-// // }
+    final now = DateTime.now();
+    final yesterday = DateTime(now.year, now.month, now.day - 1);
+    final tomorrow = DateTime(now.year, now.month, now.day + 1);
 
-// // class TransactionDatePickerState extends ConsumerState<TransactionDatePicker> {
-// //   void _selectDate(BuildContext context) async {
-// //     final selectedDate = await showDatePicker(
-// //       context: context,
-// //       initialDate: ref.read(getDateProvider),
-// //       firstDate: DateTime(1900),
-// //       lastDate: DateTime.now().add(const Duration(days: 365)),
-// //     );
+    if (selectedDate.year == now.year &&
+        selectedDate.month == now.month &&
+        selectedDate.day == now.day) {
+      return 'Today';
+    } else if (selectedDate.year == yesterday.year &&
+        selectedDate.month == yesterday.month &&
+        selectedDate.day == yesterday.day) {
+      return 'Yesterday';
+    } else if (selectedDate.year == tomorrow.year &&
+        selectedDate.month == tomorrow.month &&
+        selectedDate.day == tomorrow.day) {
+      return 'Tomorrow';
+    } else {
+      return DateFormat('EEE, d MMM').format(selectedDate);
+    }
+  }
 
-// //     if (selectedDate != null) {
-// //       ref.read(selectedDateProvider.notifier).updateSelectedDate(selectedDate);
-// //       // TODO: if selectedDate is in the future, make it a scheduled transaction
-// //     }
-// //   }
+  bool get isSelectedTransactionNull =>
+      (ref.watch(selectedTransactionProvider)?.date == null);
 
-// //   @override
-// //   void initState() {
-// //     super.initState();
-// //     if (widget.date != null) {
-// //       ref
-// //           .read(selectedDateProvider.notifier)
-// //           .updateSelectedDate(widget.date ?? DateTime.now());
-// //     }
-// //   }
+  @override
+  Widget build(BuildContext context) {
+    // final selectedDate = ref.watch(transactionDateProvider);
 
-// //   String get _selectedDateText {
-// //     final now = DateTime.now();
-// //     final yesterday = DateTime(now.year, now.month, now.day - 1);
-// //     final tomorrow = DateTime(now.year, now.month, now.day + 1);
+    final DateTime selectedDate = getSelectedDate();
+    // if (ref.watch(selectedTransactionProvider) == null) {
+    //   selectedDate = ref.watch(transactionDateProvider);
+    // } else {
+    //   selectedDate = ref.watch(selectedTransactionProvider)!.date;
+    // }
 
-// //     final selectedDate = ref.watch(selectedDateProvider);
-
-// //     if (selectedDate.year == now.year &&
-// //         selectedDate.month == now.month &&
-// //         selectedDate.day == now.day) {
-// //       return 'Today';
-// //     } else if (selectedDate.year == yesterday.year &&
-// //         selectedDate.month == yesterday.month &&
-// //         selectedDate.day == yesterday.day) {
-// //       return 'Yesterday';
-// //     } else if (selectedDate.year == tomorrow.year &&
-// //         selectedDate.month == tomorrow.month &&
-// //         selectedDate.day == tomorrow.day) {
-// //       return 'Tomorrow';
-// //     } else {
-// //       return DateFormat('EEE, d MMM').format(selectedDate);
-// //     }
-// //   }
-
-// //   @override
-// //   Widget build(BuildContext context) {
-// //     return Padding(
-// //       padding: const EdgeInsets.symmetric(
-// //         vertical: 12.0,
-// //       ),
-// //       child: Row(
-// //         children: [
-// //           const Icon(
-// //             Icons.calendar_today_rounded,
-// //             color: AppColors.mainColor1,
-// //           ),
-// //           TextButton(
-// //             onPressed: () => _selectDate(context),
-// //             child: Text(
-// //               _selectedDateText,
-// //             ),
-// //           ),
-// //           const Spacer(),
-// //           IconButton(
-// //             onPressed: () {
-// //               ref.read(selectedDateProvider.notifier).previousDay();
-// //               HapticFeedbackService.lightImpact();
-// //             },
-// //             icon: const Icon(Icons.arrow_back_ios_rounded),
-// //           ),
-// //           const SizedBox(width: 8.0),
-// //           IconButton(
-// //             onPressed: () {
-// //               ref.read(selectedDateProvider.notifier).nextDay();
-// //               HapticFeedbackService.lightImpact();
-// //             },
-// //             icon: const Icon(Icons.arrow_forward_ios_rounded),
-// //           ),
-// //         ],
-// //       ),
-// //     );
-// //   }
-// // }
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        vertical: 12.0,
+      ),
+      child: Row(
+        children: [
+          const Icon(
+            Icons.calendar_today_rounded,
+            color: AppColors.mainColor1,
+          ),
+          TextButton(
+            onPressed: () => _selectDate(context, selectedDate),
+            child: Text(
+              _selectedDateText,
+            ),
+          ),
+          const Spacer(),
+          IconButton(
+            onPressed: () {
+              _previousDay(selectedDate);
+            },
+            icon: const Icon(Icons.arrow_back_ios_rounded),
+          ),
+          const SizedBox(width: 8.0),
+          IconButton(
+            onPressed: () {
+              _nextDay(selectedDate);
+            },
+            icon: const Icon(Icons.arrow_forward_ios_rounded),
+          ),
+        ],
+      ),
+    );
+  }
+}

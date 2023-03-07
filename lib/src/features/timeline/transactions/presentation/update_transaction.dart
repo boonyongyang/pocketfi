@@ -18,10 +18,8 @@ import 'package:pocketfi/src/features/category/domain/category.dart';
 import 'package:pocketfi/src/features/category/presentation/category_page.dart';
 import 'package:pocketfi/src/features/timeline/transactions/application/transaction_providers.dart';
 import 'package:pocketfi/src/features/timeline/transactions/data/transaction_notifiers.dart';
-import 'package:pocketfi/src/features/timeline/transactions/date_picker/application/selected_date_notifier.dart';
-import 'package:pocketfi/src/features/timeline/transactions/date_picker/presentation/add_transaction_date_picker.dart';
+import 'package:pocketfi/src/features/timeline/transactions/date_picker/presentation/transaction_date_picker.dart';
 import 'package:pocketfi/src/features/timeline/transactions/domain/tag.dart';
-import 'package:pocketfi/src/features/timeline/transactions/domain/transaction.dart';
 import 'package:pocketfi/src/features/timeline/transactions/image_upload/data/image_file_notifier.dart';
 import 'package:pocketfi/src/features/timeline/transactions/image_upload/domain/file_type.dart';
 import 'package:pocketfi/src/features/timeline/transactions/image_upload/domain/thumbnail_request.dart';
@@ -29,7 +27,6 @@ import 'package:pocketfi/src/features/timeline/transactions/image_upload/helpers
 import 'package:pocketfi/src/features/timeline/transactions/presentation/add_new_transactions/category_selector_view.dart';
 import 'package:pocketfi/src/features/timeline/transactions/presentation/add_new_transactions/full_screen_image_dialog.dart';
 import 'package:pocketfi/src/features/timeline/transactions/presentation/add_new_transactions/select_transaction_type.dart';
-import 'package:pocketfi/src/features/timeline/transactions/date_picker/presentation/transaction_date_picker.dart';
 
 class UpdateTransaction extends StatefulHookConsumerWidget {
   const UpdateTransaction({
@@ -52,8 +49,6 @@ class UpdateTransactionState extends ConsumerState<UpdateTransaction> {
     final selectedCategory = ref.watch(selectedCategoryProvider);
 
     final selectedWallet = ref.watch(selectedWalletProvider);
-
-    //test
 
     final amountController =
         useTextEditingController(text: selectedTransaction?.amount.toString());
@@ -173,9 +168,9 @@ class UpdateTransactionState extends ConsumerState<UpdateTransaction> {
                     // TransactionDatePicker(
                     //   date: selectedTransaction?.date,
                     // ),
-                    const AddTransactionDatePicker(),
+                    const TransactionDatePicker(),
                     WriteOptionalNote(noteController: noteController),
-                    addPhoto(),
+                    selectPhoto(),
                     showIfPhotoIsAdded(),
                     const SizedBox(height: 8.0),
                     selectTags(),
@@ -223,7 +218,7 @@ class UpdateTransactionState extends ConsumerState<UpdateTransaction> {
     );
   }
 
-  Row addPhoto() {
+  Row selectPhoto() {
     return Row(
       children: [
         const Icon(Icons.photo_camera_outlined, color: AppColors.mainColor1),
@@ -239,10 +234,19 @@ class UpdateTransactionState extends ConsumerState<UpdateTransaction> {
               displayPhoto(imageFile);
             },
             child: const Text(
-              Strings.addAPhoto,
+              Strings.selectPhoto,
             ),
           ),
         ),
+        const Spacer(),
+        if (ref.read(imageFileProvider) != null)
+          IconButton(
+            color: AppColors.mainColor1,
+            icon: const Icon(Icons.close),
+            onPressed: () {
+              ref.read(imageFileProvider.notifier).setImageFile(null);
+            },
+          ),
       ],
     );
   }
@@ -261,27 +265,26 @@ class UpdateTransactionState extends ConsumerState<UpdateTransaction> {
   }
 
   Widget showIfPhotoIsAdded() {
-    final imageFile = ref.watch(imageFileProvider);
-    return (imageFile != null)
+    final transaction = ref.watch(selectedTransactionProvider);
+
+    return (transaction?.fileUrl != null)
         ? InkWell(
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) =>
-                      FullScreenImageDialog(imageFile: imageFile),
-                  fullscreenDialog: true,
-                ),
-              );
-            },
-            child: Container(
+            // onTap: () {
+            //   Navigator.of(context).push(
+            //     MaterialPageRoute(
+            //       builder: (context) => FullScreenImageDialog(
+            //           imageFile: File(transaction.fileUrl!)),
+            //       fullscreenDialog: true,
+            //     ),
+            //   );
+            // },
+            child: SizedBox(
               width: double.infinity,
-              height: 150,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: FileImage(imageFile),
-                  fit: BoxFit.cover,
-                ),
-                borderRadius: BorderRadius.circular(8.0),
+              height: 150.0,
+              child: Image.network(
+                transaction!.fileUrl!,
+                width: MediaQuery.of(context).size.width * 0.8,
+                fit: BoxFit.cover,
               ),
             ),
           )
@@ -530,7 +533,7 @@ class TransactionAmountField extends StatelessWidget {
     return SizedBox(
       width: 250,
       child: AutoSizeTextField(
-        autofocus: true,
+        // autofocus: true,
         textAlign: TextAlign.center,
         enableInteractiveSelection: false,
         showCursor: false,

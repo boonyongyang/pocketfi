@@ -1,9 +1,11 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:io';
 
 import 'package:auto_size_text_field/auto_size_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+
 import 'package:pocketfi/src/common_widgets/buttons/full_width_button_with_text.dart';
 import 'package:pocketfi/src/common_widgets/file_thumbnail_view.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
@@ -19,8 +21,9 @@ import 'package:pocketfi/src/features/category/presentation/category_page.dart';
 import 'package:pocketfi/src/features/timeline/transactions/application/transaction_providers.dart';
 import 'package:pocketfi/src/features/timeline/transactions/data/transaction_notifiers.dart';
 import 'package:pocketfi/src/features/timeline/transactions/date_picker/application/selected_date_notifier.dart';
-import 'package:pocketfi/src/features/timeline/transactions/date_picker/presentation/add_transaction_date_picker.dart';
+import 'package:pocketfi/src/features/timeline/transactions/date_picker/presentation/transaction_date_picker.dart';
 import 'package:pocketfi/src/features/timeline/transactions/domain/tag.dart';
+import 'package:pocketfi/src/features/timeline/transactions/domain/transaction.dart';
 import 'package:pocketfi/src/features/timeline/transactions/image_upload/data/image_file_notifier.dart';
 import 'package:pocketfi/src/features/timeline/transactions/image_upload/domain/file_type.dart';
 import 'package:pocketfi/src/features/timeline/transactions/image_upload/domain/thumbnail_request.dart';
@@ -138,9 +141,9 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
                     // TransactionDatePicker(
                     //     // date: DateTime.now(),
                     //     ),
-                    const AddTransactionDatePicker(),
+                    const TransactionDatePicker(),
                     WriteOptionalNote(noteController: noteController),
-                    addPhoto(),
+                    selectPhoto(),
                     showIfPhotoIsAdded(),
                     const SizedBox(height: 8.0),
                     selectTags(),
@@ -189,7 +192,7 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
     );
   }
 
-  Row addPhoto() {
+  Row selectPhoto() {
     return Row(
       children: [
         const Icon(Icons.photo_camera_outlined, color: AppColors.mainColor1),
@@ -205,10 +208,19 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
               displayPhoto(imageFile);
             },
             child: const Text(
-              Strings.addAPhoto,
+              Strings.selectPhoto,
             ),
           ),
         ),
+        const Spacer(),
+        if (ref.read(imageFileProvider) != null)
+          IconButton(
+            color: AppColors.mainColor1,
+            icon: const Icon(Icons.close),
+            onPressed: () {
+              ref.read(imageFileProvider.notifier).setImageFile(null);
+            },
+          ),
       ],
     );
   }
@@ -241,7 +253,7 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
             },
             child: Container(
               width: double.infinity,
-              height: 150,
+              height: 150.0,
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: FileImage(imageFile),
@@ -485,16 +497,16 @@ class SelectCurrency extends StatelessWidget {
   }
 }
 
-class TransactionAmountField extends StatelessWidget {
+class TransactionAmountField extends ConsumerWidget {
   const TransactionAmountField({
-    super.key,
+    Key? key,
     required this.amountController,
-  });
+  }) : super(key: key);
 
   final TextEditingController amountController;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return SizedBox(
       width: 250,
       child: AutoSizeTextField(
@@ -510,10 +522,14 @@ class TransactionAmountField extends StatelessWidget {
           hintText: Strings.zeroAmount,
         ),
         controller: amountController,
-        style: const TextStyle(
+        style: TextStyle(
           fontSize: 28,
           fontWeight: FontWeight.bold,
-          color: AppColors.red,
+          color: ref.watch(transactionTypeProvider) == TransactionType.expense
+              ? AppColors.red
+              : ref.watch(transactionTypeProvider) == TransactionType.income
+                  ? AppColors.green
+                  : Colors.grey,
         ),
       ),
     );

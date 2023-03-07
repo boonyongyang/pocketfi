@@ -64,6 +64,68 @@ class SelectTransactionTypeState extends ConsumerState<SelectTransactionType>
         // }
       },
     );
+    return Transform.scale(
+      scale: 0.9,
+      child: DefaultTabController(
+        length: widget.noOfTabs,
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              Container(
+                height: 45.0,
+                decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 1,
+                      blurRadius: 5,
+                      offset: const Offset(0, 3),
+                    ),
+                  ],
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(25.0),
+                ),
+                child: Consumer(
+                  builder: (context, watch, child) {
+                    return TabBar(
+                      indicator: const BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(25.0)),
+                        color: AppColors.mainColor1,
+                      ),
+                      labelColor: AppColors.white,
+                      unselectedLabelColor: AppColors.mainColor1,
+                      tabs: [
+                        const Tab(text: Strings.expense),
+                        const Tab(text: Strings.income),
+                        if (widget.noOfTabs == 3)
+                          const Tab(text: Strings.transfer),
+                      ],
+                      onTap: (index) {
+                        // ref
+                        //     .read(transactionTypeProvider.notifier)
+                        //     .setTransactionType(index);
+                        setOrUpdateTransactionType(index);
+
+                        final indexSelected = ref.read(transactionTypeProvider);
+                        debugPrint('index selected: $indexSelected');
+                      },
+                      controller: TabController(
+                        length: widget.noOfTabs,
+                        initialIndex: tabIndex!.index,
+                        vsync: this,
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
 
     // if noOfTabs is 2, dun show transfer tab (2 tabs total)
     // if noOfTabs is 3, show transfer tab (3 tabs total)
@@ -128,66 +190,3 @@ class SelectTransactionTypeState extends ConsumerState<SelectTransactionType>
     //     ),
     //   );
     // }
-
-    return Transform.scale(
-      scale: 0.9,
-      child: DefaultTabController(
-        length: widget.noOfTabs,
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              Container(
-                height: 45.0,
-                decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.5),
-                      spreadRadius: 1,
-                      blurRadius: 5,
-                      offset: const Offset(0, 3),
-                    ),
-                  ],
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(25.0),
-                ),
-                child: Consumer(
-                  builder: (context, watch, child) {
-                    return TabBar(
-                      indicator: const BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(25.0)),
-                        color: AppColors.mainColor1,
-                      ),
-                      labelColor: AppColors.white,
-                      unselectedLabelColor: AppColors.mainColor1,
-                      tabs: [
-                        const Tab(text: Strings.expense),
-                        const Tab(text: Strings.income),
-                        if (widget.noOfTabs == 3)
-                          const Tab(text: Strings.transfer),
-                      ],
-                      onTap: (index) {
-                        // ref
-                        //     .read(transactionTypeProvider.notifier)
-                        //     .setTransactionType(index);
-                        setOrUpdateTransactionType(index);
-
-                        final indexSelected = ref.read(transactionTypeProvider);
-                        debugPrint('index selected: $indexSelected');
-                      },
-                      controller: TabController(
-                        length: widget.noOfTabs,
-                        initialIndex: tabIndex!.index,
-                        vsync: this,
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}

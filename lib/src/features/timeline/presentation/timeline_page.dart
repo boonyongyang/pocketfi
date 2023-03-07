@@ -2,19 +2,16 @@ import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
-import 'package:pocketfi/src/features/category/application/category_providers.dart';
 import 'package:pocketfi/src/features/timeline/posts/post_settings/application/post_setting_provider.dart';
-import 'package:pocketfi/src/features/timeline/transactions/application/transaction_providers.dart';
+import 'package:pocketfi/src/features/timeline/presentation/overview_tab.dart';
 import 'package:pocketfi/src/features/timeline/transactions/data/transaction_notifiers.dart';
-import 'package:pocketfi/src/features/timeline/transactions/date_picker/application/selected_date_notifier.dart';
 import 'package:pocketfi/src/features/timeline/transactions/image_upload/domain/file_type.dart';
 import 'package:pocketfi/src/features/timeline/transactions/image_upload/helpers/image_picker_helper.dart';
 import 'package:pocketfi/src/features/timeline/transactions/presentation/add_new_transactions/add_new_transaction.dart';
 import 'package:pocketfi/src/features/timeline/transactions/presentation/add_new_transactions/create_new_post_view.dart';
 import 'package:pocketfi/src/features/timeline/transactions/presentation/receipts/scan_receipt.dart';
-import 'package:pocketfi/src/features/timeline/transactions/presentation/temp_tab.dart';
-import 'package:pocketfi/src/features/timeline/transactions/presentation/transactions_tab.dart';
-import 'package:pocketfi/src/features/timeline/transactions/presentation/post_tab.dart';
+import 'package:pocketfi/src/features/timeline/presentation/transactions_tab.dart';
+import 'package:pocketfi/src/features/timeline/presentation/post_tab.dart';
 
 class TimelinePage extends ConsumerStatefulWidget {
   const TimelinePage({super.key});
@@ -124,7 +121,7 @@ class _MainViewState extends ConsumerState<TimelinePage>
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: const [
                   // FaIcon(FontAwesomeIcons.chartPie),
-                  Text('Categories'),
+                  Text('Overview'),
                 ],
               )),
               Tab(
@@ -143,9 +140,10 @@ class _MainViewState extends ConsumerState<TimelinePage>
         ),
         body: const TabBarView(
           children: [
-            PostsTab(),
             TransactionsTab(),
-            TempTab(),
+            OverviewTab(),
+            // TempTab(),
+            PostsTab(),
           ],
         ),
         floatingActionButton: Column(

@@ -5,13 +5,13 @@ import 'package:pocketfi/src/constants/firebase_field_name.dart';
 import 'package:pocketfi/src/constants/typedefs.dart';
 
 @immutable
-class UserInfoModel extends MapView<String, String?> {
+class UserInfo extends MapView<String, String?> {
   final UserId userId;
   final String displayName;
   final String? email;
 
   // this will create a map of the user info and set it to the super map
-  UserInfoModel({
+  UserInfo({
     required this.userId,
     required this.displayName,
     required this.email,
@@ -24,7 +24,7 @@ class UserInfoModel extends MapView<String, String?> {
         );
 
   // this will create a UserInfoModel from a json map
-  UserInfoModel.fromJson(
+  UserInfo.fromJson(
     Map<String, dynamic> json, {
     required UserId userId,
   }) : this(
@@ -36,7 +36,7 @@ class UserInfoModel extends MapView<String, String?> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is UserInfoModel &&
+      other is UserInfo &&
           runtimeType == other.runtimeType &&
           userId == other.userId &&
           displayName == other.displayName &&
@@ -50,4 +50,19 @@ class UserInfoModel extends MapView<String, String?> {
           email,
         ],
       );
+}
+
+@immutable
+class UserInfoPayload extends MapView<String, String> {
+  UserInfoPayload({
+    required UserId userId,
+    required String? displayName,
+    required String? email,
+  }) : super(
+          {
+            FirebaseFieldName.userId: userId,
+            FirebaseFieldName.displayName: displayName ?? '',
+            FirebaseFieldName.email: email ?? '',
+          },
+        );
 }
