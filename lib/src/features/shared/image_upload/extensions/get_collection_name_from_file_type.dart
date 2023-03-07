@@ -1,4 +1,4 @@
-import 'package:pocketfi/src/features/timeline/transactions/image_upload/domain/file_type.dart';
+import 'package:pocketfi/src/features/shared/image_upload/domain/file_type.dart';
 
 extension CollectionName on FileType {
   String get collectionName {

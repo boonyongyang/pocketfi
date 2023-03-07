@@ -2,7 +2,7 @@ import 'dart:io' show File;
 
 import 'package:flutter/foundation.dart' show immutable;
 import 'package:image_picker/image_picker.dart';
-import 'package:pocketfi/src/features/timeline/transactions/image_upload/extensions/to_file.dart';
+import 'package:pocketfi/src/features/shared/image_upload/extensions/to_file.dart';
 
 // this is a helper class that will be used to pick images and videos from the gallery
 @immutable

@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/foundation.dart' show immutable;
-import 'package:pocketfi/src/features/timeline/transactions/image_upload/domain/file_type.dart';
+import 'package:pocketfi/src/features/shared/image_upload/domain/file_type.dart';
 
 @immutable
 class ThumbnailRequest {

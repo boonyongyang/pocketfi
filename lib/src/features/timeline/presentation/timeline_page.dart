@@ -5,11 +5,11 @@ import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/features/timeline/posts/post_settings/application/post_setting_provider.dart';
 import 'package:pocketfi/src/features/timeline/presentation/overview_tab.dart';
 import 'package:pocketfi/src/features/timeline/transactions/data/transaction_notifiers.dart';
-import 'package:pocketfi/src/features/timeline/transactions/image_upload/domain/file_type.dart';
-import 'package:pocketfi/src/features/timeline/transactions/image_upload/helpers/image_picker_helper.dart';
+import 'package:pocketfi/src/features/shared/image_upload/domain/file_type.dart';
+import 'package:pocketfi/src/features/shared/image_upload/helpers/image_picker_helper.dart';
 import 'package:pocketfi/src/features/timeline/transactions/presentation/add_new_transactions/add_new_transaction.dart';
 import 'package:pocketfi/src/features/timeline/transactions/presentation/add_new_transactions/create_new_post_view.dart';
-import 'package:pocketfi/src/features/timeline/transactions/presentation/receipts/scan_receipt.dart';
+import 'package:pocketfi/src/features/timeline/transactions/receipts/scan_receipt.dart';
 import 'package:pocketfi/src/features/timeline/presentation/transactions_tab.dart';
 import 'package:pocketfi/src/features/timeline/presentation/post_tab.dart';
 

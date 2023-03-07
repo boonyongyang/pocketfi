@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart' show immutable;
 import 'package:pocketfi/src/constants/typedefs.dart';
 import 'package:pocketfi/src/features/timeline/posts/domain/post_key.dart';
 import 'package:pocketfi/src/features/timeline/posts/post_settings/domain/post_setting.dart';
-import 'package:pocketfi/src/features/timeline/transactions/image_upload/domain/file_type.dart';
+import 'package:pocketfi/src/features/shared/image_upload/domain/file_type.dart';
 
 @immutable
 class PostPayload extends MapView<String, dynamic> {

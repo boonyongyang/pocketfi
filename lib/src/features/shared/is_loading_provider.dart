@@ -3,7 +3,7 @@ import 'package:pocketfi/src/features/authentication/application/auth_state_prov
 import 'package:pocketfi/src/features/budget/wallet/application/delete_wallet_provider.dart';
 import 'package:pocketfi/src/features/budget/wallet/application/update_wallet_provider.dart';
 import 'package:pocketfi/src/features/timeline/transactions/application/transaction_providers.dart';
-import 'package:pocketfi/src/features/timeline/transactions/image_upload/application/image_uploader_provider.dart';
+import 'package:pocketfi/src/features/shared/image_upload/application/image_uploader_provider.dart';
 
 // create isLoadingProvider
 // this will be used to check if authentication state is loading (boolean)

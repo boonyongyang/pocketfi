@@ -24,10 +24,10 @@ import 'package:pocketfi/src/features/timeline/transactions/date_picker/applicat
 import 'package:pocketfi/src/features/timeline/transactions/date_picker/presentation/transaction_date_picker.dart';
 import 'package:pocketfi/src/features/timeline/transactions/domain/tag.dart';
 import 'package:pocketfi/src/features/timeline/transactions/domain/transaction.dart';
-import 'package:pocketfi/src/features/timeline/transactions/image_upload/data/image_file_notifier.dart';
-import 'package:pocketfi/src/features/timeline/transactions/image_upload/domain/file_type.dart';
-import 'package:pocketfi/src/features/timeline/transactions/image_upload/domain/thumbnail_request.dart';
-import 'package:pocketfi/src/features/timeline/transactions/image_upload/helpers/image_picker_helper.dart';
+import 'package:pocketfi/src/features/shared/image_upload/data/image_file_notifier.dart';
+import 'package:pocketfi/src/features/shared/image_upload/domain/file_type.dart';
+import 'package:pocketfi/src/features/shared/image_upload/domain/thumbnail_request.dart';
+import 'package:pocketfi/src/features/shared/image_upload/helpers/image_picker_helper.dart';
 import 'package:pocketfi/src/features/timeline/transactions/presentation/add_new_transactions/category_selector_view.dart';
 import 'package:pocketfi/src/features/timeline/transactions/presentation/add_new_transactions/full_screen_image_dialog.dart';
 import 'package:pocketfi/src/features/timeline/transactions/presentation/add_new_transactions/select_transaction_type.dart';

@@ -1,7 +1,7 @@
 import 'dart:collection' show MapView;
 
 import 'package:flutter/foundation.dart' show immutable;
-import 'package:pocketfi/src/constants/firebase_field_name.dart';
+import 'package:pocketfi/src/constants/firebase_names.dart';
 import 'package:pocketfi/src/constants/typedefs.dart';
 
 @immutable

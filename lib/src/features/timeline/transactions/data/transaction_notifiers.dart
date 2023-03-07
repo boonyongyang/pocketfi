@@ -3,21 +3,19 @@ import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart'
     show FieldPath, FirebaseFirestore;
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:pocketfi/src/constants/firebase_collection_name.dart';
+import 'package:pocketfi/src/constants/firebase_names.dart';
 import 'package:pocketfi/src/constants/typedefs.dart';
-import 'package:pocketfi/src/features/authentication/application/user_id_provider.dart';
 import 'package:pocketfi/src/features/category/application/category_providers.dart';
 import 'package:pocketfi/src/features/category/domain/category.dart';
 import 'package:pocketfi/src/features/timeline/transactions/application/transaction_providers.dart';
 import 'package:pocketfi/src/features/timeline/transactions/date_picker/application/selected_date_notifier.dart';
 import 'package:pocketfi/src/features/timeline/transactions/domain/transaction.dart';
-import 'package:pocketfi/src/features/timeline/transactions/image_upload/exceptions/could_not_build_thumbnail_exception.dart';
-import 'package:pocketfi/src/features/timeline/transactions/image_upload/extensions/get_image_data_aspect_ratio.dart';
-import 'package:pocketfi/src/features/timeline/transactions/image_upload/image_constants.dart';
+import 'package:pocketfi/src/features/shared/image_upload/exceptions/could_not_build_thumbnail_exception.dart';
+import 'package:pocketfi/src/features/shared/image_upload/extensions/get_image_data_aspect_ratio.dart';
+import 'package:pocketfi/src/features/shared/image_upload/image_constants.dart';
 import 'package:pocketfi/src/utils/document_id_from_current_date.dart';
 import 'package:image/image.dart' as img;
 import 'package:uuid/uuid.dart';
