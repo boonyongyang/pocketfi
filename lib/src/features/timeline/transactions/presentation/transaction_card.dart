@@ -113,7 +113,7 @@ class TransactionCard extends StatelessWidget {
                           //   fit: BoxFit.cover,
                           //   height: 100.0,
                           // ),
-                          Text(transaction.createdAt.toIso8601String()),
+                          Text(transaction.createdAt!.toIso8601String()),
                           // format date to dd/mm/yyyy
                           Text(DateFormat('d MMM').format(transaction.date)),
                         ],

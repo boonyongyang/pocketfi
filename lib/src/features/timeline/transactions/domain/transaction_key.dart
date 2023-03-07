@@ -21,5 +21,7 @@ class TransactionKey {
   static const tags = 'tags';
   // static const shared = 'shared';
 
+  static const walletId = 'wallet_id';
+
   const TransactionKey._();
 }

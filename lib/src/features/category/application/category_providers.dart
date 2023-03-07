@@ -2,16 +2,19 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/features/category/domain/default_categories.dart';
 import 'package:pocketfi/src/features/category/data/category_state_notifier.dart';
 import 'package:pocketfi/src/features/category/domain/category.dart';
-import 'package:pocketfi/src/features/timeline/transactions/application/transaction_provider.dart';
+import 'package:pocketfi/src/features/timeline/transactions/application/transaction_providers.dart';
+import 'package:pocketfi/src/features/timeline/transactions/data/transaction_notifiers.dart';
 import 'package:pocketfi/src/features/timeline/transactions/domain/transaction.dart';
 
 // * provide the first category based on the transaction type selected
 final selectedCategoryProvider = StateProvider<Category>(
   (ref) {
-    final transactionTypeIndex = ref.watch(transactionTypeProvider);
-    if (transactionTypeIndex == TransactionType.expense) {
+    final type = ref.watch(transactionTypeProvider);
+    // final transactionTypeIndex = ref.watch(selectedTransactionProvider)?.type ??
+    // ref.watch(transactionTypeProvider);
+    if (type == TransactionType.expense) {
       return expenseCategories.first;
-    } else if (transactionTypeIndex == TransactionType.income) {
+    } else if (type == TransactionType.income) {
       return incomeCategories.first;
     } else {
       return transferCategory;

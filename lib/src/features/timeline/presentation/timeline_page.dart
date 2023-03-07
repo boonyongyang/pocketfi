@@ -4,7 +4,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/features/category/application/category_providers.dart';
 import 'package:pocketfi/src/features/timeline/posts/post_settings/application/post_setting_provider.dart';
-import 'package:pocketfi/src/features/timeline/transactions/application/transaction_provider.dart';
+import 'package:pocketfi/src/features/timeline/transactions/application/transaction_providers.dart';
+import 'package:pocketfi/src/features/timeline/transactions/data/transaction_notifiers.dart';
+import 'package:pocketfi/src/features/timeline/transactions/date_picker/application/selected_date_notifier.dart';
 import 'package:pocketfi/src/features/timeline/transactions/image_upload/domain/file_type.dart';
 import 'package:pocketfi/src/features/timeline/transactions/image_upload/helpers/image_picker_helper.dart';
 import 'package:pocketfi/src/features/timeline/transactions/presentation/add_new_transactions/add_new_transaction.dart';
@@ -178,10 +180,18 @@ class _MainViewState extends ConsumerState<TimelinePage>
                 backgroundColor: const Color(0xFFFCD46A),
                 child: const Icon(Icons.add),
                 onPressed: () {
-                  resetCategoryState(ref);
-                  ref
-                      .read(transactionTypeProvider.notifier)
-                      .setTransactionType(0);
+                  // resetCategoryState(ref);
+                  // ref
+                  //     .read(transactionTypeProvider.notifier)
+                  //     .setTransactionType(0);
+
+                  // ref
+                  //     .read(transactionDateProvider.notifier)
+                  //     .setDate(DateTime.now());
+                  setNewTransactionState(ref);
+                  // ref
+                  //     .read(selectedTransactionProvider.notifier)
+                  //     .resetTransaction(ref);
 
                   Navigator.of(context, rootNavigator: true).push(
                     MaterialPageRoute(

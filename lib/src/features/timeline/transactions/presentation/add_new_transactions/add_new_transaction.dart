@@ -16,10 +16,11 @@ import 'package:pocketfi/src/features/budget/wallet/presentation/select_wallet_d
 import 'package:pocketfi/src/features/category/application/category_providers.dart';
 import 'package:pocketfi/src/features/category/domain/category.dart';
 import 'package:pocketfi/src/features/category/presentation/category_page.dart';
-import 'package:pocketfi/src/features/timeline/transactions/application/transaction_provider.dart';
+import 'package:pocketfi/src/features/timeline/transactions/application/transaction_providers.dart';
+import 'package:pocketfi/src/features/timeline/transactions/data/transaction_notifiers.dart';
+import 'package:pocketfi/src/features/timeline/transactions/date_picker/application/selected_date_notifier.dart';
 import 'package:pocketfi/src/features/timeline/transactions/date_picker/presentation/add_transaction_date_picker.dart';
 import 'package:pocketfi/src/features/timeline/transactions/domain/tag.dart';
-import 'package:pocketfi/src/features/timeline/transactions/domain/transaction.dart';
 import 'package:pocketfi/src/features/timeline/transactions/image_upload/data/image_file_notifier.dart';
 import 'package:pocketfi/src/features/timeline/transactions/image_upload/domain/file_type.dart';
 import 'package:pocketfi/src/features/timeline/transactions/image_upload/domain/thumbnail_request.dart';
@@ -27,8 +28,6 @@ import 'package:pocketfi/src/features/timeline/transactions/image_upload/helpers
 import 'package:pocketfi/src/features/timeline/transactions/presentation/add_new_transactions/category_selector_view.dart';
 import 'package:pocketfi/src/features/timeline/transactions/presentation/add_new_transactions/full_screen_image_dialog.dart';
 import 'package:pocketfi/src/features/timeline/transactions/presentation/add_new_transactions/select_transaction_type.dart';
-import 'package:pocketfi/src/features/timeline/transactions/date_picker/presentation/transaction_date_picker.dart';
-import 'package:pocketfi/src/utils/haptic_feedback_service.dart';
 
 class AddNewTransaction extends StatefulHookConsumerWidget {
   const AddNewTransaction({
@@ -40,6 +39,8 @@ class AddNewTransaction extends StatefulHookConsumerWidget {
 }
 
 class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
+  bool get isSelectedTransactionNull =>
+      (ref.watch(selectedTransactionProvider)?.date == null);
   String _selectedRecurrence = 'Never';
 
   @override
@@ -87,7 +88,12 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
 
             Navigator.of(context).pop();
             resetCategoryState(ref);
-            ref.read(transactionTypeProvider.notifier).setTransactionType(0);
+            // ref.read(transactionTypeProvider.notifier).setTransactionType(0);
+            ref
+                .read(transactionTypeProvider.notifier)
+                .resetTransactionTypeState();
+
+            // ref.read(transactionDateProvider.notifier).setDate(DateTime.now());
           },
         ),
       ),
@@ -408,8 +414,19 @@ class SelectCategory extends ConsumerWidget {
                                 child: GestureDetector(
                                   onTap: () {
                                     ref
-                                        .read(selectedCategoryProvider.notifier)
-                                        .state = categories[index];
+                                                .watch(
+                                                    selectedTransactionProvider)
+                                                ?.categoryName ==
+                                            null
+                                        ? ref
+                                            .read(selectedCategoryProvider
+                                                .notifier)
+                                            .state = categories[index]
+                                        : ref
+                                            .read(selectedTransactionProvider
+                                                .notifier)
+                                            .updateCategory(
+                                                categories[index], ref);
 
                                     debugPrint(
                                         'selected category: ${categories[index].name}');
@@ -568,7 +585,7 @@ class SaveButton extends ConsumerWidget {
           ? () async {
               final userId = ref.read(userIdProvider);
               final type = ref.read(transactionTypeProvider);
-              final date = ref.read(selectedDateTestProvider);
+              final date = ref.read(transactionDateProvider);
               final file = ref.read(imageFileProvider);
 
               debugPrint('userId is: $userId');
@@ -590,12 +607,11 @@ class SaveButton extends ConsumerWidget {
                   .read(createNewTransactionProvider.notifier)
                   .createNewTransaction(
                     userId: userId,
+                    walletId: selectedWallet!.walletId, // ? sure?
                     amount: double.parse(amount),
                     type: type,
                     note: note,
                     categoryName: categoryName!.name,
-                    // walletName: selectedWallet!.walletName,
-                    walletId: selectedWallet!.walletId,
                     date: date,
                     file: file,
                   );
@@ -614,6 +630,10 @@ class SaveButton extends ConsumerWidget {
 
                 // clear the imageFileProvider
                 ref.read(imageFileProvider.notifier).setImageFile(null);
+
+                ref
+                    .read(transactionDateProvider.notifier)
+                    .setDate(DateTime.now());
 
                 // show snackbar to notify the user
                 ScaffoldMessenger.of(context).showSnackBar(

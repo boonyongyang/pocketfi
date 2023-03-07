@@ -2,7 +2,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/features/authentication/application/auth_state_provider.dart';
 import 'package:pocketfi/src/features/budget/wallet/application/delete_wallet_provider.dart';
 import 'package:pocketfi/src/features/budget/wallet/application/update_wallet_provider.dart';
-import 'package:pocketfi/src/features/timeline/transactions/application/transaction_provider.dart';
+import 'package:pocketfi/src/features/timeline/transactions/application/transaction_providers.dart';
 import 'package:pocketfi/src/features/timeline/transactions/image_upload/application/image_uploader_provider.dart';
 
 // create isLoadingProvider
@@ -13,10 +13,14 @@ final isLoadingProvider = Provider<bool>((ref) {
   final isUpdatingWallet = ref.watch(updateWalletProvider);
   final isDeletingWallet = ref.watch(deleteWalletProvider);
   final isCreatingTransaction = ref.watch(createNewTransactionProvider);
+  final isUpdatingTransaction = ref.watch(updateTransactionProvider);
+  final isDeletingTransaction = ref.watch(deleteTransactionProvider);
 
   return authState.isLoading ||
       isUploadingImage ||
       isUpdatingWallet ||
       isDeletingWallet ||
-      isCreatingTransaction;
+      isCreatingTransaction ||
+      isUpdatingTransaction ||
+      isDeletingTransaction;
 });

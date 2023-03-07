@@ -16,9 +16,10 @@ import 'package:pocketfi/src/features/budget/wallet/presentation/select_wallet_d
 import 'package:pocketfi/src/features/category/application/category_providers.dart';
 import 'package:pocketfi/src/features/category/domain/category.dart';
 import 'package:pocketfi/src/features/category/presentation/category_page.dart';
-import 'package:pocketfi/src/features/timeline/transactions/application/transaction_provider.dart';
-import 'package:pocketfi/src/features/timeline/transactions/data/transaction_type_notifier.dart';
+import 'package:pocketfi/src/features/timeline/transactions/application/transaction_providers.dart';
+import 'package:pocketfi/src/features/timeline/transactions/data/transaction_notifiers.dart';
 import 'package:pocketfi/src/features/timeline/transactions/date_picker/application/selected_date_notifier.dart';
+import 'package:pocketfi/src/features/timeline/transactions/date_picker/presentation/add_transaction_date_picker.dart';
 import 'package:pocketfi/src/features/timeline/transactions/domain/tag.dart';
 import 'package:pocketfi/src/features/timeline/transactions/domain/transaction.dart';
 import 'package:pocketfi/src/features/timeline/transactions/image_upload/data/image_file_notifier.dart';
@@ -31,10 +32,8 @@ import 'package:pocketfi/src/features/timeline/transactions/presentation/add_new
 import 'package:pocketfi/src/features/timeline/transactions/date_picker/presentation/transaction_date_picker.dart';
 
 class UpdateTransaction extends StatefulHookConsumerWidget {
-  // final Transaction transaction;
   const UpdateTransaction({
     super.key,
-    // required this.transaction,
   });
 
   @override
@@ -47,13 +46,8 @@ class UpdateTransactionState extends ConsumerState<UpdateTransaction> {
   @override
   Widget build(BuildContext context) {
     final selectedTransaction = ref.watch(selectedTransactionProvider);
-    // final selectedDate = ref.watch(getDateProvider);
+    // final selectedDate = ref.watch(selectedDateProvider);
 
-    // final reset = selectedDate != selectedTransaction.date
-    //     ? widget.transaction.date
-    //     : selectedDate;
-
-    final transaction = selectedTransaction;
     final categories = ref.watch(categoriesProvider);
     final selectedCategory = ref.watch(selectedCategoryProvider);
 
@@ -112,13 +106,14 @@ class UpdateTransactionState extends ConsumerState<UpdateTransaction> {
               color: AppColors.red,
             ),
             onPressed: () {
-              // ref.read(transactionTypeProvider.notifier).deleteTransaction(
-              //       transaction: transaction,
-              //       userId: ref.read(userIdProvider),
-              //     );
+              ref.read(deleteTransactionProvider.notifier).deleteTransaction(
+                    transactionId: selectedTransaction!.transactionId,
+                    userId: selectedTransaction.userId,
+                    walletId: selectedTransaction.walletId,
+                  );
+
               Navigator.of(context).pop();
               resetCategoryState(ref);
-              // reset;
               ref.read(transactionTypeProvider.notifier).setTransactionType(0);
             },
           ),
@@ -146,8 +141,17 @@ class UpdateTransactionState extends ConsumerState<UpdateTransaction> {
                     const SizedBox(width: 8.0),
                     SelectCategory(
                       categories: categories,
-                      selectedCategory: getCategoryWithCategoryName(
-                          selectedTransaction?.categoryName),
+                      selectedCategory:
+                          // TODO: here needs to have a conditon to check the curr type is same as the tranasction's type, if not the same, then show category based on the curr type
+                          getCategoryWithCategoryName(
+                              // selectedTransaction
+                              // ?.type ==
+                              //         ref.watch(selectedTransactionProvider)?.type
+                              //     ?
+                              ref
+                                  .watch(selectedTransactionProvider)
+                                  ?.categoryName),
+                      // : ref.read(selectedCategoryProvider).name),
                     ),
                     const Spacer(),
                     const Icon(AppIcons.wallet, color: AppColors.mainColor1),
@@ -166,9 +170,10 @@ class UpdateTransactionState extends ConsumerState<UpdateTransaction> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   // mainAxisSize: MainAxisSize.min,
                   children: [
-                    TransactionDatePicker(
-                      date: selectedTransaction?.date,
-                    ),
+                    // TransactionDatePicker(
+                    //   date: selectedTransaction?.date,
+                    // ),
+                    const AddTransactionDatePicker(),
                     WriteOptionalNote(noteController: noteController),
                     addPhoto(),
                     showIfPhotoIsAdded(),
@@ -199,7 +204,7 @@ class UpdateTransactionState extends ConsumerState<UpdateTransaction> {
                               isSaveButtonEnabled: isSaveButtonEnabled,
                               noteController: noteController,
                               amountController: amountController,
-                              categoryName: selectedCategory,
+                              category: selectedCategory,
                               mounted: mounted,
                               selectedWallet: selectedWallet,
                               date: selectedTransaction?.date,
@@ -243,7 +248,6 @@ class UpdateTransactionState extends ConsumerState<UpdateTransaction> {
   }
 
   void displayPhoto(File imageFile) {
-    // display thumnail of the image
     debugPrint('image file path: ${imageFile.path}');
 
     FileThumbnailView(
@@ -444,8 +448,19 @@ class SelectCategory extends ConsumerWidget {
                                 child: GestureDetector(
                                   onTap: () {
                                     ref
-                                        .read(selectedCategoryProvider.notifier)
-                                        .state = categories[index];
+                                                .watch(
+                                                    selectedTransactionProvider)
+                                                ?.categoryName ==
+                                            null
+                                        ? ref
+                                            .read(selectedCategoryProvider
+                                                .notifier)
+                                            .state = categories[index]
+                                        : ref
+                                            .read(selectedTransactionProvider
+                                                .notifier)
+                                            .updateCategory(
+                                                categories[index], ref);
 
                                     debugPrint(
                                         'selected category: ${categories[index].name}');
@@ -578,7 +593,7 @@ class SaveButton extends ConsumerWidget {
     required this.isSaveButtonEnabled,
     required this.noteController,
     required this.amountController,
-    required this.categoryName,
+    required this.category,
     required this.selectedWallet,
     required this.mounted,
     required this.date,
@@ -587,7 +602,7 @@ class SaveButton extends ConsumerWidget {
   final ValueNotifier<bool> isSaveButtonEnabled;
   final TextEditingController noteController;
   final TextEditingController amountController;
-  final Category? categoryName;
+  final Category? category;
   final Wallet? selectedWallet;
   final bool mounted;
   final DateTime? date;
@@ -600,13 +615,15 @@ class SaveButton extends ConsumerWidget {
       backgroundColor: AppColors.mainColor2,
       onPressed: isSaveButtonEnabled.value
           ? () async {
+              final transaction = ref.read(selectedTransactionProvider);
               final userId = ref.read(userIdProvider);
-              final type = ref.read(transactionTypeProvider);
-              final selectedDate = ref.read(selectedDateProvider);
+              // final type = ref.read(transactionTypeProvider);
+              // final selectedDate = ref.read(selectedDateProvider);
+              // final selectedDate = ref.read(transactionDateProvider);
               final file = ref.read(imageFileProvider);
 
               debugPrint('userId is: $userId');
-              debugPrint('transactionType is: $type');
+              debugPrint('transactionType is: ${transaction?.type}');
 
               if (userId == null) {
                 return;
@@ -620,21 +637,39 @@ class SaveButton extends ConsumerWidget {
 
               debugPrint('walletName is: ${selectedWallet!.walletId}');
 
-              final isCreated = await ref
-                  .read(createNewTransactionProvider.notifier)
-                  .createNewTransaction(
+              // final isCreated = await ref
+              //     .read(createNewTransactionProvider.notifier)
+              //     .createNewTransaction(
+              //       userId: userId,
+              //       amount: double.parse(amount),
+              //       type: type,
+              //       note: note,
+              //       categoryName: categoryName!.name,
+              //       walletId: selectedWallet!.walletId,
+              //       // date: selectedDate,
+              //       date: tranasction!.date,
+              //       file: file,
+              //     );
+
+              final isUpdated = await ref
+                  .read(updateTransactionProvider.notifier)
+                  .updateTransaction(
+                    // transaction: transaction!,
+                    transactionId: transaction!.transactionId,
                     userId: userId,
                     amount: double.parse(amount),
-                    type: type,
+                    type: transaction.type,
                     note: note,
-                    categoryName: categoryName!.name,
+                    categoryName: transaction.categoryName,
+                    // categoryName: category!.name,
                     walletId: selectedWallet!.walletId,
-                    date: selectedDate,
+                    date: transaction.date,
                     file: file,
                   );
-              debugPrint('isCreated is: $isCreated');
 
-              if (isCreated && mounted) {
+              debugPrint('isUpdated is: $isUpdated');
+
+              if (isUpdated && mounted) {
                 noteController.clear();
                 amountController.clear();
                 Navigator.of(context).pop();
@@ -648,10 +683,9 @@ class SaveButton extends ConsumerWidget {
                 // clear the imageFileProvider
                 ref.read(imageFileProvider.notifier).setImageFile(null);
 
-                // show snackbar to notify the user
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
-                    content: Text('Transaction added'),
+                    content: Text('Transaction updated'),
                   ),
                 );
               }

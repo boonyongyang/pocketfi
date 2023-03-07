@@ -9,8 +9,7 @@ import 'package:pocketfi/src/constants/typedefs.dart';
 import 'package:pocketfi/src/features/authentication/application/user_id_provider.dart';
 import 'package:pocketfi/src/features/budget/wallet/data/user_wallets_provider.dart';
 import 'package:pocketfi/src/features/timeline/transactions/domain/transaction.dart';
-import 'package:pocketfi/src/features/timeline/transactions/data/transaction_type_notifier.dart';
-import 'package:pocketfi/src/features/timeline/transactions/domain/transaction_key.dart';
+import 'package:pocketfi/src/features/timeline/transactions/data/transaction_notifiers.dart';
 
 final transactionTypeProvider =
     StateNotifierProvider<TransactionTypeNotifier, TransactionType>(
@@ -20,6 +19,14 @@ final createNewTransactionProvider =
     StateNotifierProvider<CreateNewTransactionNotifier, IsLoading>(
         (ref) => CreateNewTransactionNotifier());
 
+final updateTransactionProvider =
+    StateNotifierProvider<UpdateTransactionNotifier, IsLoading>(
+        (ref) => UpdateTransactionNotifier());
+
+final deleteTransactionProvider =
+    StateNotifierProvider<DeleteTransactionNotifier, IsLoading>(
+        (ref) => DeleteTransactionNotifier());
+
 final userTransactionsProvider =
     StreamProvider.autoDispose<Iterable<Transaction>>(
   (ref) {
@@ -27,21 +34,17 @@ final userTransactionsProvider =
 
     // FIXME get the selected walletId, need to based on Wallet Visibility
     // walletVisibilityProvider get boolean value for each wallet
-// also need to use collectionGroup I think
 
     final walletId = ref.watch(selectedWalletProvider)?.walletId;
 
     final controller = StreamController<Iterable<Transaction>>();
 
-    // The onListen callback is called when the stream is listened to.
     controller.onListen = () {
-      // add an empty iterable to the stream.
       controller.sink.add([]);
     };
 
     debugPrint(userId);
 
-    // subscribe to the transactions collection.
     final sub = FirebaseFirestore.instance
         .collection(FirebaseCollectionName.users)
         .doc(userId)
@@ -66,7 +69,7 @@ final userTransactionsProvider =
               (doc) => !doc.metadata.hasPendingWrites,
             )
             .map(
-              (doc) => Transaction(
+              (doc) => Transaction.fromJson(
                 transactionId: doc.id,
                 json: doc.data(),
               ),

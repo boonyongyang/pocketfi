@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:pocketfi/src/features/timeline/transactions/date_picker/application/selected_date_notifier.dart';
+import 'package:pocketfi/src/features/timeline/transactions/data/transaction_notifiers.dart';
 import 'package:pocketfi/src/features/timeline/transactions/domain/transaction.dart';
-import 'package:pocketfi/src/features/timeline/transactions/presentation/edit_transaction.dart';
 import 'package:pocketfi/src/features/timeline/transactions/presentation/transaction_card.dart';
 import 'package:pocketfi/src/features/timeline/transactions/presentation/update_transaction.dart';
 
@@ -43,22 +42,12 @@ class TransactionListView extends ConsumerWidget {
               // debugPrint('selectedDate is ${transaction.date}');
               // debugPrint('now  is ${DateTime.now()}');
 
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(
-              //     builder: (_) => UpdateTransaction(
-              //       transaction: transaction,
-              //     ),
-              //   ),
-              // );
-
               ref
                   .read(selectedTransactionProvider.notifier)
-                  .setTransaction(transaction);
+                  .setSelectedTransaction(transaction, ref);
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  // builder: (_) => const EditTransaction(),
                   builder: (_) => const UpdateTransaction(),
                 ),
               );

@@ -4,7 +4,7 @@ import 'package:pocketfi/src/common_widgets/animations/empty_contents_with_text_
 import 'package:pocketfi/src/common_widgets/animations/error_animation_view.dart';
 import 'package:pocketfi/src/common_widgets/animations/loading_animation_view.dart';
 import 'package:pocketfi/src/constants/strings.dart';
-import 'package:pocketfi/src/features/timeline/transactions/application/transaction_provider.dart';
+import 'package:pocketfi/src/features/timeline/transactions/application/transaction_providers.dart';
 import 'package:pocketfi/src/features/timeline/transactions/presentation/transactions_list_view.dart';
 
 class TransactionsTab extends ConsumerWidget {

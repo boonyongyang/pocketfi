@@ -9,7 +9,7 @@ import 'package:pocketfi/src/features/budget/wallet/application/wallet_visibilit
 import 'package:pocketfi/src/features/budget/wallet/data/user_wallets_provider.dart';
 import 'package:pocketfi/src/features/budget/wallet/domain/wallet.dart';
 import 'package:pocketfi/src/features/shared/services/shared_preferences_service.dart';
-import 'package:pocketfi/src/features/timeline/transactions/application/transaction_provider.dart';
+import 'package:pocketfi/src/features/timeline/transactions/application/transaction_providers.dart';
 import 'package:pocketfi/src/features/timeline/transactions/presentation/transactions_list_view.dart';
 
 class TempTab extends ConsumerWidget {
