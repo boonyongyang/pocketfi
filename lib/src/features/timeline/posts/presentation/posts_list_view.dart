@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pocketfi/src/features/timeline/posts/domain/post.dart';
+import 'package:pocketfi/src/features/timeline/posts/presentation/post_card_view.dart';
 import 'package:pocketfi/src/features/timeline/transactions/domain/transaction.dart';
-import 'package:pocketfi/src/features/timeline/transactions/presentation/post_card_view.dart';
 
 class PostsListView extends StatelessWidget {
   final Iterable<Post> posts;

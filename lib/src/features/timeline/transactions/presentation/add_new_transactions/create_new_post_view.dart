@@ -9,9 +9,9 @@ import 'package:pocketfi/src/constants/strings.dart';
 import 'package:pocketfi/src/features/authentication/application/user_id_provider.dart';
 import 'package:pocketfi/src/features/timeline/posts/post_settings/application/post_setting_provider.dart';
 import 'package:pocketfi/src/features/timeline/posts/post_settings/domain/post_setting.dart';
-import 'package:pocketfi/src/features/timeline/transactions/image_upload/application/image_uploader_provider.dart';
-import 'package:pocketfi/src/features/timeline/transactions/image_upload/domain/file_type.dart';
-import 'package:pocketfi/src/features/timeline/transactions/image_upload/domain/thumbnail_request.dart';
+import 'package:pocketfi/src/features/shared/image_upload/application/image_uploader_provider.dart';
+import 'package:pocketfi/src/features/shared/image_upload/domain/file_type.dart';
+import 'package:pocketfi/src/features/shared/image_upload/domain/thumbnail_request.dart';
 
 // !! TO BE REMOVED
 class CreateNewPostView extends StatefulHookConsumerWidget {

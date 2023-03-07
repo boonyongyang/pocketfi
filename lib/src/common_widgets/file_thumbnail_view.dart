@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/common_widgets/animations/loading_animation_view.dart';
 import 'package:pocketfi/src/common_widgets/animations/small_error_animation_view.dart';
-import 'package:pocketfi/src/features/timeline/transactions/image_upload/application/thumbnail_provider.dart';
-import 'package:pocketfi/src/features/timeline/transactions/image_upload/domain/thumbnail_request.dart';
+import 'package:pocketfi/src/features/shared/image_upload/application/thumbnail_provider.dart';
+import 'package:pocketfi/src/features/shared/image_upload/domain/thumbnail_request.dart';
 
 // used to display a thumbnail for a video or image
 class FileThumbnailView extends ConsumerWidget {

@@ -1,11 +1,9 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:io';
 
 import 'package:auto_size_text_field/auto_size_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-
 import 'package:pocketfi/src/common_widgets/buttons/full_width_button_with_text.dart';
 import 'package:pocketfi/src/common_widgets/file_thumbnail_view.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
@@ -20,42 +18,42 @@ import 'package:pocketfi/src/features/category/domain/category.dart';
 import 'package:pocketfi/src/features/category/presentation/category_page.dart';
 import 'package:pocketfi/src/features/timeline/transactions/application/transaction_providers.dart';
 import 'package:pocketfi/src/features/timeline/transactions/data/transaction_notifiers.dart';
-import 'package:pocketfi/src/features/timeline/transactions/date_picker/application/selected_date_notifier.dart';
 import 'package:pocketfi/src/features/timeline/transactions/date_picker/presentation/transaction_date_picker.dart';
 import 'package:pocketfi/src/features/timeline/transactions/domain/tag.dart';
-import 'package:pocketfi/src/features/timeline/transactions/domain/transaction.dart';
 import 'package:pocketfi/src/features/shared/image_upload/data/image_file_notifier.dart';
 import 'package:pocketfi/src/features/shared/image_upload/domain/file_type.dart';
 import 'package:pocketfi/src/features/shared/image_upload/domain/thumbnail_request.dart';
 import 'package:pocketfi/src/features/shared/image_upload/helpers/image_picker_helper.dart';
 import 'package:pocketfi/src/features/timeline/transactions/presentation/add_new_transactions/category_selector_view.dart';
-import 'package:pocketfi/src/features/timeline/transactions/presentation/add_new_transactions/full_screen_image_dialog.dart';
 import 'package:pocketfi/src/features/timeline/transactions/presentation/add_new_transactions/select_transaction_type.dart';
 
-class AddNewTransaction extends StatefulHookConsumerWidget {
-  const AddNewTransaction({
+class UpdateTransaction extends StatefulHookConsumerWidget {
+  const UpdateTransaction({
     super.key,
   });
 
   @override
-  AddNewTransactionState createState() => AddNewTransactionState();
+  UpdateTransactionState createState() => UpdateTransactionState();
 }
 
-class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
-  bool get isSelectedTransactionNull =>
-      (ref.watch(selectedTransactionProvider)?.date == null);
+class UpdateTransactionState extends ConsumerState<UpdateTransaction> {
   String _selectedRecurrence = 'Never';
 
   @override
   Widget build(BuildContext context) {
+    final selectedTransaction = ref.watch(selectedTransactionProvider);
+    // final selectedDate = ref.watch(selectedDateProvider);
+
     final categories = ref.watch(categoriesProvider);
     final selectedCategory = ref.watch(selectedCategoryProvider);
 
     final selectedWallet = ref.watch(selectedWalletProvider);
 
-    final amountController = useTextEditingController();
-    final noteController = useTextEditingController();
-    final isSaveButtonEnabled = useState(false);
+    final amountController =
+        useTextEditingController(text: selectedTransaction?.amount.toString());
+    final noteController =
+        useTextEditingController(text: selectedTransaction?.description);
+    final isSaveButtonEnabled = useState(true);
 
     useEffect(
       () {
@@ -67,6 +65,8 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
       [amountController],
     );
 
+    debugPrint('transaction date: ${selectedTransaction?.date}');
+
     return Scaffold(
       // extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -75,7 +75,7 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
         shadowColor: Colors.transparent,
         centerTitle: true,
         title: const Text(
-          Strings.newTransaction,
+          Strings.editTransaction,
           style: TextStyle(
             color: AppColors.white,
             fontSize: 20,
@@ -87,18 +87,31 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
             color: AppColors.white,
           ),
           onPressed: () {
-            // ref.read(selectedCategoryProvider.notifier).state = null;
-
             Navigator.of(context).pop();
             resetCategoryState(ref);
-            // ref.read(transactionTypeProvider.notifier).setTransactionType(0);
-            ref
-                .read(transactionTypeProvider.notifier)
-                .resetTransactionTypeState();
-
-            // ref.read(transactionDateProvider.notifier).setDate(DateTime.now());
+            // ref.read(selectedDateProvider);
+            ref.read(transactionTypeProvider.notifier).setTransactionType(0);
           },
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(
+              Icons.delete,
+              color: AppColors.red,
+            ),
+            onPressed: () {
+              ref.read(deleteTransactionProvider.notifier).deleteTransaction(
+                    transactionId: selectedTransaction!.transactionId,
+                    userId: selectedTransaction.userId,
+                    walletId: selectedTransaction.walletId,
+                  );
+
+              Navigator.of(context).pop();
+              resetCategoryState(ref);
+              ref.read(transactionTypeProvider.notifier).setTransactionType(0);
+            },
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -108,7 +121,9 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
           ),
           child: Column(
             children: [
-              const SelectTransactionType(noOfTabs: 3),
+              const SelectTransactionType(
+                noOfTabs: 3,
+              ),
               TransactionAmountField(amountController: amountController),
               const SelectCurrency(),
               // * Select Category and Wallet
@@ -119,8 +134,19 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
                   children: [
                     const SizedBox(width: 8.0),
                     SelectCategory(
-                        categories: categories,
-                        selectedCategory: selectedCategory),
+                      categories: categories,
+                      selectedCategory:
+                          // TODO: here needs to have a conditon to check the curr type is same as the tranasction's type, if not the same, then show category based on the curr type
+                          getCategoryWithCategoryName(
+                              // selectedTransaction
+                              // ?.type ==
+                              //         ref.watch(selectedTransactionProvider)?.type
+                              //     ?
+                              ref
+                                  .watch(selectedTransactionProvider)
+                                  ?.categoryName),
+                      // : ref.read(selectedCategoryProvider).name),
+                    ),
                     const Spacer(),
                     const Icon(AppIcons.wallet, color: AppColors.mainColor1),
                     const SizedBox(width: 8.0),
@@ -139,8 +165,8 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
                   // mainAxisSize: MainAxisSize.min,
                   children: [
                     // TransactionDatePicker(
-                    //     // date: DateTime.now(),
-                    //     ),
+                    //   date: selectedTransaction?.date,
+                    // ),
                     const TransactionDatePicker(),
                     WriteOptionalNote(noteController: noteController),
                     selectPhoto(),
@@ -152,7 +178,6 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
                       child: Row(
                         children: [
                           IconButton(
-                            // splashRadius: 24 / 1.2,
                             splashRadius: 22,
                             icon: const Icon(
                               Icons.bookmark_outline,
@@ -173,10 +198,10 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
                               isSaveButtonEnabled: isSaveButtonEnabled,
                               noteController: noteController,
                               amountController: amountController,
-                              categoryName: selectedCategory,
+                              category: selectedCategory,
                               mounted: mounted,
                               selectedWallet: selectedWallet,
-                              // date: ,
+                              date: selectedTransaction?.date,
                             ),
                           ),
                         ],
@@ -239,27 +264,26 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
   }
 
   Widget showIfPhotoIsAdded() {
-    final imageFile = ref.watch(imageFileProvider);
-    return (imageFile != null)
+    final transaction = ref.watch(selectedTransactionProvider);
+
+    return (transaction?.fileUrl != null)
         ? InkWell(
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) =>
-                      FullScreenImageDialog(imageFile: imageFile),
-                  fullscreenDialog: true,
-                ),
-              );
-            },
-            child: Container(
+            // onTap: () {
+            //   Navigator.of(context).push(
+            //     MaterialPageRoute(
+            //       builder: (context) => FullScreenImageDialog(
+            //           imageFile: File(transaction.fileUrl!)),
+            //       fullscreenDialog: true,
+            //     ),
+            //   );
+            // },
+            child: SizedBox(
               width: double.infinity,
               height: 150.0,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: FileImage(imageFile),
-                  fit: BoxFit.cover,
-                ),
-                borderRadius: BorderRadius.circular(8.0),
+              child: Image.network(
+                transaction!.fileUrl!,
+                width: MediaQuery.of(context).size.width * 0.8,
+                fit: BoxFit.cover,
               ),
             ),
           )
@@ -445,8 +469,6 @@ class SelectCategory extends ConsumerWidget {
                                     Navigator.of(context).pop();
                                   },
                                   child: Column(
-                                    // mainAxisAlignment: MainAxisAlignment.center,
-                                    // mainAxisSize: MainAxisSize.min,
                                     children: [
                                       CircleAvatar(
                                         radius: 20,
@@ -497,20 +519,20 @@ class SelectCurrency extends StatelessWidget {
   }
 }
 
-class TransactionAmountField extends ConsumerWidget {
+class TransactionAmountField extends StatelessWidget {
   const TransactionAmountField({
-    Key? key,
+    super.key,
     required this.amountController,
-  }) : super(key: key);
+  });
 
   final TextEditingController amountController;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return SizedBox(
       width: 250,
       child: AutoSizeTextField(
-        autofocus: true,
+        // autofocus: true,
         textAlign: TextAlign.center,
         enableInteractiveSelection: false,
         showCursor: false,
@@ -522,14 +544,10 @@ class TransactionAmountField extends ConsumerWidget {
           hintText: Strings.zeroAmount,
         ),
         controller: amountController,
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 28,
           fontWeight: FontWeight.bold,
-          color: ref.watch(transactionTypeProvider) == TransactionType.expense
-              ? AppColors.red
-              : ref.watch(transactionTypeProvider) == TransactionType.income
-                  ? AppColors.green
-                  : Colors.grey,
+          color: AppColors.red,
         ),
       ),
     );
@@ -577,19 +595,19 @@ class SaveButton extends ConsumerWidget {
     required this.isSaveButtonEnabled,
     required this.noteController,
     required this.amountController,
-    required this.categoryName,
+    required this.category,
     required this.selectedWallet,
     required this.mounted,
-    // required this.date,
+    required this.date,
   });
 
   final ValueNotifier<bool> isSaveButtonEnabled;
   final TextEditingController noteController;
   final TextEditingController amountController;
-  final Category? categoryName;
+  final Category? category;
   final Wallet? selectedWallet;
   final bool mounted;
-  // final DateTime date;
+  final DateTime? date;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -599,13 +617,15 @@ class SaveButton extends ConsumerWidget {
       backgroundColor: AppColors.mainColor2,
       onPressed: isSaveButtonEnabled.value
           ? () async {
+              final transaction = ref.read(selectedTransactionProvider);
               final userId = ref.read(userIdProvider);
-              final type = ref.read(transactionTypeProvider);
-              final date = ref.read(transactionDateProvider);
+              // final type = ref.read(transactionTypeProvider);
+              // final selectedDate = ref.read(selectedDateProvider);
+              // final selectedDate = ref.read(transactionDateProvider);
               final file = ref.read(imageFileProvider);
 
               debugPrint('userId is: $userId');
-              debugPrint('transactionType is: $type');
+              debugPrint('transactionType is: ${transaction?.type}');
 
               if (userId == null) {
                 return;
@@ -619,21 +639,39 @@ class SaveButton extends ConsumerWidget {
 
               debugPrint('walletName is: ${selectedWallet!.walletId}');
 
-              final isCreated = await ref
-                  .read(createNewTransactionProvider.notifier)
-                  .createNewTransaction(
+              // final isCreated = await ref
+              //     .read(createNewTransactionProvider.notifier)
+              //     .createNewTransaction(
+              //       userId: userId,
+              //       amount: double.parse(amount),
+              //       type: type,
+              //       note: note,
+              //       categoryName: categoryName!.name,
+              //       walletId: selectedWallet!.walletId,
+              //       // date: selectedDate,
+              //       date: tranasction!.date,
+              //       file: file,
+              //     );
+
+              final isUpdated = await ref
+                  .read(updateTransactionProvider.notifier)
+                  .updateTransaction(
+                    // transaction: transaction!,
+                    transactionId: transaction!.transactionId,
                     userId: userId,
-                    walletId: selectedWallet!.walletId, // ? sure?
                     amount: double.parse(amount),
-                    type: type,
+                    type: transaction.type,
                     note: note,
-                    categoryName: categoryName!.name,
-                    date: date,
+                    categoryName: transaction.categoryName,
+                    // categoryName: category!.name,
+                    walletId: selectedWallet!.walletId,
+                    date: transaction.date,
                     file: file,
                   );
-              debugPrint('isCreated is: $isCreated');
 
-              if (isCreated && mounted) {
+              debugPrint('isUpdated is: $isUpdated');
+
+              if (isUpdated && mounted) {
                 noteController.clear();
                 amountController.clear();
                 Navigator.of(context).pop();
@@ -647,14 +685,9 @@ class SaveButton extends ConsumerWidget {
                 // clear the imageFileProvider
                 ref.read(imageFileProvider.notifier).setImageFile(null);
 
-                ref
-                    .read(transactionDateProvider.notifier)
-                    .setDate(DateTime.now());
-
-                // show snackbar to notify the user
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
-                    content: Text('Transaction added'),
+                    content: Text('Transaction updated'),
                   ),
                 );
               }

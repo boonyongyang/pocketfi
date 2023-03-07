@@ -5,7 +5,7 @@ import 'package:pocketfi/src/common_widgets/animations/error_animation_view.dart
 import 'package:pocketfi/src/common_widgets/animations/loading_animation_view.dart';
 import 'package:pocketfi/src/constants/strings.dart';
 import 'package:pocketfi/src/features/timeline/posts/application/user_posts_provider.dart';
-import 'package:pocketfi/src/features/timeline/transactions/presentation/posts_list_view.dart';
+import 'package:pocketfi/src/features/timeline/posts/presentation/posts_list_view.dart';
 
 class PostsTab extends ConsumerWidget {
   const PostsTab({Key? key}) : super(key: key);

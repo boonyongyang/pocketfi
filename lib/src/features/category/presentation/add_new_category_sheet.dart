@@ -5,7 +5,7 @@ import 'package:pocketfi/src/common_widgets/buttons/full_width_button_with_text.
 import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/constants/strings.dart';
 import 'package:pocketfi/src/features/category/application/category_components_providers.dart.dart';
-import 'package:pocketfi/src/features/timeline/transactions/application/transaction_provider.dart';
+import 'package:pocketfi/src/features/timeline/transactions/application/transaction_providers.dart';
 import 'package:pocketfi/src/features/timeline/transactions/domain/transaction.dart';
 
 class AddNewCategorySheet extends StatefulHookConsumerWidget {

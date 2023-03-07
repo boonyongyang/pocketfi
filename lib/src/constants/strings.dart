@@ -61,7 +61,7 @@ class Strings {
   static const incomeSymbol = '+';
   static const transferSymbol = '⇄';
   static const selectCategory = 'Select Category';
-  static const addAPhoto = 'Add a photo';
+  static const selectPhoto = 'Select photo';
   static const writeANote = 'Write a note';
   static const newTransaction = 'New Transaction';
   static const editTransaction = 'Edit Transaction';

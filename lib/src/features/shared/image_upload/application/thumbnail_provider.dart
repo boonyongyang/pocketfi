@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:pocketfi/src/features/timeline/transactions/image_upload/domain/file_type.dart';
-import 'package:pocketfi/src/features/timeline/transactions/image_upload/domain/image_with_aspect_ratio.dart';
-import 'package:pocketfi/src/features/timeline/transactions/image_upload/domain/thumbnail_request.dart';
-import 'package:pocketfi/src/features/timeline/transactions/image_upload/exceptions/could_not_build_thumbnail_exception.dart';
-import 'package:pocketfi/src/features/timeline/transactions/image_upload/extensions/get_image_aspect_ratio.dart';
+import 'package:pocketfi/src/features/shared/image_upload/domain/file_type.dart';
+import 'package:pocketfi/src/features/shared/image_upload/domain/image_with_aspect_ratio.dart';
+import 'package:pocketfi/src/features/shared/image_upload/domain/thumbnail_request.dart';
+import 'package:pocketfi/src/features/shared/image_upload/exceptions/could_not_build_thumbnail_exception.dart';
+import 'package:pocketfi/src/features/shared/image_upload/extensions/get_image_aspect_ratio.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 
 // this is a provider that will be used to build a thumbnail for a video or image
