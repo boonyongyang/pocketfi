@@ -194,6 +194,38 @@ class _WalletDetailsViewState extends ConsumerState<WalletDetailsView> {
                       ),
                     ],
                   ),
+                  widget.wallet.collaborators != null
+                      ? Expanded(
+                          child: ListView.builder(
+                            itemCount: widget.wallet.collaborators!.length,
+                            itemBuilder: (context, index) {
+                              return ListTile(
+                                dense: true,
+                                leading: const CircleAvatar(
+                                  backgroundColor: AppColors.mainColor2,
+                                  child: Icon(
+                                    Icons.person_rounded,
+                                    // color: AppColors.mainColor1,
+                                  ),
+                                ),
+                                title: Text(
+                                  widget
+                                      .wallet.collaborators![index].displayName,
+                                  style: const TextStyle(
+                                      // color: AppColors.mainColor1,
+                                      ),
+                                ),
+                                trailing: GestureDetector(
+                                    onTap: () {
+                                      // on press remove the collaborator
+                                    },
+                                    child: Icon(Icons.remove_circle_rounded)),
+                              );
+                            },
+                            shrinkWrap: true,
+                          ),
+                        )
+                      : const SizedBox(),
                   widget.wallet.walletId != walletId
                       ? Expanded(
                           flex: 1,

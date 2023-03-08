@@ -37,9 +37,11 @@ dependencies:
   firebase_auth: ^4.2.5
   firebase_auth_web: ^5.2.4
   firebase_core: ^2.4.1
+  firebase_dynamic_links: ^5.0.16
   firebase_storage: ^11.0.10
   flutter:
     sdk: flutter
+  flutter_email_sender: ^5.2.0
   flutter_hooks: ^0.18.5+1
   font_awesome_flutter: ^10.3.0
   google_mlkit_text_recognition: ^0.5.0
