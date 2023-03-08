@@ -7,6 +7,8 @@ import 'package:pocketfi/src/constants/app_icons.dart';
 import 'package:pocketfi/src/constants/strings.dart';
 import 'package:pocketfi/src/features/authentication/application/user_id_provider.dart';
 import 'package:pocketfi/src/features/authentication/application/user_list_provider.dart';
+import 'package:pocketfi/src/features/authentication/domain/collaborators_info.dart';
+import 'package:pocketfi/src/features/authentication/domain/temp_users.dart';
 import 'package:pocketfi/src/features/budget/wallet/application/create_new_wallet_provider.dart';
 import 'package:pocketfi/src/features/budget/wallet/data/set_user_provider.dart';
 import 'package:pocketfi/src/features/budget/wallet/data/user_wallets_provider.dart';
@@ -38,12 +40,28 @@ class _CreateNewWalletViewState extends ConsumerState<CreateNewWalletView> {
     //     userId: widget.userId,
     //   ),
     // );
-    var selectedUser = ref.watch(selectedUserProvider);
+    // var selectedUser = ref.watch(selectedUserProvider);
     final currentUserId = ref.watch(userIdProvider);
-
-// for checkbox
     final users = ref.watch(usersListProvider).value?.toList();
 
+    final getTempData = ref.watch(getTempDataProvider).value?.toList();
+    List<CollaboratorsInfo> collaboratorList = [];
+    // List<TempUsers> collaboratorList = [];
+    if (getTempData == null) return Container();
+    for (var user in getTempData) {
+      if (user.isChecked == true) {
+        // collaboratorList.add(user);
+        collaboratorList.add(CollaboratorsInfo(
+          userId: user.userId,
+          displayName: user.displayName,
+          email: user.email,
+        ));
+      }
+    }
+    // for (int i = 0; i < collaboratorList.length; i++) {
+    //   debugPrint('collaboratorList: ${collaboratorList}');
+    // }
+    debugPrint('collaboratorList: $collaboratorList');
     useEffect(
       () {
         void listener() {
@@ -67,6 +85,16 @@ class _CreateNewWalletViewState extends ConsumerState<CreateNewWalletView> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(Strings.createNewWallet),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            ref
+                .watch(tempDataProvider.notifier)
+                .deleteTempDataInFirebase(currentUserId!);
+
+            Navigator.pop(context);
+          },
+        ),
       ),
       body: Flex(
         direction: Axis.vertical,
@@ -176,9 +204,7 @@ class _CreateNewWalletViewState extends ConsumerState<CreateNewWalletView> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    ref
-                        .watch(setBoolValueProvider.notifier)
-                        .addTempDataToFirebase(
+                    ref.watch(tempDataProvider.notifier).addTempDataToFirebase(
                           users,
                           currentUserId!,
                         );
@@ -227,17 +253,6 @@ class _CreateNewWalletViewState extends ConsumerState<CreateNewWalletView> {
                     ],
                   ),
                 ),
-                // if (selectedUser != null)
-                //   Padding(
-                //     padding: const EdgeInsets.all(8.0),
-                //     child: Text(
-                //       selectedUser.displayName,
-                //       style: const TextStyle(
-                //         color: AppColors.mainColor1,
-                //         fontSize: 16,
-                //       ),
-                //     ),
-                //   ),
                 Expanded(
                   flex: 1,
                   child: Align(
@@ -246,73 +261,13 @@ class _CreateNewWalletViewState extends ConsumerState<CreateNewWalletView> {
                         text: Strings.createNewWallet,
                         onPressed: isCreateButtonEnabled.value
                             ? () async {
-                                // if (await _checkWalletNameExists(
-                                //     walletNameController.text)) {
-                                //   AlreadyExistDialog(
-                                //     itemName: walletNameController.text,
-                                //   ).present(context);
-                                // } else {
                                 _createNewWalletController(
                                   walletNameController,
-                                  selectedUser,
-                                  // initialBalanceController,
+                                  collaboratorList,
                                   ref,
                                 );
-                                // }
                               }
                             : null),
-                    // Padding(
-                    //   padding: const EdgeInsets.all(16.0),
-                    //   child: SizedBox(
-                    //     width: double.infinity,
-                    //     child: ElevatedButton(
-                    //       style: ElevatedButton.styleFrom(
-                    //         fixedSize: const Size(80, 55),
-                    //         backgroundColor: AppColors.mainColor1,
-                    //         foregroundColor: AppColors.white,
-                    //         shape: const RoundedRectangleBorder(
-                    //           borderRadius: BorderRadius.all(
-                    //             Radius.circular(25),
-                    //           ),
-                    //         ),
-                    //       ),
-                    //       onPressed: isCreateButtonEnabled.value
-                    //           ? () async {
-                    //               _createNewWalletController(
-                    //                 walletNameController,
-                    //                 initialBalanceController,
-                    //                 ref,
-                    //               );
-                    //               // final userId = ref.read(
-                    //               //   userIdProvider,
-                    //               // );
-                    //               // if (userId == null) {
-                    //               //   return;
-                    //               // }
-                    //               // final message = walletNameController.text;
-                    //               // final amount = initialBalanceController.text;
-                    //               // // hook the UI to the imageUploadProvider for uploading the post
-                    //               // // hooking the UI to the provider will cause the UI to rebuild
-                    //               // final isUploaded = await ref
-                    //               //     .read(createNewWalletProvider.notifier)
-                    //               //     .createNewWallet(
-                    //               //       userId: userId,
-                    //               //       walletName: message,
-                    //               //       walletBalance: double.parse(amount),
-                    //               //     );
-                    //               // if (isUploaded && mounted) {
-                    //               //   // if the post is uploaded, then pop the screen
-                    //               //   // Navigator.of(context).pop();
-                    //               //   Beamer.of(context).beamBack();
-                    //               // }
-                    //             }
-                    //           : null,
-                    //       child: const FullWidthButtonWithText(
-                    //         text: Strings.createNewWallet,
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
                   ),
                 ),
               ],
@@ -325,7 +280,7 @@ class _CreateNewWalletViewState extends ConsumerState<CreateNewWalletView> {
 
   Future<void> _createNewWalletController(
     TextEditingController nameController,
-    selectedUsers,
+    List<CollaboratorsInfo>? collaborators,
     // TextEditingController balanceController,
     WidgetRef ref,
   ) async {
@@ -333,6 +288,20 @@ class _CreateNewWalletViewState extends ConsumerState<CreateNewWalletView> {
     if (userId == null) {
       return;
     }
+    List<CollaboratorsInfo> collaboratorsInfo = [];
+    collaborators?.forEach((element) {
+      collaboratorsInfo.add(
+        CollaboratorsInfo(
+          userId: element.userId,
+          displayName: element.displayName,
+          email: element.email,
+        ),
+      );
+    });
+    debugPrint('collaborators in create f: $collaborators');
+    debugPrint('collaboratorsInfo in create f: $collaboratorsInfo');
+
+    debugPrint('userId: $userId');
     // if (balanceController.text.isEmpty) {
     //   balanceController.text = '0.00';
     // }
@@ -340,34 +309,36 @@ class _CreateNewWalletViewState extends ConsumerState<CreateNewWalletView> {
         await ref.read(createNewWalletProvider.notifier).createNewWallet(
               userId: userId,
               walletName: nameController.text,
-              users: selectedUsers,
+              users: collaboratorsInfo,
               // walletBalance: double.parse(balanceController.text),
             );
+    debugPrint('isCreated: $isCreated');
     if (isCreated && mounted) {
       nameController.clear();
       // balanceController.clear();
       // Navigator.of(context).pop();
       // Beamer.of(context).beamBack();
       Navigator.of(context).maybePop();
+      ref.watch(tempDataProvider.notifier).deleteTempDataInFirebase(userId);
     }
   }
 
-  Future<bool> _checkWalletNameExists(
-    String nameController,
-  ) async {
-    debugPrint(nameController);
-    debugPrint('getWallet: ${_getWallets()}');
-    for (var wallet in _getWallets()) {
-      debugPrint('everywallet: ${wallet.walletName}');
-      if (nameController == wallet.walletName) {
-        return true;
-      }
-    }
-    return false;
-  }
+  // Future<bool> _checkWalletNameExists(
+  //   String nameController,
+  // ) async {
+  //   debugPrint(nameController);
+  //   debugPrint('getWallet: ${_getWallets()}');
+  //   for (var wallet in _getWallets()) {
+  //     debugPrint('everywallet: ${wallet.walletName}');
+  //     if (nameController == wallet.walletName) {
+  //       return true;
+  //     }
+  //   }
+  //   return false;
+  // }
 
-  Iterable<Wallet> _getWallets() {
-    final wallets = ref.read(userWalletsProvider);
-    return wallets.maybeWhen(orElse: () => [], data: (wallets) => wallets);
-  }
+//   Iterable<Wallet> _getWallets() {
+//     final wallets = ref.read(userWalletsProvider);
+//     return wallets.maybeWhen(orElse: () => [], data: (wallets) => wallets);
+//   }
 }
