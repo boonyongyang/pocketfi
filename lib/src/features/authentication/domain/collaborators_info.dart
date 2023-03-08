@@ -1,4 +1,8 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
+
 import 'package:pocketfi/src/constants/firebase_field_name.dart';
 import 'package:pocketfi/src/constants/typedefs.dart';
 
@@ -15,10 +19,25 @@ class CollaboratorsInfo {
   });
 
   Map<String, dynamic> toMap() {
-    return {
-      FirebaseFieldName.userId: userId,
-      FirebaseFieldName.displayName: displayName,
-      FirebaseFieldName.email: email,
+    return <String, dynamic>{
+      'userId': userId,
+      'displayName': displayName,
+      'email': email,
     };
   }
+
+  factory CollaboratorsInfo.fromMap(Map<String, dynamic> map) {
+    return CollaboratorsInfo(
+      userId: map[FirebaseFieldName.userId] as String,
+      displayName: map[FirebaseFieldName.displayName] as String,
+      email: map[FirebaseFieldName.email] != null
+          ? map[FirebaseFieldName.email] as String
+          : null,
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory CollaboratorsInfo.fromJson(String source) =>
+      CollaboratorsInfo.fromMap(json.decode(source) as Map<String, dynamic>);
 }
