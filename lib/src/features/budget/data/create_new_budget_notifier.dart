@@ -13,20 +13,20 @@ class CreateNewBudgetNotifier extends StateNotifier<IsLoading> {
   Future<bool> createNewBudget({
     required String budgetName,
     required double budgetAmount,
-    // required String walletId,
+    required String walletId,
     required UserId userId,
   }) async {
     isLoading = true;
 
     final budgetId = documentIdFromCurrentDate();
     //! still need to fix to get the correct walletid
-    final walletId = await FirebaseFirestore.instance
-        .collection(FirebaseCollectionName.users)
-        .doc(userId)
-        .collection(FirebaseCollectionName.wallets)
-        .limit(1)
-        .get()
-        .then((value) => value.docs.first.id);
+    // final walletId = await FirebaseFirestore.instance
+    //     .collection(FirebaseCollectionName.users)
+    //     .doc(userId)
+    //     .collection(FirebaseCollectionName.wallets)
+    //     .limit(1)
+    //     .get()
+    //     .then((value) => value.docs.first.id);
 
     final payload = BudgetPayload(
       budgetId: budgetId,
@@ -34,6 +34,7 @@ class CreateNewBudgetNotifier extends StateNotifier<IsLoading> {
       budgetAmount: budgetAmount,
       usedAmount: 0.00,
       walletId: walletId,
+      userId: userId,
     );
 
     try {

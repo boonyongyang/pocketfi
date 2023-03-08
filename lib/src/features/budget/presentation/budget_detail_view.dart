@@ -180,14 +180,14 @@ class _BudgetDetailsViewState extends ConsumerState<BudgetDetailsView> {
                           // top: 16.0,
                           bottom: 8.0,
                         ),
-                        child: SelectWalletDropdownList()),
+                        child: SelectWalletForBudgetDropdownList()),
                   ],
                 ),
               ],
             ),
           ),
           FullWidthButtonWithText(
-            text: Strings.createNewBudget,
+            text: 'Save Changes',
             onPressed: () {},
             // isCreateButtonEnabled.value
             //     ? () async {

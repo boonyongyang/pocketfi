@@ -3,8 +3,8 @@ import 'package:pocketfi/src/features/category/domain/category.dart';
 import 'package:pocketfi/src/features/category/domain/default_categories.dart';
 import 'package:pocketfi/src/features/timeline/transactions/domain/transaction.dart';
 
-class CategoryNotifier extends StateNotifier<List<Category>> {
-  CategoryNotifier() : super([]);
+class CategoryListNotifier extends StateNotifier<List<Category>> {
+  CategoryListNotifier() : super([]);
 
   void updateCategoriesList(TransactionType type) {
     state = type == TransactionType.expense

@@ -11,6 +11,7 @@ import 'package:pocketfi/src/common_widgets/file_thumbnail_view.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/constants/app_icons.dart';
 import 'package:pocketfi/src/constants/strings.dart';
+import 'package:pocketfi/src/constants/typedefs.dart';
 import 'package:pocketfi/src/features/authentication/application/user_id_provider.dart';
 import 'package:pocketfi/src/features/budget/wallet/data/user_wallets_provider.dart';
 import 'package:pocketfi/src/features/budget/wallet/domain/wallet.dart';
@@ -18,6 +19,7 @@ import 'package:pocketfi/src/features/budget/wallet/presentation/select_wallet_d
 import 'package:pocketfi/src/features/category/application/category_providers.dart';
 import 'package:pocketfi/src/features/category/domain/category.dart';
 import 'package:pocketfi/src/features/category/presentation/category_page.dart';
+import 'package:pocketfi/src/features/timeline/bookmarks/application/bookmark_services.dart';
 import 'package:pocketfi/src/features/timeline/transactions/application/transaction_providers.dart';
 import 'package:pocketfi/src/features/timeline/transactions/data/transaction_notifiers.dart';
 import 'package:pocketfi/src/features/timeline/transactions/date_picker/application/selected_date_notifier.dart';
@@ -52,6 +54,7 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
     final selectedCategory = ref.watch(selectedCategoryProvider);
 
     final selectedWallet = ref.watch(selectedWalletProvider);
+    final isBookmark = ref.watch(isBookmarkProvider);
 
     final amountController = useTextEditingController();
     final noteController = useTextEditingController();
@@ -152,17 +155,22 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
                       child: Row(
                         children: [
                           IconButton(
-                            // splashRadius: 24 / 1.2,
                             splashRadius: 22,
-                            icon: const Icon(
-                              Icons.bookmark_outline,
-                              color: AppColors.mainColor1,
+                            icon: Icon(
+                              isBookmark
+                                  ? Icons.bookmark
+                                  : Icons.bookmark_outline,
+                              color: AppColors.mainColor2,
                               size: 32,
                             ),
                             onPressed: () {
+                              ref
+                                  .read(isBookmarkProvider.notifier)
+                                  .toggleBookmark();
+
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
-                                  content: Text('Bookmark'),
+                                  content: Text('Bookmark added!'),
                                 ),
                               );
                             },
@@ -176,6 +184,7 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
                               categoryName: selectedCategory,
                               mounted: mounted,
                               selectedWallet: selectedWallet,
+                              isBookmark: isBookmark,
                               // date: ,
                             ),
                           ),
@@ -580,6 +589,7 @@ class SaveButton extends ConsumerWidget {
     required this.categoryName,
     required this.selectedWallet,
     required this.mounted,
+    this.isBookmark = false,
     // required this.date,
   });
 
@@ -589,6 +599,7 @@ class SaveButton extends ConsumerWidget {
   final Category? categoryName;
   final Wallet? selectedWallet;
   final bool mounted;
+  final bool isBookmark;
   // final DateTime date;
 
   @override
@@ -630,10 +641,35 @@ class SaveButton extends ConsumerWidget {
                     categoryName: categoryName!.name,
                     date: date,
                     file: file,
+                    isBookmark: isBookmark,
                   );
               debugPrint('isCreated is: $isCreated');
 
               if (isCreated && mounted) {
+                // if (isBookmark) {
+                //   ref.read(bookmarkTransactionListProvider.notifier).addBookmark(
+                //         Transaction(
+                //           transactionId: ,
+                //           userId: userId,
+                //           walletId: selectedWallet!.walletId,
+                //           amount: double.parse(amount),
+                //           type: type,
+                //           description: note,
+                //           categoryName: categoryName!.name,
+                //           date: date,
+                //           file: file,
+                //         ),
+                //         // userId: userId,
+                //         // walletId: selectedWallet!.walletId,
+                //         // amount: double.parse(amount),
+                //         // type: type,
+                //         // note: note,
+                //         // categoryName: categoryName!.name,
+                //         // date: date,
+                //         // file: file,
+                //       );
+                // }
+
                 noteController.clear();
                 amountController.clear();
                 Navigator.of(context).pop();
@@ -650,6 +686,8 @@ class SaveButton extends ConsumerWidget {
                 ref
                     .read(transactionDateProvider.notifier)
                     .setDate(DateTime.now());
+
+                ref.read(isBookmarkProvider.notifier).resetBookmarkState();
 
                 // show snackbar to notify the user
                 ScaffoldMessenger.of(context).showSnackBar(

@@ -24,6 +24,7 @@ class _CreateNewBudgetViewState extends ConsumerState<CreateNewBudgetView> {
   Widget build(BuildContext context) {
     final budgetNameController = useTextEditingController();
     final amountController = useTextEditingController();
+    final selectedWallet = ref.watch(selectedWalletForBudgetProvider);
 
     final isCreateButtonEnabled = useState(false);
 
@@ -172,7 +173,7 @@ class _CreateNewBudgetViewState extends ConsumerState<CreateNewBudgetView> {
                           // top: 16.0,
                           bottom: 8.0,
                         ),
-                        child: SelectWalletDropdownList()),
+                        child: SelectWalletForBudgetDropdownList()),
                   ],
                 ),
               ],
@@ -182,9 +183,10 @@ class _CreateNewBudgetViewState extends ConsumerState<CreateNewBudgetView> {
               text: Strings.createNewBudget,
               onPressed: isCreateButtonEnabled.value
                   ? () async {
-                      _createNewWalletController(
+                      _createNewBudgetController(
                         budgetNameController,
                         amountController,
+                        selectedWallet!,
                         ref,
                       );
                     }
@@ -194,9 +196,10 @@ class _CreateNewBudgetViewState extends ConsumerState<CreateNewBudgetView> {
     );
   }
 
-  Future<void> _createNewWalletController(
+  Future<void> _createNewBudgetController(
     TextEditingController nameController,
     TextEditingController balanceController,
+    Wallet selectedWallet,
     WidgetRef ref,
   ) async {
     final userId = ref.read(userIdProvider);
@@ -211,7 +214,7 @@ class _CreateNewBudgetViewState extends ConsumerState<CreateNewBudgetView> {
               userId: userId,
               budgetName: nameController.text,
               budgetAmount: double.parse(balanceController.text),
-              // walletId: '2023-02-27T21:08:26.256268',
+              walletId: selectedWallet.walletId,
             );
     if (isCreated && mounted) {
       nameController.clear();

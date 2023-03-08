@@ -25,6 +25,50 @@ final selectedWalletProvider = StateProvider.autoDispose<Wallet?>(
   },
 );
 
+final selectedWalletForBudgetProvider = StateProvider.autoDispose<Wallet?>(
+  (ref) {
+    final wallets = ref.watch(userWalletsProvider).value;
+    if (wallets == null) {
+      debugPrint('wallets is null');
+      return null;
+    }
+    debugPrint('wallets is ${wallets.last.walletName}');
+
+    // get the latest transaction to see which wallet was used, then return that wallet
+    // check the transaction createdAt date to compare which is the newest transaction and belongs to which wallet collection,
+    // then return that wallet
+    // FIXME this is not the best way to do it, it should be done in the backend
+
+    return wallets.first;
+  },
+);
+
+// final selectedUserProvider =
+//     StateProvider.autoDispose<Map<UserInfoModel, bool>>(
+//   (ref) {
+//     final users = ref.watch(usersListProvider).value;
+//     final userList = ref.watch(usersListProvider).value;
+//     Map<dynamic, bool> userMap = {};
+//     userList?.forEach((element) {
+//       userMap[element] = false;
+//     });
+//     // if (users == null) {
+//     //   debugPrint('users is null');
+//     //   return null;
+//     // }
+
+//     // debugPrint('wallets is ${users.last.displayName}');
+//     debugPrint(userMap.toString());
+
+//     // get the latest transaction to see which wallet was used, then return that wallet
+//     // check the transaction createdAt date to compare which is the newest transaction and belongs to which wallet collection,
+//     // then return that wallet
+//     // FIXME this is not the best way to do it, it should be done in the backend
+
+//     return userMap.map((key, value) => MapEntry(key as UserInfoModel, !value));
+//   },
+// );
+
 final userWalletsProvider = StreamProvider.autoDispose<Iterable<Wallet>>((ref) {
   final userId = ref.watch(userIdProvider);
   final controller = StreamController<Iterable<Wallet>>();

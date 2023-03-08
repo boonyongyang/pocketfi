@@ -45,8 +45,8 @@ class BottomNavBarBeamer extends StatelessWidget {
 }
 
 /// Location defining the pages for the first tab
-class TabA extends BeamLocation<BeamState> {
-  TabA(super.routeInformation);
+class TimelineLocation extends BeamLocation<BeamState> {
+  TimelineLocation(super.routeInformation);
   @override
   List<String> get pathPatterns => ['/*'];
 
@@ -146,8 +146,8 @@ class FinanceLocation extends BeamLocation<BeamState> {
 }
 
 /// Location defining the pages for the fourth tab
-class TabD extends BeamLocation<BeamState> {
-  TabD(super.routeInformation);
+class AccountLocation extends BeamLocation<BeamState> {
+  AccountLocation(super.routeInformation);
   @override
   List<String> get pathPatterns => ['/*'];
 
@@ -188,7 +188,7 @@ class _ScaffoldWithBottomNavBarState extends State<ScaffoldWithBottomNavBar> {
       initialPath: '/timeline',
       locationBuilder: (routeInformation, _) {
         if (routeInformation.location!.contains('/timeline')) {
-          return TabA(routeInformation);
+          return TimelineLocation(routeInformation);
         }
         return NotFound(path: routeInformation.location!);
       },
@@ -215,7 +215,7 @@ class _ScaffoldWithBottomNavBarState extends State<ScaffoldWithBottomNavBar> {
       initialPath: '/account',
       locationBuilder: (routeInformation, _) {
         if (routeInformation.location!.contains('/account')) {
-          return TabD(routeInformation);
+          return AccountLocation(routeInformation);
         }
         return NotFound(path: routeInformation.location!);
       },

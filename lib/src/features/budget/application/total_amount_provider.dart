@@ -12,12 +12,19 @@ final totalAmountProvider = StreamProvider.autoDispose<double>((ref) {
   const walletId = '2023-03-01T12:02:23.282294';
   final controller = StreamController<double>();
 
-  final sub = FirebaseFirestore.instance
+  final refs = FirebaseFirestore.instance
       .collection(FirebaseCollectionName.users)
-      .doc(userId)
-      .collection(FirebaseCollectionName.wallets)
-      .doc(walletId)
-      .collection(FirebaseCollectionName.budgets)
+      .doc(userId);
+  // .where(FirebaseFieldName.userId, isEqualTo: userId)
+  // .snapshots();
+  final sub = FirebaseFirestore.instance
+      // .collection(FirebaseCollectionName.users)
+      // .doc(userId)
+      // .collection(FirebaseCollectionName.wallets)
+      // .doc(walletId)
+      // .collection(FirebaseCollectionName.budgets)
+      .collectionGroup(FirebaseCollectionName.budgets)
+      .where(FirebaseFieldName.userId, isEqualTo: userId)
       .snapshots()
       .listen((snapshot) {
     final document = snapshot.docs;

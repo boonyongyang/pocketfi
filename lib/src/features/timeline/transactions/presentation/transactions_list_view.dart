@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:pocketfi/src/features/timeline/bookmarks/application/bookmark_services.dart';
 import 'package:pocketfi/src/features/timeline/transactions/data/transaction_notifiers.dart';
 import 'package:pocketfi/src/features/timeline/transactions/domain/transaction.dart';
 import 'package:pocketfi/src/features/timeline/transactions/presentation/transaction_card.dart';
@@ -27,11 +28,6 @@ class TransactionListView extends ConsumerWidget {
       child: ListView.builder(
         // shrinkWrap: true,
         padding: const EdgeInsets.all(8.0),
-        // gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        //   crossAxisCount: 1, // number of columns
-        //   mainAxisSpacing: 8.0, // vertical spacing
-        //   crossAxisSpacing: 8.0, // horizontal spacing
-        // ),
         itemCount: transactions.length,
         itemBuilder: (context, index) {
           final transaction =
@@ -43,7 +39,6 @@ class TransactionListView extends ConsumerWidget {
               TransactonDateRow(date: transaction.date),
               TransactionCard(
                 transaction: transaction,
-                transactionType: transaction.type,
                 onTapped: () {
                   // debugPrint('selectedDate is ${transaction.date}');
                   // debugPrint('now  is ${DateTime.now()}');
@@ -51,6 +46,10 @@ class TransactionListView extends ConsumerWidget {
                   ref
                       .read(selectedTransactionProvider.notifier)
                       .setSelectedTransaction(transaction, ref);
+
+                  debugPrint(
+                      'bool is ${ref.read(selectedTransactionProvider)?.isBookmark}');
+                  debugPrint('isBool is ${ref.read(isBookmarkProvider)}');
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -105,32 +104,38 @@ class TransactonDateRowState extends State<TransactonDateRow> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.grey[400],
-      padding: const EdgeInsets.symmetric(
-        vertical: 5.0,
-        horizontal: 20.0,
+    return ClipRRect(
+      borderRadius: const BorderRadius.only(
+        topLeft: Radius.circular(10.0),
+        topRight: Radius.circular(10.0),
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            _selectedDateText,
-            style: const TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.bold,
-              // color: Colors.white,
+      child: Container(
+        color: Colors.grey[400],
+        padding: const EdgeInsets.symmetric(
+          vertical: 5.0,
+          horizontal: 20.0,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              _selectedDateText,
+              style: const TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+                // color: Colors.white,
+              ),
             ),
-          ),
-          Text(
-            '-MYR 50.20',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: Colors.grey[800],
+            Text(
+              '-MYR 50.20',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Colors.grey[800],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
