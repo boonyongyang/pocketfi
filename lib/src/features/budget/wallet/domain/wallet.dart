@@ -7,7 +7,7 @@ import 'package:flutter/foundation.dart' show immutable;
 import 'package:pocketfi/src/constants/firebase_field_name.dart';
 import 'package:pocketfi/src/constants/typedefs.dart';
 import 'package:pocketfi/src/features/authentication/domain/collaborators_info.dart';
-// import 'package:pocketfi/src/features/authentication/domain/user_info_model.dart';
+import 'package:pocketfi/src/features/authentication/domain/user_info_model.dart';
 
 @immutable
 class Wallet {
@@ -17,7 +17,7 @@ class Wallet {
   final DateTime createdAt;
   // TODO maybe a list idk
   final UserId userId;
-  final List<dynamic>? collaborators;
+  final List<CollaboratorsInfo>? collaborators;
   // TODO add final Category category;
 
   Wallet(Map<String, dynamic> json)
@@ -26,7 +26,14 @@ class Wallet {
         // walletBalance = json[FirebaseFieldName.walletBalance],
         createdAt = (json[FirebaseFieldName.createdAt] as Timestamp).toDate(),
         userId = json[FirebaseFieldName.userId] as UserId,
-        collaborators = json[FirebaseFieldName.collaborators];
+        collaborators = json[FirebaseFieldName.collaborators] != null
+            ? List<CollaboratorsInfo>.from(
+                (json[FirebaseFieldName.collaborators] as List<dynamic>)
+                    .map<CollaboratorsInfo?>(
+                  (x) => CollaboratorsInfo.fromMap(x as Map<String, dynamic>),
+                ),
+              )
+            : null;
   // Wallet(Map<String, dynamic> json, {required this.walletId})
   //     : walletName = json[FirebaseFieldName.walletName],
   //       walletBalance = json[FirebaseFieldName.walletBalance],
