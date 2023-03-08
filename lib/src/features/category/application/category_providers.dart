@@ -1,6 +1,6 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/features/category/domain/default_categories.dart';
-import 'package:pocketfi/src/features/category/data/category_state_notifier.dart';
+import 'package:pocketfi/src/features/category/data/category_list_notifier.dart';
 import 'package:pocketfi/src/features/category/domain/category.dart';
 import 'package:pocketfi/src/features/timeline/transactions/application/transaction_providers.dart';
 import 'package:pocketfi/src/features/timeline/transactions/domain/transaction.dart';
@@ -37,8 +37,8 @@ Category getCategoryWithCategoryName(String? categoryName) {
 
 // * provide the appropriate category list based on the transaction type
 final categoriesProvider =
-    StateNotifierProvider<CategoryNotifier, List<Category>>(
-  (_) => CategoryNotifier(),
+    StateNotifierProvider<CategoryListNotifier, List<Category>>(
+  (_) => CategoryListNotifier(),
 );
 
 // * provide a list of expense categories

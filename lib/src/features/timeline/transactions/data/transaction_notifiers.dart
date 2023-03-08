@@ -10,6 +10,7 @@ import 'package:pocketfi/src/constants/firebase_names.dart';
 import 'package:pocketfi/src/constants/typedefs.dart';
 import 'package:pocketfi/src/features/category/application/category_providers.dart';
 import 'package:pocketfi/src/features/category/domain/category.dart';
+import 'package:pocketfi/src/features/timeline/bookmarks/application/bookmark_services.dart';
 import 'package:pocketfi/src/features/timeline/transactions/application/transaction_providers.dart';
 import 'package:pocketfi/src/features/timeline/transactions/date_picker/application/selected_date_notifier.dart';
 import 'package:pocketfi/src/features/timeline/transactions/domain/transaction.dart';
@@ -76,6 +77,14 @@ class SelectedTransactionNotifier extends StateNotifier<Transaction?> {
     }
   }
 
+  void toggleBookmark(WidgetRef ref) {
+    Transaction? transaction = ref.watch(selectedTransactionProvider);
+    if (transaction != null) {
+      transaction = transaction.copyWith(isBookmark: !transaction.isBookmark);
+      state = transaction;
+    }
+  }
+
   void clearSelectedTransaction() {
     state = null;
   }
@@ -92,6 +101,8 @@ void setNewTransactionState(WidgetRef ref) {
   ref.read(transactionTypeProvider.notifier).resetTransactionTypeState();
   //  this is to reset photo state
   // ref.read(imageFileProvider.notifier).resetTransactionPhotoState();
+  // this is to reset bookmark icon
+  ref.read(isBookmarkProvider.notifier).resetBookmarkState();
 }
 
 class CreateNewTransactionNotifier extends StateNotifier<IsLoading> {
@@ -108,6 +119,7 @@ class CreateNewTransactionNotifier extends StateNotifier<IsLoading> {
     required String walletId,
     required File? file,
     String? note,
+    bool isBookmark = false,
   }) async {
     isLoading = true;
 
@@ -144,6 +156,7 @@ class CreateNewTransactionNotifier extends StateNotifier<IsLoading> {
           type: type,
           categoryName: categoryName,
           description: note,
+          isBookmark: isBookmark,
         ).toJson();
       } else {
         late Uint8List thumbnailUint8List;
@@ -219,7 +232,7 @@ class CreateNewTransactionNotifier extends StateNotifier<IsLoading> {
           walletId: walletId,
           amount: amount,
           date: date,
-          // isBookmark: false,
+          isBookmark: isBookmark,
           // createdAt: DateTime.now(),
           type: type,
           categoryName: categoryName,
@@ -270,6 +283,7 @@ class UpdateTransactionNotifier extends StateNotifier<IsLoading> {
     required String walletId,
     required File? file,
     String? note,
+    bool isBookmark = false,
   }) async {
     try {
       isLoading = true;
@@ -308,6 +322,7 @@ class UpdateTransactionNotifier extends StateNotifier<IsLoading> {
               TransactionKey.type: type.name,
               TransactionKey.categoryName: categoryName,
               TransactionKey.description: note,
+              TransactionKey.isBookmark: isBookmark,
             });
 
         await Future.delayed(const Duration(milliseconds: 100));

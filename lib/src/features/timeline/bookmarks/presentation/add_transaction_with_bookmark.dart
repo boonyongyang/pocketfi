@@ -16,7 +16,6 @@ import 'package:pocketfi/src/features/budget/wallet/presentation/select_wallet_d
 import 'package:pocketfi/src/features/category/application/category_providers.dart';
 import 'package:pocketfi/src/features/category/domain/category.dart';
 import 'package:pocketfi/src/features/category/presentation/category_page.dart';
-import 'package:pocketfi/src/features/timeline/bookmarks/application/bookmark_services.dart';
 import 'package:pocketfi/src/features/timeline/transactions/application/transaction_providers.dart';
 import 'package:pocketfi/src/features/timeline/transactions/data/transaction_notifiers.dart';
 import 'package:pocketfi/src/features/timeline/transactions/date_picker/presentation/transaction_date_picker.dart';
@@ -28,16 +27,18 @@ import 'package:pocketfi/src/features/shared/image_upload/helpers/image_picker_h
 import 'package:pocketfi/src/features/timeline/transactions/presentation/add_new_transactions/category_selector_view.dart';
 import 'package:pocketfi/src/features/timeline/transactions/presentation/add_new_transactions/select_transaction_type.dart';
 
-class UpdateTransaction extends StatefulHookConsumerWidget {
-  const UpdateTransaction({
+class AddTransactionWithBookmark extends StatefulHookConsumerWidget {
+  const AddTransactionWithBookmark({
     super.key,
   });
 
   @override
-  UpdateTransactionState createState() => UpdateTransactionState();
+  AddTransactionWithBookmarkState createState() =>
+      AddTransactionWithBookmarkState();
 }
 
-class UpdateTransactionState extends ConsumerState<UpdateTransaction> {
+class AddTransactionWithBookmarkState
+    extends ConsumerState<AddTransactionWithBookmark> {
   String _selectedRecurrence = 'Never';
 
   @override
@@ -49,10 +50,6 @@ class UpdateTransactionState extends ConsumerState<UpdateTransaction> {
     final selectedCategory = ref.watch(selectedCategoryProvider);
 
     final selectedWallet = ref.watch(selectedWalletProvider);
-    // final isBookmark = ref.watch(isBookmarkProvider);
-    // final isBookmark = selectedTransaction?.isBookmark ?? false;
-    final isBookmark = ref.watch(selectedTransactionProvider)?.isBookmark;
-    debugPrint('aBook is ${isBookmark}');
 
     final amountController =
         useTextEditingController(text: selectedTransaction?.amount.toString());
@@ -98,25 +95,25 @@ class UpdateTransactionState extends ConsumerState<UpdateTransaction> {
             ref.read(transactionTypeProvider.notifier).setTransactionType(0);
           },
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(
-              Icons.delete,
-              color: AppColors.red,
-            ),
-            onPressed: () {
-              ref.read(deleteTransactionProvider.notifier).deleteTransaction(
-                    transactionId: selectedTransaction!.transactionId,
-                    userId: selectedTransaction.userId,
-                    walletId: selectedTransaction.walletId,
-                  );
+        // actions: [
+        //   IconButton(
+        //     icon: const Icon(
+        //       Icons.delete,
+        //       color: AppColors.red,
+        //     ),
+        //     onPressed: () {
+        //       ref.read(deleteTransactionProvider.notifier).deleteTransaction(
+        //             transactionId: selectedTransaction!.transactionId,
+        //             userId: selectedTransaction.userId,
+        //             walletId: selectedTransaction.walletId,
+        //           );
 
-              Navigator.of(context).pop();
-              resetCategoryState(ref);
-              ref.read(transactionTypeProvider.notifier).setTransactionType(0);
-            },
-          ),
-        ],
+        //       Navigator.of(context).pop();
+        //       resetCategoryState(ref);
+        //       ref.read(transactionTypeProvider.notifier).setTransactionType(0);
+        //     },
+        //   ),
+        // ],
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -184,35 +181,17 @@ class UpdateTransactionState extends ConsumerState<UpdateTransaction> {
                         children: [
                           IconButton(
                             splashRadius: 22,
-                            icon: Icon(
-                              isBookmark!
-                                  ? Icons.bookmark
-                                  : Icons.bookmark_outline,
-                              color: AppColors.mainColor2,
+                            icon: const Icon(
+                              Icons.bookmark_outline,
+                              color: AppColors.mainColor1,
                               size: 32,
                             ),
                             onPressed: () {
-                              // isBookmark = !isBookmark;
-                              // ref
-                              //     .read(isBookmarkProvider.notifier)
-                              //     .toggleBookmark();
-                              debugPrint('isBook is ${isBookmark}');
-
-                              ref
-                                  .read(selectedTransactionProvider.notifier)
-                                  .toggleBookmark(ref);
-
-                              debugPrint('wasBook is ${isBookmark}');
-                              debugPrint(
-                                  'ref Book is ${ref.read(isBookmarkProvider)}');
-
-                              // ScaffoldMessenger.of(context).hideCurrentSnackBar();
-
-                              // ScaffoldMessenger.of(context).showSnackBar(
-                              //   const SnackBar(
-                              //     content: Text('Bookmark added!'),
-                              //   ),
-                              // );
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Bookmark'),
+                                ),
+                              );
                             },
                           ),
                           SizedBox(
@@ -225,7 +204,6 @@ class UpdateTransactionState extends ConsumerState<UpdateTransaction> {
                               mounted: mounted,
                               selectedWallet: selectedWallet,
                               date: selectedTransaction?.date,
-                              isBookmark: isBookmark,
                             ),
                           ),
                         ],
@@ -623,7 +601,6 @@ class SaveButton extends ConsumerWidget {
     required this.selectedWallet,
     required this.mounted,
     required this.date,
-    this.isBookmark = false,
   });
 
   final ValueNotifier<bool> isSaveButtonEnabled;
@@ -633,7 +610,6 @@ class SaveButton extends ConsumerWidget {
   final Wallet? selectedWallet;
   final bool mounted;
   final DateTime? date;
-  final bool isBookmark;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -643,11 +619,9 @@ class SaveButton extends ConsumerWidget {
       backgroundColor: AppColors.mainColor2,
       onPressed: isSaveButtonEnabled.value
           ? () async {
-              final transaction = ref.read(selectedTransactionProvider);
+              final transaction = ref.read(selectedTransactionProvider)!;
+              // ! problem? need to ensure trarrr
               final userId = ref.read(userIdProvider);
-              // final type = ref.read(transactionTypeProvider);
-              // final selectedDate = ref.read(selectedDateProvider);
-              // final selectedDate = ref.read(transactionDateProvider);
               final file = ref.read(imageFileProvider);
 
               debugPrint('userId is: $userId');
@@ -679,28 +653,25 @@ class SaveButton extends ConsumerWidget {
               //       file: file,
               //     );
 
-              final isUpdated = await ref
-                  .read(updateTransactionProvider.notifier)
-                  .updateTransaction(
-                    // transaction: transaction!,
-                    transactionId: transaction!.transactionId,
+              final isAdded = await ref
+                  .read(createNewTransactionProvider.notifier)
+                  .createNewTransaction(
                     userId: userId,
                     amount: double.parse(amount),
                     type: transaction.type,
                     note: note,
                     categoryName: transaction.categoryName,
-                    // categoryName: category!.name,
                     walletId: selectedWallet!.walletId,
                     date: transaction.date,
                     file: file,
-                    isBookmark: isBookmark,
                   );
 
-              debugPrint('isUpdated is: $isUpdated');
+              debugPrint('isAdded is: $isAdded');
 
-              if (isUpdated && mounted) {
+              if (isAdded && mounted) {
                 noteController.clear();
                 amountController.clear();
+                Navigator.of(context).pop();
                 Navigator.of(context).pop();
 
                 // reset the state of the provider
@@ -714,7 +685,7 @@ class SaveButton extends ConsumerWidget {
 
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
-                    content: Text('Transaction updated'),
+                    content: Text('Transaction added with bookmarks'),
                   ),
                 );
               }

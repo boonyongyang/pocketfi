@@ -5,25 +5,28 @@ import 'package:pocketfi/src/features/timeline/transactions/domain/transaction.d
 
 class TransactionCard extends StatelessWidget {
   final Transaction transaction;
-  final TransactionType transactionType;
   final VoidCallback onTapped;
   const TransactionCard({
     Key? key,
     required this.transaction,
     required this.onTapped,
-    required this.transactionType,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final category = getCategoryWithCategoryName(transaction.categoryName);
+    final transactionType = transaction.type;
 
     return GestureDetector(
       onTap: onTapped,
       child: Padding(
         padding: const EdgeInsets.only(bottom: 12.0),
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(10),
+          // borderRadius: BorderRadius.circular(10.0),
+          borderRadius: const BorderRadius.only(
+            bottomLeft: Radius.circular(10.0),
+            bottomRight: Radius.circular(10.0),
+          ),
           child: Container(
             padding: const EdgeInsets.all(16),
             color: Colors.grey[100],
