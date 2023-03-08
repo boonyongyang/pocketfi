@@ -10,103 +10,69 @@ import 'package:pocketfi/src/features/authentication/domain/collaborators_info.d
 import 'package:pocketfi/src/features/authentication/domain/temp_users.dart';
 import 'package:pocketfi/src/features/authentication/domain/user_info_model.dart';
 
-class SetUserNotifier extends ChangeNotifier {
-  // Map<dynamic, bool> collaboratorsInfoMap = {
-  //   UserInfoModel: false,
-  // };
-
-  // void setCollaboratorsInfoMap(Map<dynamic, bool> collaboratorsInfoMap) {
-  //   this.collaboratorsInfoMap = collaboratorsInfoMap;
-  //   notifyListeners();
-  // }
-
-  // void addCollaboratorsInfoMap(Map<dynamic, bool> collaboratorsInfoMap) {
-  //   this.collaboratorsInfoMap.addAll(collaboratorsInfoMap);
-  //   notifyListeners();
-  // }
-
-  // void removeCollaboratorsInfoMap(Map<dynamic, bool> collaboratorsInfoMap) {
-  //   this.collaboratorsInfoMap.remove(collaboratorsInfoMap);
-  //   notifyListeners();
-  // }
-
-  // void setCollaboratorsInfoMapValue(
-  //     Map<dynamic, bool> collaboratorsInfoMap, bool value) {
-  //   this.collaboratorsInfoMap[collaboratorsInfoMap] = value;
-  //   notifyListeners();
-  // }
-  List<bool> _checkList = [];
-
-  void setInitial(List<bool> initialCheckedList) {
-    _checkList = initialCheckedList;
-  }
-
-  void setCheckList(int index, bool value) {
-    _checkList[index] = value;
-    notifyListeners();
-  }
-
-  List<bool> get checkList => _checkList;
-}
-
-final setUserProvider = ChangeNotifierProvider.autoDispose<SetUserNotifier>(
-  (ref) => SetUserNotifier(),
-);
-
-class SetBoolValue extends StateNotifier<bool> {
-  SetBoolValue(bool state) : super(false);
+class TempDataNotifier extends StateNotifier<bool> {
+  TempDataNotifier(bool state) : super(false);
 
   Future<void> addTempDataToFirebase(
-    List<dynamic>? users,
+    List<UserInfoModel>? users,
     String currentUserId,
   ) async {
     if (users == null) return;
     for (var user in users) {
-      await FirebaseFirestore.instance
-          .collection(FirebaseCollectionName.users)
-          .doc(currentUserId)
-          .collection('tempData')
-          .doc(user.userId)
-          .set({
-        'userId': user.userId,
-        'display_name': user.displayName,
-        'email': user.email,
-        'isChecked': false,
-      });
+      if (user.userId != currentUserId) {
+        await FirebaseFirestore.instance
+            .collection(FirebaseCollectionName.users)
+            .doc(currentUserId)
+            .collection('tempData')
+            .doc(user.userId)
+            .set({
+          'userId': user.userId,
+          'display_name': user.displayName,
+          'email': user.email,
+          'isChecked': false,
+        });
+      }
     }
   }
 
-  // Future<bool> checkDataInFirebase(String userId) {
-  //   final check =
-  //       FirebaseFirestore.instance.collection('tempData').doc(userId).get();
-  //   return ;
+  Future<void> deleteTempDataInFirebase(String currentUserId) {
+    return FirebaseFirestore.instance
+        .collection(FirebaseCollectionName.users)
+        .doc(currentUserId)
+        .collection('tempData')
+        .get()
+        .then((snapshot) {
+      for (DocumentSnapshot ds in snapshot.docs) {
+        ds.reference.delete();
+      }
+    });
+  }
+
+  // List<dynamic> changeToList(List<dynamic>? users, String currentUserId) {
+  //   List userMap = [];
+  //   if (users == null) return [];
+  //   // addTempDataToFirebase(users, currentUserId);
+  //   for (var user in users) {
+  //     userMap.add(user);
+  //     debugPrint('add user: $user');
+  //     // userMap[element].add('isChecked': false);
+  //   }
+  //   for (var user in users) {
+  //     user['isChecked'] = false;
+  //   }
+  //   return userMap;
   // }
-
-  List<dynamic> changeToList(List<dynamic>? users, String currentUserId) {
-    List userMap = [];
-    if (users == null) return [];
-    // addTempDataToFirebase(users, currentUserId);
-    for (var user in users) {
-      userMap.add(user);
-      debugPrint('add user: $user');
-      // userMap[element].add('isChecked': false);
-    }
-    for (var user in users) {
-      user['isChecked'] = false;
-    }
-    return userMap;
-  }
 
   Future<void> updateIsChecked(
     TempUsers user,
     bool? value,
-    // String currentUserId,
+    String currentUserId,
   ) async {
     if (value == true) {
       // user.isChecked = value!;
       await FirebaseFirestore.instance
-          // .collection(FirebaseCollectionName.users)
-          // .doc(currentUserId)
+          .collection(FirebaseCollectionName.users)
+          .doc(currentUserId)
           .collection('tempData')
           .doc(user.userId)
           .update({
@@ -115,8 +81,8 @@ class SetBoolValue extends StateNotifier<bool> {
     } else if (value == false) {
       // user.isChecked = value!;
       await FirebaseFirestore.instance
-          // .collection(FirebaseCollectionName.users)
-          // .doc(currentUserId)
+          .collection(FirebaseCollectionName.users)
+          .doc(currentUserId)
           .collection('tempData')
           .doc(user.userId)
           .update({
@@ -126,9 +92,9 @@ class SetBoolValue extends StateNotifier<bool> {
   }
 }
 
-final setBoolValueProvider =
-    StateNotifierProvider.autoDispose<SetBoolValue, bool>(
-  (ref) => SetBoolValue(false),
+final tempDataProvider =
+    StateNotifierProvider.autoDispose<TempDataNotifier, bool>(
+  (ref) => TempDataNotifier(false),
 );
 
 final getTempDataProvider =
