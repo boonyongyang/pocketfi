@@ -14,6 +14,7 @@ class FirebaseCollectionName {
   static const bookmarks = 'bookmarks';
 
   static const wallets = 'wallets';
+  static const collaborators = 'collaborators';
 
   static const budgets = 'budgets';
 
