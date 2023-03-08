@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/common_widgets/animations/error_animation_view.dart';
@@ -23,10 +22,10 @@ class _ShareWalletSheetState extends ConsumerState<ShareWalletSheet> {
   @override
   Widget build(BuildContext context) {
     // var selectedUser = ref.watch(selectedUserProvider);
-    const bool isChecked = true;
-    final user = ref.watch(usersListProvider);
+    // const bool isChecked = true;
+    // final user = ref.watch(usersListProvider);
+    final currentUserId = ref.watch(userIdProvider);
     // final userList = ref.watch(usersListProvider).value;
-    final setUser = ref.watch(setUserProvider.notifier);
     // Map<dynamic, bool> userMap = {};
     // setUser.setInitial(List.filled(userList!.length, false));
     // userList?.forEach((element) {
@@ -109,9 +108,11 @@ class _ShareWalletSheetState extends ConsumerState<ShareWalletSheet> {
 
                           newValue ??= false;
 
-                          ref
-                              .watch(setBoolValueProvider.notifier)
-                              .updateIsChecked(eachUser, newValue);
+                          ref.watch(tempDataProvider.notifier).updateIsChecked(
+                                eachUser,
+                                newValue,
+                                currentUserId!,
+                              );
 
                           debugPrint('userMap after: $userMap');
                           debugPrint('value after: $newValue');

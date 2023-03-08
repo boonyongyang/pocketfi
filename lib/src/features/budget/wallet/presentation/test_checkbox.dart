@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:pocketfi/src/features/authentication/application/user_id_provider.dart';
 import 'package:pocketfi/src/features/authentication/application/user_list_provider.dart';
 import 'package:pocketfi/src/features/budget/wallet/data/set_user_provider.dart';
 // import 'package:flutter/scheduler.dart' show timeDilation;
@@ -48,6 +49,7 @@ class _CheckBoxInListViewState extends ConsumerState<CheckBoxInListView> {
   @override
   Widget build(BuildContext context) {
     final users = ref.watch(usersListProvider).value?.toList();
+    final currentUserId = ref.watch(userIdProvider);
 
     final userList = ref.watch(getTempDataProvider).value?.toList();
     List userMap = [];
@@ -82,9 +84,11 @@ class _CheckBoxInListViewState extends ConsumerState<CheckBoxInListView> {
 
                         newValue ??= false;
 
-                        ref
-                            .watch(setBoolValueProvider.notifier)
-                            .updateIsChecked(eachUser, newValue);
+                        ref.watch(tempDataProvider.notifier).updateIsChecked(
+                              eachUser,
+                              newValue,
+                              currentUserId!,
+                            );
 
                         debugPrint('userMap after: $userMap');
                         debugPrint('value after: $newValue');
