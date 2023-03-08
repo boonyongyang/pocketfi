@@ -6,6 +6,11 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/constants/firebase_collection_name.dart';
 import 'package:pocketfi/src/constants/firebase_field_name.dart';
 import 'package:pocketfi/src/features/authentication/application/user_id_provider.dart';
+import 'package:pocketfi/src/features/authentication/application/user_info_model_provider.dart';
+import 'package:pocketfi/src/features/authentication/application/user_list_provider.dart';
+import 'package:pocketfi/src/features/authentication/domain/collaborators_info.dart';
+import 'package:pocketfi/src/features/authentication/domain/user_info_model.dart';
+// import 'package:pocketfi/src/features/authentication/domain/user_info_model.dart';
 import 'package:pocketfi/src/features/budget/wallet/domain/wallet.dart';
 
 final selectedWalletProvider = StateProvider.autoDispose<Wallet?>(
@@ -43,6 +48,32 @@ final selectedWalletForBudgetProvider = StateProvider.autoDispose<Wallet?>(
     return wallets.first;
   },
 );
+
+// final selectedUserProvider =
+//     StateProvider.autoDispose<Map<UserInfoModel, bool>>(
+//   (ref) {
+//     final users = ref.watch(usersListProvider).value;
+//     final userList = ref.watch(usersListProvider).value;
+//     Map<dynamic, bool> userMap = {};
+//     userList?.forEach((element) {
+//       userMap[element] = false;
+//     });
+//     // if (users == null) {
+//     //   debugPrint('users is null');
+//     //   return null;
+//     // }
+
+//     // debugPrint('wallets is ${users.last.displayName}');
+//     debugPrint(userMap.toString());
+
+//     // get the latest transaction to see which wallet was used, then return that wallet
+//     // check the transaction createdAt date to compare which is the newest transaction and belongs to which wallet collection,
+//     // then return that wallet
+//     // FIXME this is not the best way to do it, it should be done in the backend
+
+//     return userMap.map((key, value) => MapEntry(key as UserInfoModel, !value));
+//   },
+// );
 
 final userWalletsProvider = StreamProvider.autoDispose<Iterable<Wallet>>((ref) {
   final userId = ref.watch(userIdProvider);

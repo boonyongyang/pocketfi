@@ -183,7 +183,7 @@ class _CreateNewBudgetViewState extends ConsumerState<CreateNewBudgetView> {
               text: Strings.createNewBudget,
               onPressed: isCreateButtonEnabled.value
                   ? () async {
-                      _createNewWalletController(
+                      _createNewBudgetController(
                         budgetNameController,
                         amountController,
                         selectedWallet!,
@@ -196,7 +196,7 @@ class _CreateNewBudgetViewState extends ConsumerState<CreateNewBudgetView> {
     );
   }
 
-  Future<void> _createNewWalletController(
+  Future<void> _createNewBudgetController(
     TextEditingController nameController,
     TextEditingController balanceController,
     Wallet selectedWallet,

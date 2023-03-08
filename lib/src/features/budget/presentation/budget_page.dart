@@ -211,25 +211,25 @@ class _BudgetPageState extends ConsumerState<BudgetPage> {
                 // ),
               ),
             ),
-            Expanded(
-              flex: 0,
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: FullWidthButtonWithText(
-                  text: 'test checkbox',
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => const CheckBoxInListView(),
-                        // builder: (_) => const CheckBoxExample(),
-                        // builder: (_) => const MyStatefulWidget(),
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ),
+            // Expanded(
+            //   flex: 0,
+            //   child: Align(
+            //     alignment: Alignment.bottomCenter,
+            //     child: FullWidthButtonWithText(
+            //       text: 'test checkbox',
+            //       onPressed: () {
+            //         Navigator.push(
+            //           context,
+            //           MaterialPageRoute(
+            //             builder: (_) => const CheckBoxInListView(),
+            //             // builder: (_) => const CheckBoxExample(),
+            //             // builder: (_) => const MyStatefulWidget(),
+            //           ),
+            //         );
+            //       },
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       ),
