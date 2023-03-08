@@ -1,10 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:pocketfi/src/constants/firebase_collection_name.dart';
+import 'package:pocketfi/src/constants/firebase_names.dart';
 import 'package:pocketfi/src/features/authentication/domain/collaborators_info.dart';
-// import 'package:pocketfi/src/features/authentication/domain/user_info_model.dart';
-import 'package:pocketfi/src/features/authentication/domain/user_info_payload.dart';
 import 'package:pocketfi/src/features/budget/wallet/domain/wallet_payload.dart';
 import 'package:pocketfi/src/constants/typedefs.dart';
 import 'package:pocketfi/src/utils/document_id_from_current_date.dart';

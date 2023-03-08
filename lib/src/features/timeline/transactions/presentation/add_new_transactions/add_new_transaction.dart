@@ -1,14 +1,17 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:io';
 
 import 'package:auto_size_text_field/auto_size_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+
 import 'package:pocketfi/src/common_widgets/buttons/full_width_button_with_text.dart';
 import 'package:pocketfi/src/common_widgets/file_thumbnail_view.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/constants/app_icons.dart';
 import 'package:pocketfi/src/constants/strings.dart';
+import 'package:pocketfi/src/constants/typedefs.dart';
 import 'package:pocketfi/src/features/authentication/application/user_id_provider.dart';
 import 'package:pocketfi/src/features/budget/wallet/data/user_wallets_provider.dart';
 import 'package:pocketfi/src/features/budget/wallet/domain/wallet.dart';
@@ -16,17 +19,20 @@ import 'package:pocketfi/src/features/budget/wallet/presentation/select_wallet_d
 import 'package:pocketfi/src/features/category/application/category_providers.dart';
 import 'package:pocketfi/src/features/category/domain/category.dart';
 import 'package:pocketfi/src/features/category/presentation/category_page.dart';
-import 'package:pocketfi/src/features/timeline/transactions/application/transaction_provider.dart';
+import 'package:pocketfi/src/features/timeline/bookmarks/application/bookmark_services.dart';
+import 'package:pocketfi/src/features/timeline/transactions/application/transaction_providers.dart';
+import 'package:pocketfi/src/features/timeline/transactions/data/transaction_notifiers.dart';
 import 'package:pocketfi/src/features/timeline/transactions/date_picker/application/selected_date_notifier.dart';
+import 'package:pocketfi/src/features/timeline/transactions/date_picker/presentation/transaction_date_picker.dart';
 import 'package:pocketfi/src/features/timeline/transactions/domain/tag.dart';
-import 'package:pocketfi/src/features/timeline/transactions/image_upload/data/image_file_notifier.dart';
-import 'package:pocketfi/src/features/timeline/transactions/image_upload/domain/file_type.dart';
-import 'package:pocketfi/src/features/timeline/transactions/image_upload/domain/thumbnail_request.dart';
-import 'package:pocketfi/src/features/timeline/transactions/image_upload/helpers/image_picker_helper.dart';
+import 'package:pocketfi/src/features/timeline/transactions/domain/transaction.dart';
+import 'package:pocketfi/src/features/shared/image_upload/data/image_file_notifier.dart';
+import 'package:pocketfi/src/features/shared/image_upload/domain/file_type.dart';
+import 'package:pocketfi/src/features/shared/image_upload/domain/thumbnail_request.dart';
+import 'package:pocketfi/src/features/shared/image_upload/helpers/image_picker_helper.dart';
 import 'package:pocketfi/src/features/timeline/transactions/presentation/add_new_transactions/category_selector_view.dart';
 import 'package:pocketfi/src/features/timeline/transactions/presentation/add_new_transactions/full_screen_image_dialog.dart';
 import 'package:pocketfi/src/features/timeline/transactions/presentation/add_new_transactions/select_transaction_type.dart';
-import 'package:pocketfi/src/features/timeline/transactions/date_picker/presentation/transaction_date_picker.dart';
 
 class AddNewTransaction extends StatefulHookConsumerWidget {
   const AddNewTransaction({
@@ -38,8 +44,9 @@ class AddNewTransaction extends StatefulHookConsumerWidget {
 }
 
 class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
+  bool get isSelectedTransactionNull =>
+      (ref.watch(selectedTransactionProvider)?.date == null);
   String _selectedRecurrence = 'Never';
-  String _selectedWallet = 'Personal';
 
   @override
   Widget build(BuildContext context) {
@@ -47,6 +54,7 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
     final selectedCategory = ref.watch(selectedCategoryProvider);
 
     final selectedWallet = ref.watch(selectedWalletProvider);
+    final isBookmark = ref.watch(isBookmarkProvider);
 
     final amountController = useTextEditingController();
     final noteController = useTextEditingController();
@@ -82,12 +90,16 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
             color: AppColors.white,
           ),
           onPressed: () {
-            // access ref inside the onPressed callback
             // ref.read(selectedCategoryProvider.notifier).state = null;
 
             Navigator.of(context).pop();
             resetCategoryState(ref);
-            ref.read(transactionTypeProvider.notifier).setTransactionType(0);
+            // ref.read(transactionTypeProvider.notifier).setTransactionType(0);
+            ref
+                .read(transactionTypeProvider.notifier)
+                .resetTransactionTypeState();
+
+            // ref.read(transactionDateProvider.notifier).setDate(DateTime.now());
           },
         ),
       ),
@@ -99,9 +111,7 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
           ),
           child: Column(
             children: [
-              const SelectTransactionType(
-                noOfTabs: 3,
-              ),
+              const SelectTransactionType(noOfTabs: 3),
               TransactionAmountField(amountController: amountController),
               const SelectCurrency(),
               // * Select Category and Wallet
@@ -131,9 +141,12 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   // mainAxisSize: MainAxisSize.min,
                   children: [
+                    // TransactionDatePicker(
+                    //     // date: DateTime.now(),
+                    //     ),
                     const TransactionDatePicker(),
                     WriteOptionalNote(noteController: noteController),
-                    addPhoto(),
+                    selectPhoto(),
                     showIfPhotoIsAdded(),
                     const SizedBox(height: 8.0),
                     selectTags(),
@@ -141,45 +154,38 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
                     Center(
                       child: Row(
                         children: [
-                          // IconButton(
-                          //   icon: const Icon(
-                          //     Icons.bookmark_outline,
-                          //     color: AppColors.mainColor1,
-                          //   ),
-                          //   onPressed: () {
-                          //     ref
-                          //         .read(postSettingProvider.notifier)
-                          //         .toggleBookmark();
-                          //   },
-                          // ),
                           IconButton(
-                            // splashRadius: 24 / 1.2,
                             splashRadius: 22,
-                            icon: const Icon(
-                              Icons.bookmark_outline,
-                              color: AppColors.mainColor1,
+                            icon: Icon(
+                              isBookmark
+                                  ? Icons.bookmark
+                                  : Icons.bookmark_outline,
+                              color: AppColors.mainColor2,
                               size: 32,
                             ),
                             onPressed: () {
+                              ref
+                                  .read(isBookmarkProvider.notifier)
+                                  .toggleBookmark();
+
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
-                                  content: Text('Bookmark'),
+                                  content: Text('Bookmark added!'),
                                 ),
                               );
                             },
                           ),
-
                           SizedBox(
                             width: MediaQuery.of(context).size.width - 100,
                             child: SaveButton(
                               isSaveButtonEnabled: isSaveButtonEnabled,
-                              ref: ref,
                               noteController: noteController,
                               amountController: amountController,
                               categoryName: selectedCategory,
                               mounted: mounted,
                               selectedWallet: selectedWallet,
-                              file: null,
+                              isBookmark: isBookmark,
+                              // date: ,
                             ),
                           ),
                         ],
@@ -195,28 +201,7 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
     );
   }
 
-  DropdownButton<String> selectWallet() {
-    return DropdownButton<String>(
-      items: const [
-        DropdownMenuItem(
-          value: 'Personal',
-          child: Text('Personal'),
-        ),
-        DropdownMenuItem(
-          value: 'Shared',
-          child: Text('Shared'),
-        ),
-      ],
-      onChanged: (value) {
-        setState(() {
-          _selectedWallet = value!;
-        });
-      },
-      value: _selectedWallet,
-    );
-  }
-
-  Row addPhoto() {
+  Row selectPhoto() {
     return Row(
       children: [
         const Icon(Icons.photo_camera_outlined, color: AppColors.mainColor1),
@@ -232,33 +217,24 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
               displayPhoto(imageFile);
             },
             child: const Text(
-              Strings.addAPhoto,
+              Strings.selectPhoto,
             ),
           ),
         ),
+        const Spacer(),
+        if (ref.read(imageFileProvider) != null)
+          IconButton(
+            color: AppColors.mainColor1,
+            icon: const Icon(Icons.close),
+            onPressed: () {
+              ref.read(imageFileProvider.notifier).setImageFile(null);
+            },
+          ),
       ],
     );
   }
 
-  // void displayPhoto(File imageFile) {
-  //   // display thumnail of the image
-  //   debugPrint('image file path: ${imageFile.path}');
-
-  //   FileThumbnailView(
-  //     thumbnailRequest: ThumbnailRequest(
-  //       imageFile,
-  //       FileType.image,
-  //     ),
-  //   );
-
-  //   setState(() {
-  //     _imageFile = imageFile;
-  //     debugPrint('show Picture');
-  //   });
-  // }
-
   void displayPhoto(File imageFile) {
-    // display thumnail of the image
     debugPrint('image file path: ${imageFile.path}');
 
     FileThumbnailView(
@@ -286,7 +262,7 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
             },
             child: Container(
               width: double.infinity,
-              height: 150,
+              height: 150.0,
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: FileImage(imageFile),
@@ -459,8 +435,19 @@ class SelectCategory extends ConsumerWidget {
                                 child: GestureDetector(
                                   onTap: () {
                                     ref
-                                        .read(selectedCategoryProvider.notifier)
-                                        .state = categories[index];
+                                                .watch(
+                                                    selectedTransactionProvider)
+                                                ?.categoryName ==
+                                            null
+                                        ? ref
+                                            .read(selectedCategoryProvider
+                                                .notifier)
+                                            .state = categories[index]
+                                        : ref
+                                            .read(selectedTransactionProvider
+                                                .notifier)
+                                            .updateCategory(
+                                                categories[index], ref);
 
                                     debugPrint(
                                         'selected category: ${categories[index].name}');
@@ -519,16 +506,16 @@ class SelectCurrency extends StatelessWidget {
   }
 }
 
-class TransactionAmountField extends StatelessWidget {
+class TransactionAmountField extends ConsumerWidget {
   const TransactionAmountField({
-    super.key,
+    Key? key,
     required this.amountController,
-  });
+  }) : super(key: key);
 
   final TextEditingController amountController;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return SizedBox(
       width: 250,
       child: AutoSizeTextField(
@@ -544,10 +531,14 @@ class TransactionAmountField extends StatelessWidget {
           hintText: Strings.zeroAmount,
         ),
         controller: amountController,
-        style: const TextStyle(
+        style: TextStyle(
           fontSize: 28,
           fontWeight: FontWeight.bold,
-          color: AppColors.red,
+          color: ref.watch(transactionTypeProvider) == TransactionType.expense
+              ? AppColors.red
+              : ref.watch(transactionTypeProvider) == TransactionType.income
+                  ? AppColors.green
+                  : Colors.grey,
         ),
       ),
     );
@@ -589,30 +580,30 @@ class WriteOptionalNote extends StatelessWidget {
   }
 }
 
-class SaveButton extends StatelessWidget {
+class SaveButton extends ConsumerWidget {
   const SaveButton({
     super.key,
     required this.isSaveButtonEnabled,
-    required this.ref,
     required this.noteController,
     required this.amountController,
     required this.categoryName,
     required this.selectedWallet,
-    required this.file,
     required this.mounted,
+    this.isBookmark = false,
+    // required this.date,
   });
 
   final ValueNotifier<bool> isSaveButtonEnabled;
-  final WidgetRef ref;
   final TextEditingController noteController;
   final TextEditingController amountController;
   final Category? categoryName;
   final Wallet? selectedWallet;
-  final File? file;
   final bool mounted;
+  final bool isBookmark;
+  // final DateTime date;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return FullWidthButtonWithText(
       padding: 0,
       text: Strings.save,
@@ -621,7 +612,7 @@ class SaveButton extends StatelessWidget {
           ? () async {
               final userId = ref.read(userIdProvider);
               final type = ref.read(transactionTypeProvider);
-              final date = ref.read(selectedDateProvider);
+              final date = ref.read(transactionDateProvider);
               final file = ref.read(imageFileProvider);
 
               debugPrint('userId is: $userId');
@@ -639,23 +630,46 @@ class SaveButton extends StatelessWidget {
 
               debugPrint('walletName is: ${selectedWallet!.walletId}');
 
-              // hooking the UI to the provider will cause the UI to rebuild
               final isCreated = await ref
                   .read(createNewTransactionProvider.notifier)
                   .createNewTransaction(
                     userId: userId,
+                    walletId: selectedWallet!.walletId, // ? sure?
                     amount: double.parse(amount),
                     type: type,
                     note: note,
                     categoryName: categoryName!.name,
-                    // walletName: selectedWallet!.walletName,
-                    walletId: selectedWallet!.walletId,
                     date: date,
                     file: file,
+                    isBookmark: isBookmark,
                   );
               debugPrint('isCreated is: $isCreated');
 
               if (isCreated && mounted) {
+                // if (isBookmark) {
+                //   ref.read(bookmarkTransactionListProvider.notifier).addBookmark(
+                //         Transaction(
+                //           transactionId: ,
+                //           userId: userId,
+                //           walletId: selectedWallet!.walletId,
+                //           amount: double.parse(amount),
+                //           type: type,
+                //           description: note,
+                //           categoryName: categoryName!.name,
+                //           date: date,
+                //           file: file,
+                //         ),
+                //         // userId: userId,
+                //         // walletId: selectedWallet!.walletId,
+                //         // amount: double.parse(amount),
+                //         // type: type,
+                //         // note: note,
+                //         // categoryName: categoryName!.name,
+                //         // date: date,
+                //         // file: file,
+                //       );
+                // }
+
                 noteController.clear();
                 amountController.clear();
                 Navigator.of(context).pop();
@@ -668,6 +682,12 @@ class SaveButton extends StatelessWidget {
 
                 // clear the imageFileProvider
                 ref.read(imageFileProvider.notifier).setImageFile(null);
+
+                ref
+                    .read(transactionDateProvider.notifier)
+                    .setDate(DateTime.now());
+
+                ref.read(isBookmarkProvider.notifier).resetBookmarkState();
 
                 // show snackbar to notify the user
                 ScaffoldMessenger.of(context).showSnackBar(

@@ -1,20 +1,17 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:pocketfi/src/constants/firebase_collection_name.dart';
+import 'package:pocketfi/src/constants/firebase_names.dart';
 import 'package:pocketfi/src/features/authentication/application/user_id_provider.dart';
-import 'package:pocketfi/src/features/authentication/domain/collaborators_info.dart';
 import 'package:pocketfi/src/features/authentication/domain/temp_users.dart';
-import 'package:pocketfi/src/features/authentication/domain/user_info_model.dart';
+import 'package:pocketfi/src/features/authentication/domain/user_info.dart';
 
 class TempDataNotifier extends StateNotifier<bool> {
   TempDataNotifier(bool state) : super(false);
 
   Future<void> addTempDataToFirebase(
-    List<UserInfoModel>? users,
+    List<UserInfo>? users,
     String currentUserId,
   ) async {
     if (users == null) return;

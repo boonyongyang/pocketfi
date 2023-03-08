@@ -8,11 +8,8 @@ import 'package:pocketfi/src/constants/strings.dart';
 import 'package:pocketfi/src/features/authentication/application/user_id_provider.dart';
 import 'package:pocketfi/src/features/authentication/application/user_list_provider.dart';
 import 'package:pocketfi/src/features/authentication/domain/collaborators_info.dart';
-import 'package:pocketfi/src/features/authentication/domain/temp_users.dart';
 import 'package:pocketfi/src/features/budget/wallet/application/create_new_wallet_provider.dart';
 import 'package:pocketfi/src/features/budget/wallet/data/set_user_provider.dart';
-import 'package:pocketfi/src/features/budget/wallet/data/user_wallets_provider.dart';
-import 'package:pocketfi/src/features/budget/wallet/domain/wallet.dart';
 import 'package:pocketfi/src/features/budget/wallet/presentation/share_wallet_sheet.dart';
 
 class CreateNewWalletView extends StatefulHookConsumerWidget {

@@ -1,27 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:pocketfi/src/features/category/application/category_providers.dart';
 import 'package:pocketfi/src/features/timeline/transactions/domain/transaction.dart';
 
 class TransactionCard extends StatelessWidget {
   final Transaction transaction;
-  final TransactionType transactionType;
   final VoidCallback onTapped;
   const TransactionCard({
     Key? key,
     required this.transaction,
     required this.onTapped,
-    required this.transactionType,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final category = getCategoryWithCategoryName(transaction.categoryName);
+    final transactionType = transaction.type;
+
     return GestureDetector(
       onTap: onTapped,
       child: Padding(
         padding: const EdgeInsets.only(bottom: 12.0),
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(10),
+          // borderRadius: BorderRadius.circular(10.0),
+          borderRadius: const BorderRadius.only(
+            bottomLeft: Radius.circular(10.0),
+            bottomRight: Radius.circular(10.0),
+          ),
           child: Container(
             padding: const EdgeInsets.all(16),
             color: Colors.grey[100],
@@ -111,7 +116,9 @@ class TransactionCard extends StatelessWidget {
                           //   fit: BoxFit.cover,
                           //   height: 100.0,
                           // ),
-                          Text(transaction.createdAt.toIso8601String()),
+                          Text(transaction.createdAt!.toIso8601String()),
+                          // format date to dd/mm/yyyy
+                          Text(DateFormat('d MMM').format(transaction.date)),
                         ],
                       ),
                     ),

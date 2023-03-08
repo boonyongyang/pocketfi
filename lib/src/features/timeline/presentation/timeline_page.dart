@@ -2,17 +2,17 @@ import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
-import 'package:pocketfi/src/features/category/application/category_providers.dart';
+import 'package:pocketfi/src/features/timeline/bookmarks/presentation/bookmark_page.dart';
 import 'package:pocketfi/src/features/timeline/posts/post_settings/application/post_setting_provider.dart';
-import 'package:pocketfi/src/features/timeline/transactions/application/transaction_provider.dart';
-import 'package:pocketfi/src/features/timeline/transactions/image_upload/domain/file_type.dart';
-import 'package:pocketfi/src/features/timeline/transactions/image_upload/helpers/image_picker_helper.dart';
+import 'package:pocketfi/src/features/timeline/presentation/overview_tab.dart';
+import 'package:pocketfi/src/features/timeline/transactions/data/transaction_notifiers.dart';
+import 'package:pocketfi/src/features/shared/image_upload/domain/file_type.dart';
+import 'package:pocketfi/src/features/shared/image_upload/helpers/image_picker_helper.dart';
 import 'package:pocketfi/src/features/timeline/transactions/presentation/add_new_transactions/add_new_transaction.dart';
 import 'package:pocketfi/src/features/timeline/transactions/presentation/add_new_transactions/create_new_post_view.dart';
-import 'package:pocketfi/src/features/timeline/transactions/presentation/receipts/scan_receipt.dart';
-import 'package:pocketfi/src/features/timeline/transactions/presentation/temp_tab.dart';
-import 'package:pocketfi/src/features/timeline/transactions/presentation/transactions_tab.dart';
-import 'package:pocketfi/src/features/timeline/transactions/presentation/post_tab.dart';
+import 'package:pocketfi/src/features/timeline/transactions/receipts/scan_receipt.dart';
+import 'package:pocketfi/src/features/timeline/presentation/transactions_tab.dart';
+import 'package:pocketfi/src/features/timeline/presentation/post_tab.dart';
 
 class TimelinePage extends ConsumerStatefulWidget {
   const TimelinePage({super.key});
@@ -122,7 +122,7 @@ class _MainViewState extends ConsumerState<TimelinePage>
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: const [
                   // FaIcon(FontAwesomeIcons.chartPie),
-                  Text('Categories'),
+                  Text('Overview'),
                 ],
               )),
               Tab(
@@ -141,9 +141,10 @@ class _MainViewState extends ConsumerState<TimelinePage>
         ),
         body: const TabBarView(
           children: [
-            PostsTab(),
             TransactionsTab(),
-            TempTab(),
+            OverviewTab(),
+            // TempTab(),
+            PostsTab(),
           ],
         ),
         floatingActionButton: Column(
@@ -169,7 +170,12 @@ class _MainViewState extends ConsumerState<TimelinePage>
               backgroundColor: AppColors.subColor2,
               child: const Icon(Icons.bookmarks),
               onPressed: () =>
-                  Beamer.of(context).beamToNamed('/timeline/overview'),
+                  // Beamer.of(context).beamToNamed('/timeline/overview'),
+                  Navigator.of(context, rootNavigator: true).push(
+                MaterialPageRoute(
+                  builder: (context) => const BookmarkPage(),
+                ),
+              ),
             ),
             const SizedBox(height: 16),
             FloatingActionButton(
@@ -178,14 +184,37 @@ class _MainViewState extends ConsumerState<TimelinePage>
                 backgroundColor: const Color(0xFFFCD46A),
                 child: const Icon(Icons.add),
                 onPressed: () {
-                  resetCategoryState(ref);
-                  ref
-                      .read(transactionTypeProvider.notifier)
-                      .setTransactionType(0);
-
+                  setNewTransactionState(ref);
                   Navigator.of(context, rootNavigator: true).push(
-                    MaterialPageRoute(
-                      builder: (context) => const AddNewTransaction(),
+                    PageRouteBuilder(
+                      pageBuilder: (context, animation, secondaryAnimation) =>
+                          const AddNewTransaction(),
+                      transitionDuration: const Duration(milliseconds: 200),
+                      transitionsBuilder:
+                          (context, animation, secondaryAnimation, child) {
+                        final curvedAnimation = CurvedAnimation(
+                          parent: animation,
+                          curve: Curves.easeIn,
+                          reverseCurve: Curves.easeIn,
+                        );
+                        return SlideTransition(
+                          position: Tween<Offset>(
+                            begin: const Offset(0, 1),
+                            end: Offset.zero,
+                          ).animate(curvedAnimation),
+                          child: child,
+                        );
+                      },
+                      // transitionsBuilder:
+                      //     (context, animation, secondaryAnimation, child) {
+                      //   return SlideTransition(
+                      //     position: Tween<Offset>(
+                      //       begin: const Offset(0, 1),
+                      //       end: Offset.zero,
+                      //     ).animate(animation),
+                      //     child: child,
+                      //   );
+                      // },
                     ),
                   );
                 }),
