@@ -59,22 +59,22 @@ class TimelineLocation extends BeamLocation<BeamState> {
           // child: RootScreen(label: 'Timeline', detailsPath: '/timeline/details'),
           child: TimelinePage(),
         ),
-        if (state.uri.pathSegments.length == 2)
-          const BeamPage(
-            // type: BeamPageType.slideTransition,
-            key: ValueKey('timeline/overview'),
-            title: 'Overview Details',
-            child: AddNewTransaction(),
-            // child: AddNewExpensePage(),
-          ),
-        if (state.uri.pathSegments.length == 3)
-          const BeamPage(
-            fullScreenDialog: true,
-            // type: BeamPageType.fadeTransition,
-            key: ValueKey('timeline/overview/selectcategory'),
-            title: 'Select Category',
-            child: DetailsScreen(label: 'Select Category'),
-          ),
+        // if (state.uri.pathSegments.length == 2)
+        //   const BeamPage(
+        //     // type: BeamPageType.slideTransition,
+        //     key: ValueKey('timeline/overview'),
+        //     title: 'Overview Details',
+        //     child: AddNewTransaction(),
+        //     // child: AddNewExpensePage(),
+        //   ),
+        // if (state.uri.pathSegments.length == 3)
+        //   const BeamPage(
+        //     fullScreenDialog: true,
+        //     // type: BeamPageType.fadeTransition,
+        //     key: ValueKey('timeline/overview/selectcategory'),
+        //     title: 'Select Category',
+        //     child: DetailsScreen(label: 'Select Category'),
+        //   ),
       ];
 }
 

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/features/category/application/category_providers.dart';
+import 'package:pocketfi/src/features/timeline/transactions/application/transaction_providers.dart';
+import 'package:pocketfi/src/features/timeline/transactions/data/transaction_notifiers.dart';
 import 'package:pocketfi/src/features/timeline/transactions/domain/transaction.dart';
 
-class BookmarkCard extends StatelessWidget {
+class BookmarkCard extends ConsumerWidget {
   const BookmarkCard({
     super.key,
     required this.transaction,
@@ -13,13 +16,17 @@ class BookmarkCard extends StatelessWidget {
   final VoidCallback onTapped;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final transactionCategory =
         getCategoryWithCategoryName(transaction.categoryName);
     final transactionType = transaction.type;
+
+    final t = ref.read(selectedTransactionProvider);
+    debugPrint('T: ${t?.isBookmark}');
+
     return Dismissible(
       key: ValueKey(transaction.transactionId),
-      behavior: HitTestBehavior.translucent,
+      behavior: HitTestBehavior.translucent, // idk what is this
       direction: DismissDirection.endToStart,
       confirmDismiss: (direction) {
         return showDialog(
@@ -38,6 +45,16 @@ class BookmarkCard extends StatelessWidget {
               TextButton(
                 onPressed: () {
                   Navigator.of(ctx).pop(true);
+                  // ref
+                  //     .read(selectedTransactionProvider.notifier)
+                  //     .toggleBookmark(ref);
+
+                  // update transaction
+                  ref
+                      .read(updateTransactionProvider.notifier)
+                      .toogleBookmark(transaction: transaction);
+
+                  debugPrint('tt: ${t?.isBookmark}');
                 },
                 child:
                     const Text('Remove', style: TextStyle(color: Colors.red)),
@@ -48,6 +65,9 @@ class BookmarkCard extends StatelessWidget {
       },
       onDismissed: (direction) {
         // make isBookmark false
+        // ref.read(selectedTransactionProvider.notifier).toggleBookmark(ref);
+        debugPrint('onDismissed: $direction');
+        // debugPrint('t: ${t?.isBookmark}');
       },
       background: Container(
         color: Colors.red,

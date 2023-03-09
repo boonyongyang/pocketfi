@@ -169,13 +169,15 @@ class _MainViewState extends ConsumerState<TimelinePage>
               heroTag: null,
               backgroundColor: AppColors.subColor2,
               child: const Icon(Icons.bookmarks),
-              onPressed: () =>
-                  // Beamer.of(context).beamToNamed('/timeline/overview'),
-                  Navigator.of(context, rootNavigator: true).push(
-                MaterialPageRoute(
-                  builder: (context) => const BookmarkPage(),
-                ),
-              ),
+              onPressed: () {
+                // Beamer.of(context).beamToNamed('/timeline/overview'),
+                setNewTransactionState(ref);
+                Navigator.of(context, rootNavigator: true).push(
+                  MaterialPageRoute(
+                    builder: (context) => const BookmarkPage(),
+                  ),
+                );
+              },
             ),
             const SizedBox(height: 16),
             FloatingActionButton(

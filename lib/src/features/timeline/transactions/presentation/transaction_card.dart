@@ -111,12 +111,8 @@ class TransactionCard extends StatelessWidget {
                             )
                           else
                             const SizedBox(),
-                          // Image.network(
-                          //   transaction.thumbnailUrl ?? '',
-                          //   fit: BoxFit.cover,
-                          //   height: 100.0,
-                          // ),
-                          Text(transaction.createdAt!.toIso8601String()),
+                          // Text(transaction.createdAt!.toIso8601String()),
+                          Text(transaction.walletName),
                           // format date to dd/mm/yyyy
                           Text(DateFormat('d MMM').format(transaction.date)),
                         ],

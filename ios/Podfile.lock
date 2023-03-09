@@ -628,7 +628,7 @@ PODS:
     - Firebase/Auth (= 10.3.0)
     - firebase_core
     - Flutter
-  - firebase_core (2.5.0):
+  - firebase_core (2.7.1):
     - Firebase/CoreOnly (= 10.3.0)
     - Flutter
   - firebase_storage (11.0.11):
@@ -670,6 +670,8 @@ PODS:
     - FirebaseCoreExtension (~> 10.0)
     - GTMSessionFetcher/Core (< 4.0, >= 2.1)
   - Flutter (1.0.0)
+  - flutter_email_sender (0.0.1):
+    - Flutter
   - google_mlkit_commons (0.2.0):
     - Flutter
     - MLKitVision
@@ -850,6 +852,7 @@ DEPENDENCIES:
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - firebase_storage (from `.symlinks/plugins/firebase_storage/ios`)
   - Flutter (from `Flutter`)
+  - flutter_email_sender (from `.symlinks/plugins/flutter_email_sender/ios`)
   - google_mlkit_commons (from `.symlinks/plugins/google_mlkit_commons/ios`)
   - google_mlkit_text_recognition (from `.symlinks/plugins/google_mlkit_text_recognition/ios`)
   - google_sign_in_ios (from `.symlinks/plugins/google_sign_in_ios/ios`)
@@ -908,6 +911,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/firebase_storage/ios"
   Flutter:
     :path: Flutter
+  flutter_email_sender:
+    :path: ".symlinks/plugins/flutter_email_sender/ios"
   google_mlkit_commons:
     :path: ".symlinks/plugins/google_mlkit_commons/ios"
   google_mlkit_text_recognition:
@@ -940,7 +945,7 @@ SPEC CHECKSUMS:
   cloud_firestore: 99bf8e4f9094070ec33df080ca432137b7d9ae2f
   Firebase: f92fc551ead69c94168d36c2b26188263860acd9
   firebase_auth: b196f91b4f7c6d72015c3c12aaa82eb6972b2c2c
-  firebase_core: f95c8bbe65213d406d592573ad42a12d64849cb8
+  firebase_core: 1ae9f9aa76e6e1edc14fb181637ad466fd6c6fa4
   firebase_storage: 31bd20813d7c4780b1075d2d069d8338291c39c1
   FirebaseAppCheckInterop: ef074633831a90cf6c10e8f2c1e1f8b7842a446a
   FirebaseAuth: 0e415d29d846c1dce2fb641e46f35e9888d9bec6
@@ -951,6 +956,7 @@ SPEC CHECKSUMS:
   FirebaseFirestore: 244f71ff14ef44f39e00b44d356eac708ce03103
   FirebaseStorage: 0efbff0ac978981866d89804191688ae50d64033
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
+  flutter_email_sender: 02d7443217d8c41483223627972bfdc09f74276b
   google_mlkit_commons: e9070f57232c3a3e4bd42fdfa621bb1f4bb3e709
   google_mlkit_text_recognition: 9967360384e93b09686aca67fc9f13f9a957d770
   google_sign_in_ios: 4f85eb9f937450765c8573bb85fd8cd6a5af675c

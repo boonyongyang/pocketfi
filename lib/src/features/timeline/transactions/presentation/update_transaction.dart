@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/common_widgets/buttons/full_width_button_with_text.dart';
+import 'package:pocketfi/src/common_widgets/dialogs/alert_dialog_model.dart';
+import 'package:pocketfi/src/common_widgets/dialogs/delete_dialog.dart';
 import 'package:pocketfi/src/common_widgets/file_thumbnail_view.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/constants/app_icons.dart';
@@ -52,7 +54,7 @@ class UpdateTransactionState extends ConsumerState<UpdateTransaction> {
     // final isBookmark = ref.watch(isBookmarkProvider);
     // final isBookmark = selectedTransaction?.isBookmark ?? false;
     final isBookmark = ref.watch(selectedTransactionProvider)?.isBookmark;
-    debugPrint('aBook is ${isBookmark}');
+    debugPrint('aBook is $isBookmark');
 
     final amountController =
         useTextEditingController(text: selectedTransaction?.amount.toString());
@@ -101,19 +103,33 @@ class UpdateTransactionState extends ConsumerState<UpdateTransaction> {
         actions: [
           IconButton(
             icon: const Icon(
-              Icons.delete,
+              Icons.delete_rounded,
               color: AppColors.red,
             ),
-            onPressed: () {
-              ref.read(deleteTransactionProvider.notifier).deleteTransaction(
-                    transactionId: selectedTransaction!.transactionId,
-                    userId: selectedTransaction.userId,
-                    walletId: selectedTransaction.walletId,
-                  );
+            onPressed: () async {
+              final isConfirmDelete = await const DeleteDialog(
+                titleOfObjectToDelete: 'Transaction',
+              ).present(context);
 
-              Navigator.of(context).pop();
-              resetCategoryState(ref);
-              ref.read(transactionTypeProvider.notifier).setTransactionType(0);
+              if (isConfirmDelete == null) return;
+
+              if (isConfirmDelete) {
+                await ref
+                    .read(deleteTransactionProvider.notifier)
+                    .deleteTransaction(
+                      transactionId: selectedTransaction!.transactionId,
+                      userId: selectedTransaction.userId,
+                      walletId: selectedTransaction.walletId,
+                    );
+                // Navigator.of(context).pop();
+                resetCategoryState(ref);
+                ref
+                    .read(transactionTypeProvider.notifier)
+                    .setTransactionType(0);
+                if (mounted) {
+                  Navigator.of(context).maybePop();
+                }
+              }
             },
           ),
         ],
@@ -691,6 +707,7 @@ class SaveButton extends ConsumerWidget {
                     categoryName: transaction.categoryName,
                     // categoryName: category!.name,
                     walletId: selectedWallet!.walletId,
+                    walletName: selectedWallet!.walletName,
                     date: transaction.date,
                     file: file,
                     isBookmark: isBookmark,

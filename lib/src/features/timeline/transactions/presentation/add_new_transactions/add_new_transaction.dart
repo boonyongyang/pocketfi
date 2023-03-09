@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:auto_size_text_field/auto_size_text_field.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show FilteringTextInputFormatter;
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -11,7 +12,6 @@ import 'package:pocketfi/src/common_widgets/file_thumbnail_view.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/constants/app_icons.dart';
 import 'package:pocketfi/src/constants/strings.dart';
-import 'package:pocketfi/src/constants/typedefs.dart';
 import 'package:pocketfi/src/features/authentication/application/user_id_provider.dart';
 import 'package:pocketfi/src/features/budget/wallet/data/user_wallets_provider.dart';
 import 'package:pocketfi/src/features/budget/wallet/domain/wallet.dart';
@@ -104,97 +104,103 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
         ),
       ),
       body: SingleChildScrollView(
-        child: Container(
-          // color: Colors.grey,
-          padding: EdgeInsets.only(
-            bottom: MediaQuery.of(context).viewInsets.bottom + 10,
-          ),
-          child: Column(
-            children: [
-              const SelectTransactionType(noOfTabs: 3),
-              TransactionAmountField(amountController: amountController),
-              const SelectCurrency(),
-              // * Select Category and Wallet
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    const SizedBox(width: 8.0),
-                    SelectCategory(
-                        categories: categories,
-                        selectedCategory: selectedCategory),
-                    const Spacer(),
-                    const Icon(AppIcons.wallet, color: AppColors.mainColor1),
-                    const SizedBox(width: 8.0),
-                    const SelectWalletDropdownList(),
-                    const SizedBox(width: 8.0),
-                  ],
+        child: GestureDetector(
+          onTap: () {
+            FocusScope.of(context).unfocus();
+            // FocusScopeNode currentFocus = FocusScope.of(context);
+          },
+          child: Container(
+            // color: Colors.grey,
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).viewInsets.bottom + 10,
+            ),
+            child: Column(
+              children: [
+                const SelectTransactionType(noOfTabs: 3),
+                TransactionAmountField(amountController: amountController),
+                const SelectCurrency(),
+                // * Select Category and Wallet
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      const SizedBox(width: 8.0),
+                      SelectCategory(
+                          categories: categories,
+                          selectedCategory: selectedCategory),
+                      const Spacer(),
+                      const Icon(AppIcons.wallet, color: AppColors.mainColor1),
+                      const SizedBox(width: 8.0),
+                      const SelectWalletDropdownList(),
+                      const SizedBox(width: 8.0),
+                    ],
+                  ),
                 ),
-              ),
-              // * DatePicker, Note, Photo, Tags and Recurrence
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 24.0,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  // mainAxisSize: MainAxisSize.min,
-                  children: [
-                    // TransactionDatePicker(
-                    //     // date: DateTime.now(),
-                    //     ),
-                    const TransactionDatePicker(),
-                    WriteOptionalNote(noteController: noteController),
-                    selectPhoto(),
-                    showIfPhotoIsAdded(),
-                    const SizedBox(height: 8.0),
-                    selectTags(),
-                    selectReccurence(),
-                    Center(
-                      child: Row(
-                        children: [
-                          IconButton(
-                            splashRadius: 22,
-                            icon: Icon(
-                              isBookmark
-                                  ? Icons.bookmark
-                                  : Icons.bookmark_outline,
-                              color: AppColors.mainColor2,
-                              size: 32,
-                            ),
-                            onPressed: () {
-                              ref
-                                  .read(isBookmarkProvider.notifier)
-                                  .toggleBookmark();
+                // * DatePicker, Note, Photo, Tags and Recurrence
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 24.0,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    // mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // TransactionDatePicker(
+                      //     // date: DateTime.now(),
+                      //     ),
+                      const TransactionDatePicker(),
+                      WriteOptionalNote(noteController: noteController),
+                      selectPhoto(),
+                      showIfPhotoIsAdded(),
+                      const SizedBox(height: 8.0),
+                      selectTags(),
+                      selectReccurence(),
+                      Center(
+                        child: Row(
+                          children: [
+                            IconButton(
+                              splashRadius: 22,
+                              icon: Icon(
+                                isBookmark
+                                    ? Icons.bookmark
+                                    : Icons.bookmark_outline,
+                                color: AppColors.mainColor2,
+                                size: 32,
+                              ),
+                              onPressed: () {
+                                ref
+                                    .read(isBookmarkProvider.notifier)
+                                    .toggleBookmark();
 
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('Bookmark added!'),
-                                ),
-                              );
-                            },
-                          ),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width - 100,
-                            child: SaveButton(
-                              isSaveButtonEnabled: isSaveButtonEnabled,
-                              noteController: noteController,
-                              amountController: amountController,
-                              categoryName: selectedCategory,
-                              mounted: mounted,
-                              selectedWallet: selectedWallet,
-                              isBookmark: isBookmark,
-                              // date: ,
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('Bookmark added!'),
+                                  ),
+                                );
+                              },
                             ),
-                          ),
-                        ],
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width - 100,
+                              child: SaveButton(
+                                isSaveButtonEnabled: isSaveButtonEnabled,
+                                noteController: noteController,
+                                amountController: amountController,
+                                categoryName: selectedCategory,
+                                mounted: mounted,
+                                selectedWallet: selectedWallet,
+                                isBookmark: isBookmark,
+                                // date: ,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -523,9 +529,18 @@ class TransactionAmountField extends ConsumerWidget {
         textAlign: TextAlign.center,
         enableInteractiveSelection: false,
         showCursor: false,
-        keyboardType: const TextInputType.numberWithOptions(
-          decimal: true,
-        ),
+        // keyboardType: const TextInputType.numberWithOptions(
+        //   decimal: true,
+        //   signed: true,
+        // ),
+        // textInputAction: TextInputAction.done,
+        keyboardType: Platform.isIOS
+            ? TextInputType.numberWithOptions(signed: true, decimal: true)
+            : TextInputType.number,
+// This regex for only amount (price). you can create your own regex based on your requirement
+        inputFormatters: [
+          FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,4}'))
+        ],
         decoration: const InputDecoration(
           border: InputBorder.none,
           hintText: Strings.zeroAmount,
@@ -635,6 +650,7 @@ class SaveButton extends ConsumerWidget {
                   .createNewTransaction(
                     userId: userId,
                     walletId: selectedWallet!.walletId, // ? sure?
+                    walletName: selectedWallet!.walletName, // ? sure?
                     amount: double.parse(amount),
                     type: type,
                     note: note,
