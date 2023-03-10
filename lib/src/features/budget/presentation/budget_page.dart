@@ -1,6 +1,7 @@
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+// import 'package:mailer/mailer.dart';
 import 'package:pocketfi/src/common_widgets/animations/empty_contents_with_text_animation_view.dart';
 import 'package:pocketfi/src/common_widgets/animations/error_animation_view.dart';
 import 'package:pocketfi/src/common_widgets/animations/loading_animation_view.dart';
@@ -8,15 +9,13 @@ import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/common_widgets/buttons/full_width_button_with_text.dart';
 import 'package:pocketfi/src/constants/app_icons.dart';
 import 'package:pocketfi/src/constants/strings.dart';
-import 'package:pocketfi/src/features/authentication/application/user_id_provider.dart';
-import 'package:pocketfi/src/features/authentication/application/user_list_provider.dart';
 import 'package:pocketfi/src/features/budget/application/total_amount_provider.dart';
 import 'package:pocketfi/src/features/budget/application/user_budgets_provider.dart';
 import 'package:pocketfi/src/features/budget/presentation/budget_detail_view.dart';
 import 'package:pocketfi/src/features/budget/presentation/budget_tile.dart';
-import 'package:pocketfi/src/features/budget/wallet/data/set_user_provider.dart';
-import 'package:pocketfi/src/features/budget/wallet/presentation/test_checkbox.dart';
+import 'package:pocketfi/src/features/budget/wallet/data/user_wallets_provider.dart';
 import 'package:pocketfi/src/features/budget/wallet/presentation/wallet_sheet.dart';
+import 'package:pocketfi/src/features/shared/services/send_email.dart';
 
 class BudgetPage extends ConsumerStatefulWidget {
   const BudgetPage({
@@ -211,25 +210,6 @@ class _BudgetPageState extends ConsumerState<BudgetPage> {
                 // ),
               ),
             ),
-            // Expanded(
-            //   flex: 0,
-            //   child: Align(
-            //     alignment: Alignment.bottomCenter,
-            //     child: FullWidthButtonWithText(
-            //       text: 'test checkbox',
-            //       onPressed: () {
-            //         Navigator.push(
-            //           context,
-            //           MaterialPageRoute(
-            //             builder: (_) => const CheckBoxInListView(),
-            //             // builder: (_) => const CheckBoxExample(),
-            //             // builder: (_) => const MyStatefulWidget(),
-            //           ),
-            //         );
-            //       },
-            //     ),
-            //   ),
-            // ),
           ],
         ),
       ),

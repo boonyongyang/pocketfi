@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+// import 'package:mailer/mailer.dart';
+// import 'package:mailer/smtp_server/gmail.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/common_widgets/buttons/full_width_button_with_text.dart';
 import 'package:pocketfi/src/constants/app_icons.dart';
@@ -40,6 +42,17 @@ class _CreateNewWalletViewState extends ConsumerState<CreateNewWalletView> {
     // var selectedUser = ref.watch(selectedUserProvider);
     final currentUserId = ref.watch(userIdProvider);
     final users = ref.watch(usersListProvider).value?.toList();
+    // final auth = ref.watch(authStateProvider.notifier);
+    // var userEmail;
+    // for (var element in users!) {
+    //   element.userId == currentUserId ? userEmail = element.email : null;
+    // }
+    // debugPrint(userEmail);
+    // final tempUser = ref.watch(getTempDataProvider).value?.toList();
+    // List tempUserEmail = [];
+    // for (var element in tempUser!) {
+    //   tempUserEmail.add(element.email);
+    // }
 
     final getTempData = ref.watch(getTempDataProvider).value?.toList();
     List<CollaboratorsInfo> collaboratorList = [];
@@ -52,9 +65,11 @@ class _CreateNewWalletViewState extends ConsumerState<CreateNewWalletView> {
           userId: user.userId,
           displayName: user.displayName,
           email: user.email,
+          status: CollaborateRequestStatus.pending.name,
         ));
       }
     }
+    debugPrint('collaboratorStatus: ${CollaborateRequestStatus.pending.name}');
     // for (int i = 0; i < collaboratorList.length; i++) {
     //   debugPrint('collaboratorList: ${collaboratorList}');
     // }
@@ -267,6 +282,29 @@ class _CreateNewWalletViewState extends ConsumerState<CreateNewWalletView> {
                             : null),
                   ),
                 ),
+                // Expanded(
+                //   flex: 0,
+                //   child: Align(
+                //     alignment: Alignment.bottomCenter,
+                //     child: FullWidthButtonWithText(
+                //       text: 'Send email',
+                //       onPressed: () {
+                //         // sendEmail(
+                //         //   'annebelcyy15@gmail.com', auth,
+                //         //   // tempUserEmail,
+                //         // );
+                //         Navigator.push(
+                //           context,
+                //           MaterialPageRoute(
+                //             builder: (_) => const SendEmailView(),
+                //             // builder: (_) => const CheckBoxExample(),
+                //             // builder: (_) => const MyStatefulWidget(),
+                //           ),
+                //         );
+                //       },
+                //     ),
+                //   ),
+                // ),
               ],
             ),
           ),
@@ -292,6 +330,7 @@ class _CreateNewWalletViewState extends ConsumerState<CreateNewWalletView> {
           userId: element.userId,
           displayName: element.displayName,
           email: element.email,
+          status: element.status,
         ),
       );
     });

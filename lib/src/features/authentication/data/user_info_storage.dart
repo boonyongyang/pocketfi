@@ -43,12 +43,13 @@ class UserInfoStorage {
         displayName: displayName,
         email: email,
       );
-
+      final walletId = documentIdFromCurrentDate();
       final walletPayload = WalletPayload(
-        walletId: documentIdFromCurrentDate(),
+        walletId: walletId,
         walletName: 'Personal',
         // walletBalance: 0.00,
         userId: userId,
+        collaborators: const [],
       );
       // TODO: Add category payload, differentiate default and custom
 
@@ -65,7 +66,8 @@ class UserInfoStorage {
           )
           .doc(userId)
           .collection(FirebaseCollectionName.wallets)
-          .add(walletPayload);
+          .doc(walletId)
+          .set(walletPayload);
 
       // TODO: Add default category to firebase
       return true;

@@ -65,6 +65,7 @@ class CreateNewWalletNotifier extends StateNotifier<IsLoading> {
       //     .set(collaboratorPayload);
       return true;
     } catch (e) {
+      debugPrint('error in creating new wallet: $e');
       return false;
     } finally {
       isLoading = false;

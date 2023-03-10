@@ -12,7 +12,7 @@ class Wallet {
   final String walletId;
   final String walletName;
   // final double walletBalance;
-  final DateTime createdAt;
+  final DateTime? createdAt;
   // TODO maybe a list idk
   final UserId userId;
   final List<CollaboratorsInfo>? collaborators;
