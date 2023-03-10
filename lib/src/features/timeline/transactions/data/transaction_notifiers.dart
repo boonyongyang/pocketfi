@@ -124,6 +124,8 @@ class CreateNewTransactionNotifier extends StateNotifier<IsLoading> {
   }) async {
     isLoading = true;
 
+    debugPrint('createNewTransaction()');
+
     // FIXME temp solution to get the *first* wallet id
     // final walletId = await FirebaseFirestore.instance
     //     .collection(FirebaseCollectionName.users)
@@ -160,6 +162,7 @@ class CreateNewTransactionNotifier extends StateNotifier<IsLoading> {
           description: note,
           isBookmark: isBookmark,
         ).toJson();
+        debugPrint('no pic..');
       } else {
         late Uint8List thumbnailUint8List;
         // decode the image
@@ -248,6 +251,7 @@ class CreateNewTransactionNotifier extends StateNotifier<IsLoading> {
           originalFileStorageId: originalFileStorageId,
         ).toJson();
       }
+      debugPrint('uploading new transaction..');
 
       await FirebaseFirestore.instance
           .collection(FirebaseCollectionName.users)

@@ -1,23 +1,35 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-// import 'package:google_mlkit_entity_extraction/google_mlkit_entity_extraction.dart';
+import 'package:google_mlkit_entity_extraction/google_mlkit_entity_extraction.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:pocketfi/src/features/shared/image_upload/helpers/image_picker_helper.dart';
 
-class ScanReceipt extends StatefulWidget {
-  const ScanReceipt({Key? key}) : super(key: key);
+class VerifyReceiptDetails extends StatefulWidget {
+  const VerifyReceiptDetails({
+    Key? key,
+    this.pickedImage,
+  }) : super(key: key);
+
+  final XFile? pickedImage;
 
   @override
-  State<ScanReceipt> createState() => _ScanReceiptState();
+  State<VerifyReceiptDetails> createState() => _VerifyReceiptDetailsState();
 }
 
-class _ScanReceiptState extends State<ScanReceipt> {
+class _VerifyReceiptDetailsState extends State<VerifyReceiptDetails> {
   bool textScanning = false;
   XFile? imageFile;
   String scannedText = "", scannedEntities = "", formattedText = "";
   List<String?> regexExtraction = [];
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.pickedImage != null) {
+      scanTest(widget.pickedImage!);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,84 +53,10 @@ class _ScanReceiptState extends State<ScanReceipt> {
                     color: Colors.grey[300]!,
                   ),
                 if (imageFile != null) Image.file(File(imageFile!.path)),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 5),
-                        padding: const EdgeInsets.only(top: 10),
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            foregroundColor: Colors.grey,
-                            backgroundColor: Colors.white,
-                            shadowColor: Colors.grey[400],
-                            elevation: 10,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8.0)),
-                          ),
-                          onPressed: () {
-                            scanReceiptText(ImageSource.gallery);
-                          },
-                          child: Container(
-                            margin: const EdgeInsets.symmetric(
-                                vertical: 5, horizontal: 5),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                const Icon(
-                                  Icons.image,
-                                  size: 30,
-                                ),
-                                Text(
-                                  "Gallery",
-                                  style: TextStyle(
-                                      fontSize: 13, color: Colors.grey[600]),
-                                )
-                              ],
-                            ),
-                          ),
-                        )),
-                    Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 5),
-                        padding: const EdgeInsets.only(top: 10),
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            foregroundColor: Colors.grey,
-                            backgroundColor: Colors.white,
-                            shadowColor: Colors.grey[400],
-                            elevation: 10,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8.0)),
-                          ),
-                          onPressed: () {
-                            scanReceiptText(ImageSource.camera);
-                          },
-                          child: Container(
-                            margin: const EdgeInsets.symmetric(
-                                vertical: 5, horizontal: 5),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                const Icon(
-                                  Icons.camera_alt,
-                                  size: 30,
-                                ),
-                                Text(
-                                  "Camera",
-                                  style: TextStyle(
-                                      fontSize: 13, color: Colors.grey[600]),
-                                )
-                              ],
-                            ),
-                          ),
-                        )),
-                  ],
-                ),
                 const SizedBox(
                   height: 20,
                 ),
                 // Text(formattedText),
-
                 Text(
                   scannedText,
                   style: const TextStyle(
@@ -138,6 +76,22 @@ class _ScanReceiptState extends State<ScanReceipt> {
             )),
       )),
     );
+  }
+
+  void scanTest(XFile pickedImage) async {
+    try {
+      // if (pickedImage != null) {
+      textScanning = true;
+      imageFile = pickedImage;
+      setState(() {});
+      getRecognisedText(pickedImage);
+      // }
+    } catch (e) {
+      textScanning = false;
+      imageFile = null;
+      scannedText = "Error occured while scanning";
+      setState(() {});
+    }
   }
 
   void scanReceiptText(ImageSource source) async {
@@ -184,13 +138,12 @@ class _ScanReceiptState extends State<ScanReceipt> {
 // TODO This is with entity extraction
   void getRecognisedText(XFile image) async {
     final inputImage = InputImage.fromFilePath(image.path);
-    // final textRecognizer = GoogleMlKit.vision.textRecognizer();
     final textRecognizer = TextRecognizer();
     final RecognizedText recognisedText =
         await textRecognizer.processImage(inputImage);
 
     // TODO -> uncomment this
-    // List<String?> regexExtraction = extractPrices(recognisedText);
+    List<String?> regexExtraction = extractPrices(recognisedText);
 
     String scannedText = "";
     for (TextBlock block in recognisedText.blocks) {
@@ -200,23 +153,23 @@ class _ScanReceiptState extends State<ScanReceipt> {
     }
 
     // TODO -> uncomment this
-    //   final entityExtractor =
-    //       EntityExtractor(language: EntityExtractorLanguage.english);
-    //   final List<EntityAnnotation> annotations =
-    //       await entityExtractor.annotateText(recognisedText.text);
-    //   String scannedEntities = '';
-    //   for (final annotation in annotations) {
-    //     scannedEntities += '${annotation.text}\n';
-    //     for (final entity in annotation.entities) {
-    //       scannedEntities += '${entity.type} : ${entity.rawValue}\n\n';
-    //     }
-    //   }
+    final entityExtractor =
+        EntityExtractor(language: EntityExtractorLanguage.english);
+    final List<EntityAnnotation> annotations =
+        await entityExtractor.annotateText(recognisedText.text);
+    String scannedEntities = '';
+    for (final annotation in annotations) {
+      scannedEntities += '${annotation.text}\n';
+      for (final entity in annotation.entities) {
+        scannedEntities += '${entity.type} : ${entity.rawValue}\n\n';
+      }
+    }
     textRecognizer.close();
-    //   entityExtractor.close();
+    entityExtractor.close();
     setState(() {
       this.scannedText = scannedText;
-      // this.scannedEntities = scannedEntities;
-      // this.regexExtraction = regexExtraction;
+      this.scannedEntities = scannedEntities;
+      this.regexExtraction = regexExtraction;
       textScanning = false;
     });
   }
@@ -234,30 +187,30 @@ class _ScanReceiptState extends State<ScanReceipt> {
   // }
 
   // TODO -> uncomment this
-  // final RegExp priceRegex =
-  //     RegExp(r"(RM|MYR)?\s?(\d+(\.\d{2})?|\.\d{2})", caseSensitive: false);
-  // List<String> extractPrices(RecognizedText recognizedText) {
-  //   final List<String> matches = <String>[];
-  //   for (TextBlock block in recognizedText.blocks) {
-  //     for (TextLine line in block.lines) {
-  //       for (TextElement element in line.elements) {
-  //         String text = element.text;
-  //         final RegExpMatch? match = priceRegex.firstMatch(text);
-  //         if (match != null) {
-  //           final String? price = match.group(0);
-  //           matches.add(price!);
-  //         }
-  //       }
-  //     }
-  //   }
-  //   return matches
-  //       .where((price) =>
-  //           price.contains('MYR') ||
-  //           price.contains('RM') ||
-  //           price.startsWith('.') ||
-  //           (price.contains('.') && price.split('.').last.length == 2))
-  //       .toList();
-  // }
+  final RegExp priceRegex =
+      RegExp(r"(RM|MYR)?\s?(\d+(\.\d{2})?|\.\d{2})", caseSensitive: false);
+  List<String> extractPrices(RecognizedText recognizedText) {
+    final List<String> matches = <String>[];
+    for (TextBlock block in recognizedText.blocks) {
+      for (TextLine line in block.lines) {
+        for (TextElement element in line.elements) {
+          String text = element.text;
+          final RegExpMatch? match = priceRegex.firstMatch(text);
+          if (match != null) {
+            final String? price = match.group(0);
+            matches.add(price!);
+          }
+        }
+      }
+    }
+    return matches
+        .where((price) =>
+            price.contains('MYR') ||
+            price.contains('RM') ||
+            price.startsWith('.') ||
+            (price.contains('.') && price.split('.').last.length == 2))
+        .toList();
+  }
 
   // // todo this is for text recognition with each word
   // void getRecognisedText(XFile image) async {
