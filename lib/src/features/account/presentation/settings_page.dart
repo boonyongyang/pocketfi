@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pocketfi/src/constants/app_colors.dart';
+import 'package:pocketfi/src/features/account/presentation/notification_options.dart';
 
 @immutable
 class SettingsPage extends StatefulWidget {
@@ -34,18 +36,14 @@ class SettingsPageState extends State<SettingsPage> {
               "Settings",
               style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500),
             ),
-            const SizedBox(
-              height: 40,
-            ),
+            const SizedBox(height: 40),
             Row(
               children: const [
                 Icon(
                   Icons.person,
-                  color: Colors.green,
+                  color: AppColors.mainColor1,
                 ),
-                SizedBox(
-                  width: 8,
-                ),
+                SizedBox(width: 8),
                 Text(
                   "Account",
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -56,26 +54,20 @@ class SettingsPageState extends State<SettingsPage> {
               height: 15,
               thickness: 2,
             ),
-            const SizedBox(
-              height: 10,
-            ),
-            buildAccountOptionRow(context, "Change password"),
-            buildAccountOptionRow(context, "Content settings"),
-            buildAccountOptionRow(context, "Social"),
+            const SizedBox(height: 10),
+            // buildAccountOptionRow(context, "Change password"),
+            // buildAccountOptionRow(context, "Content settings"),
+            // buildAccountOptionRow(context, "Social"),
             buildAccountOptionRow(context, "Language"),
             buildAccountOptionRow(context, "Privacy and security"),
-            const SizedBox(
-              height: 40,
-            ),
+            const SizedBox(height: 40),
             Row(
               children: const [
                 Icon(
                   Icons.volume_up_outlined,
-                  color: Colors.green,
+                  color: AppColors.mainColor1,
                 ),
-                SizedBox(
-                  width: 8,
-                ),
+                SizedBox(width: 8),
                 Text(
                   "Notifications",
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -86,61 +78,84 @@ class SettingsPageState extends State<SettingsPage> {
               height: 15,
               thickness: 2,
             ),
-            const SizedBox(
-              height: 10,
+            const SizedBox(height: 10),
+            // buildNotificationOptionRow("Transaction activity", true),
+            // buildNotificationOptionRow("Budget progress", true),
+            // buildNotificationOptionRow("Bill Reminders", false),
+            // buildNotificationOptionRow("Debt Reminders", true),
+            // buildNotificationOptionRow("Savings Reminders", false),
+            const NotificationOption(
+              title: "Transaction activity",
+              isActive: true,
             ),
-            buildNotificationOptionRow("New for you", true),
-            buildNotificationOptionRow("Account activity", true),
-            buildNotificationOptionRow("Opportunity", false),
-            const SizedBox(
-              height: 50,
+            const NotificationOption(
+              title: "Budget progress",
+              isActive: true,
             ),
-            Center(
-              child: OutlinedButton(
-                style: OutlinedButton.styleFrom(
-                  side: const BorderSide(
-                    width: 2,
-                    color: Colors.green,
-                  ),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 40,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                ),
-                onPressed: () {},
-                child: const Text("SIGN OUT",
-                    style: TextStyle(
-                        fontSize: 16, letterSpacing: 2.2, color: Colors.black)),
-              ),
-            )
+            const NotificationOption(
+              title: "Bill Reminders",
+              isActive: false,
+            ),
+            const NotificationOption(
+              title: "Debt Reminders",
+              isActive: true,
+            ),
+            const NotificationOption(
+              title: "Savings Reminders",
+              isActive: false,
+            ),
+            const SizedBox(height: 50),
+            // Center(
+            //   child: OutlinedButton(
+            //     style: OutlinedButton.styleFrom(
+            //       side: const BorderSide(
+            //         width: 2,
+            //         color: AppColors.mainColor1,
+            //       ),
+            //       padding: const EdgeInsets.symmetric(
+            //         horizontal: 40,
+            //       ),
+            //       shape: RoundedRectangleBorder(
+            //         borderRadius: BorderRadius.circular(20),
+            //       ),
+            //     ),
+            //     onPressed: () {},
+            //     child: const Text("SIGN OUT",
+            //         style: TextStyle(
+            //             fontSize: 16, letterSpacing: 2.2, color: Colors.black)),
+            //   ),
+            // )
           ],
         ),
       ),
     );
   }
 
-  Row buildNotificationOptionRow(String title, bool isActive) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          title,
-          style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w500,
-              color: Colors.grey[600]),
-        ),
-        Transform.scale(
-            scale: 0.7,
-            child: CupertinoSwitch(
-              value: isActive,
-              onChanged: (bool val) {},
-            ))
-      ],
-    );
-  }
+  // Row buildNotificationOptionRow(String title, bool isActive) {
+  //   return Row(
+  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //     children: [
+  //       Text(
+  //         title,
+  //         style: TextStyle(
+  //             fontSize: 18,
+  //             fontWeight: FontWeight.w500,
+  //             color: Colors.grey[600]),
+  //       ),
+  //       Transform.scale(
+  //           scale: 0.7,
+  //           child: CupertinoSwitch(
+  //             value: isActive,
+  //             activeColor: AppColors.mainColor2,
+  //             onChanged: (bool val) {
+  //               setState(() {
+  //                 isActive = val;
+  //               });
+  //             },
+  //           ))
+  //     ],
+  //   );
+  // }
 
   GestureDetector buildAccountOptionRow(BuildContext context, String title) {
     return GestureDetector(

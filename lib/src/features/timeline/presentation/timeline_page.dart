@@ -16,11 +16,11 @@ import 'package:pocketfi/src/features/shared/image_upload/domain/file_type.dart'
 import 'package:pocketfi/src/features/shared/image_upload/helpers/image_picker_helper.dart';
 import 'package:pocketfi/src/features/timeline/transactions/presentation/add_new_transactions/add_new_transaction.dart';
 import 'package:pocketfi/src/features/timeline/transactions/presentation/add_new_transactions/create_new_post_view.dart';
-import 'package:pocketfi/src/features/timeline/transactions/receipts/add_transaction_with_receipt.dart';
-import 'package:pocketfi/src/features/timeline/transactions/receipts/scan_receipt.dart';
+import 'package:pocketfi/src/features/timeline/receipts/add_transaction_with_receipt.dart';
+import 'package:pocketfi/src/features/timeline/receipts/scan_receipt.dart';
 import 'package:pocketfi/src/features/timeline/presentation/transactions_tab.dart';
 import 'package:pocketfi/src/features/timeline/presentation/post_tab.dart';
-import 'package:pocketfi/src/features/timeline/transactions/receipts/verify_receipt_details.dart';
+import 'package:pocketfi/src/features/timeline/receipts/verify_receipt_details.dart';
 
 class TimelinePage extends ConsumerStatefulWidget {
   const TimelinePage({super.key});

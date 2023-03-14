@@ -11,10 +11,10 @@ import 'package:pocketfi/src/features/authentication/application/user_id_provide
 import 'package:pocketfi/src/features/timeline/transactions/date_picker/application/selected_date_notifier.dart';
 import 'package:pocketfi/src/features/timeline/transactions/domain/transaction.dart';
 import 'package:pocketfi/src/features/timeline/transactions/presentation/add_new_transactions/full_screen_image_dialog.dart';
-import 'package:pocketfi/src/features/timeline/transactions/receipts/add_transaction_with_receipt.dart';
-import 'package:pocketfi/src/features/timeline/transactions/receipts/application/receipt_services.dart';
-import 'package:pocketfi/src/features/timeline/transactions/receipts/domain/receipt.dart';
-import 'package:pocketfi/src/features/timeline/transactions/receipts/scanned_text_page.dart';
+import 'package:pocketfi/src/features/timeline/receipts/add_transaction_with_receipt.dart';
+import 'package:pocketfi/src/features/timeline/receipts/application/receipt_services.dart';
+import 'package:pocketfi/src/features/timeline/receipts/domain/receipt.dart';
+import 'package:pocketfi/src/features/timeline/receipts/scanned_text_page.dart';
 import 'package:uuid/uuid.dart';
 
 class VerifyReceiptDetails extends StatefulHookConsumerWidget {

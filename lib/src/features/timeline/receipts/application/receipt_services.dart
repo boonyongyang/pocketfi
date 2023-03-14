@@ -1,5 +1,5 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:pocketfi/src/features/timeline/transactions/receipts/domain/receipt.dart';
+import 'package:pocketfi/src/features/timeline/receipts/domain/receipt.dart';
 
 final receiptProvider = StateNotifierProvider<ReceiptNotifier, Receipt?>(
   (ref) => ReceiptNotifier(),

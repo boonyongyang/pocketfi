@@ -4,7 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/constants/strings.dart';
 import 'package:pocketfi/src/features/account/presentation/account_page.dart';
-import 'package:pocketfi/src/features/account/presentation/setting_page.dart';
+import 'package:pocketfi/src/features/account/presentation/settings_page.dart';
 import 'package:pocketfi/src/features/budget/presentation/budget_page.dart';
 import 'package:pocketfi/src/features/budget/presentation/create_new_budget_view.dart';
 import 'package:pocketfi/src/features/budget/wallet/presentation/create_new_wallet_view.dart';

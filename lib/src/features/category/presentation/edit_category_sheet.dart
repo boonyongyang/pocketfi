@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/common_widgets/buttons/full_width_button_with_text.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
@@ -277,8 +278,17 @@ class _AddNewCategoryPageState extends ConsumerState<EditCategorySheet> {
             FullWidthButtonWithText(
               onPressed: isSaveButtonEnabled.value
                   ? () async {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Category added')));
+                      // ScaffoldMessenger.of(context).showSnackBar(
+                      //     const SnackBar(content: Text('Category added')));
+                      Fluttertoast.showToast(
+                        msg: "Category added!",
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.BOTTOM,
+                        timeInSecForIosWeb: 2,
+                        backgroundColor: Colors.white,
+                        textColor: AppColors.mainColor1,
+                        fontSize: 16.0,
+                      );
                       Navigator.of(context).pop();
                     }
                   : null,

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
+import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/features/category/application/category_providers.dart';
 import 'package:pocketfi/src/features/timeline/transactions/domain/transaction.dart';
 
@@ -83,10 +85,19 @@ class TransactionCard extends StatelessWidget {
                                 //     MaterialTapTargetSize.shrinkWrap,
                                 label: const Text('Lunch'),
                                 onPressed: () =>
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text('Lunch!'),
-                                  ),
+                                    //     ScaffoldMessenger.of(context).showSnackBar(
+                                    //   const SnackBar(
+                                    //     content: Text('Lunch!'),
+                                    //   ),
+                                    // ),
+                                    Fluttertoast.showToast(
+                                  msg: "Lunch!",
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.BOTTOM,
+                                  timeInSecForIosWeb: 2,
+                                  backgroundColor: Colors.white,
+                                  textColor: AppColors.mainColor1,
+                                  fontSize: 16.0,
                                 ),
                               ),
                               const SizedBox(width: 5),
