@@ -17,6 +17,7 @@ import 'package:pocketfi/src/features/budget/wallet/presentation/select_wallet_d
 import 'package:pocketfi/src/features/category/application/category_providers.dart';
 import 'package:pocketfi/src/features/category/domain/category.dart';
 import 'package:pocketfi/src/features/category/presentation/category_page.dart';
+import 'package:pocketfi/src/features/timeline/bookmarks/application/bookmark_services.dart';
 import 'package:pocketfi/src/features/timeline/transactions/application/transaction_providers.dart';
 import 'package:pocketfi/src/features/timeline/transactions/data/transaction_notifiers.dart';
 import 'package:pocketfi/src/features/timeline/transactions/date_picker/presentation/transaction_date_picker.dart';
@@ -53,7 +54,7 @@ class AddTransactionWithReceiptState
     final selectedCategory = ref.watch(selectedCategoryProvider);
 
     final selectedWallet = ref.watch(selectedWalletProvider);
-    final isBookmark = ref.watch(selectedTransactionProvider)?.isBookmark;
+    final isBookmark = ref.watch(isBookmarkProvider);
 
     final amountController =
         useTextEditingController(text: selectedTransaction?.amount.toString());
@@ -150,7 +151,7 @@ class AddTransactionWithReceiptState
                           IconButton(
                             splashRadius: 22,
                             icon: Icon(
-                              isBookmark!
+                              isBookmark
                                   ? Icons.bookmark
                                   : Icons.bookmark_outline,
                               color: AppColors.mainColor2,
