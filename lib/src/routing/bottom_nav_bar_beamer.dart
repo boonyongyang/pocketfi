@@ -11,7 +11,6 @@ import 'package:pocketfi/src/features/budget/wallet/presentation/create_new_wall
 import 'package:pocketfi/src/features/budget/wallet/presentation/wallet_page.dart';
 import 'package:pocketfi/src/features/finance/finances_page.dart';
 import 'package:pocketfi/src/features/timeline/presentation/timeline_page.dart';
-import 'package:pocketfi/src/features/timeline/transactions/presentation/add_new_transactions/add_new_transaction.dart';
 import 'package:pocketfi/src/routing/temp_screens.dart';
 
 class BottomNavBarBeamer extends StatelessWidget {

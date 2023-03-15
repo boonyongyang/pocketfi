@@ -2,10 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 	<dict>
+		<key>NSFaceIDUsageDescription</key>
+		<string>${PRODUCT_NAME} would like to access FaceID</string>
 		<key>NSPhotoLibraryUsageDescription</key>
 		<string>${PRODUCT_NAME} would like to access your photos</string>
 		<key>NSCameraUsageDescription</key>
-		<string>Can I use the camera please?</string>
+		<string>${PRODUCT_NAME} would like to access your camera</string>
 		<key>CADisableMinimumFrameDurationOnPhone</key>
 		<true/>
 		<key>CFBundleDevelopmentRegion</key>

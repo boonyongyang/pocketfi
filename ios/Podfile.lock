@@ -804,6 +804,8 @@ PODS:
   - libwebp/mux (1.2.4):
     - libwebp/demux
   - libwebp/webp (1.2.4)
+  - local_auth_ios (0.0.1):
+    - Flutter
   - MLImage (1.0.0-beta3)
   - MLKitCommon (8.0.0):
     - GoogleDataTransport (~> 9.0)
@@ -865,6 +867,7 @@ DEPENDENCIES:
   - google_mlkit_text_recognition (from `.symlinks/plugins/google_mlkit_text_recognition/ios`)
   - google_sign_in_ios (from `.symlinks/plugins/google_sign_in_ios/ios`)
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
+  - local_auth_ios (from `.symlinks/plugins/local_auth_ios/ios`)
   - MLKitCommon (from `MLKitCommon.podspec.json`)
   - MLKitVision (from `MLKitVision.podspec.json`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/ios`)
@@ -934,6 +937,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/google_sign_in_ios/ios"
   image_picker_ios:
     :path: ".symlinks/plugins/image_picker_ios/ios"
+  local_auth_ios:
+    :path: ".symlinks/plugins/local_auth_ios/ios"
   MLKitCommon:
     :podspec: MLKitCommon.podspec.json
   MLKitVision:
@@ -989,6 +994,7 @@ SPEC CHECKSUMS:
   leveldb-library: 50c7b45cbd7bf543c81a468fe557a16ae3db8729
   Libuv-gRPC: 55e51798e14ef436ad9bc45d12d43b77b49df378
   libwebp: f62cb61d0a484ba548448a4bd52aabf150ff6eef
+  local_auth_ios: c6cf091ded637a88f24f86a8875d8b0f526e2605
   MLImage: 489dfec109f21da8621b28d476401aaf7a0d4ff4
   MLKitCommon: 8e5dbe4b12a434e790734211e1b00ed2db3c94ae
   MLKitTextRecognition: f6fda8923564f6cebe2bb952a1adb0414e1d731b

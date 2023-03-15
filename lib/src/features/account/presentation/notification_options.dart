@@ -2,19 +2,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
 
-class NotificationOption extends StatefulWidget {
+class SwitchOption extends StatefulWidget {
   final String title;
   final bool isActive;
 
-  const NotificationOption(
-      {required this.title, required this.isActive, Key? key})
+  const SwitchOption({required this.title, required this.isActive, Key? key})
       : super(key: key);
 
   @override
-  NotificationOptionState createState() => NotificationOptionState();
+  SwitchOptionState createState() => SwitchOptionState();
 }
 
-class NotificationOptionState extends State<NotificationOption> {
+class SwitchOptionState extends State<SwitchOption> {
   bool isActive = false;
 
   @override

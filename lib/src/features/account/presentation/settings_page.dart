@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/features/account/presentation/notification_options.dart';
@@ -55,11 +54,13 @@ class SettingsPageState extends State<SettingsPage> {
               thickness: 2,
             ),
             const SizedBox(height: 10),
-            // buildAccountOptionRow(context, "Change password"),
-            // buildAccountOptionRow(context, "Content settings"),
             // buildAccountOptionRow(context, "Social"),
             buildAccountOptionRow(context, "Language"),
             buildAccountOptionRow(context, "Privacy and security"),
+            const SwitchOption(
+              title: "App lock",
+              isActive: false,
+            ),
             const SizedBox(height: 40),
             Row(
               children: const [
@@ -84,23 +85,23 @@ class SettingsPageState extends State<SettingsPage> {
             // buildNotificationOptionRow("Bill Reminders", false),
             // buildNotificationOptionRow("Debt Reminders", true),
             // buildNotificationOptionRow("Savings Reminders", false),
-            const NotificationOption(
+            const SwitchOption(
               title: "Transaction activity",
               isActive: true,
             ),
-            const NotificationOption(
+            const SwitchOption(
               title: "Budget progress",
               isActive: true,
             ),
-            const NotificationOption(
+            const SwitchOption(
               title: "Bill Reminders",
               isActive: false,
             ),
-            const NotificationOption(
+            const SwitchOption(
               title: "Debt Reminders",
               isActive: true,
             ),
-            const NotificationOption(
+            const SwitchOption(
               title: "Savings Reminders",
               isActive: false,
             ),
