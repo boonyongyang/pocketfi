@@ -24,11 +24,12 @@ class CreateNewWalletNotifier extends StateNotifier<IsLoading> {
     final walletId = documentIdFromCurrentDate();
 
     final payload = WalletPayload(
-        walletId: walletId,
-        walletName: walletName,
-        // walletBalance: walletBalance,
-        userId: userId,
-        collaborators: users);
+      walletId: walletId,
+      walletName: walletName,
+      // walletBalance: walletBalance,
+      userId: userId,
+      // !collaborators: users
+    );
     // final collaboratorPayload = UserInfoPayload(
     //   userId: users!.userId,
     //   displayName: users.displayName,

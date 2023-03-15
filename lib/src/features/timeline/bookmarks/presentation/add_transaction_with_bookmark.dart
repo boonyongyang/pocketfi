@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:auto_size_text_field/auto_size_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/common_widgets/buttons/full_width_button_with_text.dart';
 import 'package:pocketfi/src/common_widgets/file_thumbnail_view.dart';
@@ -50,6 +51,8 @@ class AddTransactionWithBookmarkState
     final selectedCategory = ref.watch(selectedCategoryProvider);
 
     final selectedWallet = ref.watch(selectedWalletProvider);
+    final isBookmark = ref.watch(selectedTransactionProvider)?.isBookmark;
+    debugPrint('aBook is $isBookmark');
 
     final amountController =
         useTextEditingController(text: selectedTransaction?.amount.toString());
@@ -77,7 +80,7 @@ class AddTransactionWithBookmarkState
         shadowColor: Colors.transparent,
         centerTitle: true,
         title: const Text(
-          Strings.editTransaction,
+          Strings.newTransaction,
           style: TextStyle(
             color: AppColors.white,
             fontSize: 20,
@@ -176,37 +179,56 @@ class AddTransactionWithBookmarkState
                     const SizedBox(height: 8.0),
                     selectTags(),
                     selectReccurence(),
-                    Center(
-                      child: Row(
-                        children: [
-                          IconButton(
-                            splashRadius: 22,
-                            icon: const Icon(
-                              Icons.bookmark_outline,
-                              color: AppColors.mainColor1,
-                              size: 32,
-                            ),
-                            onPressed: () {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('Bookmark'),
-                                ),
-                              );
-                            },
-                          ),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width - 100,
-                            child: SaveButton(
-                              isSaveButtonEnabled: isSaveButtonEnabled,
-                              noteController: noteController,
-                              amountController: amountController,
-                              category: selectedCategory,
-                              mounted: mounted,
-                              selectedWallet: selectedWallet,
-                              date: selectedTransaction?.date,
-                            ),
-                          ),
-                        ],
+                    // Center(
+                    //   child: Row(
+                    //     children: [
+                    //       // IconButton(
+                    //       //   splashRadius: 22,
+                    //       //   icon: Icon(
+                    //       //     isBookmark!
+                    //       //         ? Icons.bookmark
+                    //       //         : Icons.bookmark_outline,
+                    //       //     color: AppColors.mainColor2,
+                    //       //     size: 32,
+                    //       //   ),
+                    //       //   onPressed: () {
+                    //       //     // isBookmark = !isBookmark;
+                    //       //     // ref
+                    //       //     //     .read(isBookmarkProvider.notifier)
+                    //       //     //     .toggleBookmark();
+                    //       //     debugPrint('b4Book is ${isBookmark}');
+
+                    //       //     ref
+                    //       //         .read(selectedTransactionProvider.notifier)
+                    //       //         .toggleBookmark(ref);
+
+                    //       //     debugPrint('afterBook is ${isBookmark}');
+                    //       //     debugPrint(
+                    //       //         'ref Book is ${ref.read(isBookmarkProvider)}');
+
+                    //       //     // ScaffoldMessenger.of(context).hideCurrentSnackBar();
+
+                    //       //     // ScaffoldMessenger.of(context).showSnackBar(
+                    //       //     //   const SnackBar(
+                    //       //     //     content: Text('Bookmark added!'),
+                    //       //     //   ),
+                    //       //     // );
+                    //       //   },
+                    //       // ),
+                    //     ],
+                    //   ),
+                    // ),
+                    SizedBox(
+                      // width: MediaQuery.of(context).size.width - 100,
+                      child: SaveButton(
+                        isSaveButtonEnabled: isSaveButtonEnabled,
+                        noteController: noteController,
+                        amountController: amountController,
+                        category: selectedCategory,
+                        mounted: mounted,
+                        selectedWallet: selectedWallet,
+                        date: selectedTransaction?.date,
+                        // isBookmark: isBookmark,
                       ),
                     ),
                   ],
@@ -601,6 +623,7 @@ class SaveButton extends ConsumerWidget {
     required this.selectedWallet,
     required this.mounted,
     required this.date,
+    // this.isBookmark = false,
   });
 
   final ValueNotifier<bool> isSaveButtonEnabled;
@@ -610,6 +633,7 @@ class SaveButton extends ConsumerWidget {
   final Wallet? selectedWallet;
   final bool mounted;
   final DateTime? date;
+  // final bool isBookmark;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -662,8 +686,10 @@ class SaveButton extends ConsumerWidget {
                     note: note,
                     categoryName: transaction.categoryName,
                     walletId: selectedWallet!.walletId,
+                    walletName: selectedWallet!.walletName,
                     date: transaction.date,
                     file: file,
+                    // isBookmark: isBookmark,
                   );
 
               debugPrint('isAdded is: $isAdded');
@@ -683,10 +709,19 @@ class SaveButton extends ConsumerWidget {
                 // clear the imageFileProvider
                 ref.read(imageFileProvider.notifier).setImageFile(null);
 
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Transaction added with bookmarks'),
-                  ),
+                // ScaffoldMessenger.of(context).showSnackBar(
+                //   const SnackBar(
+                //     content: Text('Transaction added with bookmarks'),
+                //   ),
+                // );
+                Fluttertoast.showToast(
+                  msg: "Transaction added with bookmarks",
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.BOTTOM,
+                  timeInSecForIosWeb: 2,
+                  backgroundColor: Colors.white,
+                  textColor: AppColors.mainColor1,
+                  fontSize: 16.0,
                 );
               }
             }

@@ -15,7 +15,7 @@ class Wallet {
   final DateTime createdAt;
   // TODO maybe a list idk
   final UserId userId;
-  final List<CollaboratorsInfo>? collaborators;
+  // ! final List<CollaboratorsInfo>? collaborators;
   // TODO add final Category category;
 
   Wallet(Map<String, dynamic> json)
@@ -23,15 +23,15 @@ class Wallet {
         walletName = json[FirebaseFieldName.walletName],
         // walletBalance = json[FirebaseFieldName.walletBalance],
         createdAt = (json[FirebaseFieldName.createdAt] as Timestamp).toDate(),
-        userId = json[FirebaseFieldName.userId] as UserId,
-        collaborators = json[FirebaseFieldName.collaborators] != null
-            ? List<CollaboratorsInfo>.from(
-                (json[FirebaseFieldName.collaborators] as List<dynamic>)
-                    .map<CollaboratorsInfo?>(
-                  (x) => CollaboratorsInfo.fromMap(x as Map<String, dynamic>),
-                ),
-              )
-            : null;
+        userId = json[FirebaseFieldName.userId] as UserId;
+  // ! collaborators = json[FirebaseFieldName.collaborators] != null
+  // !    ? List<CollaboratorsInfo>.from(
+  // !        (json[FirebaseFieldName.collaborators] as List<dynamic>)
+  // !            .map<CollaboratorsInfo?>(
+  // !          (x) => CollaboratorsInfo.fromMap(x as Map<String, dynamic>),
+  // !        ),
+  // !      )
+  // !   : null;
   // Wallet(Map<String, dynamic> json, {required this.walletId})
   //     : walletName = json[FirebaseFieldName.walletName],
   //       walletBalance = json[FirebaseFieldName.walletBalance],

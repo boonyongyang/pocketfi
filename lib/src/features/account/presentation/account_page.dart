@@ -4,7 +4,8 @@ import 'package:pocketfi/src/common_widgets/dialogs/alert_dialog_model.dart';
 import 'package:pocketfi/src/common_widgets/dialogs/logout_dialog.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/constants/app_icons.dart';
-import 'package:pocketfi/src/features/account/presentation/setting_page.dart';
+import 'package:pocketfi/src/features/account/presentation/edit_icon_sheet.dart';
+import 'package:pocketfi/src/features/account/presentation/settings_page.dart';
 import 'package:pocketfi/src/features/authentication/application/auth_state_provider.dart';
 import 'package:pocketfi/src/features/authentication/application/user_id_provider.dart';
 import 'package:pocketfi/src/features/authentication/application/user_info_model_provider.dart';
@@ -60,7 +61,7 @@ class AccountPageBody extends ConsumerWidget {
             press: () => Navigator.of(context, rootNavigator: true).push(
               MaterialPageRoute(
                 builder: (context) => const CategoryPage(),
-                fullscreenDialog: true,
+                // fullscreenDialog: true,
               ),
             ),
           ),
@@ -75,7 +76,7 @@ class AccountPageBody extends ConsumerWidget {
             press: () => Navigator.of(context, rootNavigator: true).push(
               MaterialPageRoute(
                 builder: (context) => const SettingsPage(),
-                fullscreenDialog: true,
+                // fullscreenDialog: true,
               ),
             ),
           ),
@@ -190,11 +191,19 @@ class AccountPagePicture extends StatelessWidget {
                   ),
                   backgroundColor: const Color(0xFFF5F6F9),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  showModalBottomSheet(
+                    isScrollControlled: true,
+                    context: context,
+                    builder: (context) {
+                      return const EditAccountIconSheet();
+                    },
+                  );
+                },
                 child: const Icon(
                   Icons.camera_alt,
                   color: AppColors.mainColor1,
-                  size: 16,
+                  size: 18,
                 ),
               ),
             ),
@@ -217,6 +226,7 @@ class AccountPageUserInfo extends ConsumerWidget {
     );
 
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text('User ID: ${userInfo.value?.userId}'),
         Text('Name: ${userInfo.value?.displayName}'),

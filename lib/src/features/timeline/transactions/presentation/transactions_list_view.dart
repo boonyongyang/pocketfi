@@ -50,10 +50,11 @@ class TransactionListView extends ConsumerWidget {
                   debugPrint(
                       'bool is ${ref.read(selectedTransactionProvider)?.isBookmark}');
                   debugPrint('isBool is ${ref.read(isBookmarkProvider)}');
-                  Navigator.push(
-                    context,
+                  // Navigator.push(context,
+                  Navigator.of(context, rootNavigator: true).push(
                     MaterialPageRoute(
-                      builder: (_) => const UpdateTransaction(),
+                      builder: (context) => const UpdateTransaction(),
+                      fullscreenDialog: true,
                     ),
                   );
                 },

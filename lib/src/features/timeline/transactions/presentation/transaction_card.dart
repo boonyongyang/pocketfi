@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
+import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/features/category/application/category_providers.dart';
 import 'package:pocketfi/src/features/timeline/transactions/domain/transaction.dart';
 
@@ -83,10 +85,19 @@ class TransactionCard extends StatelessWidget {
                                 //     MaterialTapTargetSize.shrinkWrap,
                                 label: const Text('Lunch'),
                                 onPressed: () =>
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text('Lunch!'),
-                                  ),
+                                    //     ScaffoldMessenger.of(context).showSnackBar(
+                                    //   const SnackBar(
+                                    //     content: Text('Lunch!'),
+                                    //   ),
+                                    // ),
+                                    Fluttertoast.showToast(
+                                  msg: "Lunch!",
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.BOTTOM,
+                                  timeInSecForIosWeb: 2,
+                                  backgroundColor: Colors.white,
+                                  textColor: AppColors.mainColor1,
+                                  fontSize: 16.0,
                                 ),
                               ),
                               const SizedBox(width: 5),
@@ -111,12 +122,8 @@ class TransactionCard extends StatelessWidget {
                             )
                           else
                             const SizedBox(),
-                          // Image.network(
-                          //   transaction.thumbnailUrl ?? '',
-                          //   fit: BoxFit.cover,
-                          //   height: 100.0,
-                          // ),
-                          Text(transaction.createdAt!.toIso8601String()),
+                          // Text(transaction.createdAt!.toIso8601String()),
+                          Text(transaction.walletName),
                           // format date to dd/mm/yyyy
                           Text(DateFormat('d MMM').format(transaction.date)),
                         ],
