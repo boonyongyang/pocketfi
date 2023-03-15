@@ -8,10 +8,11 @@ import 'package:pocketfi/src/common_widgets/buttons/full_width_button_with_text.
 import 'package:pocketfi/src/constants/app_icons.dart';
 import 'package:pocketfi/src/constants/strings.dart';
 import 'package:pocketfi/src/features/authentication/application/user_id_provider.dart';
+import 'package:pocketfi/src/features/authentication/application/user_info_model_provider.dart';
 import 'package:pocketfi/src/features/authentication/application/user_list_provider.dart';
 import 'package:pocketfi/src/features/authentication/domain/collaborators_info.dart';
 import 'package:pocketfi/src/features/budget/wallet/application/create_new_wallet_provider.dart';
-import 'package:pocketfi/src/features/budget/wallet/data/set_user_provider.dart';
+import 'package:pocketfi/src/features/budget/wallet/data/temp_user_provider.dart';
 import 'package:pocketfi/src/features/budget/wallet/presentation/share_wallet_sheet.dart';
 
 class CreateNewWalletView extends StatefulHookConsumerWidget {
@@ -58,6 +59,13 @@ class _CreateNewWalletViewState extends ConsumerState<CreateNewWalletView> {
     List<CollaboratorsInfo> collaboratorList = [];
     // List<TempUsers> collaboratorList = [];
     if (getTempData == null) return Container();
+    // for (var data in getTempData) {
+    //   ref.watch(tempDataProvider.notifier).updateIsChecked(
+    //         data,
+    //         false,
+    //         data.userId,
+    //       );
+    // }
     for (var user in getTempData) {
       if (user.isChecked == true) {
         // collaboratorList.add(user);
@@ -100,9 +108,9 @@ class _CreateNewWalletViewState extends ConsumerState<CreateNewWalletView> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            ref
-                .watch(tempDataProvider.notifier)
-                .deleteTempDataInFirebase(currentUserId!);
+            ref.watch(tempDataProvider.notifier).deleteTempDataInFirebase(
+                  currentUserId!,
+                );
 
             Navigator.pop(context);
           },
@@ -222,7 +230,7 @@ class _CreateNewWalletViewState extends ConsumerState<CreateNewWalletView> {
                         );
                     showModalBottomSheet(
                       context: context,
-                      builder: (context) => const ShareWalletSheet(),
+                      builder: (context) => ShareWalletSheet(),
                     );
                   },
                   child: Row(
@@ -263,6 +271,35 @@ class _CreateNewWalletViewState extends ConsumerState<CreateNewWalletView> {
                         ),
                       ),
                     ],
+                  ),
+                ),
+                // for (final user in getTempData)
+                //   if (user.isChecked == true)
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: getTempData.length,
+                    itemBuilder: (context, index) {
+                      final user = getTempData[index];
+                      return user.isChecked == true
+                          ? ListTile(
+                              dense: true,
+                              leading: const CircleAvatar(
+                                backgroundColor: AppColors.mainColor2,
+                                child: Icon(
+                                  Icons.person_rounded,
+                                  // color: AppColors.mainColor1,
+                                ),
+                              ),
+                              title: Text(
+                                user.displayName,
+                              ),
+                              subtitle: Text(
+                                user.email!,
+                              ),
+                            )
+                          : const SizedBox();
+                    },
+                    shrinkWrap: true,
                   ),
                 ),
                 Expanded(
@@ -323,6 +360,8 @@ class _CreateNewWalletViewState extends ConsumerState<CreateNewWalletView> {
     if (userId == null) {
       return;
     }
+
+    final currentUser = ref.read(userInfoModelProvider(userId));
     List<CollaboratorsInfo> collaboratorsInfo = [];
     collaborators?.forEach((element) {
       collaboratorsInfo.add(
@@ -346,6 +385,8 @@ class _CreateNewWalletViewState extends ConsumerState<CreateNewWalletView> {
               userId: userId,
               walletName: nameController.text,
               users: collaboratorsInfo,
+              ownerName: currentUser.value!.displayName,
+              ownerEmail: currentUser.value!.email,
               // walletBalance: double.parse(balanceController.text),
             );
     debugPrint('isCreated: $isCreated');

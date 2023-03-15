@@ -16,6 +16,8 @@ class CreateNewWalletNotifier extends StateNotifier<IsLoading> {
     required String walletName,
     // double? walletBalance = 0.00,
     required UserId userId,
+    required String ownerName,
+    required String? ownerEmail,
     List<CollaboratorsInfo>? users,
   }) async {
     isLoading = true;
@@ -28,6 +30,9 @@ class CreateNewWalletNotifier extends StateNotifier<IsLoading> {
         walletName: walletName,
         // walletBalance: walletBalance,
         userId: userId,
+        ownerId: userId,
+        ownerName: ownerName,
+        ownerEmail: ownerEmail,
         collaborators: users);
     // final collaboratorPayload = UserInfoPayload(
     //   userId: users!.userId,

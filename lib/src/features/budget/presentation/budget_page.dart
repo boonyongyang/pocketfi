@@ -9,11 +9,14 @@ import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/common_widgets/buttons/full_width_button_with_text.dart';
 import 'package:pocketfi/src/constants/app_icons.dart';
 import 'package:pocketfi/src/constants/strings.dart';
+import 'package:pocketfi/src/features/authentication/application/user_id_provider.dart';
 import 'package:pocketfi/src/features/budget/application/total_amount_provider.dart';
 import 'package:pocketfi/src/features/budget/application/user_budgets_provider.dart';
 import 'package:pocketfi/src/features/budget/presentation/budget_detail_view.dart';
 import 'package:pocketfi/src/features/budget/presentation/budget_tile.dart';
+import 'package:pocketfi/src/features/budget/wallet/data/check_request.dart';
 import 'package:pocketfi/src/features/budget/wallet/data/user_wallets_provider.dart';
+import 'package:pocketfi/src/features/budget/wallet/presentation/requests_view.dart';
 import 'package:pocketfi/src/features/budget/wallet/presentation/wallet_sheet.dart';
 import 'package:pocketfi/src/features/shared/services/send_email.dart';
 
@@ -32,10 +35,26 @@ class _BudgetPageState extends ConsumerState<BudgetPage> {
     final budgets = ref.watch(userBudgetsProvider);
     final totalAmount = ref.watch(totalAmountProvider).value;
 
+    final currentUserId = ref.watch(userIdProvider);
+    // final isPending =
+    //     ref.watch(checkRequestProvider.notifier).checkRequest(currentUserId!);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Budget'),
         actions: [
+          IconButton(
+            icon: const Icon(
+              Icons.notifications_rounded,
+            ),
+            onPressed: () async {
+              Navigator.of(context, rootNavigator: true).push(
+                MaterialPageRoute(
+                  builder: (context) => const RequestsView(),
+                ),
+              );
+            },
+          ),
           IconButton(
             icon: const Icon(AppIcons.wallet),
             onPressed: () {
@@ -177,37 +196,6 @@ class _BudgetPageState extends ConsumerState<BudgetPage> {
                   },
                   // },
                 ),
-                // Padding(
-                //   padding: const EdgeInsets.all(16.0),
-                //   child: SizedBox(
-                //     width: double.infinity,
-                //     child: ElevatedButton(
-                //       style: ElevatedButton.styleFrom(
-                //         fixedSize: const Size(80, 55),
-                //         backgroundColor: AppColors.mainColor1,
-                //         foregroundColor: AppColors.white,
-                //         shape: const RoundedRectangleBorder(
-                //           borderRadius: BorderRadius.all(
-                //             Radius.circular(25),
-                //           ),
-                //         ),
-                //       ),
-                //       onPressed: () =>
-                //           // {
-                //           // Navigator.push(
-                //           //   context,
-                //           //   MaterialPageRoute(
-                //           //     builder: (_) => const CreateNewBudgetView(),
-                //           //   ),
-                //           // );
-                //           context.beamToNamed("createNewBudget"),
-                //       // },
-                //       child: const FullWidthButtonWithText(
-                //         text: Strings.createNewBudget,
-                //       ),
-                //     ),
-                //   ),
-                // ),
               ),
             ),
           ],

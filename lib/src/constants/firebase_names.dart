@@ -22,6 +22,10 @@ class FirebaseFieldName {
   static const collaborators = 'collaborators';
   static const status = 'request_status';
 
+  static const ownerId = 'owner_id';
+  static const ownerName = 'owner_name';
+  static const ownerEmail = 'owner_email';
+
   static const budgetId = 'budget_id';
   static const budgetName = 'budget_name';
   static const budgetAmount = 'budget_amount';
@@ -46,6 +50,7 @@ class FirebaseCollectionName {
 
   static const wallets = 'wallets';
   static const collaborators = 'collaborators';
+  static const sharedWallets = 'shared_wallet';
 
   static const budgets = 'budgets';
 

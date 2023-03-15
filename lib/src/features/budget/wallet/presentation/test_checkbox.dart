@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/features/authentication/application/user_id_provider.dart';
 import 'package:pocketfi/src/features/authentication/application/user_list_provider.dart';
-import 'package:pocketfi/src/features/budget/wallet/data/set_user_provider.dart';
+import 'package:pocketfi/src/features/budget/wallet/data/temp_user_provider.dart';
 // import 'package:flutter/scheduler.dart' show timeDilation;
 
 // class MyStatefulWidget extends StatefulWidget {

@@ -47,6 +47,9 @@ class UserInfoStorage {
       final walletPayload = WalletPayload(
         walletId: walletId,
         walletName: 'Personal',
+        ownerId: userId,
+        ownerName: displayName,
+        ownerEmail: email ?? '',
         // walletBalance: 0.00,
         userId: userId,
         collaborators: const [],
