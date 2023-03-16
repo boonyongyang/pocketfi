@@ -4,6 +4,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/common_widgets/animations/error_animation_view.dart';
 import 'package:pocketfi/src/common_widgets/animations/loading_animation_view.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
+import 'package:pocketfi/src/features/authentication/application/user_id_provider.dart';
+import 'package:pocketfi/src/features/budget/wallet/data/temp_user_provider.dart';
 import 'package:pocketfi/src/features/budget/wallet/data/user_wallets_provider.dart';
 import 'package:pocketfi/src/features/budget/wallet/presentation/wallet_details_view.dart';
 import 'package:pocketfi/src/features/budget/wallet/presentation/wallet_tiles.dart';
@@ -20,6 +22,8 @@ class WalletSheet extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final wallets = ref.watch(userWalletsProvider);
+    final allWallets = ref.watch(allWalletsProvider);
+    final userId = ref.watch(userIdProvider);
 
     // final request = useState(
     //   RequestForWallets(
@@ -67,6 +71,9 @@ class WalletSheet extends ConsumerWidget {
                 child: IconButton(
                   icon: const Icon(Icons.add),
                   onPressed: () {
+                    ref
+                        .watch(tempDataProvider.notifier)
+                        .deleteTempDataInFirebase(userId!);
                     context.beamToNamed('createNewWallet');
                   },
                 ),
@@ -74,47 +81,94 @@ class WalletSheet extends ConsumerWidget {
             ],
           ),
           Expanded(
-              child: wallets.when(
-            data: (wallets) {
-              return ListView.builder(
-                padding: const EdgeInsets.all(8.0),
-                itemCount: wallets.length,
-                itemBuilder: (context, index) {
-                  final wallet = wallets.elementAt(index);
-                  return WalletTiles(
-                    wallet: wallet,
-                    onTap: () {
-                      // specificWallet.when(data: (specificWallet) {
-                      // final walletId = specificWallet.wallet.walletId;
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => WalletDetailsView(
-                            wallet: wallet,
+            child: wallets.when(
+              data: (wallets) {
+                return ListView.builder(
+                  padding: const EdgeInsets.all(8.0),
+                  itemCount: wallets.length,
+                  itemBuilder: (context, index) {
+                    final wallet = wallets.elementAt(index);
+                    return WalletTiles(
+                      wallet: wallet,
+                      onTap: () {
+                        // specificWallet.when(data: (specificWallet) {
+                        // final walletId = specificWallet.wallet.walletId;
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => WalletDetailsView(
+                              wallet: wallet,
+                            ),
                           ),
-                        ),
-                      );
+                        );
 
-                      // );
+                        // );
 
-                      // show snackbar code
-                      // ScaffoldMessenger.of(context).showSnackBar(
-                      //   const SnackBar(
-                      //     content: Text('Wallet tapped'),
-                      //   ),
-                      // );
-                    },
-                  );
-                },
-              );
-            },
-            error: (error, stackTrace) {
-              return const ErrorAnimationView();
-            },
-            loading: () {
-              return const LoadingAnimationView();
-            },
-          ))
+                        // show snackbar code
+                        // ScaffoldMessenger.of(context).showSnackBar(
+                        //   const SnackBar(
+                        //     content: Text('Wallet tapped'),
+                        //   ),
+                        // );
+                      },
+                    );
+                  },
+                );
+              },
+              error: (error, stackTrace) {
+                return const ErrorAnimationView();
+              },
+              loading: () {
+                return const LoadingAnimationView();
+              },
+            ),
+          ),
+          // const SizedBox(
+          //   height: 10,
+          // ),
+          // Expanded(
+          //   child: wallets.when(
+          //     data: (wallets) {
+          //       return ListView.builder(
+          //         padding: const EdgeInsets.all(8.0),
+          //         itemCount: wallets.length,
+          //         itemBuilder: (context, index) {
+          //           final wallet = wallets.elementAt(index);
+          //           return WalletTiles(
+          //             wallet: wallet,
+          //             onTap: () {
+          //               // specificWallet.when(data: (specificWallet) {
+          //               // final walletId = specificWallet.wallet.walletId;
+          //               Navigator.push(
+          //                 context,
+          //                 MaterialPageRoute(
+          //                   builder: (_) => WalletDetailsView(
+          //                     wallet: wallet,
+          //                   ),
+          //                 ),
+          //               );
+
+          //               // );
+
+          //               // show snackbar code
+          //               // ScaffoldMessenger.of(context).showSnackBar(
+          //               //   const SnackBar(
+          //               //     content: Text('Wallet tapped'),
+          //               //   ),
+          //               // );
+          //             },
+          //           );
+          //         },
+          //       );
+          //     },
+          //     error: (error, stackTrace) {
+          //       return const ErrorAnimationView();
+          //     },
+          //     loading: () {
+          //       return const LoadingAnimationView();
+          //     },
+          //   ),
+          // ),
         ],
       ),
     );

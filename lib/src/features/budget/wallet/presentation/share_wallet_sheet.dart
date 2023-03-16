@@ -7,11 +7,16 @@ import 'package:pocketfi/src/features/authentication/application/user_id_provide
 import 'package:pocketfi/src/features/authentication/application/user_info_model_provider.dart';
 import 'package:pocketfi/src/features/authentication/application/user_list_provider.dart';
 import 'package:pocketfi/src/features/authentication/domain/collaborators_info.dart';
-import 'package:pocketfi/src/features/budget/wallet/data/set_user_provider.dart';
+import 'package:pocketfi/src/features/budget/wallet/data/temp_user_provider.dart';
 import 'package:pocketfi/src/features/budget/wallet/data/user_wallets_provider.dart';
+import 'package:pocketfi/src/features/budget/wallet/domain/wallet.dart';
 
 class ShareWalletSheet extends ConsumerStatefulWidget {
-  const ShareWalletSheet({super.key});
+  // Wallet? wallet;
+  const ShareWalletSheet({
+    super.key,
+    // this.wallet,
+  });
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -39,6 +44,10 @@ class _ShareWalletSheetState extends ConsumerState<ShareWalletSheet> {
     //   userMap.add(user);
     //   debugPrint('add user: $user');
     // }
+    // ref.watch(tempDataProvider.notifier).remainStatusFromFirebase(
+    //     currentUserId: currentUserId,
+    //     user: userList,
+    //     walletId: widget);
 
     return SizedBox(
       height: MediaQuery.of(context).size.height * 0.4,
@@ -85,6 +94,8 @@ class _ShareWalletSheetState extends ConsumerState<ShareWalletSheet> {
               ),
             ],
           ),
+          // if it is creating wallet, display from temp data outside
+          // else display the tempdata in individual wallet
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(8.0),

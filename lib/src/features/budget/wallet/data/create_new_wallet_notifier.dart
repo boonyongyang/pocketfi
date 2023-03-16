@@ -16,6 +16,8 @@ class CreateNewWalletNotifier extends StateNotifier<IsLoading> {
     required String walletName,
     // double? walletBalance = 0.00,
     required UserId userId,
+    required String ownerName,
+    required String? ownerEmail,
     List<CollaboratorsInfo>? users,
   }) async {
     isLoading = true;
@@ -24,12 +26,14 @@ class CreateNewWalletNotifier extends StateNotifier<IsLoading> {
     final walletId = documentIdFromCurrentDate();
 
     final payload = WalletPayload(
-      walletId: walletId,
-      walletName: walletName,
-      // walletBalance: walletBalance,
-      userId: userId,
-      // !collaborators: users
-    );
+        walletId: walletId,
+        walletName: walletName,
+        // walletBalance: walletBalance,
+        userId: userId,
+        ownerId: userId,
+        ownerName: ownerName,
+        ownerEmail: ownerEmail,
+        collaborators: users);
     // final collaboratorPayload = UserInfoPayload(
     //   userId: users!.userId,
     //   displayName: users.displayName,
@@ -66,6 +70,7 @@ class CreateNewWalletNotifier extends StateNotifier<IsLoading> {
       //     .set(collaboratorPayload);
       return true;
     } catch (e) {
+      debugPrint('error in creating new wallet: $e');
       return false;
     } finally {
       isLoading = false;

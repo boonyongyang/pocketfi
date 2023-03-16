@@ -12,31 +12,60 @@ class Wallet {
   final String walletId;
   final String walletName;
   // final double walletBalance;
-  final DateTime createdAt;
-  // TODO maybe a list idk
+  final DateTime? createdAt;
   final UserId userId;
-  // ! final List<CollaboratorsInfo>? collaborators;
-  // TODO add final Category category;
+  final UserId? ownerId;
+  final String? ownerName;
+  final String? ownerEmail;
+  final List<CollaboratorsInfo>? collaborators;
+  // TODO add final Category category;`
 
   Wallet(Map<String, dynamic> json)
       : walletId = json[FirebaseFieldName.walletId],
         walletName = json[FirebaseFieldName.walletName],
         // walletBalance = json[FirebaseFieldName.walletBalance],
         createdAt = (json[FirebaseFieldName.createdAt] as Timestamp).toDate(),
-        userId = json[FirebaseFieldName.userId] as UserId;
-  // ! collaborators = json[FirebaseFieldName.collaborators] != null
-  // !    ? List<CollaboratorsInfo>.from(
-  // !        (json[FirebaseFieldName.collaborators] as List<dynamic>)
-  // !            .map<CollaboratorsInfo?>(
-  // !          (x) => CollaboratorsInfo.fromMap(x as Map<String, dynamic>),
-  // !        ),
-  // !      )
-  // !   : null;
+        userId = json[FirebaseFieldName.userId] as UserId,
+        ownerId = json[FirebaseFieldName.ownerId] as UserId,
+        ownerName = json[FirebaseFieldName.ownerName] as String,
+        ownerEmail = json[FirebaseFieldName.ownerEmail] as String,
+        collaborators = json[FirebaseFieldName.collaborators] != null
+            ? List<CollaboratorsInfo>.from(
+                (json[FirebaseFieldName.collaborators] as List<dynamic>)
+                    .map<CollaboratorsInfo?>(
+                  (x) => CollaboratorsInfo.fromMap(x as Map<String, dynamic>),
+                ),
+              )
+            : null;
   // Wallet(Map<String, dynamic> json, {required this.walletId})
   //     : walletName = json[FirebaseFieldName.walletName],
   //       walletBalance = json[FirebaseFieldName.walletBalance],
   //       createdAt = (json[FirebaseFieldName.createdAt] as Timestamp).toDate(),
   //       userId = json[FirebaseFieldName.userId] as UserId;
+
+  Wallet copyWith({
+    String? walletId,
+    String? walletName,
+    // double? walletBalance,
+    DateTime? createdAt,
+    UserId? userId,
+    UserId? ownerId,
+    String? ownerName,
+    String? ownerEmail,
+    List<CollaboratorsInfo>? collaborators,
+  }) {
+    return Wallet({
+      FirebaseFieldName.walletId: walletId ?? this.walletId,
+      FirebaseFieldName.walletName: walletName ?? this.walletName,
+      // FirebaseFieldName.walletBalance: walletBalance ?? this.walletBalance,
+      FirebaseFieldName.createdAt: createdAt ?? this.createdAt,
+      FirebaseFieldName.userId: userId ?? this.userId,
+      FirebaseFieldName.ownerId: ownerId ?? this.ownerId,
+      FirebaseFieldName.ownerName: ownerName ?? this.ownerName,
+      FirebaseFieldName.ownerEmail: ownerEmail ?? this.ownerEmail,
+      FirebaseFieldName.collaborators: collaborators ?? this.collaborators,
+    });
+  }
 
   @override
   bool operator ==(covariant Wallet other) =>
@@ -46,6 +75,9 @@ class Wallet {
       // other.walletBalance == walletBalance &&
       other.createdAt == createdAt &&
       // other.collaborators == collaborators &&
+      other.ownerId == ownerId &&
+      other.ownerName == ownerName &&
+      other.ownerEmail == ownerEmail &&
       other.userId == userId;
 
   @override
@@ -54,6 +86,9 @@ class Wallet {
           walletId,
           walletName,
           // walletBalance,
+          ownerId,
+          ownerName,
+          ownerEmail,
           createdAt,
           userId,
         ],
