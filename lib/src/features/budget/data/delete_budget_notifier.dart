@@ -21,18 +21,23 @@ class DeleteBudgetStateNotifier extends StateNotifier<IsLoading> {
           .get();
       isLoading = true;
 
-      if (wallets.docs.length == 1) {
-        return false;
-      }
+      // if (wallets.docs.length == 1) {
+      //   return false;
+      // }
+
+      // final query = FirebaseFirestore.instance
+      //     .collection(FirebaseCollectionName.users)
+      //     .doc(FirebaseAuth.instance.currentUser!.uid)
+      //     .collection(FirebaseCollectionName.wallets)
+      //     .doc(wallets.docs.first.id)
+      //     .collection(FirebaseCollectionName.budgets)
+      //     .where(FieldPath.documentId, isEqualTo: budgetId)
+      //     .limit(1)
+      //     .get();
 
       final query = FirebaseFirestore.instance
-          .collection(FirebaseCollectionName.users)
-          .doc(FirebaseAuth.instance.currentUser!.uid)
-          .collection(FirebaseCollectionName.wallets)
-          .doc(wallets.docs.first.id)
-          .collection(FirebaseCollectionName.budgets)
-          .where(FieldPath.documentId, isEqualTo: budgetId)
-          .limit(1)
+          .collectionGroup(FirebaseCollectionName.budgets)
+          .where(FirebaseFieldName.budgetId, isEqualTo: budgetId)
           .get();
 
       await query.then((query) async {

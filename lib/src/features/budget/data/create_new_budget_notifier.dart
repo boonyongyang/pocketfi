@@ -38,14 +38,42 @@ class CreateNewBudgetNotifier extends StateNotifier<IsLoading> {
     );
 
     try {
-      await FirebaseFirestore.instance
-          .collection(FirebaseCollectionName.users)
-          .doc(userId)
-          .collection(FirebaseCollectionName.wallets)
-          .doc(walletId)
-          .collection(FirebaseCollectionName.budgets)
-          .doc(budgetId)
-          .set(payload);
+      final query = FirebaseFirestore.instance
+          .collectionGroup(FirebaseCollectionName.wallets)
+          .where(FirebaseFieldName.walletId, isEqualTo: walletId)
+          .get();
+
+      await query.then(
+        (query) async {
+          for (final doc in query.docs) {
+            await doc.reference
+                .collection(FirebaseCollectionName.budgets)
+                .doc(budgetId)
+                .set(payload);
+          }
+        },
+      );
+
+      // await FirebaseFirestore.instance
+      //     .collection(FirebaseCollectionName.users)
+      //     .doc(userId)
+      //     .collection(FirebaseCollectionName.wallets)
+      //     .doc(walletId)
+      //     .collection(FirebaseCollectionName.budgets)
+      //     .doc(budgetId)
+      //     .set(payload);
+      // final walletSnapshots = await FirebaseFirestore.instance
+      //     .collection(FirebaseCollectionName.users)
+      //     .doc(userId)
+      //     .collection(FirebaseCollectionName.wallets)
+      //     .where(FirebaseFieldName.walletId, isEqualTo: walletId)
+      //     .get();
+      // for (final walletSnapshot in walletSnapshots.docs) {
+      //   await walletSnapshot.reference
+      //       .collection(FirebaseCollectionName.budgets)
+      //       .doc(budgetId)
+      //       .set(payload);
+      // }
 
       return true;
     } catch (e) {

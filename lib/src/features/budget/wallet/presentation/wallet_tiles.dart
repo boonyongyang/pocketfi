@@ -48,14 +48,23 @@ class WalletTiles extends ConsumerWidget {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
-                  children: const [
-                    CircleAvatar(
-                      backgroundColor: AppColors.subColor2,
-                      child: Icon(
-                        AppIcons.wallet,
-                        color: Colors.white,
+                  children: [
+                    if (wallet.ownerId != wallet.userId)
+                      const CircleAvatar(
+                        backgroundColor: AppColors.subColor1,
+                        child: Icon(
+                          AppIcons.wallet,
+                          color: Colors.white,
+                        ),
                       ),
-                    ),
+                    if (wallet.ownerId == wallet.userId)
+                      const CircleAvatar(
+                        backgroundColor: AppColors.subColor2,
+                        child: Icon(
+                          AppIcons.wallet,
+                          color: Colors.white,
+                        ),
+                      ),
                   ],
                 ),
               ),
