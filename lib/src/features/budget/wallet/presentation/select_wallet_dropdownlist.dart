@@ -40,8 +40,10 @@ class SelectWalletDropdownList extends ConsumerWidget {
 }
 
 class SelectWalletForBudgetDropdownList extends ConsumerWidget {
-  const SelectWalletForBudgetDropdownList({
+  String? walletId;
+  SelectWalletForBudgetDropdownList({
     super.key,
+    this.walletId,
   });
 
   @override
@@ -66,8 +68,15 @@ class SelectWalletForBudgetDropdownList extends ConsumerWidget {
           }).toList(),
           onChanged: (selectedWallet) {
             debugPrint('wallet tapped: ${selectedWallet?.walletName}');
-            ref.read(selectedWalletForBudgetProvider.notifier).state =
-                selectedWallet!;
+            if (walletId == null) {
+              ref.read(selectedWalletForBudgetProvider.notifier).state =
+                  selectedWallet!;
+            }
+            //! need to fix this -> need to get wallet with wallet id
+            // else {
+            //   ref.read(selectedWalletForBudgetProvider.notifier).state =
+            // ;
+            // }
             debugPrint(
                 'selected wallet: ${ref.read(selectedWalletForBudgetProvider)?.walletName}');
           },

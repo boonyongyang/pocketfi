@@ -7,9 +7,12 @@ import 'package:pocketfi/src/common_widgets/dialogs/delete_dialog.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/constants/app_icons.dart';
 import 'package:pocketfi/src/constants/strings.dart';
+import 'package:pocketfi/src/features/authentication/application/user_id_provider.dart';
 import 'package:pocketfi/src/features/budget/application/delete_budget_provider.dart';
+import 'package:pocketfi/src/features/budget/application/update_budget_provider.dart';
 import 'package:pocketfi/src/features/budget/application/user_budgets_provider.dart';
 import 'package:pocketfi/src/features/budget/domain/budget.dart';
+import 'package:pocketfi/src/features/budget/wallet/data/wallet_provider.dart';
 import 'package:pocketfi/src/features/budget/wallet/presentation/select_wallet_dropdownlist.dart';
 
 class BudgetDetailsView extends StatefulHookConsumerWidget {
@@ -35,6 +38,13 @@ class _BudgetDetailsViewState extends ConsumerState<BudgetDetailsView> {
     );
 
     final budgets = ref.watch(userBudgetsProvider);
+
+    final wallet = ref.watch(
+        getWalletFromWalletIdProvider(widget.budget.walletId.toString()));
+
+    // if (wallet.value!.walletName == null) {
+    //   return Container();
+    // }
 
     return Scaffold(
       appBar: AppBar(
@@ -149,9 +159,12 @@ class _BudgetDetailsViewState extends ConsumerState<BudgetDetailsView> {
                   ],
                 ),
                 Row(
-                  children: const [
-                    Padding(
-                      padding: EdgeInsets.only(left: 16.0, right: 32.0),
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.only(
+                        left: 16.0,
+                        right: 32.0,
+                      ),
                       child: SizedBox(
                         width: 5,
                         child: Icon(
@@ -160,11 +173,11 @@ class _BudgetDetailsViewState extends ConsumerState<BudgetDetailsView> {
                         ),
                       ),
                     ),
-                    Expanded(
+                    const Expanded(
                       child: Padding(
                         padding: EdgeInsets.all(16.0),
                         child: Text(
-                          'Wallets',
+                          'Wallet selected',
                           style: TextStyle(
                             // color: AppSwatches.mainColor2,
                             // fontWeight: FontWeight.bold,
@@ -174,13 +187,29 @@ class _BudgetDetailsViewState extends ConsumerState<BudgetDetailsView> {
                       ),
                     ),
                     Padding(
-                        padding: EdgeInsets.only(
-                          left: 8.0,
-                          right: 16.0,
-                          // top: 16.0,
-                          bottom: 8.0,
+                      padding: const EdgeInsets.only(
+                        left: 8.0,
+                        right: 32.0,
+                        // top: 16.0,
+                        // bottom: 8.0,
+                      ),
+                      child: Text(
+                        wallet.when(
+                          data: (wallet) {
+                            return wallet.walletName;
+                          },
+                          error: (error, stack) {
+                            return error.toString();
+                          },
+                          loading: () => 'Loading',
                         ),
-                        child: SelectWalletForBudgetDropdownList()),
+                        style: const TextStyle(
+                          color: AppColors.mainColor1,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ],
@@ -188,7 +217,13 @@ class _BudgetDetailsViewState extends ConsumerState<BudgetDetailsView> {
           ),
           FullWidthButtonWithText(
             text: 'Save Changes',
-            onPressed: () {},
+            onPressed: () {
+              _updateBudgetController(
+                budgetNameController,
+                amountController,
+                ref,
+              );
+            },
             // isCreateButtonEnabled.value
             //     ? () async {
             //         _createNewWalletController(
@@ -203,6 +238,39 @@ class _BudgetDetailsViewState extends ConsumerState<BudgetDetailsView> {
       ),
     );
   }
+
   // );
+  Future<void> _updateBudgetController(
+    TextEditingController nameController,
+    TextEditingController amountController,
+    WidgetRef ref,
+  ) async {
+    final userId = ref.read(userIdProvider);
+    if (userId == null) {
+      return;
+    }
+    // List<CollaboratorsInfo> collaboratorsInfo = [];
+    // collaborators?.forEach((element) {
+    //   collaboratorsInfo.add(
+    //     CollaboratorsInfo(
+    //       userId: element.userId,
+    //       displayName: element.displayName,
+    //       email: element.email,
+    //       status: element.status,
+    //     ),
+    //   );
+    // });
+    final isUpdated =
+        await ref.read(updateBudgetProvider.notifier).updateBudget(
+              walletId: widget.budget.walletId,
+              budgetName: nameController.text,
+              budgetId: widget.budget.budgetId,
+              budgetAmount: double.parse(amountController.text),
+            );
+    if (isUpdated && mounted) {
+      nameController.clear();
+      Navigator.of(context).maybePop();
+    }
+  }
 }
 // }

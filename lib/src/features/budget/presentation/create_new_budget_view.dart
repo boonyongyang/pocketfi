@@ -142,8 +142,8 @@ class _CreateNewBudgetViewState extends ConsumerState<CreateNewBudgetView> {
                   ],
                 ),
                 Row(
-                  children: const [
-                    Padding(
+                  children: [
+                    const Padding(
                       padding: EdgeInsets.only(left: 16.0, right: 32.0),
                       child: SizedBox(
                         width: 5,
@@ -153,7 +153,7 @@ class _CreateNewBudgetViewState extends ConsumerState<CreateNewBudgetView> {
                         ),
                       ),
                     ),
-                    Expanded(
+                    const Expanded(
                       child: Padding(
                         padding: EdgeInsets.all(16.0),
                         child: Text(
@@ -167,7 +167,7 @@ class _CreateNewBudgetViewState extends ConsumerState<CreateNewBudgetView> {
                       ),
                     ),
                     Padding(
-                        padding: EdgeInsets.only(
+                        padding: const EdgeInsets.only(
                           left: 8.0,
                           right: 16.0,
                           // top: 16.0,
