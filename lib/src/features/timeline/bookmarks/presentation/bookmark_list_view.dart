@@ -26,6 +26,11 @@ class BookmarkListView extends ConsumerWidget {
             ref
                 .read(selectedTransactionProvider.notifier)
                 .setSelectedTransaction(transaction, ref);
+
+            ref
+                .read(selectedTransactionProvider.notifier)
+                .updateTransactionDate(DateTime.now(), ref);
+
             Navigator.push(
               context,
               MaterialPageRoute(

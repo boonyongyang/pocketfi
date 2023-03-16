@@ -34,6 +34,7 @@ class Transaction {
   final String transactionId;
   final String userId;
   final String walletId;
+  final String walletName;
   final double amount;
   final String categoryName;
   final TransactionType type;
@@ -87,6 +88,7 @@ class Transaction {
     required this.transactionId,
     required this.userId,
     required this.walletId,
+    required this.walletName,
     required this.amount,
     required this.categoryName,
     required this.description,
@@ -109,6 +111,7 @@ class Transaction {
           transactionId: transactionId,
           userId: json[TransactionKey.userId],
           walletId: json[TransactionKey.walletId],
+          walletName: json[TransactionKey.walletName],
           amount: json[TransactionKey.amount],
           categoryName: json[TransactionKey.categoryName],
           description: json[TransactionKey.description],
@@ -132,6 +135,7 @@ class Transaction {
   Map<String, dynamic> toJson() => {
         TransactionKey.userId: userId,
         TransactionKey.walletId: walletId,
+        TransactionKey.walletName: walletName,
         TransactionKey.amount: amount,
         TransactionKey.categoryName: categoryName,
         TransactionKey.type: type.name,
@@ -160,6 +164,7 @@ class Transaction {
     String? transactionId,
     String? userId,
     String? walletId,
+    String? walletName,
     double? amount,
     String? categoryName,
     TransactionType? type,
@@ -178,6 +183,7 @@ class Transaction {
       transactionId: transactionId ?? this.transactionId,
       userId: userId ?? this.userId,
       walletId: walletId ?? this.walletId,
+      walletName: walletName ?? this.walletName,
       amount: amount ?? this.amount,
       categoryName: categoryName ?? this.categoryName,
       type: type ?? this.type,
@@ -218,6 +224,7 @@ class TransactionKey {
   // static const shared = 'shared';
 
   static const walletId = 'wallet_id';
+  static const walletName = 'wallet_name';
 
   const TransactionKey._();
 }

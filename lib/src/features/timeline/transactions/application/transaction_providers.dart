@@ -26,6 +26,7 @@ final deleteTransactionProvider =
     StateNotifierProvider<DeleteTransactionNotifier, IsLoading>(
         (ref) => DeleteTransactionNotifier());
 
+// * get all transactions from all wallets
 final userTransactionsProvider =
     StreamProvider.autoDispose<Iterable<Transaction>>(
   (ref) {
@@ -45,20 +46,18 @@ final userTransactionsProvider =
     debugPrint(userId);
 
     final sub = FirebaseFirestore.instance
-        .collection(FirebaseCollectionName.users)
-        .doc(userId)
-        .collection(FirebaseCollectionName.wallets)
-        // .doc('2023-02-27T23:18:16.426104')
-        .doc(walletId)
-        .collection(FirebaseCollectionName.transactions)
-        .orderBy(
-          FirebaseFieldName.date,
-          descending: true, // descending order.
-        )
-        // .where(
-        //   TransactionKey.userId,
-        //   isEqualTo: userId,
+        // .collection(FirebaseCollectionName.users)
+        // .doc(userId)
+        // .collection(FirebaseCollectionName.wallets)
+        // .doc(walletId)
+        // .collection(FirebaseCollectionName.transactions)
+        // .orderBy(
+        //   FirebaseFieldName.date,
+        //   descending: true,
         // )
+        .collectionGroup(FirebaseCollectionName.transactions)
+        .where(TransactionKey.userId, isEqualTo: userId)
+        .orderBy(TransactionKey.date, descending: true)
         .snapshots()
         .listen(
       (snapshot) {

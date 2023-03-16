@@ -44,20 +44,15 @@ final bookmarkTransactionsProvider =
     debugPrint(userId);
 
     final sub = FirebaseFirestore.instance
-        .collection(FirebaseCollectionName.users)
-        .doc(userId)
-        .collection(FirebaseCollectionName.wallets)
-        // .doc('2023-02-27T23:18:16.426104')
-        .doc(walletId)
-        .collection(FirebaseCollectionName.transactions)
-        .orderBy(
-          FirebaseFieldName.date,
-          descending: true, // descending order.
-        )
-        .where(
-          TransactionKey.isBookmark,
-          isEqualTo: true,
-        )
+        // .collection(FirebaseCollectionName.users)
+        // .doc(userId)
+        // .collection(FirebaseCollectionName.wallets)
+        // .doc(walletId)
+        // .collection(FirebaseCollectionName.transactions)
+        .collectionGroup(FirebaseCollectionName.transactions)
+        .where(TransactionKey.userId, isEqualTo: userId)
+        .where(TransactionKey.isBookmark, isEqualTo: true)
+        .orderBy(FirebaseFieldName.date, descending: true)
         .snapshots()
         .listen(
       (snapshot) {

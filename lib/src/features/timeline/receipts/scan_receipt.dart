@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 // import 'package:google_mlkit_entity_extraction/google_mlkit_entity_extraction.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:pocketfi/src/features/shared/image_upload/helpers/image_picker_helper.dart';
 
 class ScanReceipt extends StatefulWidget {
   const ScanReceipt({Key? key}) : super(key: key);
@@ -14,11 +15,8 @@ class ScanReceipt extends StatefulWidget {
 
 class _ScanReceiptState extends State<ScanReceipt> {
   bool textScanning = false;
-
   XFile? imageFile;
-
   String scannedText = "", scannedEntities = "", formattedText = "";
-
   List<String?> regexExtraction = [];
 
   @override
@@ -26,7 +24,7 @@ class _ScanReceiptState extends State<ScanReceipt> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text("Text Recognition example"),
+        title: const Text("Scan a Receipt"),
       ),
       body: Center(
           child: SingleChildScrollView(
@@ -38,8 +36,8 @@ class _ScanReceiptState extends State<ScanReceipt> {
                 if (textScanning) const CircularProgressIndicator(),
                 if (!textScanning && imageFile == null)
                   Container(
-                    width: 300,
-                    height: 300,
+                    // width: 300,
+                    // height: 300,
                     color: Colors.grey[300]!,
                   ),
                 if (imageFile != null) Image.file(File(imageFile!.path)),
@@ -145,6 +143,7 @@ class _ScanReceiptState extends State<ScanReceipt> {
   void scanReceiptText(ImageSource source) async {
     try {
       final pickedImage = await ImagePicker().pickImage(source: source);
+
       if (pickedImage != null) {
         textScanning = true;
         imageFile = pickedImage;

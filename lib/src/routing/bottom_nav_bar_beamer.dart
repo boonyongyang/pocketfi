@@ -4,14 +4,13 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/constants/strings.dart';
 import 'package:pocketfi/src/features/account/presentation/account_page.dart';
-import 'package:pocketfi/src/features/account/presentation/setting_page.dart';
+import 'package:pocketfi/src/features/account/presentation/settings_page.dart';
 import 'package:pocketfi/src/features/budget/presentation/budget_page.dart';
 import 'package:pocketfi/src/features/budget/presentation/create_new_budget_view.dart';
 import 'package:pocketfi/src/features/budget/wallet/presentation/create_new_wallet_view.dart';
 import 'package:pocketfi/src/features/budget/wallet/presentation/wallet_page.dart';
 import 'package:pocketfi/src/features/finance/finances_page.dart';
 import 'package:pocketfi/src/features/timeline/presentation/timeline_page.dart';
-import 'package:pocketfi/src/features/timeline/transactions/presentation/add_new_transactions/add_new_transaction.dart';
 import 'package:pocketfi/src/routing/temp_screens.dart';
 
 class BottomNavBarBeamer extends StatelessWidget {
@@ -59,22 +58,22 @@ class TimelineLocation extends BeamLocation<BeamState> {
           // child: RootScreen(label: 'Timeline', detailsPath: '/timeline/details'),
           child: TimelinePage(),
         ),
-        if (state.uri.pathSegments.length == 2)
-          const BeamPage(
-            // type: BeamPageType.slideTransition,
-            key: ValueKey('timeline/overview'),
-            title: 'Overview Details',
-            child: AddNewTransaction(),
-            // child: AddNewExpensePage(),
-          ),
-        if (state.uri.pathSegments.length == 3)
-          const BeamPage(
-            fullScreenDialog: true,
-            // type: BeamPageType.fadeTransition,
-            key: ValueKey('timeline/overview/selectcategory'),
-            title: 'Select Category',
-            child: DetailsScreen(label: 'Select Category'),
-          ),
+        // if (state.uri.pathSegments.length == 2)
+        //   const BeamPage(
+        //     // type: BeamPageType.slideTransition,
+        //     key: ValueKey('timeline/overview'),
+        //     title: 'Overview Details',
+        //     child: AddNewTransaction(),
+        //     // child: AddNewExpensePage(),
+        //   ),
+        // if (state.uri.pathSegments.length == 3)
+        //   const BeamPage(
+        //     fullScreenDialog: true,
+        //     // type: BeamPageType.fadeTransition,
+        //     key: ValueKey('timeline/overview/selectcategory'),
+        //     title: 'Select Category',
+        //     child: DetailsScreen(label: 'Select Category'),
+        //   ),
       ];
 }
 

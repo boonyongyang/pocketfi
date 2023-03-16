@@ -71,6 +71,11 @@ class Strings {
   static const transfer = 'Transfer';
   static const save = 'Save';
 
+  // receipt
+  static const scanReceiptFrom = 'Scan Receipt from';
+  static const camera = 'Camera';
+  static const gallery = 'Gallery';
+
   // bills
   static const bills = 'Bills';
 

@@ -117,11 +117,14 @@ class CreateNewTransactionNotifier extends StateNotifier<IsLoading> {
     required TransactionType type,
     required String categoryName,
     required String walletId,
+    required String walletName,
     required File? file,
     String? note,
     bool isBookmark = false,
   }) async {
     isLoading = true;
+
+    debugPrint('createNewTransaction()');
 
     // FIXME temp solution to get the *first* wallet id
     // final walletId = await FirebaseFirestore.instance
@@ -151,6 +154,7 @@ class CreateNewTransactionNotifier extends StateNotifier<IsLoading> {
           transactionId: transactionId,
           userId: userId,
           walletId: walletId,
+          walletName: walletName,
           amount: amount,
           date: date,
           type: type,
@@ -158,6 +162,7 @@ class CreateNewTransactionNotifier extends StateNotifier<IsLoading> {
           description: note,
           isBookmark: isBookmark,
         ).toJson();
+        debugPrint('no pic..');
       } else {
         late Uint8List thumbnailUint8List;
         // decode the image
@@ -230,6 +235,7 @@ class CreateNewTransactionNotifier extends StateNotifier<IsLoading> {
           transactionId: transactionId,
           userId: userId,
           walletId: walletId,
+          walletName: walletName,
           amount: amount,
           date: date,
           isBookmark: isBookmark,
@@ -245,6 +251,7 @@ class CreateNewTransactionNotifier extends StateNotifier<IsLoading> {
           originalFileStorageId: originalFileStorageId,
         ).toJson();
       }
+      debugPrint('uploading new transaction..');
 
       await FirebaseFirestore.instance
           .collection(FirebaseCollectionName.users)
@@ -281,6 +288,7 @@ class UpdateTransactionNotifier extends StateNotifier<IsLoading> {
     required TransactionType type,
     required String categoryName,
     required String walletId,
+    required String walletName,
     required File? file,
     String? note,
     bool isBookmark = false,
@@ -320,12 +328,48 @@ class UpdateTransactionNotifier extends StateNotifier<IsLoading> {
               TransactionKey.amount: amount,
               TransactionKey.date: date,
               TransactionKey.type: type.name,
+              TransactionKey.walletId: walletId,
+              TransactionKey.walletName: walletName,
               TransactionKey.categoryName: categoryName,
               TransactionKey.description: note,
               TransactionKey.isBookmark: isBookmark,
             });
 
-        await Future.delayed(const Duration(milliseconds: 100));
+        // await Future.delayed(const Duration(milliseconds: 100));
+      });
+      return true;
+    } catch (e) {
+      debugPrint(e.toString());
+      return false;
+    } finally {
+      isLoading = false;
+    }
+  }
+
+  Future<bool> toogleBookmark({
+    required Transaction transaction,
+  }) async {
+    try {
+      isLoading = true;
+
+      final querySnaptshot = FirebaseFirestore.instance
+          .collection(FirebaseCollectionName.users)
+          .doc(transaction.userId)
+          .collection(FirebaseCollectionName.wallets)
+          .doc(transaction.walletId)
+          .collection(FirebaseCollectionName.transactions)
+          .where(FieldPath.documentId, isEqualTo: transaction.transactionId)
+          .limit(1)
+          .get();
+
+      await querySnaptshot.then((querySnaptshot) async {
+        final doc = querySnaptshot.docs.first;
+
+        await doc.reference.update({
+          TransactionKey.isBookmark: !transaction.isBookmark,
+        });
+
+        // await Future.delayed(const Duration(milliseconds: 100));
       });
       return true;
     } catch (e) {
