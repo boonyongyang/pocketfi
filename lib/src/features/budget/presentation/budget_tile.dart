@@ -95,8 +95,10 @@ class BudgetTile extends ConsumerWidget {
                       ),
                       Row(
                         mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.end,
+                        // mainAxisAlignment: MainAxisAlignment.end,
                         children: [
+                          Text(budget.categoryName),
+                          const Spacer(),
                           Text(
                             "RM ${budget.usedAmount.toStringAsFixed(2)} left",
                             style: const TextStyle(

@@ -29,15 +29,32 @@ final totalAmountProvider = StreamProvider.autoDispose<double>((ref) {
       .listen((snapshot) {
     final document = snapshot.docs;
     final budgets = document.map(
-      (doc) => Budget(doc.data()).budgetAmount,
+      (doc) => Budget.fromJson(doc.data()),
     );
     // get budgetAmount from all budgets code
-    final totalBudgetAmount = budgets.fold(
-      0.00,
-      (previousValue, element) => previousValue + element,
-    );
+    Iterable<Budget> budgetsList = [];
 
-    controller.sink.add(totalBudgetAmount);
+    for (var budget in budgets) {
+      if (budgetsList.isEmpty) {
+        budgetsList = [budget];
+      } else {
+        var isSame = false;
+        for (var budgetList in budgetsList) {
+          if (budget.budgetId == budgetList.budgetId) {
+            isSame = true;
+          }
+        }
+        if (!isSame) {
+          budgetsList = [...budgetsList, budget];
+          final totalBudgetAmount = budgetsList
+              .map((budget) => budget.budgetAmount)
+              .reduce((value, element) => value + element);
+
+          controller.sink.add(totalBudgetAmount);
+          // controller.sink.add(budgetsList);
+        }
+      }
+    }
   });
 
   ref.onDispose(() {

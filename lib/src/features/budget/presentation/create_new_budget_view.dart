@@ -10,6 +10,10 @@ import 'package:pocketfi/src/features/budget/application/create_new_budget_provi
 import 'package:pocketfi/src/features/budget/wallet/data/user_wallets_provider.dart';
 import 'package:pocketfi/src/features/budget/wallet/domain/wallet.dart';
 import 'package:pocketfi/src/features/budget/wallet/presentation/select_wallet_dropdownlist.dart';
+import 'package:pocketfi/src/features/category/application/category_providers.dart';
+import 'package:pocketfi/src/features/category/domain/category.dart';
+import 'package:pocketfi/src/features/category/presentation/category_page.dart';
+import 'package:pocketfi/src/features/timeline/transactions/presentation/add_new_transactions/category_selector_view.dart';
 
 class CreateNewBudgetView extends StatefulHookConsumerWidget {
   const CreateNewBudgetView({super.key});
@@ -25,6 +29,9 @@ class _CreateNewBudgetViewState extends ConsumerState<CreateNewBudgetView> {
     final budgetNameController = useTextEditingController();
     final amountController = useTextEditingController();
     final selectedWallet = ref.watch(selectedWalletForBudgetProvider);
+
+    final expenseCategories = ref.watch(expenseCategoriesProvider);
+    final selectedCategory = ref.watch(selectedCategoryProvider);
 
     final isCreateButtonEnabled = useState(false);
 
@@ -52,6 +59,24 @@ class _CreateNewBudgetViewState extends ConsumerState<CreateNewBudgetView> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(Strings.createNewBudget),
+        leading: IconButton(
+          icon: const Icon(
+            Icons.close,
+            color: AppColors.white,
+          ),
+          onPressed: () {
+            // ref.read(selectedCategoryProvider.notifier).state = null;
+
+            Navigator.of(context).pop();
+            resetCategoryState(ref);
+            // ref.read(transactionTypeProvider.notifier).setTransactionType(0);
+            // ref
+            //     .read(transactionTypeProvider.notifier)
+            //     .resetTransactionTypeState();
+
+            // ref.read(transactionDateProvider.notifier).setDate(DateTime.now());
+          },
+        ),
       ),
       body: Flex(
         direction: Axis.vertical,
@@ -144,6 +169,66 @@ class _CreateNewBudgetViewState extends ConsumerState<CreateNewBudgetView> {
                 Row(
                   children: [
                     const Padding(
+                      padding: EdgeInsets.only(
+                        left: 16.0,
+                        right: 32.0,
+                      ),
+                      child: SizedBox(
+                        width: 5,
+                        child: Icon(
+                          Icons.category_rounded,
+                          color: AppColors.mainColor1,
+                        ),
+                      ),
+                    ),
+                    const Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.all(16.0),
+                        child: Text(
+                          'Categories',
+                          style: TextStyle(
+                            // color: AppSwatches.mainColor2,
+                            // fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        right: 20.0,
+                      ),
+                      child: SelectCategory(
+                          categories: expenseCategories,
+                          selectedCategory: selectedCategory),
+                    ),
+                    // Padding(
+                    //   padding: const EdgeInsets.only(
+                    //     left: 8.0,
+                    //     right: 16.0,
+                    //     // top: 16.0,
+                    //     bottom: 8.0,
+                    //   ),
+                    //   child: DropdownButton<String>(
+                    //     // hint: const Text(Strings.budgetType),
+                    //     value: "Expense",
+                    //     items: <String>[
+                    //       "Expense",
+                    //       "Income",
+                    //     ].map<DropdownMenuItem<String>>((String value) {
+                    //       return DropdownMenuItem<String>(
+                    //         value: value,
+                    //         child: Text(value),
+                    //       );
+                    //     }).toList(),
+                    //     onChanged: (_) {},
+                    //   ),
+                    // ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    const Padding(
                       padding: EdgeInsets.only(left: 16.0, right: 32.0),
                       child: SizedBox(
                         width: 5,
@@ -187,6 +272,7 @@ class _CreateNewBudgetViewState extends ConsumerState<CreateNewBudgetView> {
                         budgetNameController,
                         amountController,
                         selectedWallet!,
+                        selectedCategory,
                         ref,
                       );
                     }
@@ -200,8 +286,11 @@ class _CreateNewBudgetViewState extends ConsumerState<CreateNewBudgetView> {
     TextEditingController nameController,
     TextEditingController balanceController,
     Wallet selectedWallet,
+    Category selectedCategory,
     WidgetRef ref,
   ) async {
+    // final selectedCategory = ref.watch(selectedCategoryProvider);
+
     final userId = ref.read(userIdProvider);
     if (userId == null) {
       return;
@@ -215,6 +304,7 @@ class _CreateNewBudgetViewState extends ConsumerState<CreateNewBudgetView> {
               budgetName: nameController.text,
               budgetAmount: double.parse(balanceController.text),
               walletId: selectedWallet.walletId,
+              categoryName: selectedCategory.name,
             );
     if (isCreated && mounted) {
       nameController.clear();
@@ -229,4 +319,120 @@ class _CreateNewBudgetViewState extends ConsumerState<CreateNewBudgetView> {
   //   final wallets = ref.watch(userWalletsProvider);
   //   return wallets.valueOrNull ?? [];
   // }
+}
+
+class SelectCategory extends ConsumerWidget {
+  const SelectCategory({
+    super.key,
+    required this.categories,
+    required this.selectedCategory,
+  });
+
+  final List<Category> categories;
+  final Category? selectedCategory;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Builder(
+      builder: (context) {
+        return Center(
+          child: GestureDetector(
+            child: CategorySelectorView(selectedCategory: selectedCategory),
+            onTap: () {
+              showModalBottomSheet(
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(16.0),
+                  ),
+                ),
+                barrierColor: Colors.black.withOpacity(0.5),
+                context: context,
+                builder: (context) {
+                  return SizedBox(
+                    height: 400,
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text(Strings.selectCategory,
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  )),
+                              IconButton(
+                                // icon: const Icon(Icons.add_outlined),
+                                icon: const Icon(Icons.settings),
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const CategoryPage(),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          child: GridView.builder(
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 4,
+                              crossAxisSpacing: 8.0,
+                              // mainAxisSpacing: 8.0,
+                            ),
+                            itemCount: categories.length,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    ref
+                                        .read(selectedCategoryProvider.notifier)
+                                        .state = categories[index];
+
+                                    debugPrint(
+                                        'selected category: ${categories[index].name}');
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Column(
+                                    // mainAxisAlignment: MainAxisAlignment.center,
+                                    // mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      CircleAvatar(
+                                        radius: 20,
+                                        backgroundColor:
+                                            categories[index].color,
+                                        child: categories[index].icon,
+                                      ),
+                                      const SizedBox(height: 4.0),
+                                      Text(
+                                        categories[index].name,
+                                        style: const TextStyle(fontSize: 12.0),
+                                        softWrap: false,
+                                        overflow: TextOverflow.fade,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              );
+            },
+          ),
+        );
+      },
+    );
+  }
 }

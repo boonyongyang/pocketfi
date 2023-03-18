@@ -12,6 +12,7 @@ import 'package:pocketfi/src/constants/strings.dart';
 import 'package:pocketfi/src/features/authentication/application/user_id_provider.dart';
 import 'package:pocketfi/src/features/budget/application/total_amount_provider.dart';
 import 'package:pocketfi/src/features/budget/application/user_budgets_provider.dart';
+import 'package:pocketfi/src/features/budget/data/update_budget_notifier.dart';
 import 'package:pocketfi/src/features/budget/presentation/budget_detail_view.dart';
 import 'package:pocketfi/src/features/budget/presentation/budget_tile.dart';
 import 'package:pocketfi/src/features/budget/wallet/data/check_request.dart';
@@ -163,6 +164,9 @@ class _BudgetPageState extends ConsumerState<BudgetPage> {
                           return BudgetTile(
                             budget: budget,
                             onTap: () {
+                              ref
+                                  .read(selectedBudgetProvider.notifier)
+                                  .setSelectedTransaction(budget, ref);
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
