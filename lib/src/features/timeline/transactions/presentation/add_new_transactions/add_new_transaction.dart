@@ -22,7 +22,6 @@ import 'package:pocketfi/src/features/category/domain/category.dart';
 import 'package:pocketfi/src/features/category/presentation/category_page.dart';
 import 'package:pocketfi/src/features/timeline/bookmarks/application/bookmark_services.dart';
 import 'package:pocketfi/src/features/timeline/transactions/application/transaction_providers.dart';
-import 'package:pocketfi/src/features/timeline/transactions/data/transaction_notifiers.dart';
 import 'package:pocketfi/src/features/timeline/transactions/date_picker/application/selected_date_notifier.dart';
 import 'package:pocketfi/src/features/timeline/transactions/date_picker/presentation/transaction_date_picker.dart';
 import 'package:pocketfi/src/features/timeline/transactions/domain/tag.dart';
@@ -220,7 +219,7 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
   Row selectPhoto() {
     return Row(
       children: [
-        const Icon(Icons.photo_camera_outlined, color: AppColors.mainColor1),
+        const Icon(Icons.photo, color: AppColors.mainColor1),
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: TextButton(
@@ -295,9 +294,10 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
     return Row(
       children: [
         const Icon(
-          Icons.label_outline,
+          Icons.label_important_rounded,
           color: AppColors.mainColor1,
         ),
+        const SizedBox(width: 14.0),
         Expanded(
           child: SingleChildScrollView(
             scrollDirection: Axis.horizontal,
@@ -582,7 +582,7 @@ class WriteOptionalNote extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        const Icon(Icons.note_add_outlined, color: AppColors.mainColor1),
+        const Icon(Icons.mode, color: AppColors.mainColor1),
         ConstrainedBox(
           constraints: const BoxConstraints(
             maxWidth: 250,
@@ -593,7 +593,7 @@ class WriteOptionalNote extends StatelessWidget {
               // autofocus: true,
               decoration: const InputDecoration(
                 border: InputBorder.none,
-                hintText: 'write a note',
+                hintText: 'Write a note',
               ),
               controller: _noteController,
               onSubmitted: (_) => FocusScope.of(context).nextFocus(),

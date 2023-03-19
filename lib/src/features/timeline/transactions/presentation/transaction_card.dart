@@ -57,57 +57,7 @@ class TransactionCard extends StatelessWidget {
                           Text(
                             transaction.categoryName,
                           ),
-                          Row(
-                            children: [
-                              // list of ActionChip with different tags
-                              // const ActionChip(
-                              //   label: Text('Food'),
-                              //   onPressed: null,
-                              // ),
-                              // const SizedBox(
-                              //   width: 5,
-                              // ),
-                              // const ActionChip(
-                              //   label: Text('Parking'),
-                              //   onPressed: null,
-                              // ),
-                              // const SizedBox(
-                              //   width: 5,
-                              // ),
-                              // const ActionChip(
-                              //   label: Text('Dinner'),
-                              //   onPressed: null,
-                              // ),
-                              ActionChip(
-                                visualDensity: const VisualDensity(
-                                    horizontal: -4.0, vertical: -4.0),
-                                // materialTapTargetSize:
-                                //     MaterialTapTargetSize.shrinkWrap,
-                                label: const Text('Lunch'),
-                                onPressed: () =>
-                                    //     ScaffoldMessenger.of(context).showSnackBar(
-                                    //   const SnackBar(
-                                    //     content: Text('Lunch!'),
-                                    //   ),
-                                    // ),
-                                    Fluttertoast.showToast(
-                                  msg: "Lunch!",
-                                  toastLength: Toast.LENGTH_SHORT,
-                                  gravity: ToastGravity.BOTTOM,
-                                  timeInSecForIosWeb: 2,
-                                  backgroundColor: Colors.white,
-                                  textColor: AppColors.mainColor1,
-                                  fontSize: 16.0,
-                                ),
-                              ),
-                              const SizedBox(width: 5),
-                              const Chip(
-                                visualDensity: VisualDensity(
-                                    horizontal: -4.0, vertical: -4.0),
-                                label: Text('Foodpanda'),
-                              ),
-                            ],
-                          ),
+                          const ShowTags(),
                           Text(transaction.description ?? '',
                               style: TextStyle(
                                 fontSize: 12,
@@ -148,6 +98,40 @@ class TransactionCard extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class ShowTags extends StatelessWidget {
+  const ShowTags({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        ActionChip(
+          visualDensity: const VisualDensity(horizontal: -4.0, vertical: -4.0),
+          // materialTapTargetSize:
+          //     MaterialTapTargetSize.shrinkWrap,
+          label: const Text('Lunch'),
+          onPressed: () => Fluttertoast.showToast(
+            msg: "Lunch!",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 2,
+            backgroundColor: Colors.white,
+            textColor: AppColors.mainColor1,
+            fontSize: 16.0,
+          ),
+        ),
+        const SizedBox(width: 5),
+        const Chip(
+          visualDensity: VisualDensity(horizontal: -4.0, vertical: -4.0),
+          label: Text('Foodpanda'),
+        ),
+      ],
     );
   }
 }

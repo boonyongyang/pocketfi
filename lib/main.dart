@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
+import 'package:pocketfi/src/features/authentication/presentation/local_auth_screen.dart';
 import 'firebase_options.dart';
 import 'package:pocketfi/src/common_widgets/loading/loading_screen.dart';
 import 'package:pocketfi/src/features/authentication/application/is_logged_in_provider.dart';
@@ -35,9 +36,8 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // bool authenticated = false;
     return MaterialApp(
-      title: 'Home Page',
+      // title: 'Home Page',
       theme: ThemeData(
         brightness: Brightness.light,
         primarySwatch: AppColors.mainMaterialColor1,
@@ -45,6 +45,7 @@ class App extends StatelessWidget {
       ),
       debugShowCheckedModeBanner: false,
       // home: const LocalAuthScreen(),
+      // * comment this Consumer to try local authentication
       home: Consumer(
         builder: (context, ref, child) {
           ref.listen<bool>(
@@ -59,6 +60,7 @@ class App extends StatelessWidget {
           return isLoggedIn ? const BottomNavBarBeamer() : const LoginView();
         },
       ),
+      // * comment this Consumer to try local authentication
     );
   }
 }

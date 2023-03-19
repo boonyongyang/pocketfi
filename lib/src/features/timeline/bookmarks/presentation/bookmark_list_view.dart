@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/features/timeline/bookmarks/presentation/add_transaction_with_bookmark.dart';
 import 'package:pocketfi/src/features/timeline/bookmarks/presentation/bookmark_card.dart';
-import 'package:pocketfi/src/features/timeline/transactions/data/transaction_notifiers.dart';
+import 'package:pocketfi/src/features/timeline/transactions/application/transaction_providers.dart';
 import 'package:pocketfi/src/features/timeline/transactions/domain/transaction.dart';
 
 class BookmarkListView extends ConsumerWidget {

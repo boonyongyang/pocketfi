@@ -34,11 +34,6 @@ class TransactionTypeNotifier extends StateNotifier<TransactionType> {
 }
 
 // * SELECTED TRANSACTION
-final selectedTransactionProvider =
-    StateNotifierProvider<SelectedTransactionNotifier, Transaction?>(
-  (_) => SelectedTransactionNotifier(null),
-);
-
 class SelectedTransactionNotifier extends StateNotifier<Transaction?> {
   SelectedTransactionNotifier(Transaction? transaction) : super(transaction);
 

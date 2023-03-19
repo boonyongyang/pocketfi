@@ -1,4 +1,3 @@
-
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
@@ -6,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
-import 'package:pocketfi/src/features/timeline/transactions/data/transaction_notifiers.dart';
+import 'package:pocketfi/src/features/timeline/transactions/application/transaction_providers.dart';
 import 'package:pocketfi/src/features/timeline/transactions/date_picker/application/selected_date_notifier.dart';
 import 'package:pocketfi/src/utils/haptic_feedback_service.dart';
 
@@ -152,9 +151,10 @@ class AddTransactionDatePickerState
       child: Row(
         children: [
           const Icon(
-            Icons.calendar_today_rounded,
+            Icons.edit_calendar_rounded,
             color: AppColors.mainColor1,
           ),
+          const SizedBox(width: 2.0),
           TextButton(
             onPressed: () => _selectDate(context, selectedDate),
             child: Text(

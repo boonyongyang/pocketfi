@@ -14,6 +14,11 @@ final transactionTypeProvider =
     StateNotifierProvider<TransactionTypeNotifier, TransactionType>(
         (ref) => TransactionTypeNotifier());
 
+final selectedTransactionProvider =
+    StateNotifierProvider<SelectedTransactionNotifier, Transaction?>(
+  (_) => SelectedTransactionNotifier(null),
+);
+
 final createNewTransactionProvider =
     StateNotifierProvider<CreateNewTransactionNotifier, IsLoading>(
         (ref) => CreateNewTransactionNotifier());
@@ -46,17 +51,9 @@ final userTransactionsProvider =
     debugPrint(userId);
 
     final sub = FirebaseFirestore.instance
-        // .collection(FirebaseCollectionName.users)
-        // .doc(userId)
-        // .collection(FirebaseCollectionName.wallets)
-        // .doc(walletId)
-        // .collection(FirebaseCollectionName.transactions)
-        // .orderBy(
-        //   FirebaseFieldName.date,
-        //   descending: true,
-        // )
         .collectionGroup(FirebaseCollectionName.transactions)
-        .where(TransactionKey.userId, isEqualTo: userId)
+        // .where(TransactionKey.userId, isEqualTo: userId) // * not needed anymore
+        .where(FirebaseFieldName.walletId, isEqualTo: walletId)
         .orderBy(TransactionKey.date, descending: true)
         .snapshots()
         .listen(
@@ -82,3 +79,14 @@ final userTransactionsProvider =
     return controller.stream;
   },
 );
+
+// * get all transactions from [SELECTED Wallet] only
+// .collection(FirebaseCollectionName.users)
+// .doc(userId)
+// .collection(FirebaseCollectionName.wallets)
+// .doc(walletId)
+// .collection(FirebaseCollectionName.transactions)
+// .orderBy(
+//   FirebaseFieldName.date,
+//   descending: true,
+// )

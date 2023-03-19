@@ -261,7 +261,7 @@ class UpdateTransactionState extends ConsumerState<UpdateTransaction> {
   Row selectPhoto() {
     return Row(
       children: [
-        const Icon(Icons.photo_camera_outlined, color: AppColors.mainColor1),
+        const Icon(Icons.photo, color: AppColors.mainColor1),
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: TextButton(
@@ -335,9 +335,10 @@ class UpdateTransactionState extends ConsumerState<UpdateTransaction> {
     return Row(
       children: [
         const Icon(
-          Icons.label_outline,
+          Icons.label_important_rounded,
           color: AppColors.mainColor1,
         ),
+        const SizedBox(width: 14.0),
         Expanded(
           child: SingleChildScrollView(
             scrollDirection: Axis.horizontal,
@@ -607,7 +608,7 @@ class WriteOptionalNote extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        const Icon(Icons.note_add_outlined, color: AppColors.mainColor1),
+        const Icon(Icons.mode, color: AppColors.mainColor1),
         ConstrainedBox(
           constraints: const BoxConstraints(
             maxWidth: 250,
@@ -618,7 +619,7 @@ class WriteOptionalNote extends StatelessWidget {
               // autofocus: true,
               decoration: const InputDecoration(
                 border: InputBorder.none,
-                hintText: 'write a note',
+                hintText: 'Write a note',
               ),
               controller: _noteController,
               onSubmitted: (_) => FocusScope.of(context).nextFocus(),

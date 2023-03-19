@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -156,12 +158,9 @@ class _MainViewState extends ConsumerState<TimelinePage>
           ],
         ),
         floatingActionButton: Column(
-          // crossAxisAlignment: CrossAxisAlignment.end,
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            // Expanded(child: Container()),
             FloatingActionButton(
-              // heroTag: 'scan_receipt',
               heroTag: null,
               backgroundColor: const Color(0xFFFCD46A),
               child: const Icon(Icons.camera_alt),
@@ -201,12 +200,28 @@ class _MainViewState extends ConsumerState<TimelinePage>
                 }
               },
 
+              // * implement hightlight text feature
+              // onPressed: () async {
+
               // * ori code
               // onPressed: () => Navigator.of(context, rootNavigator: true).push(
               //   MaterialPageRoute(
               //     builder: (context) => const ScanReceipt(),
               //   ),
               // ),
+            ),
+            const SizedBox(height: 16),
+            FloatingActionButton(
+              heroTag: null,
+              backgroundColor: AppColors.subColor2,
+              child: const Icon(Icons.receipt),
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).push(
+                  MaterialPageRoute(
+                    builder: (context) => const ScanReceipt(),
+                  ),
+                );
+              },
             ),
             const SizedBox(height: 16),
             FloatingActionButton(
