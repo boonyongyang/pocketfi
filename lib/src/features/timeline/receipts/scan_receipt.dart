@@ -195,12 +195,12 @@ class _ScanReceiptState extends State<ScanReceipt> {
     // TODO -> uncomment this
     // List<String?> regexExtraction = extractPrices(recognisedText);
 
-    // String scannedText = "";
-    // for (TextBlock block in recognisedText.blocks) {
-    //   for (TextLine line in block.lines) {
-    //     scannedText = "$scannedText${line.text}\n";
-    //   }
-    // }
+    String scannedText = "";
+    for (TextBlock block in recognisedText.blocks) {
+      for (TextLine line in block.lines) {
+        scannedText = "$scannedText${line.text}\n";
+      }
+    }
 
     // TODO -> uncomment this
     //   final entityExtractor =
@@ -214,14 +214,14 @@ class _ScanReceiptState extends State<ScanReceipt> {
     //       scannedEntities += '${entity.type} : ${entity.rawValue}\n\n';
     //     }
     //   }
-    //   textRecognizer.close();
+    textRecognizer.close();
     //   entityExtractor.close();
-    //   setState(() {
-    //     this.scannedText = scannedText;
-    //     this.scannedEntities = scannedEntities;
-    //     this.regexExtraction = regexExtraction;
-    //     textScanning = false;
-    //   });
+    setState(() {
+      this.scannedText = scannedText;
+      // this.scannedEntities = scannedEntities;
+      // this.regexExtraction = regexExtraction;
+      textScanning = false;
+    });
   }
 
   // List<String?> extractPrices(RecognizedText recognizedText) {
@@ -237,30 +237,30 @@ class _ScanReceiptState extends State<ScanReceipt> {
   // }
 
   // TODO -> uncomment this
-  final RegExp priceRegex =
-      RegExp(r"(RM|MYR)?\s?(\d+(\.\d{2})?|\.\d{2})", caseSensitive: false);
-  List<String> extractPrices(RecognizedText recognizedText) {
-    final List<String> matches = <String>[];
-    for (TextBlock block in recognizedText.blocks) {
-      for (TextLine line in block.lines) {
-        for (TextElement element in line.elements) {
-          String text = element.text;
-          final RegExpMatch? match = priceRegex.firstMatch(text);
-          if (match != null) {
-            final String? price = match.group(0);
-            matches.add(price!);
-          }
-        }
-      }
-    }
-    return matches
-        .where((price) =>
-            price.contains('MYR') ||
-            price.contains('RM') ||
-            price.startsWith('.') ||
-            (price.contains('.') && price.split('.').last.length == 2))
-        .toList();
-  }
+  // final RegExp priceRegex =
+  //     RegExp(r"(RM|MYR)?\s?(\d+(\.\d{2})?|\.\d{2})", caseSensitive: false);
+  // List<String> extractPrices(RecognizedText recognizedText) {
+  //   final List<String> matches = <String>[];
+  //   for (TextBlock block in recognizedText.blocks) {
+  //     for (TextLine line in block.lines) {
+  //       for (TextElement element in line.elements) {
+  //         String text = element.text;
+  //         final RegExpMatch? match = priceRegex.firstMatch(text);
+  //         if (match != null) {
+  //           final String? price = match.group(0);
+  //           matches.add(price!);
+  //         }
+  //       }
+  //     }
+  //   }
+  //   return matches
+  //       .where((price) =>
+  //           price.contains('MYR') ||
+  //           price.contains('RM') ||
+  //           price.startsWith('.') ||
+  //           (price.contains('.') && price.split('.').last.length == 2))
+  //       .toList();
+  // }
 
   // // todo this is for text recognition with each word
   // void getRecognisedText(XFile image) async {

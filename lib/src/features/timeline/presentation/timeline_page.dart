@@ -13,6 +13,7 @@ import 'package:pocketfi/src/features/shared/image_upload/data/image_file_notifi
 import 'package:pocketfi/src/features/timeline/bookmarks/presentation/bookmark_page.dart';
 import 'package:pocketfi/src/features/timeline/posts/post_settings/application/post_setting_provider.dart';
 import 'package:pocketfi/src/features/timeline/presentation/overview_tab.dart';
+import 'package:pocketfi/src/features/timeline/receipts/scanning_test.dart';
 import 'package:pocketfi/src/features/timeline/transactions/data/transaction_notifiers.dart';
 import 'package:pocketfi/src/features/shared/image_upload/domain/file_type.dart';
 import 'package:pocketfi/src/features/shared/image_upload/helpers/image_picker_helper.dart';
@@ -166,6 +167,67 @@ class _MainViewState extends ConsumerState<TimelinePage>
               child: const Icon(Icons.camera_alt),
 
               // * implementing receipt scanning feature
+              // onPressed: () async {
+              //   final XFile? pickedImage;
+
+              //   final isCamera = await const SelectionDialog(
+              //     title: Strings.scanReceiptFrom,
+              //   ).present(context);
+
+              //   if (isCamera == null) return;
+
+              //   pickedImage = isCamera
+              //       ? await ImagePicker().pickImage(
+              //           source: ImageSource.camera,
+              //         )
+              //       : await ImagePicker().pickImage(
+              //           source: ImageSource.gallery,
+              //         );
+
+              //   if (pickedImage != null) {
+              //     if (mounted) {
+              //       Navigator.of(context, rootNavigator: true).push(
+              //         MaterialPageRoute(
+              //           builder: (context) {
+              //             // ref
+              //             //     .read(receiptFileProvider.notifier)
+              //             //     .setReceiptImageFile(pickedImage);
+              //             return VerifyReceiptDetails(pickedImage: pickedImage);
+              //           },
+              //           fullscreenDialog: true,
+              //         ),
+              //       );
+              //     }
+              //   }
+              // },
+
+              // * implement hightlight text feature
+              onPressed: () async {
+                // navigate to ScanningTest
+                Navigator.of(context, rootNavigator: true).push(
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return const ScanningTest();
+                    },
+                    fullscreenDialog: true,
+                  ),
+                );
+              },
+
+              // * ori code
+              // onPressed: () => Navigator.of(context, rootNavigator: true).push(
+              //   MaterialPageRoute(
+              //     builder: (context) => const ScanReceipt(),
+              //   ),
+              // ),
+            ),
+            const SizedBox(height: 16),
+            FloatingActionButton(
+              heroTag: null,
+              backgroundColor: const Color(0xFFFCD46A),
+              child: const Icon(Icons.kayaking),
+
+              // * implementing receipt scanning feature
               onPressed: () async {
                 final XFile? pickedImage;
 
@@ -199,16 +261,6 @@ class _MainViewState extends ConsumerState<TimelinePage>
                   }
                 }
               },
-
-              // * implement hightlight text feature
-              // onPressed: () async {
-
-              // * ori code
-              // onPressed: () => Navigator.of(context, rootNavigator: true).push(
-              //   MaterialPageRoute(
-              //     builder: (context) => const ScanReceipt(),
-              //   ),
-              // ),
             ),
             const SizedBox(height: 16),
             FloatingActionButton(

@@ -16,7 +16,7 @@ import 'package:uuid/uuid.dart';
 class VerifyReceiptDetails extends StatefulHookConsumerWidget {
   const VerifyReceiptDetails({
     Key? key,
-    this.pickedImage,
+    required this.pickedImage,
   }) : super(key: key);
 
   final XFile? pickedImage;
@@ -473,81 +473,6 @@ class VerifyReceiptDetailsState extends ConsumerState<VerifyReceiptDetails> {
     }
     return validMerchants;
   }
-
-// ! ori code 1
-  // void scanTest(XFile pickedImage) async {
-  //   try {
-  //     textScanning = true;
-  //     imageFile = pickedImage;
-  //     setState(() {});
-  //     getRecognisedText(pickedImage);
-  //   } catch (e) {
-  //     textScanning = false;
-  //     imageFile = null;
-  //     scannedText = "Error occured while scanning";
-  //     setState(() {});
-  //   }
-  // }
-
-  // void getRecognisedText(XFile image) async {
-  //   final inputImage = InputImage.fromFilePath(image.path);
-  //   final textRecognizer = TextRecognizer();
-  //   final RecognizedText recognisedText =
-  //       await textRecognizer.processImage(inputImage);
-
-  //   List<String?> regexExtraction = extractPrices(recognisedText);
-
-  //   String scannedText = "";
-  //   for (TextBlock block in recognisedText.blocks) {
-  //     for (TextLine line in block.lines) {
-  //       scannedText = "$scannedText${line.text}\n";
-  //     }
-  //   }
-
-  //   textRecognizer.close();
-  //   setState(() {
-  //     this.scannedText = scannedText;
-  //     this.regexExtraction = regexExtraction;
-  //     textScanning = false;
-  //   });
-  // }
-
-  // final RegExp priceRegex =
-  //     RegExp(r"(RM|MYR)?\s?(\d+(\.\d{2})?|\.\d{2})", caseSensitive: false);
-
-  // List<String> extractPrices(RecognizedText recognizedText) {
-  //   final List<String> matches = <String>[];
-  //   for (TextBlock block in recognizedText.blocks) {
-  //     for (TextLine line in block.lines) {
-  //       for (TextElement element in line.elements) {
-  //         String text = element.text;
-  //         final RegExpMatch? match = priceRegex.firstMatch(text);
-  //         if (match != null) {
-  //           final String? price = match.group(0);
-  //           matches.add(price!);
-  //         }
-  //       }
-  //     }
-  //   }
-
-  //   final List<String> validPrices = matches
-  //       .where((price) =>
-  //           price.contains('MYR') ||
-  //           price.contains('RM') ||
-  //           price.startsWith('.') ||
-  //           (price.contains('.') && price.split('.').last.length == 2))
-  //       .toList();
-
-  //   // Order the prices in descending order
-  //   validPrices.sort((a, b) {
-  //     double aVal = double.parse(a.replaceAll(RegExp(r"[^\d.]"), ""));
-  //     double bVal = double.parse(b.replaceAll(RegExp(r"[^\d.]"), ""));
-  //     return bVal.compareTo(aVal);
-  //   });
-
-  //   return validPrices;
-  // }
-// ! end of ori code 1
 
   Widget showReceiptPhotoFrame(File imageFile) {
     return InkWell(
