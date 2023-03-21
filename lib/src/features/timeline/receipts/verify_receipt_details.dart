@@ -63,7 +63,7 @@ class VerifyReceiptDetailsState extends ConsumerState<VerifyReceiptDetails> {
     amountController =
         // useTextEditingController(text: extractedPrices.toString());
         useTextEditingController(
-      text: extractedPrices.isNotEmpty ? extractedPrices[4] : '0.20',
+      text: extractedPrices.isNotEmpty ? extractedPrices[0] : '0.20',
     );
     debugPrint('extractedPrices: $extractedPrices');
 

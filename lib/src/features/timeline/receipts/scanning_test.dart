@@ -1,16 +1,11 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:edge_detection/edge_detection.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/features/timeline/receipts/receipt_highlight_image.dart';
-import 'package:pocketfi/src/features/timeline/receipts/scan_receipt.dart';
 import 'package:pocketfi/src/features/timeline/receipts/scanned_text_page.dart';
-import 'package:pocketfi/src/features/timeline/receipts/text_highlighter_painter.dart';
 import 'package:pocketfi/src/features/timeline/transactions/presentation/add_new_transactions/full_screen_image_dialog.dart';
 // import 'package:permission_handler/permission_handler.dart';
 
@@ -26,6 +21,10 @@ class _ScanningTestState extends State<ScanningTest> {
 
   bool textScanning = false;
   XFile? imageFile;
+  RecognizedText recognizedText = RecognizedText(
+    text: '',
+    blocks: [],
+  );
   String scannedText = "", scannedEntities = "", formattedText = "";
   String? selectedPrice = '';
   List<TextSpan> extractedTextSpans = [];
@@ -51,24 +50,26 @@ class _ScanningTestState extends State<ScanningTest> {
     //   return;
     // }
 
-// Generate filepath for saving
+    // Generate filepath for saving
     String imagePath = join((await getApplicationSupportDirectory()).path,
         "${(DateTime.now().millisecondsSinceEpoch / 1000).round()}.jpeg");
 
     try {
-      //Make sure to await the call to detectEdge.
       bool success = await EdgeDetection.detectEdge(
+        // bool success = await EdgeDetection.detectEdgeFromGallery(
         imagePath,
         canUseGallery: true,
-        androidScanTitle: 'Scanning', // use custom localizations for android
+        androidScanTitle: 'Scanning',
         androidCropTitle: 'Crop',
         androidCropBlackWhiteTitle: 'Black White',
         androidCropReset: 'Reset',
       );
 
+      debugPrint('isDetected: $success');
+
       scanReceipt(XFile(imagePath));
 
-      debugPrint('isDetected: $success');
+      debugPrint('scan receipt completed!');
     } catch (e) {
       debugPrint(e.toString());
     }
@@ -78,6 +79,9 @@ class _ScanningTestState extends State<ScanningTest> {
     // setState to update our non-existent appearance.
     if (!mounted) return;
 
+    debugPrint('mounted: $mounted');
+    debugPrint('imagePath: $imagePath');
+
     setState(() {
       _imagePath = imagePath;
     });
@@ -85,6 +89,9 @@ class _ScanningTestState extends State<ScanningTest> {
 
   @override
   Widget build(BuildContext context) {
+    // debugPrint(_imagePath.toString());
+    debugPrint(extractedRects.toString());
+    debugPrint(extractedTextSpans.toString());
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -111,62 +118,10 @@ class _ScanningTestState extends State<ScanningTest> {
                 style: const TextStyle(fontSize: 14),
               ),
             ),
-            // Visibility(
-            //   visible: _imagePath != null,
-            //   child: Padding(
-            //     padding: const EdgeInsets.all(8.0),
-            //     child: Image.file(
-            //       File(_imagePath ?? ''),
-            //     ),
-            //   ),
-            // ),
-            // Stack(
-            //   children: [
-            //     Visibility(
-            //       visible: _imagePath != null,
-            //       child: Padding(
-            //         padding: const EdgeInsets.all(8.0),
-            //         child: Image.file(
-            //           File(_imagePath ?? ''),
-            //           fit: BoxFit.contain,
-            //         ),
-            //       ),
-            //     ),
-            //     Positioned(
-            //       top: 30,
-            //       left: 30,
-            //       child: GestureDetector(
-            //         child: const CircleAvatar(
-            //           radius: 20,
-            //           backgroundColor: AppColors.mainColor1,
-            //           child: Icon(Icons.document_scanner_outlined),
-            //         ),
-            //         onTap: () {
-            //           debugPrint(extractedRects.toString());
-            //           debugPrint(extractedTextSpans.toString().toString());
-            //           // toggle highlight mode
-            //           Navigator.push(
-            //             context,
-            //             MaterialPageRoute(
-            //               // builder: (context) => HighlightPage(
-            //               //   extractedTextSpans: extractedTextSpans,
-            //               //   extractedRects: extractedRects,
-            //               //   imagePath: _imagePath,
-            //               // ),
-            //               builder: (context) => ReceiptHighlightImage(
-            //                 imagePath: _imagePath,
-            //                 extractedRects: extractedRects,
-            //               ),
-            //             ),
-            //           );
-            //         },
-            //       ),
-            //     ),
-            //   ],
-            // ),
             Visibility(
               visible: _imagePath != null,
               child: ReceiptHighlightImage(
+                recognizedText: recognizedText,
                 imagePath: _imagePath,
                 extractedRects: extractedRects,
               ),
@@ -184,25 +139,7 @@ class _ScanningTestState extends State<ScanningTest> {
                   )
                 : const SizedBox(),
             const SizedBox(height: 20),
-            // CustomPaint(
-            //   painter: TextHighlighterPainter(
-            //     textSpans: extractedTextSpans,
-            //     highlightRects: extractedRects,
-            //     highlightPaint: Paint()
-            //       ..color = Colors.yellow
-            //       ..style = PaintingStyle.stroke
-            //       ..strokeWidth = 2.0,
-            //   ),
-            //   child: Image.file(
-            //     File(_imagePath ?? ''),
-            //   ),
-            // ),
-            const SizedBox(height: 20),
-            RichText(
-              text: TextSpan(
-                children: extractedTextSpans,
-              ),
-            ),
+            RichText(text: TextSpan(children: extractedTextSpans)),
             const SizedBox(height: 20),
             Text(
               selectedPrice.toString(),
@@ -232,6 +169,7 @@ class _ScanningTestState extends State<ScanningTest> {
 
   void scanReceipt(XFile pickedImage) async {
     try {
+      debugPrint('scanning receipt...');
       textScanning = true;
       imageFile = pickedImage;
       setState(() {});
@@ -247,18 +185,18 @@ class _ScanningTestState extends State<ScanningTest> {
   void getRecognisedText(XFile image) async {
     final inputImage = InputImage.fromFilePath(image.path);
     final textRecognizer = TextRecognizer();
-    final RecognizedText recognisedText =
-        await textRecognizer.processImage(inputImage);
+    recognizedText = await textRecognizer.processImage(inputImage);
 
     textRecognizer.close();
     setState(() {
-      scannedText = recognisedText.text;
-      extractedMerchants = extractMerchants(recognisedText);
-      extractedDates = extractDates(recognisedText);
-      extractedPrices = extractPrices(recognisedText);
-      extractedTextSpans = getHighlightedText(recognisedText);
-      extractedRects = getHighlightRects(recognisedText);
-      selectedPrice = extractTotalPrice(recognisedText).toString();
+      recognizedText = recognizedText;
+      scannedText = recognizedText.text;
+      extractedMerchants = extractMerchants(recognizedText);
+      extractedDates = extractDates(recognizedText);
+      extractedPrices = extractPrices(recognizedText);
+      extractedTextSpans = getHighlightedTextSpans(recognizedText);
+      extractedRects = getHighlightRects(recognizedText);
+      selectedPrice = extractTotalPrice(recognizedText).toString();
       textScanning = false;
     });
   }
@@ -271,7 +209,7 @@ class _ScanningTestState extends State<ScanningTest> {
           String text = element.text;
           final RegExpMatch? match = priceRegex.firstMatch(text);
           if (match != null) {
-            final String? price = match.group(0);
+            // final String? price = match.group(0);
             Rect rect = Rect.fromLTRB(
               element.boundingBox.left.toDouble(),
               element.boundingBox.top.toDouble(),
@@ -286,7 +224,7 @@ class _ScanningTestState extends State<ScanningTest> {
     return highlightRects;
   }
 
-  List<TextSpan> getHighlightedText(RecognizedText recognizedText) {
+  List<TextSpan> getHighlightedTextSpans(RecognizedText recognizedText) {
     final List<TextSpan> textSpans = <TextSpan>[];
     for (TextBlock block in recognizedText.blocks) {
       for (TextLine line in block.lines) {
@@ -295,7 +233,7 @@ class _ScanningTestState extends State<ScanningTest> {
           String text = element.text;
           final RegExpMatch? match = priceRegex.firstMatch(text);
           if (match != null) {
-            final String? price = match.group(0);
+            // final String? price = match.group(0);
             final int startIndex = match.start;
             final int endIndex = match.end;
             lineTextSpans.add(
@@ -513,28 +451,4 @@ class _ScanningTestState extends State<ScanningTest> {
     }
     return validMerchants;
   }
-
-  // Widget showReceiptPhotoFrame(File imageFile) {
-  //   return InkWell(
-  //     onTap: () {
-  //       Navigator.of(context).push(
-  //         MaterialPageRoute(
-  //           builder: (context) => FullScreenImageDialog(imageFile: imageFile),
-  //           fullscreenDialog: true,
-  //         ),
-  //       );
-  //     },
-  //     child: Container(
-  //       width: double.infinity,
-  //       height: 150.0,
-  //       decoration: BoxDecoration(
-  //         image: DecorationImage(
-  //           image: FileImage(imageFile),
-  //           fit: BoxFit.cover,
-  //         ),
-  //         borderRadius: BorderRadius.circular(8.0),
-  //       ),
-  //     ),
-  //   );
-  // }
 }
