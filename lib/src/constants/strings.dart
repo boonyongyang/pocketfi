@@ -57,6 +57,7 @@ class Strings {
   static const timeline = 'Timeline';
 
   // transaction
+  static const transaction = 'Transaction';
   static const expenseSymbol = '-';
   static const incomeSymbol = '+';
   static const transferSymbol = '⇄';
@@ -71,13 +72,24 @@ class Strings {
   static const transfer = 'Transfer';
   static const save = 'Save';
 
+  // dates
+  static const today = 'Today';
+  static const yesterday = 'Yesterday';
+  static const tomorrow = 'Tomorrow';
+
   // receipt
   static const scanReceiptFrom = 'Scan Receipt from';
   static const camera = 'Camera';
   static const gallery = 'Gallery';
 
   // bills
+  static const bill = 'Bill';
   static const bills = 'Bills';
+  static const newBill = 'New Bill';
+  static const editBill = 'Edit Bill';
+  static const paid = 'Paid';
+  static const unpaid = 'Unpaid';
+  static const overdue = 'Overdue';
 
   // * budget
   static const budget = 'Budget';

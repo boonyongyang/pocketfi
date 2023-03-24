@@ -11,9 +11,6 @@ class CategoryPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // final categoriesList = showAllCategories(ref);
-    // debugPrint('categoriesList: $categoriesList');
-
     final categoriesList = ref.watch(categoriesProvider);
 
     return Scaffold(
@@ -22,18 +19,8 @@ class CategoryPage extends ConsumerWidget {
         actions: [
           IconButton(
             onPressed: () {
-              // ref.read(categoriesProvider.notifier).addCategory();
-              // ref.read(categoriesProvider.notifier).removeCategory();
-              // ref.read(categoriesProvider.notifier).updateCategory();
-// * draggable scrollable sheet
-              // showDraggableScrollableSheet(
-              //   context: context,
-              //   builder: (context) {
-              //     return const AddNewCategorySheet();
-              //   },
-              // );
-// * show bottom sheet
-// reset selectedColor and Icon providers
+              // * show bottom sheet
+              // reset selectedColor and Icon providers
               resetCategoryComponentsState(ref);
               showModalBottomSheet(
                 isScrollControlled: true,
@@ -42,15 +29,6 @@ class CategoryPage extends ConsumerWidget {
                   return const AddNewCategorySheet();
                 },
               );
-// * full screen dialog
-              //   Navigator.of(context).push(
-              //     MaterialPageRoute(
-              //       builder: (context) {
-              //         return const AddNewCategorySheet();
-              //       },
-              //       fullscreenDialog: true,
-              //     ),
-              //   );
             },
             icon: const Icon(Icons.add),
           ),
@@ -58,18 +36,15 @@ class CategoryPage extends ConsumerWidget {
       ),
       body: SingleChildScrollView(
         child: Container(
-          // color: Colors.grey,
           padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
             children: [
               const SelectTransactionType(
                 noOfTabs: 2,
               ),
               SizedBox(
                 height: MediaQuery.of(context).size.height,
-                // color: Colors.blueGrey,
                 child: ListView.separated(
                   itemCount: categoriesList.length,
                   itemBuilder: (context, index) {
@@ -91,6 +66,7 @@ class CategoryPage extends ConsumerWidget {
                             categoriesList[index].color;
                         ref.read(selectedCategoryIconProvider.notifier).state =
                             categoriesList[index].icon.icon;
+
                         showModalBottomSheet(
                           isScrollControlled: true,
                           context: context,

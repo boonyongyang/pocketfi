@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:pocketfi/src/constants/strings.dart';
+import 'package:pocketfi/src/features/shared/image_upload/data/image_file_notifier.dart';
 import 'package:pocketfi/src/features/timeline/bookmarks/application/bookmark_services.dart';
 import 'package:pocketfi/src/features/timeline/transactions/application/transaction_providers.dart';
 import 'package:pocketfi/src/features/timeline/transactions/domain/transaction.dart';
@@ -17,53 +21,92 @@ class TransactionListView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Container(
-      color: const Color(0xFFE1DCDC),
-      constraints: const BoxConstraints(
-          // minWidth: 100.0,
-          // maxWidth: 320.0,
-          // minHeight: 100.0,
-          // maxHeight: 600.0,
-          ),
-      child: ListView.builder(
-        // shrinkWrap: true,
-        padding: const EdgeInsets.all(8.0),
-        itemCount: transactions.length,
-        itemBuilder: (context, index) {
-          final transaction =
-              transactions.elementAt(index); // get the post at the index
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // TODO: to check if the number of transaction on that day is more than 1? if yes, then only show at latest one,
-              TransactonDateRow(date: transaction.date),
-              TransactionCard(
-                transaction: transaction,
-                onTapped: () {
-                  // debugPrint('selectedDate is ${transaction.date}');
-                  // debugPrint('now  is ${DateTime.now()}');
+    double? totalExpenseOnLastDisplayedDate;
+    return ListView.builder(
+      shrinkWrap: true,
+      padding: const EdgeInsets.all(8.0),
+      itemCount: transactions.length,
+      itemBuilder: (context, index) {
+        final transaction = transactions.elementAt(index);
 
-                  ref
-                      .read(selectedTransactionProvider.notifier)
-                      .setSelectedTransaction(transaction, ref);
+        final isLastTransactionForDate =
+            _isLastTransactionForDate(index, transaction);
 
-                  debugPrint(
-                      'bool is ${ref.read(selectedTransactionProvider)?.isBookmark}');
-                  debugPrint('isBool is ${ref.read(isBookmarkProvider)}');
-                  // Navigator.push(context,
-                  Navigator.of(context, rootNavigator: true).push(
-                    MaterialPageRoute(
-                      builder: (context) => const UpdateTransaction(),
-                      fullscreenDialog: true,
-                    ),
-                  );
-                },
+        if (isLastTransactionForDate) {
+          totalExpenseOnLastDisplayedDate =
+              _getNetAmountOnDate(transaction.date);
+        }
+
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (isLastTransactionForDate)
+              TransactonDateRow(
+                date: transaction.date,
+                netAmount: totalExpenseOnLastDisplayedDate!,
               ),
-            ],
-          );
-        },
-      ),
+            TransactionCard(
+              transaction: transaction,
+              onTapped: () {
+                ref
+                    .read(selectedTransactionProvider.notifier)
+                    .setSelectedTransaction(transaction);
+
+                if (transaction.fileUrl != null) {
+                  ref
+                      .read(imageFileProvider.notifier)
+                      .setImageFile(File(transaction.fileUrl!.toString()));
+                  debugPrint(
+                      'imageFileProvider is ${ref.read(imageFileProvider)}');
+                }
+
+                // debugPrint(
+                // 'bool is ${ref.read(selectedTransactionProvider)?.isBookmark}');
+                // debugPrint('isBool is ${ref.read(isBookmarkProvider)}');
+
+                Navigator.of(context, rootNavigator: true).push(
+                  MaterialPageRoute(
+                    builder: (context) => const UpdateTransaction(),
+                    fullscreenDialog: true,
+                  ),
+                );
+              },
+            ),
+          ],
+        );
+      },
     );
+  }
+
+  bool _isLastTransactionForDate(int index, Transaction transaction) {
+    // Check if the transaction is the last one for its date
+    if (index == 0) return true;
+    final previousTransaction = transactions.elementAt(index - 1);
+    return !_areDatesEqual(transaction.date, previousTransaction.date);
+  }
+
+  bool _areDatesEqual(DateTime date1, DateTime date2) {
+    // Check if two dates are equal
+    return date1.year == date2.year &&
+        date1.month == date2.month &&
+        date1.day == date2.day;
+  }
+
+  double _getNetAmountOnDate(DateTime date) {
+    // Calculate the net amount for a date
+    final transactionsOnDate = transactions
+        .where((transaction) => _areDatesEqual(transaction.date, date));
+
+    double netAmount = 0.0;
+
+    for (final transaction in transactionsOnDate) {
+      if (transaction.type == TransactionType.expense) {
+        netAmount -= transaction.amount;
+      } else if (transaction.type == TransactionType.income) {
+        netAmount += transaction.amount;
+      }
+    }
+    return netAmount;
   }
 }
 
@@ -71,8 +114,10 @@ class TransactonDateRow extends StatefulWidget {
   const TransactonDateRow({
     super.key,
     required this.date,
+    required this.netAmount,
   });
   final DateTime date;
+  final double netAmount;
 
   @override
   TransactonDateRowState createState() => TransactonDateRowState();
@@ -89,15 +134,15 @@ class TransactonDateRowState extends State<TransactonDateRow> {
     if (selectedDate.year == now.year &&
         selectedDate.month == now.month &&
         selectedDate.day == now.day) {
-      return 'Today';
+      return Strings.today;
     } else if (selectedDate.year == yesterday.year &&
         selectedDate.month == yesterday.month &&
         selectedDate.day == yesterday.day) {
-      return 'Yesterday';
+      return Strings.yesterday;
     } else if (selectedDate.year == tomorrow.year &&
         selectedDate.month == tomorrow.month &&
         selectedDate.day == tomorrow.day) {
-      return 'Tomorrow';
+      return Strings.tomorrow;
     } else {
       return DateFormat('EEE, d MMM').format(selectedDate);
     }
@@ -105,6 +150,14 @@ class TransactonDateRowState extends State<TransactonDateRow> {
 
   @override
   Widget build(BuildContext context) {
+    String netAmountString = widget.netAmount.abs().toStringAsFixed(2);
+    if (widget.netAmount > 0) {
+      netAmountString = 'MYR $netAmountString';
+    } else if (widget.netAmount == 0) {
+      netAmountString = '0.00';
+    } else {
+      netAmountString = '- MYR $netAmountString';
+    }
     return ClipRRect(
       borderRadius: const BorderRadius.only(
         topLeft: Radius.circular(10.0),
@@ -124,13 +177,12 @@ class TransactonDateRowState extends State<TransactonDateRow> {
               style: const TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.bold,
-                // color: Colors.white,
               ),
             ),
             Text(
-              '-MYR 50.20',
+              netAmountString,
               style: TextStyle(
-                fontSize: 16,
+                fontSize: 13,
                 fontWeight: FontWeight.bold,
                 color: Colors.grey[800],
               ),

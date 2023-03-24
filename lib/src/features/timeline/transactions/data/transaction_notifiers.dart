@@ -37,15 +37,11 @@ class TransactionTypeNotifier extends StateNotifier<TransactionType> {
 class SelectedTransactionNotifier extends StateNotifier<Transaction?> {
   SelectedTransactionNotifier(Transaction? transaction) : super(transaction);
 
-  void setSelectedTransaction(Transaction transaction, WidgetRef ref) {
-    // // if transaction is null, create a new transaction instance
-    // state = Transaction.fromJson(
-    //   transactionId: transaction.transactionId,
-    //   json: transaction.toJson(),
-    // );
+  // set selectedTransaction(Transaction? transaction) => state = transaction;
 
-    state = transaction;
-  }
+  void setSelectedTransaction(Transaction transaction) => state = transaction;
+
+  void resetSelectedTransactionState() => state = null;
 
   void updateTransactionDate(DateTime newDate, WidgetRef ref) {
     Transaction? transaction = ref.watch(selectedTransactionProvider);
@@ -64,10 +60,12 @@ class SelectedTransactionNotifier extends StateNotifier<Transaction?> {
     }
   }
 
-  void updateCategory(Category newCategory, WidgetRef ref) {
+  void updateCategory(Category? newCategory, WidgetRef ref) {
     Transaction? transaction = ref.watch(selectedTransactionProvider);
     if (transaction != null) {
-      transaction = transaction.copyWith(categoryName: newCategory.name);
+      transaction = transaction.copyWith(
+          // categoryName: newCategory?.name ?? transaction.categoryName);
+          categoryName: newCategory?.name ?? '');
       state = transaction;
     }
   }
@@ -80,8 +78,12 @@ class SelectedTransactionNotifier extends StateNotifier<Transaction?> {
     }
   }
 
-  void clearSelectedTransaction() {
-    state = null;
+  void updateTransactionPhoto(File? newFile, WidgetRef ref) {
+    Transaction? transaction = ref.watch(selectedTransactionProvider);
+    if (transaction != null) {
+      transaction = transaction.copyWith();
+      state = transaction;
+    }
   }
 }
 
@@ -89,7 +91,9 @@ class SelectedTransactionNotifier extends StateNotifier<Transaction?> {
 void setNewTransactionState(WidgetRef ref) {
   //  this two is to reset DatePicker state
   ref.read(transactionDateProvider.notifier).setDate(DateTime.now());
-  ref.read(selectedTransactionProvider.notifier).clearSelectedTransaction();
+  ref
+      .read(selectedTransactionProvider.notifier)
+      .resetSelectedTransactionState();
   //  this is to reset category state
   resetCategoryState(ref);
   //  this is to reset type state
@@ -121,21 +125,10 @@ class CreateNewTransactionNotifier extends StateNotifier<IsLoading> {
 
     debugPrint('createNewTransaction()');
 
-    // FIXME temp solution to get the *first* wallet id
-    // final walletId = await FirebaseFirestore.instance
-    //     .collection(FirebaseCollectionName.users)
-    //     .doc(userId)
-    //     .collection(FirebaseCollectionName.wallets)
-    //     .limit(1)
-    //     .get()
-    //     .then((value) => value.docs.first.id);
-
     final transactionId = documentIdFromCurrentDate();
 
-    // final TransactionPayload payload;
-    final Map<String, dynamic> payload;
-
     try {
+      final Map<String, dynamic> payload;
       if (file == null) {
         // payload = TransactionPayload(
         //   userId: userId,
@@ -234,7 +227,6 @@ class CreateNewTransactionNotifier extends StateNotifier<IsLoading> {
           amount: amount,
           date: date,
           isBookmark: isBookmark,
-          // createdAt: DateTime.now(),
           type: type,
           categoryName: categoryName,
           description: note,
@@ -275,14 +267,14 @@ class UpdateTransactionNotifier extends StateNotifier<IsLoading> {
   set isLoading(bool isLoading) => state = isLoading;
 
   Future<bool> updateTransaction({
-    // required Transaction transaction,
     required String transactionId,
     required UserId userId,
     required double amount,
     required DateTime date,
     required TransactionType type,
     required String categoryName,
-    required String walletId,
+    required String originalWalletId,
+    required String newWalletId,
     required String walletName,
     required File? file,
     String? note,
@@ -291,47 +283,159 @@ class UpdateTransactionNotifier extends StateNotifier<IsLoading> {
     try {
       isLoading = true;
 
+      // if new walletId is different from the original walletId
+      // then delete the transaction from the original wallet
+      // and add it to the new wallet
+      if (originalWalletId != newWalletId) {
+        // delete the transaction from the original wallet
+        await FirebaseFirestore.instance
+            .collection(FirebaseCollectionName.users)
+            .doc(userId)
+            .collection(FirebaseCollectionName.wallets)
+            .doc(originalWalletId)
+            .collection(FirebaseCollectionName.transactions)
+            .doc(transactionId)
+            .delete();
+
+        // add the transaction to the new wallet
+        final Map<String, dynamic> payload;
+
+        if (file == null) {
+          payload = Transaction(
+            transactionId: transactionId,
+            userId: userId,
+            walletId: newWalletId,
+            walletName: walletName,
+            amount: amount,
+            date: date,
+            type: type,
+            categoryName: categoryName,
+            description: note,
+            isBookmark: isBookmark,
+          ).toJson();
+          debugPrint('no pic..');
+        } else {
+          late Uint8List thumbnailUint8List;
+          // decode the image
+          final fileAsImage = img.decodeImage(file.readAsBytesSync());
+          if (fileAsImage == null) {
+            isLoading = false;
+            // return false;
+            throw const CouldNotBuildThumbnailException();
+          }
+
+          final thumbnail = img.copyResize(
+            fileAsImage,
+            height: ImageConstants.imageThumbnailHeight,
+          );
+          final thumbnailData = img.encodeJpg(thumbnail);
+          thumbnailUint8List = Uint8List.fromList(thumbnailData);
+
+          final thumbnailAspectRatio =
+              await thumbnailUint8List.getAspectRatio();
+
+          final fileName = const Uuid().v4();
+
+          final thumbnailRef = FirebaseStorage.instance
+              .ref()
+              .child(userId)
+              .child('transactions')
+              .child(FirebaseCollectionName.thumbnails)
+              .child(fileName);
+
+          final originalFileRef = FirebaseStorage.instance
+              .ref()
+              .child(userId)
+              .child('transactions')
+              .child('images')
+              .child(fileName);
+
+          final thumbnailUploadTask =
+              await thumbnailRef.putData(thumbnailUint8List);
+          final thumbnailStorageId = thumbnailUploadTask.ref.name;
+
+          final originalFileUploadTask = await originalFileRef.putFile(file);
+          final originalFileStorageId = originalFileUploadTask.ref.name;
+
+          payload = Transaction(
+            transactionId: transactionId,
+            userId: userId,
+            walletId: newWalletId,
+            walletName: walletName,
+            amount: amount,
+            date: date,
+            isBookmark: isBookmark,
+            type: type,
+            categoryName: categoryName,
+            description: note,
+            thumbnailUrl: await thumbnailRef.getDownloadURL(),
+            fileUrl: await originalFileRef.getDownloadURL(),
+            fileName: fileName,
+            aspectRatio: thumbnailAspectRatio,
+            thumbnailStorageId: thumbnailStorageId,
+            originalFileStorageId: originalFileStorageId,
+          ).toJson();
+        }
+        debugPrint('uploading new transaction..');
+
+        await FirebaseFirestore.instance
+            .collection(FirebaseCollectionName.users)
+            .doc(userId)
+            .collection(FirebaseCollectionName.wallets)
+            .doc(newWalletId)
+            .collection(FirebaseCollectionName.transactions)
+            .doc(transactionId)
+            .set(payload);
+        debugPrint('Transaction added $payload');
+      } else {
+        // update the transaction in the same wallet
+        await FirebaseFirestore.instance
+            .collection(FirebaseCollectionName.users)
+            .doc(userId)
+            .collection(FirebaseCollectionName.wallets)
+            .doc(originalWalletId)
+            .collection(FirebaseCollectionName.transactions)
+            .doc(transactionId)
+            .update({
+          TransactionKey.amount: amount,
+          TransactionKey.date: date,
+          TransactionKey.type: type.name,
+          TransactionKey.walletId: newWalletId,
+          TransactionKey.walletName: walletName,
+          TransactionKey.categoryName: categoryName,
+          TransactionKey.description: note,
+          TransactionKey.isBookmark: isBookmark,
+        });
+        debugPrint('Transaction updated');
+      }
+
       // final querySnaptshot = FirebaseFirestore.instance
       //     .collection(FirebaseCollectionName.users)
-      //     .doc(transaction.userId)
+      //     .doc(userId)
       //     .collection(FirebaseCollectionName.wallets)
-      //     .doc(transaction.walletId)
+      //     .doc(newWalletId)
       //     .collection(FirebaseCollectionName.transactions)
-      //     .where(FieldPath.documentId, isEqualTo: transaction.transactionId)
+      //     .where(FieldPath.documentId, isEqualTo: transactionId)
       //     .limit(1)
       //     .get();
-      final querySnaptshot = FirebaseFirestore.instance
-          .collection(FirebaseCollectionName.users)
-          .doc(userId)
-          .collection(FirebaseCollectionName.wallets)
-          .doc(walletId)
-          .collection(FirebaseCollectionName.transactions)
-          .where(FieldPath.documentId, isEqualTo: transactionId)
-          .limit(1)
-          .get();
 
-      await querySnaptshot.then((querySnaptshot) async {
-        // for(final doc in querySnaptshot.docs){
-        //   if ()
-        // }
-        final doc = querySnaptshot.docs.first;
+      // await querySnaptshot.then((querySnaptshot) async {
+      //   final doc = querySnaptshot.docs.first;
 
-        await doc.reference.update(
-            // transaction.toJson(),
+      //   await doc.reference.update({
+      //     TransactionKey.amount: amount,
+      //     TransactionKey.date: date,
+      //     TransactionKey.type: type.name,
+      //     TransactionKey.walletId: newWalletId,
+      //     TransactionKey.walletName: walletName,
+      //     TransactionKey.categoryName: categoryName,
+      //     TransactionKey.description: note,
+      //     TransactionKey.isBookmark: isBookmark,
+      //   });
+      // });
 
-            {
-              TransactionKey.amount: amount,
-              TransactionKey.date: date,
-              TransactionKey.type: type.name,
-              TransactionKey.walletId: walletId,
-              TransactionKey.walletName: walletName,
-              TransactionKey.categoryName: categoryName,
-              TransactionKey.description: note,
-              TransactionKey.isBookmark: isBookmark,
-            });
+      // await Future.delayed(const Duration(milliseconds: 2000));
 
-        // await Future.delayed(const Duration(milliseconds: 100));
-      });
       return true;
     } catch (e) {
       debugPrint(e.toString());
@@ -363,8 +467,6 @@ class UpdateTransactionNotifier extends StateNotifier<IsLoading> {
         await doc.reference.update({
           TransactionKey.isBookmark: !transaction.isBookmark,
         });
-
-        // await Future.delayed(const Duration(milliseconds: 100));
       });
       return true;
     } catch (e) {
@@ -389,16 +491,6 @@ class DeleteTransactionNotifier extends StateNotifier<IsLoading> {
   }) async {
     try {
       isLoading = true;
-
-      // final querySnaptshot = FirebaseFirestore.instance
-      //     .collection(FirebaseCollectionName.users)
-      //     .doc(transaction.userId)
-      //     .collection(FirebaseCollectionName.wallets)
-      //     .doc(transaction.walletId)
-      //     .collection(FirebaseCollectionName.transactions)
-      //     .where(FieldPath.documentId, isEqualTo: transaction.transactionId)
-      //     .limit(1)
-      //     .get();
       final querySnaptshot = FirebaseFirestore.instance
           .collection(FirebaseCollectionName.users)
           .doc(userId)
@@ -411,14 +503,11 @@ class DeleteTransactionNotifier extends StateNotifier<IsLoading> {
           .get();
 
       await querySnaptshot.then((querySnaptshot) async {
-        // for(final doc in querySnaptshot.docs){
-        //   if ()
-        // }
         final doc = querySnaptshot.docs.first;
 
         await doc.reference.delete();
 
-        await Future.delayed(const Duration(milliseconds: 100));
+        // await Future.delayed(const Duration(milliseconds: 100));
       });
       return true;
     } catch (e) {

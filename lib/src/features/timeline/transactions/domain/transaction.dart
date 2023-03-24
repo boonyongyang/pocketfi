@@ -50,40 +50,6 @@ class Transaction {
   final String? originalFileStorageId; // image
   // final List<Tag> tags;
 
-  // Transaction({
-  //   required this.transactionId,
-  //   required Map<String, dynamic> json,
-  // })  :
-  //       // userId = json[TransactionKey.userId],
-  //       amount = json[TransactionKey.amount],
-  //       // categoryName = Category.fromJson(json[TransactionKey.category]),
-  //       categoryName = json[TransactionKey.categoryName],
-  //       description = json[TransactionKey.description],
-  //       type = TransactionType.values.firstWhere(
-  //         (transactionType) =>
-  //             transactionType.name == json[TransactionKey.type],
-  //         orElse: () => TransactionType.expense,
-  //       ),
-  //       date = (json[TransactionKey.date] as Timestamp?)?.toDate() ??
-  //           DateTime.now(),
-  //       isBookmark = json[TransactionKey.isBookmark] ?? false,
-  //       createdAt = (json[TransactionKey.createdAt] as Timestamp).toDate(),
-  //       thumbnailUrl = json[TransactionKey.thumbnailUrl],
-  //       fileUrl = json[TransactionKey.fileUrl],
-  //       filename = json[TransactionKey.fileName],
-  //       aspectRatio = json[TransactionKey.aspectRatio],
-  //       thumbnailStorageId = json[TransactionKey.thumbnailStorageId],
-  //       originalFileStorageId = json[TransactionKey.originalFileStorageId];
-  // // tags = [
-  // //   for (final tag in json[TransactionKey.tags])
-  // //     Tag(
-  // //       tagId: tag['tagId'],
-  // //       tagName: tag['tagName'],
-  // //       tagColor: tag['tagColor'],
-  // //       tagIcon: tag['tagIcon'],
-  // //     ),
-  // // ];
-
   const Transaction({
     required this.transactionId,
     required this.userId,
@@ -163,7 +129,7 @@ class Transaction {
   Transaction copyWith({
     String? transactionId,
     String? userId,
-    String? walletId,
+    // String? walletId,
     String? walletName,
     double? amount,
     String? categoryName,
@@ -178,28 +144,28 @@ class Transaction {
     double? aspectRatio,
     String? thumbnailStorageId,
     String? originalFileStorageId,
-  }) {
-    return Transaction(
-      transactionId: transactionId ?? this.transactionId,
-      userId: userId ?? this.userId,
-      walletId: walletId ?? this.walletId,
-      walletName: walletName ?? this.walletName,
-      amount: amount ?? this.amount,
-      categoryName: categoryName ?? this.categoryName,
-      type: type ?? this.type,
-      createdAt: createdAt ?? this.createdAt,
-      date: date ?? this.date,
-      isBookmark: isBookmark ?? this.isBookmark,
-      description: description ?? this.description,
-      thumbnailUrl: thumbnailUrl ?? this.thumbnailUrl,
-      fileUrl: fileUrl ?? this.fileUrl,
-      fileName: fileName ?? this.fileName,
-      aspectRatio: aspectRatio ?? this.aspectRatio,
-      thumbnailStorageId: thumbnailStorageId ?? this.thumbnailStorageId,
-      originalFileStorageId:
-          originalFileStorageId ?? this.originalFileStorageId,
-    );
-  }
+  }) =>
+      Transaction(
+        transactionId: transactionId ?? this.transactionId,
+        userId: userId ?? this.userId,
+        // walletId: walletId ?? this.walletId,
+        walletId: walletId, // should not change walletId like that
+        walletName: walletName ?? this.walletName,
+        amount: amount ?? this.amount,
+        categoryName: categoryName ?? this.categoryName,
+        type: type ?? this.type,
+        createdAt: createdAt ?? this.createdAt,
+        date: date ?? this.date,
+        isBookmark: isBookmark ?? this.isBookmark,
+        description: description ?? this.description,
+        thumbnailUrl: thumbnailUrl ?? this.thumbnailUrl,
+        fileUrl: fileUrl ?? this.fileUrl,
+        fileName: fileName ?? this.fileName,
+        aspectRatio: aspectRatio ?? this.aspectRatio,
+        thumbnailStorageId: thumbnailStorageId ?? this.thumbnailStorageId,
+        originalFileStorageId:
+            originalFileStorageId ?? this.originalFileStorageId,
+      );
 }
 
 @immutable
@@ -207,7 +173,7 @@ class TransactionKey {
   static const userId = 'uid';
   static const description = 'description';
   static const amount = 'amount';
-  static const categoryName = 'categoryName';
+  static const categoryName = 'categoryName'; // ! CHANGE to category_name
   static const type = 'type';
   static const createdAt = 'created_at';
   static const date = 'date';

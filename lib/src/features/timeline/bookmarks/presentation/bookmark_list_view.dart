@@ -25,7 +25,7 @@ class BookmarkListView extends ConsumerWidget {
           onTapped: () {
             ref
                 .read(selectedTransactionProvider.notifier)
-                .setSelectedTransaction(transaction, ref);
+                .setSelectedTransaction(transaction);
 
             ref
                 .read(selectedTransactionProvider.notifier)

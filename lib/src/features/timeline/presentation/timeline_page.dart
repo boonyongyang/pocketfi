@@ -10,6 +10,7 @@ import 'package:pocketfi/src/common_widgets/dialogs/selection_dialog.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/constants/strings.dart';
 import 'package:pocketfi/src/features/shared/image_upload/data/image_file_notifier.dart';
+import 'package:pocketfi/src/features/timeline/bills/presentation/bills_tab_view.dart';
 import 'package:pocketfi/src/features/timeline/bookmarks/presentation/bookmark_page.dart';
 import 'package:pocketfi/src/features/timeline/posts/post_settings/application/post_setting_provider.dart';
 import 'package:pocketfi/src/features/timeline/presentation/overview_tab.dart';
@@ -64,9 +65,7 @@ class _MainViewState extends ConsumerState<TimelinePage>
                     ref.refresh(postSettingProvider);
 
                     // go to the screen to create a new post
-                    if (!mounted) {
-                      return;
-                    }
+                    if (!mounted) return;
 
                     // Navigator.push(
                     //   context,
@@ -150,12 +149,20 @@ class _MainViewState extends ConsumerState<TimelinePage>
             ],
           ),
         ),
-        body: const TabBarView(
+        body: TabBarView(
           children: [
-            TransactionsTab(),
-            OverviewTab(),
-            // TempTab(),
-            PostsTab(),
+            const TransactionsTab(),
+            const OverviewTab(),
+            // PostsTab(),
+            BillsTabView(),
+            // BillsTabView(
+            //   data: [
+            //     ExpenseData('Food', 35),
+            //     ExpenseData('Travel', 25),
+            //     ExpenseData('Shopping', 25),
+            //     ExpenseData('Bills', 15),
+            //   ],
+            // ),
           ],
         ),
         floatingActionButton: Column(
@@ -353,9 +360,7 @@ class _MainViewState extends ConsumerState<TimelinePage>
     ref.refresh(postSettingProvider);
 
     // go to the screen to create a new post
-    if (!mounted) {
-      return;
-    }
+    if (!mounted) return;
 
     Navigator.push(
       context,
@@ -380,9 +385,7 @@ class _MainViewState extends ConsumerState<TimelinePage>
     ref.refresh(postSettingProvider);
 
     // go to the screen to create a new post
-    if (!mounted) {
-      return;
-    }
+    if (!mounted) return;
 
     Navigator.push(
       context,

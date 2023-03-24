@@ -1,15 +1,12 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:io';
 
 import 'package:auto_size_text_field/auto_size_text_field.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart' show FilteringTextInputFormatter;
+import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-
 import 'package:pocketfi/src/common_widgets/buttons/full_width_button_with_text.dart';
-import 'package:pocketfi/src/common_widgets/file_thumbnail_view.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/constants/app_icons.dart';
 import 'package:pocketfi/src/constants/strings.dart';
@@ -20,40 +17,36 @@ import 'package:pocketfi/src/features/budget/wallet/presentation/select_wallet_d
 import 'package:pocketfi/src/features/category/application/category_providers.dart';
 import 'package:pocketfi/src/features/category/domain/category.dart';
 import 'package:pocketfi/src/features/category/presentation/category_page.dart';
-import 'package:pocketfi/src/features/timeline/bookmarks/application/bookmark_services.dart';
-import 'package:pocketfi/src/features/timeline/transactions/application/transaction_providers.dart';
+import 'package:pocketfi/src/features/timeline/bills/application/bill_services.dart';
+import 'package:pocketfi/src/features/timeline/bills/domain/bill.dart';
 import 'package:pocketfi/src/features/timeline/transactions/date_picker/application/selected_date_notifier.dart';
 import 'package:pocketfi/src/features/timeline/transactions/date_picker/presentation/transaction_date_picker.dart';
-import 'package:pocketfi/src/features/timeline/transactions/domain/tag.dart';
-import 'package:pocketfi/src/features/shared/image_upload/data/image_file_notifier.dart';
-import 'package:pocketfi/src/features/shared/image_upload/domain/file_type.dart';
-import 'package:pocketfi/src/features/shared/image_upload/domain/thumbnail_request.dart';
-import 'package:pocketfi/src/features/shared/image_upload/helpers/image_picker_helper.dart';
 import 'package:pocketfi/src/features/timeline/transactions/presentation/add_new_transactions/category_selector_view.dart';
-import 'package:pocketfi/src/features/timeline/transactions/presentation/add_new_transactions/full_screen_image_dialog.dart';
-import 'package:pocketfi/src/features/timeline/transactions/presentation/add_new_transactions/select_transaction_type.dart';
 
-class AddNewTransaction extends StatefulHookConsumerWidget {
-  const AddNewTransaction({
-    super.key,
-  });
+class CreateNewBillPage extends StatelessWidget {
+  const CreateNewBillPage({Key? key}) : super(key: key);
 
   @override
-  AddNewTransactionState createState() => AddNewTransactionState();
+  Widget build(BuildContext context) {
+    return const CreateNewBillForm();
+  }
 }
 
-class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
-  bool get isSelectedTransactionNull =>
-      (ref.watch(selectedTransactionProvider)?.date == null);
+class CreateNewBillForm extends StatefulHookConsumerWidget {
+  const CreateNewBillForm({Key? key}) : super(key: key);
+
+  @override
+  CreateNewBillFormState createState() => CreateNewBillFormState();
+}
+
+class CreateNewBillFormState extends ConsumerState<CreateNewBillForm> {
   String _selectedRecurrence = 'Never';
 
   @override
   Widget build(BuildContext context) {
-    final categories = ref.watch(categoriesProvider);
+    final categories = ref.watch(expenseCategoriesProvider);
     final selectedCategory = ref.watch(selectedCategoryProvider);
-
     final selectedWallet = ref.watch(selectedWalletProvider);
-    final isBookmark = ref.watch(isBookmarkProvider);
 
     final amountController = useTextEditingController();
     final noteController = useTextEditingController();
@@ -64,14 +57,12 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
         void listener() =>
             isSaveButtonEnabled.value = amountController.text.isNotEmpty;
         amountController.addListener(listener);
-        return () => amountController.removeListener(listener);
+        return () {
+          amountController.removeListener(listener);
+        };
       },
       [amountController],
     );
-
-    // if (!mounted) {
-    //   ref.read(transactionTypeProvider.notifier).resetTransactionTypeState();
-    // }
 
     return Scaffold(
       appBar: AppBar(
@@ -79,7 +70,7 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
         shadowColor: Colors.transparent,
         centerTitle: true,
         title: const Text(
-          Strings.newTransaction,
+          Strings.newBill,
           style: TextStyle(
             color: AppColors.white,
             fontSize: 20,
@@ -91,16 +82,8 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
             color: AppColors.white,
           ),
           onPressed: () {
-            // ref.read(selectedCategoryProvider.notifier).state = null;
-
             Navigator.of(context).pop();
             resetCategoryState(ref);
-            // ref.read(transactionTypeProvider.notifier).setTransactionType(0);
-            ref
-                .read(transactionTypeProvider.notifier)
-                .resetTransactionTypeState();
-
-            // ref.read(transactionDateProvider.notifier).setDate(DateTime.now());
           },
         ),
       ),
@@ -112,12 +95,12 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
           },
           child: Container(
             padding: EdgeInsets.only(
+              top: 20,
               bottom: MediaQuery.of(context).viewInsets.bottom + 10,
             ),
             child: Column(
               children: [
-                const SelectTransactionType(noOfTabs: 3),
-                TransactionAmountField(amountController: amountController),
+                BillAmountTextField(amountController: amountController),
                 const SelectCurrency(),
                 // * Select Category and Wallet
                 Padding(
@@ -127,77 +110,37 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
                     children: [
                       const SizedBox(width: 8.0),
                       SelectCategory(
-                          categories: categories,
-                          selectedCategory: selectedCategory),
+                        categories: categories,
+                        selectedCategory: selectedCategory,
+                      ),
                       const Spacer(),
                       const Icon(AppIcons.wallet, color: AppColors.mainColor1),
-                      const SizedBox(width: 8.0),
                       const SelectWalletDropdownList(),
-                      const SizedBox(width: 8.0),
                     ],
                   ),
                 ),
-                // * DatePicker, Note, Photo, Tags and Recurrence
+                // * DatePicker, Note and Recurrence
                 Padding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 24.0,
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
-                    // mainAxisSize: MainAxisSize.min,
                     children: [
-                      // TransactionDatePicker(
-                      //     // date: DateTime.now(),
-                      //     ),
                       const TransactionDatePicker(),
                       WriteOptionalNote(noteController: noteController),
-                      selectPhoto(),
-                      showIfPhotoIsAdded(),
                       const SizedBox(height: 8.0),
-                      selectTags(),
                       selectReccurence(),
-                      Center(
-                        child: Row(
-                          children: [
-                            IconButton(
-                              splashRadius: 22,
-                              icon: Icon(
-                                isBookmark
-                                    ? Icons.bookmark
-                                    : Icons.bookmark_outline,
-                                color: AppColors.mainColor2,
-                                size: 32,
-                              ),
-                              onPressed: () {
-                                ref
-                                    .read(isBookmarkProvider.notifier)
-                                    .toggleBookmark();
-
-                                Fluttertoast.showToast(
-                                  msg: "Bookmark added",
-                                  toastLength: Toast.LENGTH_SHORT,
-                                  gravity: ToastGravity.BOTTOM,
-                                  timeInSecForIosWeb: 2,
-                                  backgroundColor: Colors.white,
-                                  textColor: AppColors.mainColor1,
-                                  fontSize: 16.0,
-                                );
-                              },
-                            ),
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width - 100,
-                              child: SaveButton(
-                                isSaveButtonEnabled: isSaveButtonEnabled,
-                                noteController: noteController,
-                                amountController: amountController,
-                                categoryName: selectedCategory,
-                                mounted: mounted,
-                                selectedWallet: selectedWallet,
-                                isBookmark: isBookmark,
-                                // date: ,
-                              ),
-                            ),
-                          ],
+                      const SizedBox(height: 8.0),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        child: SaveButton(
+                          isSaveButtonEnabled: isSaveButtonEnabled,
+                          noteController: noteController,
+                          amountController: amountController,
+                          categoryName: selectedCategory,
+                          mounted: mounted,
+                          selectedWallet: selectedWallet,
                         ),
                       ),
                     ],
@@ -208,120 +151,6 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
           ),
         ),
       ),
-    );
-  }
-
-  Row selectPhoto() {
-    return Row(
-      children: [
-        const Icon(Icons.photo, color: AppColors.mainColor1),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: TextButton(
-            onPressed: () async {
-              final imageFile = await ImagePickerHelper.pickImageFromGallery();
-              if (imageFile == null) return;
-              ref.read(imageFileProvider.notifier).setImageFile(imageFile);
-              if (!mounted) return;
-              displayPhoto(imageFile);
-            },
-            child: const Text(
-              Strings.selectPhoto,
-            ),
-          ),
-        ),
-        const Spacer(),
-        if (ref.read(imageFileProvider) != null)
-          IconButton(
-            color: AppColors.mainColor1,
-            icon: const Icon(Icons.close),
-            onPressed: () {
-              ref.read(imageFileProvider.notifier).setImageFile(null);
-            },
-          ),
-      ],
-    );
-  }
-
-  void displayPhoto(File imageFile) {
-    debugPrint('image file path: ${imageFile.path}');
-
-    FileThumbnailView(
-      thumbnailRequest: ThumbnailRequest(
-        imageFile,
-        FileType.image,
-      ),
-    );
-
-    ref.read(imageFileProvider.notifier).setImageFile(imageFile);
-  }
-
-  Widget showIfPhotoIsAdded() {
-    final imageFile = ref.watch(imageFileProvider);
-    return (imageFile != null)
-        ? InkWell(
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) =>
-                      FullScreenImageDialog(imageFile: imageFile),
-                  fullscreenDialog: true,
-                ),
-              );
-            },
-            child: Container(
-              width: double.infinity,
-              height: 150.0,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: FileImage(imageFile),
-                  fit: BoxFit.cover,
-                ),
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-            ),
-          )
-        : const SizedBox();
-  }
-
-  Row selectTags() {
-    return Row(
-      children: [
-        const Icon(
-          Icons.label_important_rounded,
-          color: AppColors.mainColor1,
-        ),
-        const SizedBox(width: 14.0),
-        Expanded(
-          child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Wrap(
-              direction: Axis.horizontal,
-              spacing: 8.0,
-              children: [
-                for (final tag in tags)
-                  FilterChip(
-                    showCheckmark: false,
-                    selectedColor: AppColors.mainColor2,
-                    label: Text(tag.label),
-                    selected: selectedTags.contains(tag),
-                    onSelected: (selected) {
-                      setState(
-                        () {
-                          if (selected) {
-                            selectedTags.add(tag);
-                          } else {
-                            selectedTags.remove(tag);
-                          }
-                        },
-                      );
-                    },
-                  ),
-              ],
-            ),
-          ),
-        ),
-      ],
     );
   }
 
@@ -409,13 +238,14 @@ class SelectCategory extends ConsumerWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const Text(Strings.selectCategory,
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                  )),
+                              const Text(
+                                Strings.selectCategory,
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                               IconButton(
-                                // icon: const Icon(Icons.add_outlined),
                                 icon: const Icon(Icons.settings),
                                 onPressed: () {
                                   Navigator.push(
@@ -436,7 +266,6 @@ class SelectCategory extends ConsumerWidget {
                                 const SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 4,
                               crossAxisSpacing: 8.0,
-                              // mainAxisSpacing: 8.0,
                             ),
                             itemCount: categories.length,
                             itemBuilder: (context, index) {
@@ -445,27 +274,14 @@ class SelectCategory extends ConsumerWidget {
                                 child: GestureDetector(
                                   onTap: () {
                                     ref
-                                                .watch(
-                                                    selectedTransactionProvider)
-                                                ?.categoryName ==
-                                            null
-                                        ? ref
-                                            .read(selectedCategoryProvider
-                                                .notifier)
-                                            .state = categories[index]
-                                        : ref
-                                            .read(selectedTransactionProvider
-                                                .notifier)
-                                            .updateCategory(
-                                                categories[index], ref);
+                                        .read(selectedCategoryProvider.notifier)
+                                        .state = categories[index];
 
                                     debugPrint(
                                         'selected category: ${categories[index].name}');
                                     Navigator.of(context).pop();
                                   },
                                   child: Column(
-                                    // mainAxisAlignment: MainAxisAlignment.center,
-                                    // mainAxisSize: MainAxisSize.min,
                                     children: [
                                       CircleAvatar(
                                         radius: 20,
@@ -516,8 +332,8 @@ class SelectCurrency extends StatelessWidget {
   }
 }
 
-class TransactionAmountField extends ConsumerWidget {
-  const TransactionAmountField({
+class BillAmountTextField extends ConsumerWidget {
+  const BillAmountTextField({
     Key? key,
     required this.amountController,
   }) : super(key: key);
@@ -526,7 +342,6 @@ class TransactionAmountField extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final type = ref.watch(transactionTypeProvider);
     return SizedBox(
       width: 250,
       child: AutoSizeTextField(
@@ -542,7 +357,6 @@ class TransactionAmountField extends ConsumerWidget {
         keyboardType: Platform.isIOS
             ? const TextInputType.numberWithOptions(signed: true, decimal: true)
             : TextInputType.number,
-// This regex for only amount (price). you can create your own regex based on your requirement
         inputFormatters: [
           FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,4}'))
         ],
@@ -551,15 +365,10 @@ class TransactionAmountField extends ConsumerWidget {
           hintText: Strings.zeroAmount,
         ),
         controller: amountController,
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 28,
           fontWeight: FontWeight.bold,
-          // color: ref.watch(transactionTypeProvider) == TransactionType.expense
-          //     ? AppColors.red
-          //     : ref.watch(transactionTypeProvider) == TransactionType.income
-          //         ? AppColors.green
-          //         : Colors.grey,
-          color: type.color,
+          color: AppColors.red,
         ),
       ),
     );
@@ -589,7 +398,7 @@ class WriteOptionalNote extends StatelessWidget {
               // autofocus: true,
               decoration: const InputDecoration(
                 border: InputBorder.none,
-                hintText: Strings.writeANote,
+                hintText: 'Write a note',
               ),
               controller: _noteController,
               onSubmitted: (_) => FocusScope.of(context).nextFocus(),
@@ -610,7 +419,8 @@ class SaveButton extends ConsumerWidget {
     required this.categoryName,
     required this.selectedWallet,
     required this.mounted,
-    this.isBookmark = false,
+    // this.billStatus = BillStatus.unpaid,
+    this.recurringPeriod = RecurringPeriod.never,
   });
 
   final ValueNotifier<bool> isSaveButtonEnabled;
@@ -619,7 +429,8 @@ class SaveButton extends ConsumerWidget {
   final Category? categoryName;
   final Wallet? selectedWallet;
   final bool mounted;
-  final bool isBookmark;
+  // final BillStatus billStatus;
+  final RecurringPeriod recurringPeriod;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -630,87 +441,48 @@ class SaveButton extends ConsumerWidget {
       onPressed: isSaveButtonEnabled.value
           ? () async {
               final userId = ref.read(userIdProvider);
-              final type = ref.read(transactionTypeProvider);
-              final date = ref.read(transactionDateProvider);
-              final file = ref.read(imageFileProvider);
+              // ! dun use transaction one
+              final dueDate = ref.read(transactionDateProvider);
 
               debugPrint('userId is: $userId');
-              debugPrint('transactionType is: $type');
 
               if (userId == null) {
                 return;
               }
               final note = noteController.text;
               final amount = amountController.text;
-              // final selectedCategory =
-              //     ref.read(selectedCategoryProvider).state;
               debugPrint('note is: $note');
               debugPrint('amount is: $amount');
 
               debugPrint('walletName is: ${selectedWallet!.walletId}');
 
-              final isCreated = await ref
-                  .read(createNewTransactionProvider.notifier)
-                  .createNewTransaction(
-                    userId: userId,
-                    walletId: selectedWallet!.walletId, // ? sure?
-                    walletName: selectedWallet!.walletName, // ? sure?
-                    amount: double.parse(amount),
-                    type: type,
-                    note: note,
-                    categoryName: categoryName!.name,
-                    date: date,
-                    file: file,
-                    isBookmark: isBookmark,
-                  );
+              final isCreated =
+                  await ref.read(billProvider.notifier).createNewBill(
+                        userId: userId,
+                        walletId: selectedWallet!.walletId, // ? sure?
+                        walletName: selectedWallet!.walletName, // ? sure?
+                        billAmount: double.parse(amount),
+                        billDueDate: dueDate,
+                        categoryName: categoryName!.name,
+                        billNote: note,
+                        recurringPeriod: recurringPeriod,
+                        // billStatus: billStatus,
+                      );
               debugPrint('isCreated is: $isCreated');
 
               if (isCreated && mounted) {
-                // if (isBookmark) {
-                //   ref.read(bookmarkTransactionListProvider.notifier).addBookmark(
-                //         Transaction(
-                //           transactionId: ,
-                //           userId: userId,
-                //           walletId: selectedWallet!.walletId,
-                //           amount: double.parse(amount),
-                //           type: type,
-                //           description: note,
-                //           categoryName: categoryName!.name,
-                //           date: date,
-                //           file: file,
-                //         ),
-                //         // userId: userId,
-                //         // walletId: selectedWallet!.walletId,
-                //         // amount: double.parse(amount),
-                //         // type: type,
-                //         // note: note,
-                //         // categoryName: categoryName!.name,
-                //         // date: date,
-                //         // file: file,
-                //       );
-                // }
-
                 noteController.clear();
                 amountController.clear();
                 Navigator.of(context).pop();
 
-                // reset the state of the provider
                 resetCategoryState(ref);
-                ref
-                    .read(transactionTypeProvider.notifier)
-                    .setTransactionType(0);
-
-                // clear the imageFileProvider
-                ref.read(imageFileProvider.notifier).setImageFile(null);
 
                 ref
                     .read(transactionDateProvider.notifier)
                     .setDate(DateTime.now());
 
-                ref.read(isBookmarkProvider.notifier).resetBookmarkState();
-
                 Fluttertoast.showToast(
-                  msg: "Transaction added",
+                  msg: "Bill added",
                   toastLength: Toast.LENGTH_SHORT,
                   gravity: ToastGravity.BOTTOM,
                   timeInSecForIosWeb: 2,

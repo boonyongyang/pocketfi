@@ -26,6 +26,7 @@ import 'package:pocketfi/src/features/shared/image_upload/domain/file_type.dart'
 import 'package:pocketfi/src/features/shared/image_upload/domain/thumbnail_request.dart';
 import 'package:pocketfi/src/features/shared/image_upload/helpers/image_picker_helper.dart';
 import 'package:pocketfi/src/features/timeline/transactions/presentation/add_new_transactions/category_selector_view.dart';
+import 'package:pocketfi/src/features/timeline/transactions/presentation/add_new_transactions/full_screen_image_dialog.dart';
 import 'package:pocketfi/src/features/timeline/transactions/presentation/add_new_transactions/select_transaction_type.dart';
 
 class AddTransactionWithBookmark extends StatefulHookConsumerWidget {
@@ -211,15 +212,15 @@ class AddTransactionWithBookmarkState
 
     return (transaction?.fileUrl != null)
         ? InkWell(
-            // onTap: () {
-            //   Navigator.of(context).push(
-            //     MaterialPageRoute(
-            //       builder: (context) => FullScreenImageDialog(
-            //           imageFile: File(transaction.fileUrl!)),
-            //       fullscreenDialog: true,
-            //     ),
-            //   );
-            // },
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => FullScreenImageDialog(
+                      imageFile: File(transaction.fileUrl!)),
+                  fullscreenDialog: true,
+                ),
+              );
+            },
             child: SizedBox(
               width: double.infinity,
               height: 150.0,
