@@ -2,14 +2,10 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-// import 'package:google_mlkit_entity_extraction/google_mlkit_entity_extraction.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
-import 'package:pocketfi/src/features/authentication/application/user_id_provider.dart';
-import 'package:pocketfi/src/features/timeline/transactions/date_picker/application/selected_date_notifier.dart';
-import 'package:pocketfi/src/features/timeline/transactions/domain/transaction.dart';
 import 'package:pocketfi/src/features/timeline/transactions/presentation/add_new_transactions/full_screen_image_dialog.dart';
 import 'package:pocketfi/src/features/timeline/receipts/add_transaction_with_receipt.dart';
 import 'package:pocketfi/src/features/timeline/receipts/application/receipt_services.dart';
@@ -20,7 +16,7 @@ import 'package:uuid/uuid.dart';
 class VerifyReceiptDetails extends StatefulHookConsumerWidget {
   const VerifyReceiptDetails({
     Key? key,
-    this.pickedImage,
+    required this.pickedImage,
   }) : super(key: key);
 
   final XFile? pickedImage;
@@ -33,6 +29,7 @@ class VerifyReceiptDetailsState extends ConsumerState<VerifyReceiptDetails> {
   bool textScanning = false;
   XFile? imageFile;
   String scannedText = "", scannedEntities = "", formattedText = "";
+  String? selectedPrice = '';
   List<String?> extractedPrices = [];
   List<String> extractedMerchants = [];
   List<String> extractedDates = [];
@@ -44,21 +41,20 @@ class VerifyReceiptDetailsState extends ConsumerState<VerifyReceiptDetails> {
   void initState() {
     super.initState();
     if (widget.pickedImage != null) {
-      scanTest(widget.pickedImage!);
-      debugPrint('pickedImage: ${widget.pickedImage}');
+      scanReceipt(widget.pickedImage!);
+      debugPrint('pickedImage: ${widget.pickedImage?.name}');
     }
 
-    if (extractedPrices.isNotEmpty) {
-      // Get the highest amount from the list
-      String? highestAmount = extractedPrices.reduce(
-          (a, b) => double.parse(a ?? '0') > double.parse(b ?? '0') ? a : b);
-      amountController.text = highestAmount ?? 's';
-    }
+    // if (extractedPrices.isNotEmpty) {
+    //   // Get the highest amount from the list
+    //   String? highestAmount = extractedPrices.reduce(
+    //       (a, b) => double.parse(a ?? '0') > double.parse(b ?? '0') ? a : b);
+    //   amountController.text = highestAmount ?? 's';
+    // }
 
-    // if (extractedDates.isNotEmpty) {
-    //   // Get the latest date from the list
-    //   String? latestDate = extractedDates.first;
-    //   dateController.text = latestDate;
+    // if (extractedMerchants.isNotEmpty) {
+    //   String? firstMerchant = extractedMerchants.first;
+    //   merchantController.text = firstMerchant;
     // }
   }
 
@@ -67,15 +63,16 @@ class VerifyReceiptDetailsState extends ConsumerState<VerifyReceiptDetails> {
     amountController =
         // useTextEditingController(text: extractedPrices.toString());
         useTextEditingController(
-      text: extractedPrices.isNotEmpty ? extractedPrices[1] : '0.00',
+      text: extractedPrices.isNotEmpty ? extractedPrices[0] : '0.20',
     );
     debugPrint('extractedPrices: $extractedPrices');
 
-    final merchantController = useTextEditingController();
-    final dateController = useTextEditingController();
+    final merchantController = useTextEditingController(
+        text: extractedMerchants.isNotEmpty
+            ? extractedMerchants[0]
+            : 'Foodpanda');
 
-    // final dateController = ref.read(transactionDateProvider);
-    // ref.read(transactionDateProvider.notifier).setDate(DateTime.now());
+    final dateController = useTextEditingController();
 
     final isProceedButtonEnabled = useState(false);
     // note, desc/notes, category, tags, location,
@@ -86,8 +83,6 @@ class VerifyReceiptDetailsState extends ConsumerState<VerifyReceiptDetails> {
       () {
         void listener() =>
             isProceedButtonEnabled.value = amountController.text.isNotEmpty;
-        // && merchantController.text.isNotEmpty &&
-        // date.text.isNotEmpty;
         amountController.addListener(listener);
         return () => amountController.removeListener(listener);
       },
@@ -105,10 +100,14 @@ class VerifyReceiptDetailsState extends ConsumerState<VerifyReceiptDetails> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              if (textScanning) const CircularProgressIndicator(),
+              if (textScanning)
+                const Padding(
+                  padding: EdgeInsets.only(top: 100.0),
+                  child: CircularProgressIndicator(),
+                ),
               if (!textScanning && imageFile == null)
                 Container(
-                  color: Colors.grey[300]!,
+                  color: Colors.grey[300],
                 ),
               // if (imageFile != null) Image.file(File(imageFile!.path)),
               if (imageFile != null)
@@ -210,6 +209,11 @@ class VerifyReceiptDetailsState extends ConsumerState<VerifyReceiptDetails> {
               ),
               const SizedBox(height: 20),
               Text(
+                selectedPrice.toString(),
+                style: const TextStyle(fontSize: 20, color: Colors.blueGrey),
+              ),
+              const SizedBox(height: 20),
+              Text(
                 extractedPrices.toString(),
                 style: const TextStyle(fontSize: 20, color: Colors.blueGrey),
               ),
@@ -233,7 +237,8 @@ class VerifyReceiptDetailsState extends ConsumerState<VerifyReceiptDetails> {
                           date: dateController.text.isEmpty
                               ? DateTime.now()
                               : DateTime.parse(dateController.text),
-                          categoryName: 'Uncategorized',
+                          // categoryName: 'Uncategorized',
+                          categoryName: 'Food and Drinks',
                           image: imageFile!.path,
                           merchant: merchantController.text,
                           scannedText: scannedText,
@@ -261,7 +266,7 @@ class VerifyReceiptDetailsState extends ConsumerState<VerifyReceiptDetails> {
     );
   }
 
-  void scanTest(XFile pickedImage) async {
+  void scanReceipt(XFile pickedImage) async {
     try {
       textScanning = true;
       imageFile = pickedImage;
@@ -281,35 +286,13 @@ class VerifyReceiptDetailsState extends ConsumerState<VerifyReceiptDetails> {
     final RecognizedText recognisedText =
         await textRecognizer.processImage(inputImage);
 
-    List<String> dates = [];
-
-    for (TextBlock block in recognisedText.blocks) {
-      for (TextLine line in block.lines) {
-        String text = line.text.trim();
-        if (text.isNotEmpty) {
-          // check for merchant names
-          // if (text.toLowerCase().contains("merchant")) {
-          //   merchantNames.add(text);
-          // }
-          // check for dates
-          if (RegExp(r"\d{1,2}/\d{1,2}/\d{4}").hasMatch(text)) {
-            dates.add(text);
-          }
-          // // check for prices
-          // else if (RegExp(r"(RM|MYR)?\s?\d+(\.\d{2})?").hasMatch(text)) {
-          //   prices.add(text);
-          // }
-        }
-      }
-    }
-
     textRecognizer.close();
     setState(() {
-      extractedMerchants = extractMerchants(recognisedText);
-      // extractedDates = dates;
-      extractedDates = extractDates(recognisedText);
       scannedText = recognisedText.text;
+      extractedMerchants = extractMerchants(recognisedText);
+      extractedDates = extractDates(recognisedText);
       extractedPrices = extractPrices(recognisedText);
+      selectedPrice = extractTotalPrice(recognisedText).toString();
       textScanning = false;
     });
   }
@@ -349,6 +332,22 @@ class VerifyReceiptDetailsState extends ConsumerState<VerifyReceiptDetails> {
     });
 
     return validPrices;
+  }
+
+// * selected Price (from the list of extracted prices)
+  final RegExp selectedPriceRegex = RegExp(
+      r"(Total|Grand Total|Balance Due|Amount Due|Subtotal|Net Total|Final Total|Order Total|Invoice Total|Total Amount):\s*([+-]?\d{1,3}(?:,?\d{3})*(?:\.\d{2})?)",
+      caseSensitive: false);
+
+  double? extractTotalPrice(RecognizedText recognizedText) {
+    final RegExpMatch? match = selectedPriceRegex.firstMatch(scannedText);
+    if (match != null) {
+      final String priceStr = match.group(1)!;
+      if (double.tryParse(priceStr) != null) {
+        return double.parse(priceStr);
+      }
+    }
+    return null;
   }
 
 // * dates
@@ -424,6 +423,26 @@ class VerifyReceiptDetailsState extends ConsumerState<VerifyReceiptDetails> {
       'app',
       'discount',
       'promotion',
+      'sales',
+      'tax',
+      'service',
+      'delivery',
+      'delivery fee',
+      'quantity',
+      'item',
+      'price',
+      'change',
+      'cash',
+      'credit',
+      'debit',
+      'card',
+      'payment',
+      'mastercard',
+      'visa',
+      'invoice',
+      'contact',
+      'code',
+      'scan',
     ];
     bool isHeader = true;
     for (TextBlock block in recognizedText.blocks) {
@@ -455,145 +474,52 @@ class VerifyReceiptDetailsState extends ConsumerState<VerifyReceiptDetails> {
     return validMerchants;
   }
 
-// ! ori code 1
-  // void scanTest(XFile pickedImage) async {
-  //   try {
-  //     textScanning = true;
-  //     imageFile = pickedImage;
-  //     setState(() {});
-  //     getRecognisedText(pickedImage);
-  //   } catch (e) {
-  //     textScanning = false;
-  //     imageFile = null;
-  //     scannedText = "Error occured while scanning";
-  //     setState(() {});
-  //   }
-  // }
-
-  // void getRecognisedText(XFile image) async {
-  //   final inputImage = InputImage.fromFilePath(image.path);
-  //   final textRecognizer = TextRecognizer();
-  //   final RecognizedText recognisedText =
-  //       await textRecognizer.processImage(inputImage);
-
-  //   List<String?> regexExtraction = extractPrices(recognisedText);
-
-  //   String scannedText = "";
-  //   for (TextBlock block in recognisedText.blocks) {
-  //     for (TextLine line in block.lines) {
-  //       scannedText = "$scannedText${line.text}\n";
-  //     }
-  //   }
-
-  //   textRecognizer.close();
-  //   setState(() {
-  //     this.scannedText = scannedText;
-  //     this.regexExtraction = regexExtraction;
-  //     textScanning = false;
-  //   });
-  // }
-
-  // final RegExp priceRegex =
-  //     RegExp(r"(RM|MYR)?\s?(\d+(\.\d{2})?|\.\d{2})", caseSensitive: false);
-
-  // List<String> extractPrices(RecognizedText recognizedText) {
-  //   final List<String> matches = <String>[];
-  //   for (TextBlock block in recognizedText.blocks) {
-  //     for (TextLine line in block.lines) {
-  //       for (TextElement element in line.elements) {
-  //         String text = element.text;
-  //         final RegExpMatch? match = priceRegex.firstMatch(text);
-  //         if (match != null) {
-  //           final String? price = match.group(0);
-  //           matches.add(price!);
-  //         }
-  //       }
-  //     }
-  //   }
-
-  //   final List<String> validPrices = matches
-  //       .where((price) =>
-  //           price.contains('MYR') ||
-  //           price.contains('RM') ||
-  //           price.startsWith('.') ||
-  //           (price.contains('.') && price.split('.').last.length == 2))
-  //       .toList();
-
-  //   // Order the prices in descending order
-  //   validPrices.sort((a, b) {
-  //     double aVal = double.parse(a.replaceAll(RegExp(r"[^\d.]"), ""));
-  //     double bVal = double.parse(b.replaceAll(RegExp(r"[^\d.]"), ""));
-  //     return bVal.compareTo(aVal);
-  //   });
-
-  //   return validPrices;
-  // }
-// ! end of ori code 1
-
   Widget showReceiptPhotoFrame(File imageFile) {
-    // final imageFile = ref.watch(imageFileProvider);
-    return (imageFile != null)
-        ? InkWell(
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) =>
-                      FullScreenImageDialog(imageFile: imageFile),
-                  fullscreenDialog: true,
-                ),
-              );
-            },
-            child: Container(
-              width: double.infinity,
-              height: 150.0,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: FileImage(imageFile),
-                  fit: BoxFit.cover,
-                ),
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-            ),
-          )
-        : const SizedBox();
+    return InkWell(
+      onTap: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => FullScreenImageDialog(imageFile: imageFile),
+            fullscreenDialog: true,
+          ),
+        );
+      },
+      child: Container(
+        width: double.infinity,
+        height: 150.0,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: FileImage(imageFile),
+            fit: BoxFit.cover,
+          ),
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+      ),
+    );
+    // // final imageFile = ref.watch(imageFileProvider);
+    // return (imageFile != null)
+    //     ? InkWell(
+    //         onTap: () {
+    //           Navigator.of(context).push(
+    //             MaterialPageRoute(
+    //               builder: (context) =>
+    //                   FullScreenImageDialog(imageFile: imageFile),
+    //               fullscreenDialog: true,
+    //             ),
+    //           );
+    //         },
+    //         child: Container(
+    //           width: double.infinity,
+    //           height: 150.0,
+    //           decoration: BoxDecoration(
+    //             image: DecorationImage(
+    //               image: FileImage(imageFile),
+    //               fit: BoxFit.cover,
+    //             ),
+    //             borderRadius: BorderRadius.circular(8.0),
+    //           ),
+    //         ),
+    //       )
+    //     : const SizedBox();
   }
 }
-
-// ? not used anymore i think
-// class VerifyScannedText extends StatelessWidget {
-//   const VerifyScannedText({
-//     super.key,
-//     required TextEditingController controller,
-//     required this.icon,
-//   }) : _controller = controller;
-
-//   final TextEditingController _controller;
-//   final IconData icon;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Row(
-//       children: [
-//         Icon(icon, color: AppColors.mainColor1),
-//         ConstrainedBox(
-//           constraints: const BoxConstraints(
-//             maxWidth: 250,
-//           ),
-//           child: Padding(
-//             padding: const EdgeInsets.only(left: 16.0),
-//             child: TextField(
-//               // autofocus: true,
-//               decoration: InputDecoration(
-//                 // border: InputBorder.none,
-//                 prefixIcon: Icon(icon),
-//                 hintText: '',
-//               ),
-//               controller: _controller,
-//               onSubmitted: (_) => FocusScope.of(context).nextFocus(),
-//             ),
-//           ),
-//         ),
-//       ],
-//     );
-//   }
-// }

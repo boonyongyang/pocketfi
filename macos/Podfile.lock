@@ -624,7 +624,7 @@ PODS:
     - Firebase/CoreOnly (~> 10.3.0)
     - firebase_core
     - FlutterMacOS
-  - firebase_core (2.5.0):
+  - firebase_core (2.7.1):
     - Firebase/CoreOnly (~> 10.3.0)
     - FlutterMacOS
   - firebase_storage (11.0.11):
@@ -752,6 +752,9 @@ PODS:
   - PromisesObjC (2.1.1)
   - share_plus (0.0.1):
     - FlutterMacOS
+  - shared_preferences_foundation (0.0.1):
+    - Flutter
+    - FlutterMacOS
   - url_launcher_macos (0.0.1):
     - FlutterMacOS
 
@@ -763,6 +766,7 @@ DEPENDENCIES:
   - FlutterMacOS (from `Flutter/ephemeral`)
   - path_provider_foundation (from `Flutter/ephemeral/.symlinks/plugins/path_provider_foundation/macos`)
   - share_plus (from `Flutter/ephemeral/.symlinks/plugins/share_plus/macos`)
+  - shared_preferences_foundation (from `Flutter/ephemeral/.symlinks/plugins/shared_preferences_foundation/macos`)
   - url_launcher_macos (from `Flutter/ephemeral/.symlinks/plugins/url_launcher_macos/macos`)
 
 SPEC REPOS:
@@ -802,6 +806,8 @@ EXTERNAL SOURCES:
     :path: Flutter/ephemeral/.symlinks/plugins/path_provider_foundation/macos
   share_plus:
     :path: Flutter/ephemeral/.symlinks/plugins/share_plus/macos
+  shared_preferences_foundation:
+    :path: Flutter/ephemeral/.symlinks/plugins/shared_preferences_foundation/macos
   url_launcher_macos:
     :path: Flutter/ephemeral/.symlinks/plugins/url_launcher_macos/macos
 
@@ -811,7 +817,7 @@ SPEC CHECKSUMS:
   cloud_firestore: f070ac5c179a8fe77a02c2333ce7ea78c37a75f0
   Firebase: f92fc551ead69c94168d36c2b26188263860acd9
   firebase_auth: d97f1f971f0c8e368fdd330506c2ffa8d38950df
-  firebase_core: c6858db717f7c37bc48d5647c383008459591e57
+  firebase_core: 82d0bad907d4128050efaaaa978f9d313b2ef167
   firebase_storage: 2f92578ade60092a4b9ce7e7ce5170d58eeb10ad
   FirebaseAppCheckInterop: ef074633831a90cf6c10e8f2c1e1f8b7842a446a
   FirebaseAuth: 0e415d29d846c1dce2fb641e46f35e9888d9bec6
@@ -832,6 +838,7 @@ SPEC CHECKSUMS:
   path_provider_foundation: 37748e03f12783f9de2cb2c4eadfaa25fe6d4852
   PromisesObjC: ab77feca74fa2823e7af4249b8326368e61014cb
   share_plus: 76dd39142738f7a68dd57b05093b5e8193f220f7
+  shared_preferences_foundation: 986fc17f3d3251412d18b0265f9c64113a8c2472
   url_launcher_macos: c04e4fa86382d4f94f6b38f14625708be3ae52e2
 
 PODFILE CHECKSUM: 353c8bcc5d5b0994e508d035b5431cfe18c1dea7

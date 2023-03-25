@@ -25,6 +25,12 @@ void resetCategoryState(WidgetRef ref) {
   ref.read(selectedCategoryProvider.notifier).state = expenseCategories.first;
 }
 
+void setBillCategory(WidgetRef ref) {
+  ref.read(selectedCategoryProvider.notifier).state = expenseCategories
+      .where((element) => element.name == 'Bills and Fees')
+      .first;
+}
+
 Category getCategoryWithCategoryName(String? categoryName) {
   return expenseCategories.firstWhere(
     (category) => category.name == categoryName,

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pocketfi/src/features/shared/image_upload/helpers/image_picker_helper.dart';
+import 'package:pocketfi/src/features/timeline/receipts/scanned_text_page.dart';
 
 class ScanReceipt extends StatefulWidget {
   const ScanReceipt({Key? key}) : super(key: key);
@@ -114,18 +115,20 @@ class _ScanReceiptState extends State<ScanReceipt> {
                         )),
                   ],
                 ),
-                const SizedBox(
-                  height: 20,
-                ),
-                // Text(formattedText),
-
-                Text(
-                  scannedText,
-                  style: const TextStyle(
-                    fontSize: 20,
-                    color: Colors.black,
-                  ),
-                ),
+                const SizedBox(height: 20),
+                scannedText.isNotEmpty && !textScanning
+                    ? ElevatedButton(
+                        onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                ScannedTextPage(scannedText: scannedText),
+                          ),
+                        ),
+                        child: const Text('View scanned text'),
+                      )
+                    : const SizedBox(),
+                const SizedBox(height: 20),
                 Text(
                   scannedEntities,
                   style: const TextStyle(fontSize: 20),

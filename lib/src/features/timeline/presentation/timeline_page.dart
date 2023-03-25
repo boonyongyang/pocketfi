@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -8,9 +10,11 @@ import 'package:pocketfi/src/common_widgets/dialogs/selection_dialog.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/constants/strings.dart';
 import 'package:pocketfi/src/features/shared/image_upload/data/image_file_notifier.dart';
+import 'package:pocketfi/src/features/timeline/bills/presentation/bills_tab_view.dart';
 import 'package:pocketfi/src/features/timeline/bookmarks/presentation/bookmark_page.dart';
 import 'package:pocketfi/src/features/timeline/posts/post_settings/application/post_setting_provider.dart';
 import 'package:pocketfi/src/features/timeline/presentation/overview_tab.dart';
+import 'package:pocketfi/src/features/timeline/receipts/scanning_test.dart';
 import 'package:pocketfi/src/features/timeline/transactions/data/transaction_notifiers.dart';
 import 'package:pocketfi/src/features/shared/image_upload/domain/file_type.dart';
 import 'package:pocketfi/src/features/shared/image_upload/helpers/image_picker_helper.dart';
@@ -48,6 +52,13 @@ class _MainViewState extends ConsumerState<TimelinePage>
                     Icons.notifications,
                     color: Colors.white,
                   ),
+                  onPressed: () {},
+                ),
+                IconButton(
+                  icon: const Icon(
+                    Icons.videocam,
+                    color: Colors.white,
+                  ),
                   onPressed: () async {
                     // pick a video first
                     final videoFile =
@@ -61,9 +72,7 @@ class _MainViewState extends ConsumerState<TimelinePage>
                     ref.refresh(postSettingProvider);
 
                     // go to the screen to create a new post
-                    if (!mounted) {
-                      return;
-                    }
+                    if (!mounted) return;
 
                     // Navigator.push(
                     //   context,
@@ -103,6 +112,13 @@ class _MainViewState extends ConsumerState<TimelinePage>
                 ),
                 IconButton(
                   icon: const Icon(
+                    Icons.camera,
+                    color: Colors.white,
+                  ),
+                  onPressed: () => pickImage(),
+                ),
+                IconButton(
+                  icon: const Icon(
                     Icons.search,
                     color: Colors.white,
                   ),
@@ -122,7 +138,7 @@ class _MainViewState extends ConsumerState<TimelinePage>
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: const [
                   // FaIcon(FontAwesomeIcons.moneyBills),
-                  Text('Lists'),
+                  Text('Transactions'),
                 ],
               )),
               Tab(
@@ -151,20 +167,77 @@ class _MainViewState extends ConsumerState<TimelinePage>
           children: [
             TransactionsTab(),
             OverviewTab(),
-            // TempTab(),
-            PostsTab(),
+            BillsTabView(),
           ],
         ),
         floatingActionButton: Column(
-          // crossAxisAlignment: CrossAxisAlignment.end,
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            // Expanded(child: Container()),
             FloatingActionButton(
-              // heroTag: 'scan_receipt',
               heroTag: null,
               backgroundColor: const Color(0xFFFCD46A),
               child: const Icon(Icons.camera_alt),
+
+              // * implementing receipt scanning feature
+              // onPressed: () async {
+              //   final XFile? pickedImage;
+
+              //   final isCamera = await const SelectionDialog(
+              //     title: Strings.scanReceiptFrom,
+              //   ).present(context);
+
+              //   if (isCamera == null) return;
+
+              //   pickedImage = isCamera
+              //       ? await ImagePicker().pickImage(
+              //           source: ImageSource.camera,
+              //         )
+              //       : await ImagePicker().pickImage(
+              //           source: ImageSource.gallery,
+              //         );
+
+              //   if (pickedImage != null) {
+              //     if (mounted) {
+              //       Navigator.of(context, rootNavigator: true).push(
+              //         MaterialPageRoute(
+              //           builder: (context) {
+              //             // ref
+              //             //     .read(receiptFileProvider.notifier)
+              //             //     .setReceiptImageFile(pickedImage);
+              //             return VerifyReceiptDetails(pickedImage: pickedImage);
+              //           },
+              //           fullscreenDialog: true,
+              //         ),
+              //       );
+              //     }
+              //   }
+              // },
+
+              // * implement hightlight text feature
+              onPressed: () async {
+                // navigate to ScanningTest
+                Navigator.of(context, rootNavigator: true).push(
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return const ScanningTest();
+                    },
+                    fullscreenDialog: true,
+                  ),
+                );
+              },
+
+              // * ori code
+              // onPressed: () => Navigator.of(context, rootNavigator: true).push(
+              //   MaterialPageRoute(
+              //     builder: (context) => const ScanReceipt(),
+              //   ),
+              // ),
+            ),
+            const SizedBox(height: 16),
+            FloatingActionButton(
+              heroTag: null,
+              backgroundColor: const Color(0xFFFCD46A),
+              child: const Icon(Icons.kayaking),
 
               // * implementing receipt scanning feature
               onPressed: () async {
@@ -200,13 +273,19 @@ class _MainViewState extends ConsumerState<TimelinePage>
                   }
                 }
               },
-
-              // * ori code
-              // onPressed: () => Navigator.of(context, rootNavigator: true).push(
-              //   MaterialPageRoute(
-              //     builder: (context) => const ScanReceipt(),
-              //   ),
-              // ),
+            ),
+            const SizedBox(height: 16),
+            FloatingActionButton(
+              heroTag: null,
+              backgroundColor: AppColors.subColor2,
+              child: const Icon(Icons.receipt),
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).push(
+                  MaterialPageRoute(
+                    builder: (context) => const ScanReceipt(),
+                  ),
+                );
+              },
             ),
             const SizedBox(height: 16),
             FloatingActionButton(
@@ -286,9 +365,7 @@ class _MainViewState extends ConsumerState<TimelinePage>
     ref.refresh(postSettingProvider);
 
     // go to the screen to create a new post
-    if (!mounted) {
-      return;
-    }
+    if (!mounted) return;
 
     Navigator.push(
       context,
@@ -313,9 +390,7 @@ class _MainViewState extends ConsumerState<TimelinePage>
     ref.refresh(postSettingProvider);
 
     // go to the screen to create a new post
-    if (!mounted) {
-      return;
-    }
+    if (!mounted) return;
 
     Navigator.push(
       context,

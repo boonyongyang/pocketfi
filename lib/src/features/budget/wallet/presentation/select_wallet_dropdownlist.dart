@@ -17,24 +17,27 @@ class SelectWalletDropdownList extends ConsumerWidget {
     debugPrint('wallet list: ${walletList?.length}');
     debugPrint('wallet list: ${walletList?.toString()}');
 
-    return Consumer(
-      builder: (context, ref, child) {
-        return DropdownButton(
-          value: selectedWallet,
-          items: walletList?.map((wallet) {
-            return DropdownMenuItem(
-              value: wallet,
-              child: Text(wallet.walletName),
-            );
-          }).toList(),
-          onChanged: (selectedWallet) {
-            debugPrint('wallet tapped: ${selectedWallet?.walletName}');
-            ref.read(selectedWalletProvider.notifier).state = selectedWallet!;
-            debugPrint(
-                'selected wallet: ${ref.read(selectedWalletProvider)?.walletName}');
-          },
-        );
-      },
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      child: Consumer(
+        builder: (context, ref, child) {
+          return DropdownButton(
+            value: selectedWallet,
+            items: walletList?.map((wallet) {
+              return DropdownMenuItem(
+                value: wallet,
+                child: Text(wallet.walletName),
+              );
+            }).toList(),
+            onChanged: (selectedWallet) {
+              debugPrint('wallet tapped: ${selectedWallet?.walletName}');
+              ref.read(selectedWalletProvider.notifier).state = selectedWallet!;
+              debugPrint(
+                  'selected wallet: ${ref.read(selectedWalletProvider)?.walletName}');
+            },
+          );
+        },
+      ),
     );
   }
 }

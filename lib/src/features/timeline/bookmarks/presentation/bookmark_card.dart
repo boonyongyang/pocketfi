@@ -120,9 +120,10 @@ class BookmarkCard extends ConsumerWidget {
                                   fontSize: 12,
                                   color: Colors.grey[700],
                                 )),
-                            if (transaction.thumbnailUrl != null)
+                            if (transaction.transactionImage?.thumbnailUrl !=
+                                null)
                               Image.network(
-                                transaction.thumbnailUrl!,
+                                transaction.transactionImage!.thumbnailUrl!,
                                 height: 100,
                                 // width: 100,
                                 fit: BoxFit.cover,
