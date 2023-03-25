@@ -13,6 +13,7 @@ class TransactionsTab extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final transactions = ref.watch(userTransactionsProvider);
+    // debugPrint('transactions are $transactions');
 
     return RefreshIndicator(
       onRefresh: () {
@@ -30,14 +31,8 @@ class TransactionsTab extends ConsumerWidget {
               text: Strings.youHaveNoPosts,
             );
           } else {
-            return Column(
-              children: [
-                Expanded(
-                  child: TransactionListView(
-                    transactions: trans,
-                  ),
-                ),
-              ],
+            return TransactionListView(
+              transactions: trans,
             );
           }
         },

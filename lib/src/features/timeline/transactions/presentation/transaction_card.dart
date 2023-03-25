@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
+import 'package:pocketfi/src/constants/strings.dart';
 import 'package:pocketfi/src/features/category/application/category_providers.dart';
 import 'package:pocketfi/src/features/timeline/transactions/domain/transaction.dart';
 
@@ -46,76 +47,28 @@ class TransactionCard extends StatelessWidget {
                           shape: BoxShape.circle, color: category.color),
                       child: Center(child: category.icon),
                     ),
-                    const SizedBox(
-                      width: 10,
-                    ),
+                    const SizedBox(width: 10),
                     Padding(
                       padding: const EdgeInsets.only(left: 4.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            transaction.categoryName,
+                            transaction.categoryName.isEmpty
+                                ? Strings.transfer
+                                : transaction.categoryName,
                           ),
-                          Row(
-                            children: [
-                              // list of ActionChip with different tags
-                              // const ActionChip(
-                              //   label: Text('Food'),
-                              //   onPressed: null,
-                              // ),
-                              // const SizedBox(
-                              //   width: 5,
-                              // ),
-                              // const ActionChip(
-                              //   label: Text('Parking'),
-                              //   onPressed: null,
-                              // ),
-                              // const SizedBox(
-                              //   width: 5,
-                              // ),
-                              // const ActionChip(
-                              //   label: Text('Dinner'),
-                              //   onPressed: null,
-                              // ),
-                              ActionChip(
-                                visualDensity: const VisualDensity(
-                                    horizontal: -4.0, vertical: -4.0),
-                                // materialTapTargetSize:
-                                //     MaterialTapTargetSize.shrinkWrap,
-                                label: const Text('Lunch'),
-                                onPressed: () =>
-                                    //     ScaffoldMessenger.of(context).showSnackBar(
-                                    //   const SnackBar(
-                                    //     content: Text('Lunch!'),
-                                    //   ),
-                                    // ),
-                                    Fluttertoast.showToast(
-                                  msg: "Lunch!",
-                                  toastLength: Toast.LENGTH_SHORT,
-                                  gravity: ToastGravity.BOTTOM,
-                                  timeInSecForIosWeb: 2,
-                                  backgroundColor: Colors.white,
-                                  textColor: AppColors.mainColor1,
-                                  fontSize: 16.0,
-                                ),
-                              ),
-                              const SizedBox(width: 5),
-                              const Chip(
-                                visualDensity: VisualDensity(
-                                    horizontal: -4.0, vertical: -4.0),
-                                label: Text('Foodpanda'),
-                              ),
-                            ],
-                          ),
+                          const ShowTags(),
                           Text(transaction.description ?? '',
                               style: TextStyle(
                                 fontSize: 12,
                                 color: Colors.grey[700],
                               )),
-                          if (transaction.thumbnailUrl != null)
+                          // ! here cast probelm not sure
+                          if (transaction.transactionImage?.thumbnailUrl !=
+                              null)
                             Image.network(
-                              transaction.thumbnailUrl!,
+                              transaction.transactionImage!.thumbnailUrl!,
                               height: 100,
                               // width: 100,
                               fit: BoxFit.cover,
@@ -148,6 +101,40 @@ class TransactionCard extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class ShowTags extends StatelessWidget {
+  const ShowTags({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        ActionChip(
+          visualDensity: const VisualDensity(horizontal: -4.0, vertical: -4.0),
+          // materialTapTargetSize:
+          //     MaterialTapTargetSize.shrinkWrap,
+          label: const Text('Lunch'),
+          onPressed: () => Fluttertoast.showToast(
+            msg: "Lunch!",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 2,
+            backgroundColor: Colors.white,
+            textColor: AppColors.mainColor1,
+            fontSize: 16.0,
+          ),
+        ),
+        const SizedBox(width: 5),
+        const Chip(
+          visualDensity: VisualDensity(horizontal: -4.0, vertical: -4.0),
+          label: Text('Foodpanda'),
+        ),
+      ],
     );
   }
 }

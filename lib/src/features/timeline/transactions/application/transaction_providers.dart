@@ -14,6 +14,11 @@ final transactionTypeProvider =
     StateNotifierProvider<TransactionTypeNotifier, TransactionType>(
         (ref) => TransactionTypeNotifier());
 
+final selectedTransactionProvider =
+    StateNotifierProvider<SelectedTransactionNotifier, Transaction?>(
+  (_) => SelectedTransactionNotifier(null),
+);
+
 final createNewTransactionProvider =
     StateNotifierProvider<CreateNewTransactionNotifier, IsLoading>(
         (ref) => CreateNewTransactionNotifier());
@@ -32,9 +37,6 @@ final userTransactionsProvider =
   (ref) {
     final userId = ref.watch(userIdProvider);
 
-    // FIXME get the selected walletId, need to based on Wallet Visibility
-    // walletVisibilityProvider get boolean value for each wallet
-
     final walletId = ref.watch(selectedWalletProvider)?.walletId;
 
     final controller = StreamController<Iterable<Transaction>>();
@@ -46,17 +48,10 @@ final userTransactionsProvider =
     debugPrint(userId);
 
     final sub = FirebaseFirestore.instance
-        // .collection(FirebaseCollectionName.users)
-        // .doc(userId)
-        // .collection(FirebaseCollectionName.wallets)
-        // .doc(walletId)
-        // .collection(FirebaseCollectionName.transactions)
-        // .orderBy(
-        //   FirebaseFieldName.date,
-        //   descending: true,
-        // )
         .collectionGroup(FirebaseCollectionName.transactions)
-        .where(TransactionKey.userId, isEqualTo: userId)
+        // .where(TransactionKey.userId, isEqualTo: userId) // * not needed anymore
+        .where(FirebaseFieldName.walletId, isEqualTo: walletId)
+        // .orderBy(FirebaseFieldName.walletId)
         .orderBy(TransactionKey.date, descending: true)
         .snapshots()
         .listen(
@@ -82,3 +77,96 @@ final userTransactionsProvider =
     return controller.stream;
   },
 );
+
+// final userTransactionsProvider =
+//     StreamProvider.autoDispose<Iterable<Transaction>>(
+//   (ref) async* {
+//     final userId = ref.watch(userIdProvider);
+
+//     // Fetch user's wallets
+//     final walletsSnapshot = await FirebaseFirestore.instance
+//         .collection(FirebaseCollectionName.users)
+//         .doc(userId)
+//         .collection(FirebaseCollectionName.wallets)
+//         .get();
+//     final walletIds = walletsSnapshot.docs.map((doc) => doc.id)
+//         // .toList()
+//         ;
+
+//     debugPrint(walletIds.toString());
+
+//     final controller = StreamController<Iterable<Transaction>>();
+
+//     controller.onListen = () {
+//       controller.sink.add([]);
+//     };
+
+//     debugPrint(userId);
+
+//     // Create separate subscriptions for each wallet
+//     final transactionsByWallet = <String, Iterable<Transaction>>{};
+//     final allTransactions = <Transaction>{};
+
+//     final subscriptions = walletIds.map((walletId) {
+//       return FirebaseFirestore.instance
+//           .collectionGroup(FirebaseCollectionName.transactions)
+//           .where(FirebaseFieldName.walletId, isEqualTo: walletId)
+//           .orderBy(TransactionKey.date, descending: true)
+//           .snapshots()
+//           .listen(
+//         (snapshot) {
+//           final documents = snapshot.docs;
+//           final transactions = documents
+//                   .where(
+//                     (doc) => !doc.metadata.hasPendingWrites,
+//                   )
+//                   .map(
+//                     (doc) => Transaction.fromJson(
+//                       transactionId: doc.id,
+//                       json: doc.data(),
+//                     ),
+//                   )
+//               // .toList()
+//               ;
+
+//           transactionsByWallet[walletId] = transactions;
+
+//           // Merge transactions from all wallets
+//           allTransactions.clear();
+//           for (var txs in transactionsByWallet.values) {
+//             allTransactions.addAll(txs);
+//           }
+//           final updatedTransactions = allTransactions.toList();
+//           updatedTransactions.sort((a, b) =>
+//               b.date.compareTo(a.date)); // Sort by date in descending order
+
+//           controller.sink.add(updatedTransactions);
+//         },
+//       );
+//     })
+//         // .toList()
+//         ;
+
+//     ref.onDispose(() {
+//       for (var sub in subscriptions) {
+//         sub.cancel();
+//       }
+//       controller.close();
+//     });
+
+//     yield* controller.stream;
+//   },
+// );
+
+
+
+// * get all transactions from [SELECTED Wallet] only
+// .collection(FirebaseCollectionName.users)
+// .doc(userId)
+// .collection(FirebaseCollectionName.wallets)
+// .doc(walletId)
+// .collection(FirebaseCollectionName.transactions)
+// .orderBy(
+//   FirebaseFieldName.date,
+//   descending: true,
+// )

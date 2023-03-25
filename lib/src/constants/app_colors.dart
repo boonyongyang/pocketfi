@@ -54,5 +54,10 @@ class AppColors {
   static const loan = Color(0xFFD16B78);
   static const business = Color(0xFFF2A63A);
 
+  // bills
+  static const unpaidColor = 0xFF67686B;
+  static const paidColor = 0xFF4CAF50;
+  static const overdueColor = 0xFFF44336;
+
   const AppColors._();
 }

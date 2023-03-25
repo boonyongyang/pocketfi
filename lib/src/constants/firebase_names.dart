@@ -48,6 +48,8 @@ class FirebaseCollectionName {
   static const tags = 'tags';
   static const bookmarks = 'bookmarks';
 
+  static const bills = 'bills';
+
   static const wallets = 'wallets';
   static const collaborators = 'collaborators';
   static const sharedWallets = 'shared_wallet';

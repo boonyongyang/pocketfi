@@ -25,26 +25,15 @@ class EditCategorySheet extends StatefulHookConsumerWidget {
 class _AddNewCategoryPageState extends ConsumerState<EditCategorySheet> {
   @override
   Widget build(BuildContext context) {
-// add new category page with enter name, select color, select icon
-
     final colorList = ref.watch(categoryColorListProvider);
     final selectedColor = ref.watch(selectedCategoryColorProvider);
     final iconList = ref.watch(categoryIconListProvider);
     final selectedIcon = ref.watch(selectedCategoryIconProvider);
-    // final selectedColor = widget.category.color;
-    // final selectedIcon = widget.category.icon.icon;
 
     final nameController = useTextEditingController(
       text: widget.category.name,
     );
     final isSaveButtonEnabled = useState(false);
-
-    // initState for selectedIcon and color
-
-    // ref.read(selectedCategoryColorProvider.notifier).state =
-    //     widget.category.color;
-    // ref.read(selectedCategoryIconProvider.notifier).state =
-    //     widget.category.icon.icon;
 
     useEffect(
       () {
@@ -68,13 +57,11 @@ class _AddNewCategoryPageState extends ConsumerState<EditCategorySheet> {
     debugPrint('selectedIcon: $selectedIcon');
 
     return SizedBox(
-      // max height is 90% of screen height
       height: MediaQuery.of(context).size.height * 0.94,
       child: Container(
         color: AppColors.transparent,
         padding: const EdgeInsets.all(16.0),
         child: Wrap(
-          // spacing: 20,
           runSpacing: 20,
           children: [
             Row(

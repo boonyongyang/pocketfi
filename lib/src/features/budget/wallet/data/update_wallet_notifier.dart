@@ -113,6 +113,21 @@ class UpdateWalletStateNotifier extends StateNotifier<IsLoading> {
 
       // });
 
+      // * update all transactions' walletName in this wallet
+      final walletTransactions = FirebaseFirestore.instance
+          .collectionGroup(FirebaseCollectionName.transactions)
+          .where(FirebaseFieldName.walletId, isEqualTo: walletId)
+          .get();
+
+      await walletTransactions.then((transactions) async {
+        for (final doc in transactions.docs) {
+          if (walletName != doc[FirebaseFieldName.walletName]) {
+            await doc.reference
+                .update({FirebaseFieldName.walletName: walletName});
+          }
+        }
+      });
+
       return true;
     } catch (_) {
       return false;
