@@ -97,6 +97,10 @@ class Strings {
   // * finances
   static const finances = 'Finances';
 
+  // * debt
+  static const debt = 'Debt';
+  static const addDebt = 'Add Debt';
+
   // * account
   static const account = 'Account';
 

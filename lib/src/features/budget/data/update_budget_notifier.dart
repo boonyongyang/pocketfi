@@ -57,13 +57,7 @@ final selectedBudgetProvider =
 class SelectedBudgetNotifier extends StateNotifier<Budget?> {
   SelectedBudgetNotifier(Budget? budget) : super(budget);
 
-  void setSelectedTransaction(Budget budget, WidgetRef ref) {
-    // // if transaction is null, create a new transaction instance
-    // state = Transaction.fromJson(
-    //   transactionId: transaction.transactionId,
-    //   json: transaction.toJson(),
-    // );
-
+  void setSelectedBudget(Budget budget, WidgetRef ref) {
     state = budget;
   }
 

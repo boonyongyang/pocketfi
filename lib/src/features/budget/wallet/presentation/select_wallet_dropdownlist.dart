@@ -85,6 +85,53 @@ class SelectWalletForBudgetDropdownList extends ConsumerWidget {
     );
   }
 }
+
+class SelectWalletForDebtDropdownList extends ConsumerWidget {
+  String? walletId;
+  SelectWalletForDebtDropdownList({
+    super.key,
+    this.walletId,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final wallets = ref.watch(userWalletsProvider).value;
+    final selectedWallet = ref.watch(selectedWalletForDebtProvider);
+
+    debugPrint('first wallets: ${selectedWallet?.walletName}');
+    final walletList = wallets?.toList();
+    debugPrint('wallet list: ${walletList?.length}');
+    debugPrint('wallet list: ${walletList?.toString()}');
+
+    return Consumer(
+      builder: (context, ref, child) {
+        return DropdownButton(
+          value: selectedWallet,
+          items: walletList?.map((wallet) {
+            return DropdownMenuItem(
+              value: wallet,
+              child: Text(wallet.walletName),
+            );
+          }).toList(),
+          onChanged: (selectedWallet) {
+            debugPrint('wallet tapped: ${selectedWallet?.walletName}');
+            if (walletId == null) {
+              ref.read(selectedWalletForDebtProvider.notifier).state =
+                  selectedWallet!;
+            }
+            //! need to fix this -> need to get wallet with wallet id
+            // else {
+            //   ref.read(selectedWalletForBudgetProvider.notifier).state =
+            // ;
+            // }
+            debugPrint(
+                'selected wallet: ${ref.read(selectedWalletForDebtProvider)?.walletName}');
+          },
+        );
+      },
+    );
+  }
+}
 // return Center(
 //   child: wallets.when(
 //     data: (Iterable<Wallet> data) {

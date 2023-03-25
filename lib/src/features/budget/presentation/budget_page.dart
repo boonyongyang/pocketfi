@@ -166,13 +166,13 @@ class _BudgetPageState extends ConsumerState<BudgetPage> {
                             onTap: () {
                               ref
                                   .read(selectedBudgetProvider.notifier)
-                                  .setSelectedTransaction(budget, ref);
+                                  .setSelectedBudget(budget, ref);
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (_) => BudgetDetailsView(
-                                    budget: budget,
-                                  ),
+                                  builder: (_) => const BudgetDetailsView(
+                                      // budget: budget,
+                                      ),
                                 ),
                               );
                             },

@@ -21,10 +21,10 @@ import 'package:pocketfi/src/features/category/presentation/category_page.dart';
 import 'package:pocketfi/src/features/timeline/transactions/presentation/add_new_transactions/category_selector_view.dart';
 
 class BudgetDetailsView extends StatefulHookConsumerWidget {
-  final Budget budget;
+  // final Budget budget;
   const BudgetDetailsView({
     super.key,
-    required this.budget,
+    // required this.budget,
   });
 
   @override
@@ -35,19 +35,19 @@ class BudgetDetailsView extends StatefulHookConsumerWidget {
 class _BudgetDetailsViewState extends ConsumerState<BudgetDetailsView> {
   @override
   Widget build(BuildContext context) {
+    final selectedBudget = ref.watch(selectedBudgetProvider);
+
     final budgetNameController = useTextEditingController(
-      text: widget.budget.budgetName,
+      text: selectedBudget?.budgetName,
     );
     final amountController = useTextEditingController(
-      text: widget.budget.budgetAmount.toStringAsFixed(2),
+      text: selectedBudget?.budgetAmount.toStringAsFixed(2),
     );
-
-    final budgets = ref.watch(userBudgetsProvider);
 
     final expenseCategories = ref.watch(expenseCategoriesProvider);
 
     final wallet = ref.watch(
-        getWalletFromWalletIdProvider(widget.budget.walletId.toString()));
+        getWalletFromWalletIdProvider(selectedBudget!.walletId.toString()));
 
     // if (wallet.value!.walletName == null) {
     //   return Container();
@@ -68,7 +68,7 @@ class _BudgetDetailsViewState extends ConsumerState<BudgetDetailsView> {
               if (deletePost) {
                 await ref
                     .read(deleteBudgetProvider.notifier)
-                    .deleteBudget(budgetId: widget.budget.budgetId);
+                    .deleteBudget(budgetId: selectedBudget.budgetId);
                 if (mounted) {
                   Navigator.of(context).maybePop();
                 }
@@ -202,28 +202,6 @@ class _BudgetDetailsViewState extends ConsumerState<BudgetDetailsView> {
                           selectedCategory: getCategoryWithCategoryName(
                               ref.watch(selectedBudgetProvider)?.categoryName)),
                     ),
-                    // Padding(
-                    //   padding: const EdgeInsets.only(
-                    //     left: 8.0,
-                    //     right: 16.0,
-                    //     // top: 16.0,
-                    //     bottom: 8.0,
-                    //   ),
-                    //   child: DropdownButton<String>(
-                    //     // hint: const Text(Strings.budgetType),
-                    //     value: "Expense",
-                    //     items: <String>[
-                    //       "Expense",
-                    //       "Income",
-                    //     ].map<DropdownMenuItem<String>>((String value) {
-                    //       return DropdownMenuItem<String>(
-                    //         value: value,
-                    //         child: Text(value),
-                    //       );
-                    //     }).toList(),
-                    //     onChanged: (_) {},
-                    //   ),
-                    // ),
                   ],
                 ),
                 Row(
@@ -329,11 +307,13 @@ class _BudgetDetailsViewState extends ConsumerState<BudgetDetailsView> {
     //     ),
     //   );
     // });
+
+    final selectedBudget = ref.watch(selectedBudgetProvider);
     final isUpdated =
         await ref.read(updateBudgetProvider.notifier).updateBudget(
-              walletId: widget.budget.walletId,
+              walletId: selectedBudget!.walletId,
               budgetName: nameController.text,
-              budgetId: widget.budget.budgetId,
+              budgetId: selectedBudget.budgetId,
               budgetAmount: double.parse(amountController.text),
               categoryName: ref.read(selectedBudgetProvider)?.categoryName,
             );
