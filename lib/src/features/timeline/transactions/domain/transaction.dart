@@ -5,6 +5,7 @@ import 'package:flutter/material.dart' show Color;
 
 import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/constants/strings.dart';
+import 'package:pocketfi/src/features/timeline/transactions/domain/transaction_image.dart';
 
 enum TransactionType {
   expense(
@@ -42,12 +43,13 @@ class Transaction {
   final DateTime date;
   final bool isBookmark;
   final String? description;
-  final String? thumbnailUrl; // image
-  final String? fileUrl; // image
-  final String? fileName; // image
-  final double? aspectRatio; // image
-  final String? thumbnailStorageId; // image
-  final String? originalFileStorageId; // image
+  // final String? thumbnailUrl; // image
+  // final String? fileUrl; // image
+  // final String? fileName; // image
+  // final double? aspectRatio; // image
+  // final String? thumbnailStorageId; // image
+  // final String? originalFileStorageId; // image
+  final TransactionImage? transactionImage;
   // final List<Tag> tags;
 
   const Transaction({
@@ -62,12 +64,13 @@ class Transaction {
     required this.date,
     this.isBookmark = false,
     this.createdAt,
-    this.thumbnailUrl,
-    this.fileUrl,
-    this.fileName,
-    this.aspectRatio,
-    this.thumbnailStorageId,
-    this.originalFileStorageId,
+    this.transactionImage,
+    // this.thumbnailUrl,
+    // this.fileUrl,
+    // this.fileName,
+    // this.aspectRatio,
+    // this.thumbnailStorageId,
+    // this.originalFileStorageId,
   });
 
   Transaction.fromJson({
@@ -90,12 +93,18 @@ class Transaction {
               DateTime.now(),
           isBookmark: json[TransactionKey.isBookmark] ?? false,
           createdAt: (json[TransactionKey.createdAt] as Timestamp).toDate(),
-          thumbnailUrl: json[TransactionKey.thumbnailUrl],
-          fileUrl: json[TransactionKey.fileUrl],
-          fileName: json[TransactionKey.fileName],
-          aspectRatio: json[TransactionKey.aspectRatio],
-          thumbnailStorageId: json[TransactionKey.thumbnailStorageId],
-          originalFileStorageId: json[TransactionKey.originalFileStorageId],
+          transactionImage: json[TransactionKey.transactionImage] != null
+              ? TransactionImage.fromJson(
+                  transactionId: transactionId,
+                  json: json[TransactionKey.transactionImage],
+                )
+              : null,
+          // thumbnailUrl: json[TransactionKey.thumbnailUrl],
+          // fileUrl: json[TransactionKey.fileUrl],
+          // fileName: json[TransactionKey.fileName],
+          // aspectRatio: json[TransactionKey.aspectRatio],
+          // thumbnailStorageId: json[TransactionKey.thumbnailStorageId],
+          // originalFileStorageId: json[TransactionKey.originalFileStorageId],
         );
 
   Map<String, dynamic> toJson() => {
@@ -109,12 +118,14 @@ class Transaction {
         TransactionKey.date: date,
         TransactionKey.isBookmark: isBookmark,
         TransactionKey.description: description,
-        TransactionKey.thumbnailUrl: thumbnailUrl,
-        TransactionKey.fileUrl: fileUrl,
-        TransactionKey.fileName: fileName,
-        TransactionKey.aspectRatio: aspectRatio,
-        TransactionKey.thumbnailStorageId: thumbnailStorageId,
-        TransactionKey.originalFileStorageId: originalFileStorageId,
+        // TransactionKey.thumbnailUrl: thumbnailUrl,
+        // TransactionKey.fileUrl: fileUrl,
+        // TransactionKey.fileName: fileName,
+        // TransactionKey.aspectRatio: aspectRatio,
+        // TransactionKey.thumbnailStorageId: thumbnailStorageId,
+        // TransactionKey.originalFileStorageId: originalFileStorageId,
+        if (transactionImage != null)
+          TransactionKey.transactionImage: transactionImage!.toJson(),
         // TransactionKey.tags: [
         //   for (final tag in tags)
         //     {
@@ -138,12 +149,13 @@ class Transaction {
     DateTime? date,
     bool? isBookmark,
     String? description,
-    String? thumbnailUrl,
-    String? fileUrl,
-    String? fileName,
-    double? aspectRatio,
-    String? thumbnailStorageId,
-    String? originalFileStorageId,
+    // String? thumbnailUrl,
+    // String? fileUrl,
+    // String? fileName,
+    // double? aspectRatio,
+    // String? thumbnailStorageId,
+    // String? originalFileStorageId,
+    TransactionImage? transactionImage,
   }) =>
       Transaction(
         transactionId: transactionId ?? this.transactionId,
@@ -158,13 +170,14 @@ class Transaction {
         date: date ?? this.date,
         isBookmark: isBookmark ?? this.isBookmark,
         description: description ?? this.description,
-        thumbnailUrl: thumbnailUrl ?? this.thumbnailUrl,
-        fileUrl: fileUrl ?? this.fileUrl,
-        fileName: fileName ?? this.fileName,
-        aspectRatio: aspectRatio ?? this.aspectRatio,
-        thumbnailStorageId: thumbnailStorageId ?? this.thumbnailStorageId,
-        originalFileStorageId:
-            originalFileStorageId ?? this.originalFileStorageId,
+        // thumbnailUrl: thumbnailUrl ?? this.thumbnailUrl,
+        // fileUrl: fileUrl ?? this.fileUrl,
+        // fileName: fileName ?? this.fileName,
+        // aspectRatio: aspectRatio ?? this.aspectRatio,
+        // thumbnailStorageId: thumbnailStorageId ?? this.thumbnailStorageId,
+        // originalFileStorageId:
+        //     originalFileStorageId ?? this.originalFileStorageId,
+        transactionImage: transactionImage ?? this.transactionImage,
       );
 }
 
@@ -185,6 +198,7 @@ class TransactionKey {
   static const aspectRatio = 'aspect_ratio';
   static const thumbnailStorageId = 'thumbnail_storage_id';
   static const originalFileStorageId = 'original_file_storage_id';
+  static const transactionImage = 'transaction_image';
   // TODO: add tags
   static const tags = 'tags';
   // static const shared = 'shared';

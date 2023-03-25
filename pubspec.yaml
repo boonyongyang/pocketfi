@@ -42,6 +42,7 @@ dependencies:
   firebase_storage: ^11.0.10
   flutter:
     sdk: flutter
+  flutter_cache_manager: ^3.3.0
   flutter_email_sender: ^5.2.0
   flutter_hooks: ^0.18.5+1
   fluttertoast: ^8.2.1

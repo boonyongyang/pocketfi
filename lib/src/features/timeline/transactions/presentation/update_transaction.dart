@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:auto_size_text_field/auto_size_text_field.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -46,8 +47,6 @@ class UpdateTransactionState extends ConsumerState<UpdateTransaction> {
   Widget build(BuildContext context) {
     final selectedTransaction = ref.watch(selectedTransactionProvider);
 
-    // final selectedDate = ref.watch(selectedDateProvider);
-
     final categories = ref.watch(categoriesProvider);
     final selectedCategory = ref.watch(selectedCategoryProvider);
 
@@ -70,7 +69,7 @@ class UpdateTransactionState extends ConsumerState<UpdateTransaction> {
       [amountController],
     );
 
-    debugPrint('transaction date: ${selectedTransaction?.date}');
+    // debugPrint('transaction date: ${selectedTransaction?.date}');
 
     return Scaffold(
       appBar: AppBar(
@@ -93,6 +92,7 @@ class UpdateTransactionState extends ConsumerState<UpdateTransaction> {
             Navigator.of(context).pop();
             resetCategoryState(ref);
             ref.read(transactionTypeProvider.notifier).setTransactionType(0);
+            ref.read(imageFileProvider.notifier).clearImageFile();
           },
         ),
         actions: [
@@ -191,10 +191,6 @@ class UpdateTransactionState extends ConsumerState<UpdateTransaction> {
                               ref
                                   .read(selectedTransactionProvider.notifier)
                                   .toggleBookmark(ref);
-
-                              debugPrint('Book is $isBookmark');
-                              debugPrint(
-                                  'ref Book is ${ref.read(isBookmarkProvider)}');
                             },
                           ),
                           SizedBox(
@@ -248,11 +244,59 @@ class UpdateTransactionState extends ConsumerState<UpdateTransaction> {
           IconButton(
             color: AppColors.mainColor1,
             icon: const Icon(Icons.close),
-            onPressed: () {
-              ref.read(imageFileProvider.notifier).setImageFile(null);
+            // onPressed: () async {
+            //   // ref.read(imageFileProvider.notifier).setImageFile(null);
+
+            //   final transaction = ref.read(selectedTransactionProvider);
+
+            //   final oldPhotoUrl = transaction?.transactionImage?.fileUrl;
+            //   if (oldPhotoUrl != null) {
+            //     final storageRef =
+            //         FirebaseStorage.instance.refFromURL(oldPhotoUrl);
+            //     await storageRef.delete();
+            //   }
+
+            //   ref.read(imageFileProvider.notifier).clearImageFile();
+
+            //   // final imageFile = ref.read(imageFileProvider);
+
+            //   await ref
+            //       .read(selectedTransactionProvider.notifier)
+            //       .updateTransactionPhoto(null, ref);
+
+            //   debugPrint('delete photo');
+            // },
+            onPressed: () async {
+              final transaction = ref.read(selectedTransactionProvider);
+              final oldPhotoUrl = transaction?.transactionImage?.fileUrl;
+              // if (oldPhotoUrl != null) {
+              //   final storageRef =
+              //       FirebaseStorage.instance.refFromURL(oldPhotoUrl);
+              //   await storageRef.delete();
+              // }
+              if (oldPhotoUrl != null) {
+                final storageRef =
+                    FirebaseStorage.instance.refFromURL(oldPhotoUrl);
+                try {
+                  await storageRef.delete();
+                } catch (e) {
+                  if (e is FirebaseException && e.code == 'object-not-found') {
+                    // Handle the case where the object was already deleted
+                    // or the reference is incorrect
+                    debugPrint('Error deleting photo: $e');
+                  } else {
+                    rethrow;
+                  }
+                }
+              }
+              ref.read(imageFileProvider.notifier).clearImageFile();
               ref
                   .read(selectedTransactionProvider.notifier)
+                  .removeTransactionImage(ref);
+              await ref
+                  .read(selectedTransactionProvider.notifier)
                   .updateTransactionPhoto(null, ref);
+              debugPrint('delete photo');
             },
           ),
       ],
@@ -275,38 +319,27 @@ class UpdateTransactionState extends ConsumerState<UpdateTransaction> {
   Widget showIfPhotoIsAdded() {
     final transaction = ref.watch(selectedTransactionProvider);
     final imageFile = ref.watch(imageFileProvider);
+    debugPrint('image path: ${imageFile?.path}');
 
-    // if (transaction?.fileUrl != null) {
     if (imageFile != null) {
       return InkWell(
         onTap: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) {
-                debugPrint('image file path: ${imageFile.path}');
-                return FullScreenImageDialog(imageFile: imageFile);
-              },
-              fullscreenDialog: true,
-            ),
-          );
+          // Navigator.of(context).push(
+          //   MaterialPageRoute(
+          //     builder: (context) {
+          //       debugPrint('image file path: ${imageFile.path}');
+          //       return FullScreenImageDialog(imageFile: imageFile);
+          //     },
+          //     fullscreenDialog: true,
+          //   ),
+          // );
         },
-        // child: Container(
-        //   width: double.infinity,
-        //   height: 150.0,
-        //   decoration: BoxDecoration(
-        //     image: DecorationImage(
-        //       image: FileImage(imageFile),
-        //       fit: BoxFit.cover,
-        //     ),
-        //     borderRadius: BorderRadius.circular(8.0),
-        //   ),
-        // ),
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20.0),
           ),
           child: CachedNetworkImage(
-            imageUrl: transaction!.fileUrl!,
+            imageUrl: transaction!.transactionImage!.fileUrl!,
             width: double.infinity,
             height: 150.0,
             fit: BoxFit.cover,
@@ -320,6 +353,71 @@ class UpdateTransactionState extends ConsumerState<UpdateTransaction> {
       return const SizedBox();
     }
   }
+
+  // Widget showIfPhotoIsAdded() {
+  //   final transaction = ref.watch(selectedTransactionProvider);
+  //   final imageFile = ref.watch(imageFileProvider);
+  //   debugPrint('image 1path: ${imageFile?.path}');
+
+  //   if (transaction?.transactionImage?.fileUrl != null) {
+  //     final imageUrl = transaction!.transactionImage!.fileUrl!;
+  //     ref.read(imageFileProvider.notifier).setImageUrl(imageUrl);
+  //     return InkWell(
+  //       onTap: () {
+  //         Navigator.of(context).push(
+  //           MaterialPageRoute(
+  //             builder: (context) {
+  //               debugPrint('PATH: ${imageFile!.path}');
+  //               return FullScreenImageDialog(imageFile: imageFile);
+  //             },
+  //             fullscreenDialog: true,
+  //           ),
+  //         );
+  //       },
+  //       child: Container(
+  //         decoration: BoxDecoration(
+  //           borderRadius: BorderRadius.circular(20.0),
+  //         ),
+  //         child: CachedNetworkImage(
+  //           imageUrl: imageUrl,
+  //           width: double.infinity,
+  //           height: 150.0,
+  //           fit: BoxFit.cover,
+  //           progressIndicatorBuilder: (context, url, progress) =>
+  //               const Center(child: CircularProgressIndicator()),
+  //           errorWidget: (context, url, error) => const Icon(Icons.error),
+  //         ),
+  //       ),
+  //     );
+  //   } else if (imageFile != null) {
+  //     return InkWell(
+  //       onTap: () {
+  //         Navigator.of(context).push(
+  //           MaterialPageRoute(
+  //             builder: (context) {
+  //               debugPrint('image file path: ${imageFile.path}');
+  //               return FullScreenImageDialog(imageFile: imageFile);
+  //             },
+  //             fullscreenDialog: true,
+  //           ),
+  //         );
+  //       },
+  //       child: Container(
+  //         decoration: BoxDecoration(
+  //           borderRadius: BorderRadius.circular(20.0),
+  //         ),
+  //         child: Image.file(
+  //           imageFile,
+  //           width: double.infinity,
+  //           height: 150.0,
+  //           fit: BoxFit.cover,
+  //         ),
+  //       ),
+  //     );
+  //   } else {
+  //     return const SizedBox();
+  //   }
+  // }
 
   Row selectTags() {
     return Row(
@@ -655,25 +753,16 @@ class SaveButton extends ConsumerWidget {
               final userId = ref.read(userIdProvider);
               final file = ref.read(imageFileProvider);
 
-              if (userId == null) {
-                return;
-              }
+              if (userId == null) return;
+
               final note = noteController.text;
               final amount = amountController.text;
 
-              // final isCreated = await ref
-              //     .read(createNewTransactionProvider.notifier)
-              //     .createNewTransaction(
-              //       userId: userId,
-              //       amount: double.parse(amount),
-              //       type: type,
-              //       note: note,
-              //       categoryName: categoryName!.name,
-              //       walletId: selectedWallet!.walletId,
-              //       // date: selectedDate,
-              //       date: tranasction!.date,
-              //       file: file,
-              //     );
+              if (file == null) {
+                debugPrint('file is null');
+              } else {
+                debugPrint('file is not null');
+              }
 
               final isUpdated = await ref
                   .read(updateTransactionProvider.notifier)
@@ -706,7 +795,8 @@ class SaveButton extends ConsumerWidget {
                     .setTransactionType(0);
 
                 // clear the imageFileProvider
-                ref.read(imageFileProvider.notifier).setImageFile(null);
+                // ref.read(imageFileProvider.notifier).setImageFile(null);
+                ref.read(imageFileProvider.notifier).clearImageFile();
 
                 Fluttertoast.showToast(
                   msg: "Transaction updated",

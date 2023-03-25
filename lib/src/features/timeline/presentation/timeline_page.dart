@@ -52,6 +52,13 @@ class _MainViewState extends ConsumerState<TimelinePage>
                     Icons.notifications,
                     color: Colors.white,
                   ),
+                  onPressed: () {},
+                ),
+                IconButton(
+                  icon: const Icon(
+                    Icons.videocam,
+                    color: Colors.white,
+                  ),
                   onPressed: () async {
                     // pick a video first
                     final videoFile =
@@ -105,6 +112,13 @@ class _MainViewState extends ConsumerState<TimelinePage>
                 ),
                 IconButton(
                   icon: const Icon(
+                    Icons.camera,
+                    color: Colors.white,
+                  ),
+                  onPressed: () => pickImage(),
+                ),
+                IconButton(
+                  icon: const Icon(
                     Icons.search,
                     color: Colors.white,
                   ),
@@ -124,7 +138,7 @@ class _MainViewState extends ConsumerState<TimelinePage>
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: const [
                   // FaIcon(FontAwesomeIcons.moneyBills),
-                  Text('Lists'),
+                  Text('Transactions'),
                 ],
               )),
               Tab(
@@ -149,20 +163,11 @@ class _MainViewState extends ConsumerState<TimelinePage>
             ],
           ),
         ),
-        body: TabBarView(
+        body: const TabBarView(
           children: [
-            const TransactionsTab(),
-            const OverviewTab(),
-            // PostsTab(),
+            TransactionsTab(),
+            OverviewTab(),
             BillsTabView(),
-            // BillsTabView(
-            //   data: [
-            //     ExpenseData('Food', 35),
-            //     ExpenseData('Travel', 25),
-            //     ExpenseData('Shopping', 25),
-            //     ExpenseData('Bills', 15),
-            //   ],
-            // ),
           ],
         ),
         floatingActionButton: Column(

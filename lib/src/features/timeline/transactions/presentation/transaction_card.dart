@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
+import 'package:pocketfi/src/constants/strings.dart';
 import 'package:pocketfi/src/features/category/application/category_providers.dart';
 import 'package:pocketfi/src/features/timeline/transactions/domain/transaction.dart';
 
@@ -46,16 +47,16 @@ class TransactionCard extends StatelessWidget {
                           shape: BoxShape.circle, color: category.color),
                       child: Center(child: category.icon),
                     ),
-                    const SizedBox(
-                      width: 10,
-                    ),
+                    const SizedBox(width: 10),
                     Padding(
                       padding: const EdgeInsets.only(left: 4.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            transaction.categoryName,
+                            transaction.categoryName.isEmpty
+                                ? Strings.transfer
+                                : transaction.categoryName,
                           ),
                           const ShowTags(),
                           Text(transaction.description ?? '',
@@ -63,9 +64,11 @@ class TransactionCard extends StatelessWidget {
                                 fontSize: 12,
                                 color: Colors.grey[700],
                               )),
-                          if (transaction.thumbnailUrl != null)
+                          // ! here cast probelm not sure
+                          if (transaction.transactionImage?.thumbnailUrl !=
+                              null)
                             Image.network(
-                              transaction.thumbnailUrl!,
+                              transaction.transactionImage!.thumbnailUrl!,
                               height: 100,
                               // width: 100,
                               fit: BoxFit.cover,

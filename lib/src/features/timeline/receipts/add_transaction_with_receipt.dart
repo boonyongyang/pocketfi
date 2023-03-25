@@ -241,7 +241,8 @@ class AddTransactionWithReceiptState
             color: AppColors.mainColor1,
             icon: const Icon(Icons.close),
             onPressed: () {
-              ref.read(imageFileProvider.notifier).setImageFile(null);
+              // ref.read(imageFileProvider.notifier).setImageFile(null);
+              ref.read(imageFileProvider.notifier).clearImageFile();
             },
           ),
       ],
@@ -706,7 +707,8 @@ class SaveButton extends ConsumerWidget {
                     .setTransactionType(0);
 
                 // clear the imageFileProvider
-                ref.read(imageFileProvider.notifier).setImageFile(null);
+                // ref.read(imageFileProvider.notifier).setImageFile(null);
+                ref.read(imageFileProvider.notifier).clearImageFile();
 
                 ref
                     .read(transactionDateProvider.notifier)

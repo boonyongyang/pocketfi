@@ -8,8 +8,10 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/constants/firebase_names.dart';
 import 'package:pocketfi/src/constants/typedefs.dart';
+import 'package:pocketfi/src/features/authentication/application/user_id_provider.dart';
 import 'package:pocketfi/src/features/category/application/category_providers.dart';
 import 'package:pocketfi/src/features/category/domain/category.dart';
+import 'package:pocketfi/src/features/shared/image_upload/data/image_file_notifier.dart';
 import 'package:pocketfi/src/features/timeline/bookmarks/application/bookmark_services.dart';
 import 'package:pocketfi/src/features/timeline/transactions/application/transaction_providers.dart';
 import 'package:pocketfi/src/features/timeline/transactions/date_picker/application/selected_date_notifier.dart';
@@ -17,6 +19,7 @@ import 'package:pocketfi/src/features/timeline/transactions/domain/transaction.d
 import 'package:pocketfi/src/features/shared/image_upload/exceptions/could_not_build_thumbnail_exception.dart';
 import 'package:pocketfi/src/features/shared/image_upload/extensions/get_image_data_aspect_ratio.dart';
 import 'package:pocketfi/src/features/shared/image_upload/image_constants.dart';
+import 'package:pocketfi/src/features/timeline/transactions/domain/transaction_image.dart';
 import 'package:pocketfi/src/utils/document_id_from_current_date.dart';
 import 'package:image/image.dart' as img;
 import 'package:uuid/uuid.dart';
@@ -78,10 +81,90 @@ class SelectedTransactionNotifier extends StateNotifier<Transaction?> {
     }
   }
 
-  void updateTransactionPhoto(File? newFile, WidgetRef ref) {
-    Transaction? transaction = ref.watch(selectedTransactionProvider);
+  void removeTransactionImage(WidgetRef ref) {
+    Transaction? transaction = ref.read(selectedTransactionProvider);
     if (transaction != null) {
-      transaction = transaction.copyWith();
+      transaction = transaction.copyWith(transactionImage: null);
+      state = transaction;
+      debugPrint('state is now ${state?.transactionImage?.fileUrl}');
+    }
+  }
+
+  Future<void> updateTransactionPhoto(File? newFile, WidgetRef ref) async {
+    Transaction? transaction = ref.watch(selectedTransactionProvider);
+    final userId = ref.read(userIdProvider)!;
+
+    if (transaction != null) {
+      TransactionImage? transactionImage;
+
+      if (newFile != null) {
+        late Uint8List thumbnailUint8List;
+        // decode the image
+        final fileAsImage = img.decodeImage(newFile.readAsBytesSync());
+        if (fileAsImage == null) {
+          // isLoading = false;
+          // return false;
+          throw const CouldNotBuildThumbnailException();
+        }
+
+        // create thumbnail
+        final thumbnail = img.copyResize(
+          fileAsImage,
+          // width: Constants.imageThumbnailWidth,
+          height: ImageConstants.imageThumbnailHeight,
+        );
+        // encode the thumbnail
+        final thumbnailData = img.encodeJpg(thumbnail);
+        // convert the thumbnail to a Uint8List
+        thumbnailUint8List = Uint8List.fromList(thumbnailData);
+
+        // calculate the aspect ratio
+        final thumbnailAspectRatio = await thumbnailUint8List.getAspectRatio();
+
+        // calculate references
+        final fileName = const Uuid().v4();
+
+        // create references to the thumbnail and the image itself
+        final thumbnailRef = FirebaseStorage.instance
+            .ref()
+            .child(userId)
+            .child('transactions')
+            .child(FirebaseCollectionName.thumbnails)
+            .child(fileName);
+
+        // create references to the original file in
+        final originalFileRef = FirebaseStorage.instance
+            .ref()
+            .child(userId)
+            .child('transactions')
+            .child('images')
+            .child(fileName);
+
+        // upload the thumbnail
+        final thumbnailUploadTask =
+            await thumbnailRef.putData(thumbnailUint8List);
+        final thumbnailStorageId = thumbnailUploadTask.ref.name;
+
+        // upload the original file
+        final originalFileUploadTask = await originalFileRef.putFile(newFile);
+        final originalFileStorageId = originalFileUploadTask.ref.name;
+
+        transactionImage = TransactionImage(
+          transactionId: transaction.transactionId,
+          thumbnailUrl: await thumbnailRef.getDownloadURL(),
+          fileUrl: await originalFileRef.getDownloadURL(),
+          fileName: fileName,
+          aspectRatio: thumbnailAspectRatio,
+          thumbnailStorageId: thumbnailStorageId,
+          originalFileStorageId: originalFileStorageId,
+        );
+      } else {
+        transactionImage = null;
+      }
+
+      transaction = transaction.copyWith(
+        transactionImage: transactionImage,
+      );
       state = transaction;
     }
   }
@@ -99,7 +182,7 @@ void setNewTransactionState(WidgetRef ref) {
   //  this is to reset type state
   ref.read(transactionTypeProvider.notifier).resetTransactionTypeState();
   //  this is to reset photo state
-  // ref.read(imageFileProvider.notifier).resetTransactionPhotoState();
+  ref.read(imageFileProvider.notifier).clearImageFile();
   // this is to reset bookmark icon
   ref.read(isBookmarkProvider.notifier).resetBookmarkState();
 }
@@ -130,14 +213,6 @@ class CreateNewTransactionNotifier extends StateNotifier<IsLoading> {
     try {
       final Map<String, dynamic> payload;
       if (file == null) {
-        // payload = TransactionPayload(
-        //   userId: userId,
-        //   amount: amount,
-        //   date: date,
-        //   type: type,
-        //   categoryName: categoryName,
-        //   description: note,
-        // );
         payload = Transaction(
           transactionId: transactionId,
           userId: userId,
@@ -149,6 +224,7 @@ class CreateNewTransactionNotifier extends StateNotifier<IsLoading> {
           categoryName: categoryName,
           description: note,
           isBookmark: isBookmark,
+          transactionImage: null,
         ).toJson();
         debugPrint('no pic..');
       } else {
@@ -203,40 +279,33 @@ class CreateNewTransactionNotifier extends StateNotifier<IsLoading> {
         final originalFileUploadTask = await originalFileRef.putFile(file);
         final originalFileStorageId = originalFileUploadTask.ref.name;
 
-        // payload = TransactionPayload(
-        //   userId: userId,
-        //   amount: amount,
-        //   date: date,
-        //   type: type,
-        //   categoryName: categoryName,
-        //   description: note,
-        //   thumbnailUrl: await thumbnailRef.getDownloadURL(),
-        //   fileUrl: await originalFileRef.getDownloadURL(),
-        //   fileName: fileName,
-        //   aspectRatio: thumbnailAspectRatio,
-        //   thumbnailStorageId: thumbnailStorageId,
-        //   originalFileStorageId: originalFileStorageId,
-        // );
-
         // set the transaction in to payload  using toJson()
         payload = Transaction(
-          transactionId: transactionId,
-          userId: userId,
-          walletId: walletId,
-          walletName: walletName,
-          amount: amount,
-          date: date,
-          isBookmark: isBookmark,
-          type: type,
-          categoryName: categoryName,
-          description: note,
-          thumbnailUrl: await thumbnailRef.getDownloadURL(),
-          fileUrl: await originalFileRef.getDownloadURL(),
-          fileName: fileName,
-          aspectRatio: thumbnailAspectRatio,
-          thumbnailStorageId: thumbnailStorageId,
-          originalFileStorageId: originalFileStorageId,
-        ).toJson();
+            transactionId: transactionId,
+            userId: userId,
+            walletId: walletId,
+            walletName: walletName,
+            amount: amount,
+            date: date,
+            isBookmark: isBookmark,
+            type: type,
+            categoryName: categoryName,
+            description: note,
+            // thumbnailUrl: await thumbnailRef.getDownloadURL(),
+            // fileUrl: await originalFileRef.getDownloadURL(),
+            // fileName: fileName,
+            // aspectRatio: thumbnailAspectRatio,
+            // thumbnailStorageId: thumbnailStorageId,
+            // originalFileStorageId: originalFileStorageId,
+            transactionImage: TransactionImage(
+              transactionId: transactionId,
+              thumbnailUrl: await thumbnailRef.getDownloadURL(),
+              fileUrl: await originalFileRef.getDownloadURL(),
+              fileName: fileName,
+              aspectRatio: thumbnailAspectRatio,
+              thumbnailStorageId: thumbnailStorageId,
+              originalFileStorageId: originalFileStorageId,
+            )).toJson();
       }
       debugPrint('uploading new transaction..');
 
@@ -282,6 +351,8 @@ class UpdateTransactionNotifier extends StateNotifier<IsLoading> {
   }) async {
     try {
       isLoading = true;
+      debugPrint('updating ..');
+      debugPrint('image is  $file');
 
       // if new walletId is different from the original walletId
       // then delete the transaction from the original wallet
@@ -312,50 +383,51 @@ class UpdateTransactionNotifier extends StateNotifier<IsLoading> {
             categoryName: categoryName,
             description: note,
             isBookmark: isBookmark,
+            transactionImage: null,
           ).toJson();
           debugPrint('no pic..');
         } else {
-          late Uint8List thumbnailUint8List;
-          // decode the image
-          final fileAsImage = img.decodeImage(file.readAsBytesSync());
-          if (fileAsImage == null) {
-            isLoading = false;
-            // return false;
-            throw const CouldNotBuildThumbnailException();
-          }
+          // late Uint8List thumbnailUint8List;
+          // // decode the image
+          // final fileAsImage = img.decodeImage(file.readAsBytesSync());
+          // if (fileAsImage == null) {
+          //   isLoading = false;
+          //   // return false;
+          //   throw const CouldNotBuildThumbnailException();
+          // }
 
-          final thumbnail = img.copyResize(
-            fileAsImage,
-            height: ImageConstants.imageThumbnailHeight,
-          );
-          final thumbnailData = img.encodeJpg(thumbnail);
-          thumbnailUint8List = Uint8List.fromList(thumbnailData);
+          // final thumbnail = img.copyResize(
+          //   fileAsImage,
+          //   height: ImageConstants.imageThumbnailHeight,
+          // );
+          // final thumbnailData = img.encodeJpg(thumbnail);
+          // thumbnailUint8List = Uint8List.fromList(thumbnailData);
 
-          final thumbnailAspectRatio =
-              await thumbnailUint8List.getAspectRatio();
+          // final thumbnailAspectRatio =
+          //     await thumbnailUint8List.getAspectRatio();
 
-          final fileName = const Uuid().v4();
+          // final fileName = const Uuid().v4();
 
-          final thumbnailRef = FirebaseStorage.instance
-              .ref()
-              .child(userId)
-              .child('transactions')
-              .child(FirebaseCollectionName.thumbnails)
-              .child(fileName);
+          // final thumbnailRef = FirebaseStorage.instance
+          //     .ref()
+          //     .child(userId)
+          //     .child('transactions')
+          //     .child(FirebaseCollectionName.thumbnails)
+          //     .child(fileName);
 
-          final originalFileRef = FirebaseStorage.instance
-              .ref()
-              .child(userId)
-              .child('transactions')
-              .child('images')
-              .child(fileName);
+          // final originalFileRef = FirebaseStorage.instance
+          //     .ref()
+          //     .child(userId)
+          //     .child('transactions')
+          //     .child('images')
+          //     .child(fileName);
 
-          final thumbnailUploadTask =
-              await thumbnailRef.putData(thumbnailUint8List);
-          final thumbnailStorageId = thumbnailUploadTask.ref.name;
+          // final thumbnailUploadTask =
+          //     await thumbnailRef.putData(thumbnailUint8List);
+          // final thumbnailStorageId = thumbnailUploadTask.ref.name;
 
-          final originalFileUploadTask = await originalFileRef.putFile(file);
-          final originalFileStorageId = originalFileUploadTask.ref.name;
+          // final originalFileUploadTask = await originalFileRef.putFile(file);
+          // final originalFileStorageId = originalFileUploadTask.ref.name;
 
           payload = Transaction(
             transactionId: transactionId,
@@ -368,12 +440,22 @@ class UpdateTransactionNotifier extends StateNotifier<IsLoading> {
             type: type,
             categoryName: categoryName,
             description: note,
-            thumbnailUrl: await thumbnailRef.getDownloadURL(),
-            fileUrl: await originalFileRef.getDownloadURL(),
-            fileName: fileName,
-            aspectRatio: thumbnailAspectRatio,
-            thumbnailStorageId: thumbnailStorageId,
-            originalFileStorageId: originalFileStorageId,
+            // thumbnailUrl: await thumbnailRef.getDownloadURL(),
+            // fileUrl: await originalFileRef.getDownloadURL(),
+            // fileName: fileName,
+            // aspectRatio: thumbnailAspectRatio,
+            // thumbnailStorageId: thumbnailStorageId,
+            // originalFileStorageId: originalFileStorageId,
+            // * failed to update transaction with image
+            // transactionImage: TransactionImage(
+            //   transactionId: transactionId,
+            //   thumbnailUrl: await thumbnailRef.getDownloadURL(),
+            //   fileUrl: await originalFileRef.getDownloadURL(),
+            //   fileName: fileName,
+            //   aspectRatio: thumbnailAspectRatio,
+            //   thumbnailStorageId: thumbnailStorageId,
+            //   originalFileStorageId: originalFileStorageId,
+            // ),
           ).toJson();
         }
         debugPrint('uploading new transaction..');
@@ -405,6 +487,29 @@ class UpdateTransactionNotifier extends StateNotifier<IsLoading> {
           TransactionKey.categoryName: categoryName,
           TransactionKey.description: note,
           TransactionKey.isBookmark: isBookmark,
+          // TransactionKey.transactionImage: file == null
+          //     ? null
+          //     : {
+          //         TransactionKey.thumbnailUrl: await FirebaseStorage.instance
+          //             .ref()
+          //             .child(userId)
+          //             .child('transactions')
+          //             .child(FirebaseCollectionName.thumbnails)
+          //             .child(const Uuid().v4())
+          //             .getDownloadURL(),
+          //         TransactionKey.fileUrl: await FirebaseStorage.instance
+          //             .ref()
+          //             .child(userId)
+          //             .child('transactions')
+          //             .child('images')
+          //             .child(const Uuid().v4())
+          //             .getDownloadURL(),
+          //         TransactionKey.fileName: const Uuid().v4(),
+          //         TransactionKey.aspectRatio:
+          //             await file.readAsBytesSync().getAspectRatio(),
+          //         TransactionKey.thumbnailStorageId: const Uuid().v4(),
+          //         TransactionKey.originalFileStorageId: const Uuid().v4(),
+          //       }
         });
         debugPrint('Transaction updated');
       }

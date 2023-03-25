@@ -186,7 +186,8 @@ class AddTransactionWithBookmarkState
                 color: AppColors.mainColor1,
                 icon: const Icon(Icons.close),
                 onPressed: () {
-                  ref.read(imageFileProvider.notifier).setImageFile(null);
+                  // ref.read(imageFileProvider.notifier).setImageFile(null);
+                  ref.read(imageFileProvider.notifier).clearImageFile();
                 },
               )
             : const SizedBox(),
@@ -210,13 +211,13 @@ class AddTransactionWithBookmarkState
   Widget showIfPhotoIsAdded() {
     final transaction = ref.watch(selectedTransactionProvider);
 
-    return (transaction?.fileUrl != null)
+    return (transaction?.transactionImage?.fileUrl != null)
         ? InkWell(
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => FullScreenImageDialog(
-                      imageFile: File(transaction.fileUrl!)),
+                      imageFile: File(transaction.transactionImage!.fileUrl!)),
                   fullscreenDialog: true,
                 ),
               );
@@ -225,7 +226,7 @@ class AddTransactionWithBookmarkState
               width: double.infinity,
               height: 150.0,
               child: Image.network(
-                transaction!.fileUrl!,
+                transaction!.transactionImage!.fileUrl!,
                 width: MediaQuery.of(context).size.width * 0.8,
                 fit: BoxFit.cover,
               ),
@@ -608,7 +609,8 @@ class SaveButton extends ConsumerWidget {
                     .setTransactionType(0);
 
                 // clear the imageFileProvider
-                ref.read(imageFileProvider.notifier).setImageFile(null);
+                // ref.read(imageFileProvider.notifier).setImageFile(null);
+                ref.read(imageFileProvider.notifier).clearImageFile();
 
                 Fluttertoast.showToast(
                   msg: "Transaction added with bookmarks",

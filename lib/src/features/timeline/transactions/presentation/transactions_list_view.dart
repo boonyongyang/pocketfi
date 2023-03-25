@@ -52,10 +52,11 @@ class TransactionListView extends ConsumerWidget {
                     .read(selectedTransactionProvider.notifier)
                     .setSelectedTransaction(transaction);
 
-                if (transaction.fileUrl != null) {
-                  ref
-                      .read(imageFileProvider.notifier)
-                      .setImageFile(File(transaction.fileUrl!.toString()));
+                if (transaction.transactionImage?.fileUrl != null) {
+                  ref.read(imageFileProvider.notifier).setImageFile(
+                      // ! recheck this fileUrl!
+                      File(transaction.transactionImage!.fileUrl.toString()));
+
                   debugPrint(
                       'imageFileProvider is ${ref.read(imageFileProvider)}');
                 }
