@@ -110,8 +110,7 @@ class UpdateWalletStateNotifier extends StateNotifier<IsLoading> {
         // }else{
 
         // }
-        // }
-
+      }
 
       // * update all transactions' walletName in this wallet
       final walletTransactions = FirebaseFirestore.instance
@@ -127,7 +126,6 @@ class UpdateWalletStateNotifier extends StateNotifier<IsLoading> {
           }
         }
       });
-
 
       return true;
     } catch (_) {
