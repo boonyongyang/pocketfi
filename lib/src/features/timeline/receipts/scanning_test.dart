@@ -1,11 +1,16 @@
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:edge_detection/edge_detection.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pocketfi/src/features/timeline/receipts/receipt_highlight_image.dart';
 import 'package:pocketfi/src/features/timeline/receipts/scanned_text_page.dart';
+import 'package:pocketfi/src/features/timeline/receipts/receipt_text_rect.dart';
 import 'package:pocketfi/src/features/timeline/transactions/presentation/add_new_transactions/full_screen_image_dialog.dart';
 // import 'package:permission_handler/permission_handler.dart';
 
@@ -32,6 +37,7 @@ class _ScanningTestState extends State<ScanningTest> {
   List<String?> extractedPrices = [];
   List<String> extractedMerchants = [];
   List<String> extractedDates = [];
+  List<ReceiptTextRect> extractedTextRects = [];
 
   @override
   void initState() {
@@ -39,24 +45,10 @@ class _ScanningTestState extends State<ScanningTest> {
   }
 
   Future<void> getImage() async {
-    // bool isCameraGranted = await Permission.camera.request().isGranted;
-    // if (!isCameraGranted) {
-    //   isCameraGranted =
-    //       await Permission.camera.request() == PermissionStatus.granted;
-    // }
-
-    // if (!isCameraGranted) {
-    //   // Have not permission to camera
-    //   return;
-    // }
-
-    // Generate filepath for saving
     String imagePath = join((await getApplicationSupportDirectory()).path,
         "${(DateTime.now().millisecondsSinceEpoch / 1000).round()}.jpeg");
-
     try {
       bool success = await EdgeDetection.detectEdge(
-        // bool success = await EdgeDetection.detectEdgeFromGallery(
         imagePath,
         canUseGallery: true,
         androidScanTitle: 'Scanning',
@@ -67,25 +59,90 @@ class _ScanningTestState extends State<ScanningTest> {
 
       debugPrint('isDetected: $success');
 
-      scanReceipt(XFile(imagePath));
+      if (success) {
+        File imageFile = File(imagePath);
+        Uint8List imageBytes = await imageFile.readAsBytes();
+        Uint8List compressedBytes = Uint8List.fromList(
+          await FlutterImageCompress.compressWithList(
+            imageBytes,
+            minWidth: 480,
+            minHeight: 640,
+            quality: 85,
+            format: CompressFormat.jpeg,
+          ),
+        );
+        await imageFile.writeAsBytes(compressedBytes);
 
-      debugPrint('scan receipt completed!');
+        scanReceipt(XFile(imagePath));
+        debugPrint('imagePath = $imagePath');
+        debugPrint('scan receipt completed!');
+
+        // If the widget was removed from the tree while the asynchronous platform
+        // message was in flight, we want to discard the reply rather than calling
+        // setState to update our non-existent appearance.
+        if (!mounted) return;
+
+        debugPrint('mounted: $mounted');
+        debugPrint('imagePath: $imagePath');
+
+        setState(() {
+          _imagePath = imagePath;
+        });
+      }
     } catch (e) {
       debugPrint(e.toString());
     }
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
-
-    debugPrint('mounted: $mounted');
-    debugPrint('imagePath: $imagePath');
-
-    setState(() {
-      _imagePath = imagePath;
-    });
   }
+
+  // Future<void> getImage() async {
+  //   // bool isCameraGranted = await Permission.camera.request().isGranted;
+  //   // if (!isCameraGranted) {
+  //   //   isCameraGranted =
+  //   //       await Permission.camera.request() == PermissionStatus.granted;
+  //   // }
+
+  //   // if (!isCameraGranted) {
+  //   //   // Have not permission to camera
+  //   //   return;
+  //   // }
+
+  //   // Generate filepath for saving
+  //   String imagePath = join((await getApplicationSupportDirectory()).path,
+  //       "${(DateTime.now().millisecondsSinceEpoch / 1000).round()}.jpeg");
+
+  //   try {
+  //     bool success = await EdgeDetection.detectEdge(
+  //       // bool success = await EdgeDetection.detectEdgeFromGallery(
+  //       imagePath,
+  //       canUseGallery: true,
+  //       androidScanTitle: 'Scanning',
+  //       androidCropTitle: 'Crop',
+  //       androidCropBlackWhiteTitle: 'Black White',
+  //       androidCropReset: 'Reset',
+  //     );
+
+  //     debugPrint('isDetected: $success');
+
+  //     if (success) {
+  //       scanReceipt(XFile(imagePath));
+  //       debugPrint('scan receipt completed!');
+
+  //       // If the widget was removed from the tree while the asynchronous platform
+  //       // message was in flight, we want to discard the reply rather than calling
+  //       // setState to update our non-existent appearance.
+  //       if (!mounted) return;
+
+  //       debugPrint('mounted: $mounted');
+  //       debugPrint('imagePath: $imagePath');
+
+  //       setState(() {
+  //         _imagePath = imagePath;
+  //       });
+  //     }
+  //   } catch (e) {
+  //     debugPrint(e.toString());
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -124,17 +181,22 @@ class _ScanningTestState extends State<ScanningTest> {
                 recognizedText: recognizedText,
                 imagePath: _imagePath,
                 extractedRects: extractedRects,
+                extractedTextRects: extractedTextRects,
               ),
             ),
             scannedText.isNotEmpty && !textScanning
                 ? ElevatedButton(
-                    onPressed: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            ScannedTextPage(scannedText: scannedText),
-                      ),
-                    ),
+                    onPressed: () {
+                      debugPrint(
+                          'scannedText: $scannedText, extractedTextSpans: $extractedTextSpans');
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              ScannedTextPage(scannedText: scannedText),
+                        ),
+                      );
+                    },
                     child: const Text('View scanned text'),
                   )
                 : const SizedBox(),
@@ -167,6 +229,22 @@ class _ScanningTestState extends State<ScanningTest> {
     );
   }
 
+  List<ReceiptTextRect> createTextRects(RecognizedText recognizedText) {
+    List<ReceiptTextRect> extractedTextRects = [];
+
+    for (final block in recognizedText.blocks) {
+      for (final line in block.lines) {
+        for (final element in line.elements) {
+          final rect = element.boundingBox;
+          final text = element.text;
+          extractedTextRects.add(ReceiptTextRect(rect: rect, text: text));
+        }
+      }
+    }
+
+    return extractedTextRects;
+  }
+
   void scanReceipt(XFile pickedImage) async {
     try {
       debugPrint('scanning receipt...');
@@ -196,6 +274,8 @@ class _ScanningTestState extends State<ScanningTest> {
       extractedPrices = extractPrices(recognizedText);
       extractedTextSpans = getHighlightedTextSpans(recognizedText);
       extractedRects = getHighlightRects(recognizedText);
+      // * added this
+      extractedTextRects = createTextRects(recognizedText);
       selectedPrice = extractTotalPrice(recognizedText).toString();
       textScanning = false;
     });

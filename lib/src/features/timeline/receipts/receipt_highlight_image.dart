@@ -5,17 +5,20 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
+import 'package:pocketfi/src/features/timeline/receipts/receipt_text_rect.dart';
 
 class ReceiptHighlightImage extends StatefulWidget {
   final String? imagePath;
   final List<Rect> extractedRects;
   final RecognizedText recognizedText;
+  final List<ReceiptTextRect> extractedTextRects;
 
   const ReceiptHighlightImage({
     super.key,
     required this.imagePath,
     required this.extractedRects,
     required this.recognizedText,
+    required this.extractedTextRects,
   });
 
   @override
@@ -123,14 +126,36 @@ class _ReceiptHighlightImageState extends State<ReceiptHighlightImage> {
     final double verticalPadding =
         (displayHeight - imageSize.height * scale) / 2;
 
-    for (Rect rect in widget.extractedRects) {
+    // for (Rect rect in widget.extractedRects) {
+    //   rects.add(
+    //     Positioned(
+    //       left: rect.left * scale + padding + horizontalPadding,
+    //       top: rect.top * scale + padding + verticalPadding,
+    //       child: GestureDetector(
+    //         onTap: () {
+    //           _showSnackBar(rect, imageSize);
+    //         },
+    //         child: Container(
+    //           width: rect.width * scale,
+    //           height: rect.height * scale,
+    //           decoration: BoxDecoration(
+    //             color: AppColors.mainColor2.withOpacity(0.4),
+    //             borderRadius: BorderRadius.circular(8),
+    //           ),
+    //         ),
+    //       ),
+    //     ),
+    //   );
+    for (ReceiptTextRect textRect in widget.extractedTextRects) {
+      final rect = textRect.rect;
+
       rects.add(
         Positioned(
           left: rect.left * scale + padding + horizontalPadding,
           top: rect.top * scale + padding + verticalPadding,
           child: GestureDetector(
             onTap: () {
-              _showSnackBar(rect, imageSize);
+              _showSnackBar(textRect.text); // Pass the text directly
             },
             child: Container(
               width: rect.width * scale,
@@ -151,16 +176,136 @@ class _ReceiptHighlightImageState extends State<ReceiptHighlightImage> {
     return rects;
   }
 
-  void _showSnackBar(Rect rect, Size imageSize) {
-    final extractedText =
-        extractTextFromRect(rect, imageSize, widget.recognizedText);
-    if (extractedText != null) {
-      final snackBar = SnackBar(content: Text(extractedText));
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    }
+  // void _showSnackBar(Rect rect, Size imageSize) {
+  //   final extractedText =
+  //       extractTextFromRect(rect, imageSize, widget.recognizedText);
+  //   if (extractedText != null) {
+  //     final snackBar = SnackBar(content: Text(extractedText));
+  //     ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  //   }
+  // }
+
+  void _showSnackBar(String text) {
+    final snackBar = SnackBar(content: Text(text));
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
-// * no 5 (moonooi workable)
+// * no 8, tapp 100.65 return MOO
+  // String? extractTextFromRect(
+  //     Rect rect, Size imageSize, RecognizedText recognizedText) {
+  //   final left = rect.left.toInt();
+  //   final top = rect.top.toInt();
+  //   final width = rect.width.toInt();
+  //   final height = rect.height.toInt();
+
+  //   TextElement? highestIntersectingElement;
+  //   int maxIntersection = 0;
+
+  //   for (final block in recognizedText.blocks) {
+  //     for (final line in block.lines) {
+  //       for (final element in line.elements) {
+  //         final rectElement = element.boundingBox;
+  //         final x1 = max(left, rectElement.left.toInt());
+  //         final y1 = max(top, rectElement.top.toInt());
+  //         final x2 =
+  //             min(left + width, (rectElement.left + rectElement.width).toInt());
+  //         final y2 =
+  //             min(top + height, (rectElement.top + rectElement.height).toInt());
+  //         final intersection = (x2 - x1) * (y2 - y1);
+
+  //         if (intersection > maxIntersection) {
+  //           maxIntersection = intersection;
+  //           highestIntersectingElement = element;
+  //         }
+  //       }
+  //     }
+  //   }
+
+  //   return highestIntersectingElement?.text;
+  // }
+
+// * no 7 nope, cuz join
+  // String? extractTextFromRect(
+  //     Rect rect, Size imageSize, RecognizedText recognizedText) {
+  //   final left = rect.left.toInt();
+  //   final top = rect.top.toInt();
+  //   final width = rect.width.toInt();
+  //   final height = rect.height.toInt();
+
+  //   List<TextElement> intersectingElements = [];
+
+  //   for (final block in recognizedText.blocks) {
+  //     for (final line in block.lines) {
+  //       for (final element in line.elements) {
+  //         final rectElement = element.boundingBox;
+  //         final x1 = max(left, rectElement.left.toInt());
+  //         final y1 = max(top, rectElement.top.toInt());
+  //         final x2 =
+  //             min(left + width, (rectElement.left + rectElement.width).toInt());
+  //         final y2 =
+  //             min(top + height, (rectElement.top + rectElement.height).toInt());
+  //         final intersection = (x2 - x1) * (y2 - y1);
+
+  //         if (intersection > 0) {
+  //           intersectingElements.add(element);
+  //         }
+  //       }
+  //     }
+  //   }
+
+  //   if (intersectingElements.isEmpty) {
+  //     return null;
+  //   }
+
+  //   // Sort intersecting elements by their position
+  //   intersectingElements.sort((a, b) {
+  //     final yDifference = a.boundingBox.top.compareTo(b.boundingBox.top);
+  //     if (yDifference != 0) {
+  //       return yDifference;
+  //     }
+  //     return a.boundingBox.left.compareTo(b.boundingBox.left);
+  //   });
+
+  //   final t = intersectingElements.map((element) => element.text).join(' ');
+  //   debugPrint('$t');
+  //   return t;
+  //   // return intersectingElements[0].text;
+  // }
+
+// * no 6 (not working - returns MOO)
+  // String? extractTextFromRect(
+  //     Rect rect, Size imageSize, RecognizedText recognizedText) {
+  //   final left = rect.left.toInt();
+  //   final top = rect.top.toInt();
+  //   final width = rect.width.toInt();
+  //   final height = rect.height.toInt();
+
+  //   String? bestMatch;
+  //   int maxIntersection = 0;
+
+  //   for (final block in recognizedText.blocks) {
+  //     for (final line in block.lines) {
+  //       for (final element in line.elements) {
+  //         final rectElement = element.boundingBox;
+  //         final x1 = max(left, rectElement.left.toInt());
+  //         final y1 = max(top, rectElement.top.toInt());
+  //         final x2 =
+  //             min(left + width, (rectElement.left + rectElement.width).toInt());
+  //         final y2 =
+  //             min(top + height, (rectElement.top + rectElement.height).toInt());
+  //         final intersection = (x2 - x1) * (y2 - y1);
+
+  //         if (intersection > maxIntersection) {
+  //           maxIntersection = intersection;
+  //           bestMatch = element.text;
+  //         }
+  //       }
+  //     }
+  //   }
+  //   return bestMatch;
+  // }
+
+// * no 5 (moonooi workable for 100.65)
   String? extractTextFromRect(
       Rect rect, Size imageSize, RecognizedText recognizedText) {
     final left = rect.left.toInt();
