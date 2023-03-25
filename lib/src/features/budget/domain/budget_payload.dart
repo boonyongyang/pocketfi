@@ -12,6 +12,7 @@ class BudgetPayload extends MapView<String, dynamic> {
     required String budgetName,
     required double budgetAmount,
     required double usedAmount,
+    required String categoryName,
     required String walletId,
     required UserId userId,
   }) : super({
@@ -19,6 +20,7 @@ class BudgetPayload extends MapView<String, dynamic> {
           FirebaseFieldName.budgetName: budgetName,
           FirebaseFieldName.budgetAmount: budgetAmount,
           FirebaseFieldName.usedAmount: usedAmount,
+          FirebaseFieldName.categoryName: categoryName,
           FirebaseFieldName.walletId: walletId,
           FirebaseFieldName.userId: userId,
           FirebaseFieldName.createdAt: FieldValue.serverTimestamp(),

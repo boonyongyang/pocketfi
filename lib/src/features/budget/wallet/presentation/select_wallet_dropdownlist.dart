@@ -43,8 +43,10 @@ class SelectWalletDropdownList extends ConsumerWidget {
 }
 
 class SelectWalletForBudgetDropdownList extends ConsumerWidget {
-  const SelectWalletForBudgetDropdownList({
+  String? walletId;
+  SelectWalletForBudgetDropdownList({
     super.key,
+    this.walletId,
   });
 
   @override
@@ -69,10 +71,64 @@ class SelectWalletForBudgetDropdownList extends ConsumerWidget {
           }).toList(),
           onChanged: (selectedWallet) {
             debugPrint('wallet tapped: ${selectedWallet?.walletName}');
-            ref.read(selectedWalletForBudgetProvider.notifier).state =
-                selectedWallet!;
+            if (walletId == null) {
+              ref.read(selectedWalletForBudgetProvider.notifier).state =
+                  selectedWallet!;
+            }
+            //! need to fix this -> need to get wallet with wallet id
+            // else {
+            //   ref.read(selectedWalletForBudgetProvider.notifier).state =
+            // ;
+            // }
             debugPrint(
                 'selected wallet: ${ref.read(selectedWalletForBudgetProvider)?.walletName}');
+          },
+        );
+      },
+    );
+  }
+}
+
+class SelectWalletForDebtDropdownList extends ConsumerWidget {
+  String? walletId;
+  SelectWalletForDebtDropdownList({
+    super.key,
+    this.walletId,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final wallets = ref.watch(userWalletsProvider).value;
+    final selectedWallet = ref.watch(selectedWalletForDebtProvider);
+
+    debugPrint('first wallets: ${selectedWallet?.walletName}');
+    final walletList = wallets?.toList();
+    debugPrint('wallet list: ${walletList?.length}');
+    debugPrint('wallet list: ${walletList?.toString()}');
+
+    return Consumer(
+      builder: (context, ref, child) {
+        return DropdownButton(
+          value: selectedWallet,
+          items: walletList?.map((wallet) {
+            return DropdownMenuItem(
+              value: wallet,
+              child: Text(wallet.walletName),
+            );
+          }).toList(),
+          onChanged: (selectedWallet) {
+            debugPrint('wallet tapped: ${selectedWallet?.walletName}');
+            if (walletId == null) {
+              ref.read(selectedWalletForDebtProvider.notifier).state =
+                  selectedWallet!;
+            }
+            //! need to fix this -> need to get wallet with wallet id
+            // else {
+            //   ref.read(selectedWalletForBudgetProvider.notifier).state =
+            // ;
+            // }
+            debugPrint(
+                'selected wallet: ${ref.read(selectedWalletForDebtProvider)?.walletName}');
           },
         );
       },
