@@ -29,32 +29,36 @@ final totalAmountProvider = StreamProvider.autoDispose<double>((ref) {
       .listen((snapshot) {
     final document = snapshot.docs;
     final budgets = document.map(
-      (doc) => Budget.fromJson(doc.data()),
+      (doc) => Budget.fromJson(doc.data()).budgetAmount,
     );
+    //! need to fix
     // get budgetAmount from all budgets code
-    Iterable<Budget> budgetsList = [];
+    // Iterable<Budget> budgetsList = [];
 
-    for (var budget in budgets) {
-      if (budgetsList.isEmpty) {
-        budgetsList = [budget];
-      } else {
-        var isSame = false;
-        for (var budgetList in budgetsList) {
-          if (budget.budgetId == budgetList.budgetId) {
-            isSame = true;
-          }
-        }
-        if (!isSame) {
-          budgetsList = [...budgetsList, budget];
-          final totalBudgetAmount = budgetsList
-              .map((budget) => budget.budgetAmount)
-              .reduce((value, element) => value + element);
+    // for (var budget in budgets) {
+    //   if (budgetsList.isEmpty) {
+    //     budgetsList = [budget];
+    //   } else {
+    //     var isSame = false;
+    //     for (var budgetList in budgetsList) {
+    //       if (budget.budgetId == budgetList.budgetId) {
+    //         isSame = true;
+    //       }
+    //     }
+    //     if (!isSame) {
+    //       budgetsList = [...budgetsList, budget];
+    //       final totalBudgetAmount = budgetsList
+    //           .map((budget) => budget.budgetAmount)
+    //           .reduce((value, element) => value + element);
 
-          controller.sink.add(totalBudgetAmount);
-          // controller.sink.add(budgetsList);
-        }
-      }
-    }
+    //       controller.sink.add(totalBudgetAmount);
+    //       // controller.sink.add(budgetsList);
+    //     }
+    //   }
+    // }
+    var totalAmount =
+        budgets.fold(0.00, (previousValue, element) => previousValue + element);
+    controller.sink.add(totalAmount);
   });
 
   ref.onDispose(() {

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/features/budget/domain/budget.dart';
+import 'package:pocketfi/src/features/budget/wallet/data/get_wallet_with_wallet_id.dart';
+import 'package:pocketfi/src/features/category/application/category_providers.dart';
 
 class BudgetTile extends ConsumerWidget {
   // final double totalBudgetAmount;
@@ -25,6 +27,11 @@ class BudgetTile extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final category = getCategoryWithCategoryName(budget.categoryName);
+    final wallet = ref.watch(getWalletWithWalletId(budget.walletId)).value;
+    if (wallet == null) {
+      return Container();
+    }
     return GestureDetector(
       onTap: onTap,
       child: Padding(
@@ -94,9 +101,37 @@ class BudgetTile extends ConsumerWidget {
                         height: 10,
                       ),
                       Row(
+                        children: [
+                          Icon(
+                            Icons.wallet,
+                            color: Colors.grey[600],
+                            size: 14,
+                          ),
+                          Text(
+                            ' ${wallet.walletName}',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.grey[600],
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Row(
                         mainAxisSize: MainAxisSize.max,
                         // mainAxisAlignment: MainAxisAlignment.end,
                         children: [
+                          Container(
+                            padding: const EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle, color: category.color),
+                            child: Center(child: category.icon),
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
                           Text(budget.categoryName),
                           const Spacer(),
                           Text(
