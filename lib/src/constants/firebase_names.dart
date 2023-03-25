@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart' show immutable;
 
 @immutable
@@ -32,6 +34,26 @@ class FirebaseFieldName {
   static const usedAmount = 'used_amount';
   static const remainingAmount = 'remaining_amount';
 
+  static const debtId = 'debt_id';
+  static const debtName = 'debt_name';
+  static const debtAmount = 'debt_amount';
+  static const minimumPayment = 'minimum_payment';
+  static const recurringDateToPay = 'recurring_date_to_pay';
+  static const annualInterestRate = 'annual_interest_rate';
+  static const frequency = 'frequency';
+  static const totalNumberOfMonthsToPay = 'total_number_of_months_to_pay';
+  static const lastMonthInterest = 'last_month_interest';
+  static const lastMonthPrinciple = 'last_month_principle';
+
+  static const debtPaymentId = 'debt_payment_id';
+  static const interestAmount = 'interest_amount';
+  static const principleAmount = 'principle_amount';
+  static const newBalance = 'new_balance';
+  static const previousBalance = 'previous_balance';
+  static const isPaid = 'is_paid';
+  static const paymentDate = 'payment_date';
+  static const paidMonth = 'minimum_pay';
+
   const FirebaseFieldName._(); // private constructor
 }
 
@@ -55,6 +77,9 @@ class FirebaseCollectionName {
   static const sharedWallets = 'shared_wallet';
 
   static const budgets = 'budgets';
+
+  static const debts = 'debts';
+  static const debtPayments = 'debt_payments';
 
   const FirebaseCollectionName._(); // private constructor
 }

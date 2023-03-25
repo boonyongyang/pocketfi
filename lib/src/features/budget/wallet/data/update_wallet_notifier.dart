@@ -85,33 +85,33 @@ class UpdateWalletStateNotifier extends StateNotifier<IsLoading> {
 
       // for (var i = 0; i < collaborators.length; i++) {
       // if (collaborators == []) {
+      if (users != query3Snapshot.data()![FirebaseFieldName.collaborators]) {
+        final payload = WalletPayload(
+          walletId: walletId,
+          walletName: walletName,
+          userId: query3Snapshot.data()![FirebaseFieldName.userId],
+          ownerId: query3Snapshot.data()![FirebaseFieldName.ownerId],
+          ownerEmail: query3Snapshot.data()![FirebaseFieldName.ownerEmail],
+          ownerName: query3Snapshot.data()![FirebaseFieldName.ownerName],
+          createdAt:
+              query3Snapshot.data()![FirebaseFieldName.createdAt].toDate(),
+          collaborators: users,
+        );
+        debugPrint(query3Snapshot.data()![FirebaseFieldName.ownerName]);
+        debugPrint(query3Snapshot.data()![FirebaseFieldName.ownerEmail]);
+        query3.delete();
 
-      final payload = WalletPayload(
-        walletId: walletId,
-        walletName: walletName,
-        userId: query3Snapshot.data()![FirebaseFieldName.userId],
-        ownerId: query3Snapshot.data()![FirebaseFieldName.ownerId],
-        ownerEmail: query3Snapshot.data()![FirebaseFieldName.ownerEmail],
-        ownerName: query3Snapshot.data()![FirebaseFieldName.ownerName],
-        createdAt: query3Snapshot.data()![FirebaseFieldName.createdAt].toDate(),
-        collaborators: users,
-      );
-      debugPrint(query3Snapshot.data()![FirebaseFieldName.ownerName]);
-      debugPrint(query3Snapshot.data()![FirebaseFieldName.ownerEmail]);
-      query3.delete();
+        await FirebaseFirestore.instance
+            .collection(FirebaseCollectionName.users)
+            .doc(userId)
+            .collection(FirebaseCollectionName.wallets)
+            .doc(walletId)
+            .set(payload);
+        // }else{
 
-      await FirebaseFirestore.instance
-          .collection(FirebaseCollectionName.users)
-          .doc(userId)
-          .collection(FirebaseCollectionName.wallets)
-          .doc(walletId)
-          .set(payload);
-      // }else{
+        // }
+        // }
 
-      // }
-      // }
-
-      // });
 
       // * update all transactions' walletName in this wallet
       final walletTransactions = FirebaseFirestore.instance
@@ -127,6 +127,7 @@ class UpdateWalletStateNotifier extends StateNotifier<IsLoading> {
           }
         }
       });
+
 
       return true;
     } catch (_) {

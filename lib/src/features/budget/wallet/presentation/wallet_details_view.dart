@@ -77,6 +77,16 @@ class _WalletDetailsViewState extends ConsumerState<WalletDetailsView> {
         Scaffold(
       appBar: AppBar(
         title: const Text('Wallet Details'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            ref.watch(tempDataProvider.notifier).deleteTempDataInFirebase(
+                  currentUserId!,
+                );
+
+            Navigator.pop(context);
+          },
+        ),
         actions: [
           if (wallets.valueOrNull != null &&
               widget.wallet.walletId != walletId &&
@@ -495,6 +505,7 @@ class _WalletDetailsViewState extends ConsumerState<WalletDetailsView> {
     if (userId == null) {
       return;
     }
+    //! need to check collaborator status. If accepted no need change status, if new one then only change pending
     List<CollaboratorsInfo> collaboratorsInfo = [];
     collaborators?.forEach((element) {
       collaboratorsInfo.add(
@@ -517,6 +528,7 @@ class _WalletDetailsViewState extends ConsumerState<WalletDetailsView> {
     if (isUpdated && mounted) {
       nameController.clear();
       Navigator.of(context).maybePop();
+      ref.watch(tempDataProvider.notifier).deleteTempDataInFirebase(userId);
     }
   }
 }
