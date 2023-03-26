@@ -1,9 +1,14 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:beamer/beamer.dart';
+import 'package:edge_detection/edge_detection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart' show join;
+import 'package:path_provider/path_provider.dart';
 import 'package:pocketfi/src/common_widgets/dialogs/action_sheet.dart';
 import 'package:pocketfi/src/common_widgets/dialogs/alert_dialog_model.dart';
 import 'package:pocketfi/src/common_widgets/dialogs/selection_dialog.dart';
@@ -14,6 +19,7 @@ import 'package:pocketfi/src/features/timeline/bills/presentation/bills_tab_view
 import 'package:pocketfi/src/features/timeline/bookmarks/presentation/bookmark_page.dart';
 import 'package:pocketfi/src/features/timeline/posts/post_settings/application/post_setting_provider.dart';
 import 'package:pocketfi/src/features/timeline/presentation/overview_tab.dart';
+import 'package:pocketfi/src/features/timeline/receipts/scan_receipt_page.dart';
 import 'package:pocketfi/src/features/timeline/receipts/scanning_test.dart';
 import 'package:pocketfi/src/features/timeline/transactions/data/transaction_notifiers.dart';
 import 'package:pocketfi/src/features/shared/image_upload/domain/file_type.dart';
@@ -115,7 +121,13 @@ class _MainViewState extends ConsumerState<TimelinePage>
                     Icons.camera,
                     color: Colors.white,
                   ),
-                  onPressed: () => pickImage(),
+                  onPressed: () {
+                    Navigator.of(context, rootNavigator: true).push(
+                      MaterialPageRoute(
+                        builder: (context) => const ScanReceipt(),
+                      ),
+                    );
+                  },
                 ),
                 IconButton(
                   icon: const Icon(
@@ -177,45 +189,8 @@ class _MainViewState extends ConsumerState<TimelinePage>
               heroTag: null,
               backgroundColor: const Color(0xFFFCD46A),
               child: const Icon(Icons.camera_alt),
-
-              // * implementing receipt scanning feature
-              // onPressed: () async {
-              //   final XFile? pickedImage;
-
-              //   final isCamera = await const SelectionDialog(
-              //     title: Strings.scanReceiptFrom,
-              //   ).present(context);
-
-              //   if (isCamera == null) return;
-
-              //   pickedImage = isCamera
-              //       ? await ImagePicker().pickImage(
-              //           source: ImageSource.camera,
-              //         )
-              //       : await ImagePicker().pickImage(
-              //           source: ImageSource.gallery,
-              //         );
-
-              //   if (pickedImage != null) {
-              //     if (mounted) {
-              //       Navigator.of(context, rootNavigator: true).push(
-              //         MaterialPageRoute(
-              //           builder: (context) {
-              //             // ref
-              //             //     .read(receiptFileProvider.notifier)
-              //             //     .setReceiptImageFile(pickedImage);
-              //             return VerifyReceiptDetails(pickedImage: pickedImage);
-              //           },
-              //           fullscreenDialog: true,
-              //         ),
-              //       );
-              //     }
-              //   }
-              // },
-
-              // * implement hightlight text feature
               onPressed: () async {
-                // navigate to ScanningTest
+                // * implement `hightlight` text feature
                 Navigator.of(context, rootNavigator: true).push(
                   MaterialPageRoute(
                     builder: (context) {
@@ -225,13 +200,6 @@ class _MainViewState extends ConsumerState<TimelinePage>
                   ),
                 );
               },
-
-              // * ori code
-              // onPressed: () => Navigator.of(context, rootNavigator: true).push(
-              //   MaterialPageRoute(
-              //     builder: (context) => const ScanReceipt(),
-              //   ),
-              // ),
             ),
             const SizedBox(height: 16),
             FloatingActionButton(
@@ -239,8 +207,31 @@ class _MainViewState extends ConsumerState<TimelinePage>
               backgroundColor: const Color(0xFFFCD46A),
               child: const Icon(Icons.kayaking),
 
-              // * implementing receipt scanning feature
+              // * implement edge detection scanning
               onPressed: () async {
+                await getImage();
+
+                if (ref.read(receiptStringPathProvider) != null) {
+                  if (mounted) {
+                    Navigator.of(context, rootNavigator: true).push(
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return const ScanReceiptPage();
+                        },
+                        fullscreenDialog: true,
+                      ),
+                    );
+                  }
+                }
+              },
+            ),
+            const SizedBox(height: 16),
+            FloatingActionButton(
+              heroTag: null,
+              backgroundColor: AppColors.subColor2,
+              child: const Icon(Icons.receipt),
+              onPressed: () async {
+                // * implementing receipt scanning
                 final XFile? pickedImage;
 
                 final isCamera = await const SelectionDialog(
@@ -272,19 +263,6 @@ class _MainViewState extends ConsumerState<TimelinePage>
                     );
                   }
                 }
-              },
-            ),
-            const SizedBox(height: 16),
-            FloatingActionButton(
-              heroTag: null,
-              backgroundColor: AppColors.subColor2,
-              child: const Icon(Icons.receipt),
-              onPressed: () {
-                Navigator.of(context, rootNavigator: true).push(
-                  MaterialPageRoute(
-                    builder: (context) => const ScanReceipt(),
-                  ),
-                );
               },
             ),
             const SizedBox(height: 16),
@@ -352,6 +330,58 @@ class _MainViewState extends ConsumerState<TimelinePage>
 
   @override
   bool get wantKeepAlive => true;
+
+  Future<bool> getImage() async {
+    String imagePath = join((await getApplicationSupportDirectory()).path,
+        "${(DateTime.now().millisecondsSinceEpoch / 1000).round()}.jpeg");
+    try {
+      bool success = await EdgeDetection.detectEdge(
+        imagePath,
+        canUseGallery: true,
+        androidScanTitle: 'Scanning',
+        androidCropTitle: 'Crop',
+        androidCropBlackWhiteTitle: 'Black White',
+        androidCropReset: 'Reset',
+      );
+
+      debugPrint('isDetected: $success');
+
+      if (success) {
+        File imageFile = File(imagePath);
+        Uint8List imageBytes = await imageFile.readAsBytes();
+        Uint8List compressedBytes = Uint8List.fromList(
+          await FlutterImageCompress.compressWithList(
+            imageBytes,
+            minWidth: 480,
+            minHeight: 640,
+            quality: 85,
+            format: CompressFormat.jpeg,
+          ),
+        );
+        await imageFile.writeAsBytes(compressedBytes);
+
+        // scanReceipt(XFile(imagePath));
+        debugPrint('imagePath = $imagePath');
+        debugPrint('scan receipt completed!');
+
+        if (!mounted) return false;
+
+        debugPrint('mounted: $mounted');
+        debugPrint('imagePath: $imagePath');
+
+        ref
+            .read(receiptStringPathProvider.notifier)
+            .setReceiptStringPath(imagePath);
+        // setState(() {
+        //   _imagePath = imagePath;
+        // });
+        return true;
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+    return false;
+  }
 
   pickImage() async {
     // pick a image first

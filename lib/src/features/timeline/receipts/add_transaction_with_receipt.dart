@@ -20,6 +20,7 @@ import 'package:pocketfi/src/features/category/application/category_providers.da
 import 'package:pocketfi/src/features/category/domain/category.dart';
 import 'package:pocketfi/src/features/category/presentation/category_page.dart';
 import 'package:pocketfi/src/features/timeline/bookmarks/application/bookmark_services.dart';
+import 'package:pocketfi/src/features/timeline/receipts/domain/receipt.dart';
 import 'package:pocketfi/src/features/timeline/transactions/application/transaction_providers.dart';
 import 'package:pocketfi/src/features/timeline/transactions/date_picker/application/selected_date_notifier.dart';
 import 'package:pocketfi/src/features/timeline/transactions/date_picker/presentation/transaction_date_picker.dart';
@@ -34,7 +35,8 @@ import 'package:pocketfi/src/features/timeline/transactions/presentation/add_new
 import 'package:pocketfi/src/features/timeline/transactions/presentation/add_new_transactions/select_transaction_type.dart';
 
 class AddTransactionWithReceipt extends StatefulHookConsumerWidget {
-  const AddTransactionWithReceipt({
+  const AddTransactionWithReceipt(
+    Receipt receipt, {
     super.key,
   });
 

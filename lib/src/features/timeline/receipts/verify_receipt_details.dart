@@ -252,7 +252,7 @@ class VerifyReceiptDetailsState extends ConsumerState<VerifyReceiptDetails> {
                           context,
                           MaterialPageRoute(
                             builder: (context) =>
-                                const AddTransactionWithReceipt(),
+                                AddTransactionWithReceipt(receipt),
                           ),
                         );
                       }

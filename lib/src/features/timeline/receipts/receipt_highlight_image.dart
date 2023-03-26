@@ -2,95 +2,218 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:pocketfi/src/common_widgets/buttons/full_width_button_with_text.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
+import 'package:pocketfi/src/features/category/application/category_providers.dart';
+import 'package:pocketfi/src/features/timeline/receipts/domain/receipt.dart';
 import 'package:pocketfi/src/features/timeline/receipts/receipt_text_rect.dart';
+import 'package:pocketfi/src/features/timeline/receipts/scanned_text_page.dart';
+import 'package:pocketfi/src/features/timeline/transactions/date_picker/application/selected_date_notifier.dart';
+import 'package:pocketfi/src/features/timeline/transactions/date_picker/presentation/transaction_date_picker.dart';
+import 'package:uuid/uuid.dart';
 
-class ReceiptHighlightImage extends StatefulWidget {
+class ReceiptHighlightImage extends StatefulHookConsumerWidget {
   final String? imagePath;
-  final List<Rect> extractedRects;
   final RecognizedText recognizedText;
   final List<ReceiptTextRect> extractedTextRects;
 
   const ReceiptHighlightImage({
     super.key,
     required this.imagePath,
-    required this.extractedRects,
     required this.recognizedText,
     required this.extractedTextRects,
   });
 
   @override
-  State<ReceiptHighlightImage> createState() => _ReceiptHighlightImageState();
+  ReceiptHighlightImageState createState() => ReceiptHighlightImageState();
 }
 
-class _ReceiptHighlightImageState extends State<ReceiptHighlightImage> {
+class ReceiptHighlightImageState extends ConsumerState<ReceiptHighlightImage> {
   bool highlightMode = false;
+
+  String? selectedPrice = '';
+  // String? selectedMerchant = '', selectedNote = '';
+  late TextEditingController priceController,
+      merchantController,
+      noteController;
 
   @override
   Widget build(BuildContext context) {
+    final scannedText = widget.recognizedText.text;
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
-    return SizedBox(
-      child: FutureBuilder<Size>(
-        future: getImageSize(widget.imagePath!),
-        builder: (BuildContext context, AsyncSnapshot<Size> snapshot) {
-          if (snapshot.hasData) {
-            final imageSize = snapshot.data!;
-            const padding = 8.0;
+    priceController = useTextEditingController();
+    noteController = useTextEditingController();
+    merchantController = useTextEditingController();
+    final isSaveButtonEnabled = useState(false);
 
-            final imageWidth = imageSize.width;
-            final imageHeight = imageSize.height;
+    useEffect(
+      () {
+        void listener() =>
+            isSaveButtonEnabled.value = priceController.text.isNotEmpty;
+        priceController.addListener(listener);
+        return () => priceController.removeListener(listener);
+      },
+      [priceController],
+    );
 
-            return SingleChildScrollView(
-              child: Column(
-                children: [
-                  GestureDetector(
-                    child: const CircleAvatar(
-                      radius: 20,
-                      backgroundColor: AppColors.mainColor1,
-                      child: Icon(Icons.document_scanner_outlined),
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              const Icon(Icons.attach_money, color: AppColors.mainColor1),
+              ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 250.0),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 16.0),
+                  child: TextField(
+                    controller: priceController,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      labelText: 'Price',
+                      suffixText: '(required)',
+                      suffixStyle: const TextStyle(color: Colors.red),
+                      hintText: selectedPrice,
                     ),
-                    onTap: () {
-                      setState(() {
-                        highlightMode = !highlightMode;
-                        debugPrint('highlight mode: $highlightMode');
-                      });
-                    },
                   ),
-                  Center(
-                    child: SizedBox(
-                      width: screenWidth * 0.9,
-                      height: screenHeight * 0.8,
-                      child: Stack(
+                ),
+              ),
+            ],
+          ),
+          Row(
+            children: [
+              const Icon(Icons.mode, color: AppColors.mainColor1),
+              ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 250.0),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 16.0),
+                  child: TextField(
+                    controller: noteController,
+                    decoration: const InputDecoration(
+                      border: InputBorder.none,
+                      labelText: 'Note',
+                      suffixText: '(optional)',
+                      suffixStyle: TextStyle(color: Colors.grey),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Row(
+            children: [
+              const Icon(Icons.store, color: AppColors.mainColor1),
+              ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 250.0),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 16.0),
+                  child: TextField(
+                    controller: merchantController,
+                    decoration: const InputDecoration(
+                      border: InputBorder.none,
+                      labelText: 'Merchant',
+                      suffixText: '(optional)',
+                      suffixStyle: TextStyle(color: Colors.grey),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const TransactionDatePicker(),
+          SizedBox(
+            child: FutureBuilder<Size>(
+              future: getImageSize(widget.imagePath!),
+              builder: (BuildContext context, AsyncSnapshot<Size> snapshot) {
+                if (snapshot.hasData) {
+                  final imageSize = snapshot.data!;
+                  const padding = 8.0;
+
+                  final imageWidth = imageSize.width;
+                  final imageHeight = imageSize.height;
+
+                  return Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.all(padding),
-                            child: Image.file(
-                              File(widget.imagePath!),
-                              fit: BoxFit.contain,
-                              width: imageWidth,
-                              height: imageHeight,
+                          GestureDetector(
+                            child: const CircleAvatar(
+                              radius: 22,
+                              backgroundColor: AppColors.mainColor1,
+                              child: Icon(Icons.document_scanner_outlined),
                             ),
+                            onTap: () {
+                              setState(() {
+                                highlightMode = !highlightMode;
+                                debugPrint('highlight mode: $highlightMode');
+                              });
+                            },
                           ),
-                          if (highlightMode)
-                            ..._buildDetectedTextRects(
-                                context, imageSize, imageWidth, imageHeight),
+                          const SizedBox(width: 20.0),
+                          ElevatedButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      ScannedTextPage(scannedText: scannedText),
+                                ),
+                              );
+                            },
+                            child: const Text('View scanned text'),
+                          ),
                         ],
                       ),
-                    ),
-                  ),
-                ],
-              ),
-            );
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          } else {
-            return const Center(child: CircularProgressIndicator());
-          }
-        },
+                      Center(
+                        child: SizedBox(
+                          width: screenWidth * 0.9,
+                          height: screenHeight * 0.8,
+                          child: Stack(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(padding),
+                                child: Image.file(
+                                  File(widget.imagePath!),
+                                  fit: BoxFit.contain,
+                                  width: imageWidth,
+                                  height: imageHeight,
+                                ),
+                              ),
+                              if (highlightMode)
+                                ..._buildDetectedTextRects(context, imageSize,
+                                    imageWidth, imageHeight),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                } else if (snapshot.hasError) {
+                  return Center(child: Text('Error: ${snapshot.error}'));
+                } else {
+                  return const Center(child: CircularProgressIndicator());
+                }
+              },
+            ),
+          ),
+          ProceedButton(
+            isSaveButtonEnabled: isSaveButtonEnabled,
+            // imagePath: widget.imagePath,
+            priceController: priceController,
+            noteController: noteController,
+            merchantController: merchantController,
+            recognizedText: widget.recognizedText,
+          ),
+        ],
       ),
     );
   }
@@ -126,26 +249,6 @@ class _ReceiptHighlightImageState extends State<ReceiptHighlightImage> {
     final double verticalPadding =
         (displayHeight - imageSize.height * scale) / 2;
 
-    // for (Rect rect in widget.extractedRects) {
-    //   rects.add(
-    //     Positioned(
-    //       left: rect.left * scale + padding + horizontalPadding,
-    //       top: rect.top * scale + padding + verticalPadding,
-    //       child: GestureDetector(
-    //         onTap: () {
-    //           _showSnackBar(rect, imageSize);
-    //         },
-    //         child: Container(
-    //           width: rect.width * scale,
-    //           height: rect.height * scale,
-    //           decoration: BoxDecoration(
-    //             color: AppColors.mainColor2.withOpacity(0.4),
-    //             borderRadius: BorderRadius.circular(8),
-    //           ),
-    //         ),
-    //       ),
-    //     ),
-    //   );
     for (ReceiptTextRect textRect in widget.extractedTextRects) {
       final rect = textRect.rect;
 
@@ -153,9 +256,27 @@ class _ReceiptHighlightImageState extends State<ReceiptHighlightImage> {
         Positioned(
           left: rect.left * scale + padding + horizontalPadding,
           top: rect.top * scale + padding + verticalPadding,
+          // child: GestureDetector(
+          //   onTap: () {
+          //     _showSnackBar(textRect.text);
+          //   },
           child: GestureDetector(
-            onTap: () {
-              _showSnackBar(textRect.text); // Pass the text directly
+            onTapDown: (TapDownDetails details) {
+              final RenderBox box = context.findRenderObject() as RenderBox;
+              final Offset localOffset =
+                  box.globalToLocal(details.globalPosition);
+              debugPrint('Tapped at: ${localOffset.dx}, ${localOffset.dy}');
+              _showMenu(
+                textRect.text,
+                context,
+                details.globalPosition,
+                (newValue) => setState(() => selectedPrice = newValue),
+                priceController,
+                merchantController,
+                noteController,
+              );
+
+              _showSnackBar(textRect.text);
             },
             child: Container(
               width: rect.width * scale,
@@ -176,6 +297,146 @@ class _ReceiptHighlightImageState extends State<ReceiptHighlightImage> {
     return rects;
   }
 
+  void _showMenu(
+    String text,
+    BuildContext context,
+    Offset position,
+    Function(String?) onSelectedPriceChanged,
+    TextEditingController priceController,
+    TextEditingController merchantController,
+    TextEditingController noteController,
+  ) {
+    final RenderBox overlay =
+        Overlay.of(context).context.findRenderObject() as RenderBox;
+    final double screenHeight = overlay.size.height;
+    final double availableSpaceBelow = screenHeight - position.dy;
+    final double availableSpaceAbove = position.dy;
+    final bool enoughSpaceBelow = availableSpaceBelow > 150;
+    final bool enoughSpaceAbove = availableSpaceAbove > 150;
+    final bool showAbove = !enoughSpaceBelow && enoughSpaceAbove;
+
+    final RelativeRect positionBox = RelativeRect.fromLTRB(
+      position.dx,
+      showAbove ? position.dy - 50 : position.dy,
+      position.dx + 1,
+      showAbove ? position.dy + 1 : position.dy + 50,
+    );
+
+    if (Platform.isAndroid) {
+      showMenu(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+        context: context,
+        position: positionBox,
+        items: [
+          PopupMenuItem(
+            enabled: false,
+            child: Text('set \'$text\' as:'),
+          ),
+          PopupMenuItem(
+            child: const Text('Merchant'),
+            onTap: () => setState(() => merchantController.text = text),
+          ),
+          PopupMenuItem(
+            child: const Text('Date'),
+            onTap: () => {},
+          ),
+          PopupMenuItem(
+            child: const Text('Note'),
+            onTap: () => setState(() => noteController.text = text),
+          ),
+          PopupMenuItem(
+            child: const Text('Total'),
+            onTap: () {
+              setState(
+                () => selectedPrice = text,
+              );
+
+              // Extract numbers and at most one decimal point
+              String extractedNumber = '';
+              bool hasDecimal = false;
+              for (int i = 0; i < selectedPrice!.length; i++) {
+                if (selectedPrice![i] == '.' && !hasDecimal) {
+                  extractedNumber += '.';
+                  hasDecimal = true;
+                } else if (RegExp(r'\d').hasMatch(selectedPrice![i])) {
+                  extractedNumber += selectedPrice![i];
+                }
+              }
+
+              // Assign the extracted number to the priceController
+              priceController.text = extractedNumber;
+            },
+          ),
+        ],
+      );
+      // FIXME ios popup menu not working
+      // } else if (Platform.isIOS) {
+      //   showCupertinoModalPopup(
+      //     context: context,
+      //     builder: (BuildContext context) {
+      //       return CupertinoContextMenu(
+      //         actions: [
+      //           CupertinoContextMenuAction(
+      //             child: const Text('Merchant'),
+      //             onPressed: () => setState(() => merchantController.text = text),
+      //           ),
+      //           CupertinoContextMenuAction(
+      //             child: const Text('Date'),
+      //             onPressed: () {},
+      //           ),
+      //           CupertinoContextMenuAction(
+      //             child: const Text('Note'),
+      //             onPressed: () => setState(() => noteController.text = text),
+      //           ),
+      //           CupertinoContextMenuAction(
+      //             child: const Text('Total'),
+      //             onPressed: () {
+      //               setState(() => selectedPrice = text);
+
+      //               // Extract numbers and at most one decimal point
+      //               String extractedNumber = '';
+      //               bool hasDecimal = false;
+      //               for (int i = 0; i < selectedPrice!.length; i++) {
+      //                 if (selectedPrice![i] == '.' && !hasDecimal) {
+      //                   extractedNumber += '.';
+      //                   hasDecimal = true;
+      //                 } else if (RegExp(r'\d').hasMatch(selectedPrice![i])) {
+      //                   extractedNumber += selectedPrice![i];
+      //                 }
+      //               }
+
+      //               // Assign the extracted number to the priceController
+      //               priceController.text = extractedNumber;
+      //             },
+      //           ),
+      //         ],
+      //         child: Container(
+      //           color: Colors.blueGrey,
+      //           width: 20.0,
+      //           height: 20.0,
+      //         ),
+      //         // previewBuilder: (BuildContext context, Animation<double> animation,
+      //         //     Widget child) {
+      //         //   return Center(
+      //         //     child: Text(
+      //         //       'set \'$text\' as:',
+      //         //       style: const TextStyle(fontSize: 16),
+      //         //     ),
+      //         //   );
+      //         // },
+      //       );
+      //     },
+      //   );
+    }
+  }
+
+  void _showSnackBar(String text) {
+    final snackBar = SnackBar(content: Text(text));
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
   // void _showSnackBar(Rect rect, Size imageSize) {
   //   final extractedText =
   //       extractTextFromRect(rect, imageSize, widget.recognizedText);
@@ -185,363 +446,108 @@ class _ReceiptHighlightImageState extends State<ReceiptHighlightImage> {
   //   }
   // }
 
-  void _showSnackBar(String text) {
-    final snackBar = SnackBar(content: Text(text));
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-  }
-
-// * no 8, tapp 100.65 return MOO
-  // String? extractTextFromRect(
-  //     Rect rect, Size imageSize, RecognizedText recognizedText) {
-  //   final left = rect.left.toInt();
-  //   final top = rect.top.toInt();
-  //   final width = rect.width.toInt();
-  //   final height = rect.height.toInt();
-
-  //   TextElement? highestIntersectingElement;
-  //   int maxIntersection = 0;
-
-  //   for (final block in recognizedText.blocks) {
-  //     for (final line in block.lines) {
-  //       for (final element in line.elements) {
-  //         final rectElement = element.boundingBox;
-  //         final x1 = max(left, rectElement.left.toInt());
-  //         final y1 = max(top, rectElement.top.toInt());
-  //         final x2 =
-  //             min(left + width, (rectElement.left + rectElement.width).toInt());
-  //         final y2 =
-  //             min(top + height, (rectElement.top + rectElement.height).toInt());
-  //         final intersection = (x2 - x1) * (y2 - y1);
-
-  //         if (intersection > maxIntersection) {
-  //           maxIntersection = intersection;
-  //           highestIntersectingElement = element;
-  //         }
-  //       }
-  //     }
-  //   }
-
-  //   return highestIntersectingElement?.text;
-  // }
-
-// * no 7 nope, cuz join
-  // String? extractTextFromRect(
-  //     Rect rect, Size imageSize, RecognizedText recognizedText) {
-  //   final left = rect.left.toInt();
-  //   final top = rect.top.toInt();
-  //   final width = rect.width.toInt();
-  //   final height = rect.height.toInt();
-
-  //   List<TextElement> intersectingElements = [];
-
-  //   for (final block in recognizedText.blocks) {
-  //     for (final line in block.lines) {
-  //       for (final element in line.elements) {
-  //         final rectElement = element.boundingBox;
-  //         final x1 = max(left, rectElement.left.toInt());
-  //         final y1 = max(top, rectElement.top.toInt());
-  //         final x2 =
-  //             min(left + width, (rectElement.left + rectElement.width).toInt());
-  //         final y2 =
-  //             min(top + height, (rectElement.top + rectElement.height).toInt());
-  //         final intersection = (x2 - x1) * (y2 - y1);
-
-  //         if (intersection > 0) {
-  //           intersectingElements.add(element);
-  //         }
-  //       }
-  //     }
-  //   }
-
-  //   if (intersectingElements.isEmpty) {
-  //     return null;
-  //   }
-
-  //   // Sort intersecting elements by their position
-  //   intersectingElements.sort((a, b) {
-  //     final yDifference = a.boundingBox.top.compareTo(b.boundingBox.top);
-  //     if (yDifference != 0) {
-  //       return yDifference;
-  //     }
-  //     return a.boundingBox.left.compareTo(b.boundingBox.left);
-  //   });
-
-  //   final t = intersectingElements.map((element) => element.text).join(' ');
-  //   debugPrint('$t');
-  //   return t;
-  //   // return intersectingElements[0].text;
-  // }
-
-// * no 6 (not working - returns MOO)
-  // String? extractTextFromRect(
-  //     Rect rect, Size imageSize, RecognizedText recognizedText) {
-  //   final left = rect.left.toInt();
-  //   final top = rect.top.toInt();
-  //   final width = rect.width.toInt();
-  //   final height = rect.height.toInt();
-
-  //   String? bestMatch;
-  //   int maxIntersection = 0;
-
-  //   for (final block in recognizedText.blocks) {
-  //     for (final line in block.lines) {
-  //       for (final element in line.elements) {
-  //         final rectElement = element.boundingBox;
-  //         final x1 = max(left, rectElement.left.toInt());
-  //         final y1 = max(top, rectElement.top.toInt());
-  //         final x2 =
-  //             min(left + width, (rectElement.left + rectElement.width).toInt());
-  //         final y2 =
-  //             min(top + height, (rectElement.top + rectElement.height).toInt());
-  //         final intersection = (x2 - x1) * (y2 - y1);
-
-  //         if (intersection > maxIntersection) {
-  //           maxIntersection = intersection;
-  //           bestMatch = element.text;
-  //         }
-  //       }
-  //     }
-  //   }
-  //   return bestMatch;
+  // show cupertino popup with snackbar text
+  // void _showSnackBar(String text) {
+  //   showCupertinoModalPopup(
+  //     context: context,
+  //     builder: (context) => CupertinoActionSheet(
+  //       title: Text(text),
+  //       actions: [
+  //         CupertinoActionSheetAction(
+  //           child: const Text('OK'),
+  //           onPressed: () {
+  //             Navigator.pop(context);
+  //           },
+  //         ),
+  //       ],
+  //     ),
+  //   );
   // }
 
 // * no 5 (moonooi workable for 100.65)
-  String? extractTextFromRect(
-      Rect rect, Size imageSize, RecognizedText recognizedText) {
-    final left = rect.left.toInt();
-    final top = rect.top.toInt();
-    final width = rect.width.toInt();
-    final height = rect.height.toInt();
+//   String? extractTextFromRect(
+//       Rect rect, Size imageSize, RecognizedText recognizedText) {
+//     final left = rect.left.toInt();
+//     final top = rect.top.toInt();
+//     final width = rect.width.toInt();
+//     final height = rect.height.toInt();
 
-    List<String> intersectingTexts = [];
+//     List<String> intersectingTexts = [];
 
-    for (final block in recognizedText.blocks) {
-      for (final line in block.lines) {
-        for (final element in line.elements) {
-          final rectElement = element.boundingBox;
-          final x1 = max(left, rectElement.left.toInt());
-          final y1 = max(top, rectElement.top.toInt());
-          final x2 =
-              min(left + width, (rectElement.left + rectElement.width).toInt());
-          final y2 =
-              min(top + height, (rectElement.top + rectElement.height).toInt());
-          final intersection = (x2 - x1) * (y2 - y1);
+//     for (final block in recognizedText.blocks) {
+//       for (final line in block.lines) {
+//         for (final element in line.elements) {
+//           final rectElement = element.boundingBox;
+//           final x1 = max(left, rectElement.left.toInt());
+//           final y1 = max(top, rectElement.top.toInt());
+//           final x2 =
+//               min(left + width, (rectElement.left + rectElement.width).toInt());
+//           final y2 =
+//               min(top + height, (rectElement.top + rectElement.height).toInt());
+//           final intersection = (x2 - x1) * (y2 - y1);
 
-          if (intersection > 0) {
-            intersectingTexts.add(element.text);
-          }
-        }
-      }
-    }
+//           if (intersection > 0) {
+//             intersectingTexts.add(element.text);
+//           }
+//         }
+//       }
+//     }
 
-    if (intersectingTexts.isEmpty) {
-      return null;
-    }
+//     if (intersectingTexts.isEmpty) {
+//       return null;
+//     }
 
-    return intersectingTexts.last;
-  }
+//     return intersectingTexts.last;
+//   }
+}
 
-// * no 4
-  // String? extractTextFromRect(
-  //     Rect rect, Size imageSize, RecognizedText recognizedText) {
-  //   // Keep the coordinates of the rectangle as is, without scaling
-  //   final left = rect.left.toInt();
-  //   final top = rect.top.toInt();
-  //   final width = rect.width.toInt();
-  //   final height = rect.height.toInt();
+// SaveButton
+class ProceedButton extends ConsumerWidget {
+  const ProceedButton({
+    super.key,
+    required this.isSaveButtonEnabled,
+    required this.priceController,
+    required this.merchantController,
+    required this.recognizedText,
+    required this.noteController,
+  });
 
-  //   for (final block in recognizedText.blocks) {
-  //     for (final line in block.lines) {
-  //       for (final element in line.elements) {
-  //         final rectElement = element.boundingBox;
-  //         final x1 = max(left, rectElement.left.toInt());
-  //         final y1 = max(top, rectElement.top.toInt());
-  //         final x2 =
-  //             min(left + width, (rectElement.left + rectElement.width).toInt());
-  //         final y2 =
-  //             min(top + height, (rectElement.top + rectElement.height).toInt());
-  //         final intersection = (x2 - x1) * (y2 - y1);
+  final ValueNotifier<bool> isSaveButtonEnabled;
+  final TextEditingController priceController;
+  final TextEditingController merchantController;
+  final TextEditingController noteController;
+  final RecognizedText recognizedText;
 
-  //         if (intersection > 0) {
-  //           return element.text;
-  //         }
-  //       }
-  //     }
-  //   }
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return FullWidthButtonWithText(
+      text: 'Proceed',
+      onPressed: isSaveButtonEnabled.value
+          ? () async {
+              // create a receipt instance?
+              final id = const Uuid().v4();
+              final amount = double.parse(priceController.text);
+              final date = ref.read(transactionDateProvider);
+              final chosenCategory = ref.read(selectedCategoryProvider);
+              // final image = ref.read(imageFileProvider);
+              final merchant = merchantController.text;
+              final scannedText = recognizedText.text;
 
-  //   return null;
-  // }
+              final receipt = Receipt(
+                id: id,
+                amount: amount,
+                date: date,
+                categoryName: chosenCategory.name,
+                image: 'image path should be here',
+                merchant: merchant,
+                scannedText: scannedText,
+                // if success, navigate to AddTransactionWithReceiptPage?
+                // if fail, show snackbar?
+              );
 
-// * no 3
-  // String? extractTextFromRect(
-  //     Rect rect, Size imageSize, RecognizedText recognizedText) {
-  //   // Keep the coordinates of the rectangle as is, without scaling
-  //   final left = rect.left.toInt();
-  //   final top = rect.top.toInt();
-  //   final width = rect.width.toInt();
-  //   final height = rect.height.toInt();
-
-  //   List<String> intersectingTexts = [];
-
-  //   for (final block in recognizedText.blocks) {
-  //     for (final line in block.lines) {
-  //       for (final element in line.elements) {
-  //         final rectElement = element.boundingBox;
-  //         final x1 = max(left, rectElement.left.toInt());
-  //         final y1 = max(top, rectElement.top.toInt());
-  //         final x2 =
-  //             min(left + width, (rectElement.left + rectElement.width).toInt());
-  //         final y2 =
-  //             min(top + height, (rectElement.top + rectElement.height).toInt());
-  //         final intersection = (x2 - x1) * (y2 - y1);
-
-  //         if (intersection > 0) {
-  //           debugPrint('Intersection: $intersection');
-  //           intersectingTexts.add(element.text);
-  //         }
-  //       }
-  //     }
-  //   }
-
-  //   if (intersectingTexts.isEmpty) {
-  //     return null;
-  //   }
-
-  //   return intersectingTexts.join(' ');
-  // }
-
-// * no 2
-  // String? extractTextFromRect(
-  //     Rect rect, Size imageSize, RecognizedText recognizedText) {
-  //   final screenScale = MediaQuery.of(context).devicePixelRatio;
-
-  //   // Scale the coordinates of the rectangle to match the screen scale
-  //   final left = (rect.left * screenScale).round();
-  //   final top = (rect.top * screenScale).round();
-  //   final width = (rect.width * screenScale).round();
-  //   final height = (rect.height * screenScale).round();
-
-  //   List<String> intersectingTexts = [];
-
-  //   for (final block in recognizedText.blocks) {
-  //     for (final line in block.lines) {
-  //       for (final element in line.elements) {
-  //         final rectElement = element.boundingBox;
-  //         final x1 = max(left, rectElement.left.toInt());
-  //         final y1 = max(top, rectElement.top.toInt());
-  //         final x2 =
-  //             min(left + width, (rectElement.left + rectElement.width).toInt());
-  //         final y2 =
-  //             min(top + height, (rectElement.top + rectElement.height).toInt());
-  //         final intersection = (x2 - x1) * (y2 - y1);
-
-  //         if (intersection > 0) {
-  //           intersectingTexts.add(element.text);
-  //         }
-  //       }
-  //     }
-  //   }
-
-  //   if (intersectingTexts.isEmpty) {
-  //     return null;
-  //   }
-
-  //   return intersectingTexts.join(' ');
-  // }
-
-// * no 1
-  // String? extractTextFromRect(
-  //     Rect rect, Size imageSize, RecognizedText recognizedText) {
-  //   final screenScale = MediaQuery.of(context).devicePixelRatio;
-
-  //   // Scale the coordinates of the rectangle to match the screen scale
-  //   final left = (rect.left * screenScale).round();
-  //   final top = (rect.top * screenScale).round();
-  //   final width = (rect.width * screenScale).round();
-  //   final height = (rect.height * screenScale).round();
-
-  //   // Find the block that contains the rectangle
-  //   TextBlock? block;
-  //   for (final b in recognizedText.blocks) {
-  //     final rect = b.boundingBox;
-  //     final x1 = max(left, rect.left);
-  //     final y1 = max(top, rect.top);
-  //     final x2 = min(left + width, rect.left + rect.width);
-  //     final y2 = min(top + height, rect.top + rect.height);
-  //     final intersection = (x2 - x1) * (y2 - y1);
-  //     if (intersection > 0) {
-  //       block = b;
-  //       break;
-  //     }
-  //   }
-
-  //   if (block == null) {
-  //     return null;
-  //   }
-
-  //   // Find the text line that intersects with the rectangle
-  //   TextLine? line;
-  //   for (final l in block.lines) {
-  //     final rect = l.boundingBox;
-  //     final x1 = max(left, rect.left.toInt());
-  //     final y1 = max(top, rect.top.toInt());
-  //     final x2 = min(left + width, (rect.left + rect.width).toInt());
-  //     final y2 = min(top + height, (rect.top + rect.height).toInt());
-  //     final intersection = (x2 - x1) * (y2 - y1);
-  //     if (intersection > 0) {
-  //       line = l;
-  //       break;
-  //     }
-  //   }
-
-  //   if (line == null) {
-  //     return null;
-  //   }
-
-  //   // Extract the text from the line
-  //   final text = line.text;
-  //   return text;
-  // }
-
-  List<Widget> _buildRandomRects(BuildContext context, Size imageSize) {
-    final random = Random();
-    final List<Widget> rects = [];
-    final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
-
-    for (int i = 0; i < 3; i++) {
-      final left = random.nextDouble() * screenWidth;
-      final top = random.nextDouble() * screenHeight;
-      // final left = random.nextDouble() * imageSize.width;
-      // final top = random.nextDouble() * imageSize.height;
-      final width = random.nextDouble() * 100 + 50;
-      final height = random.nextDouble() * 100 + 50;
-
-      // Calculate scaling factors for width and height
-      final widthScale = MediaQuery.of(context).size.width / screenWidth;
-      final heightScale = MediaQuery.of(context).size.height / screenHeight;
-      // final widthScale = MediaQuery.of(context).size.width / imageSize.width;
-      // final heightScale = MediaQuery.of(context).size.height / imageSize.height;
-
-      rects.add(
-        Positioned(
-          left: left * widthScale,
-          top: top * heightScale,
-          child: Container(
-            width: width * widthScale,
-            height: height * heightScale,
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.yellow, width: 2),
-              borderRadius: BorderRadius.circular(8),
-            ),
-          ),
-        ),
-      );
-      // print the rect coordinates
-      debugPrint('Rect $i: $left, $top, $width, $height');
-    }
-    debugPrint(
-        'Screen size: ${MediaQuery.of(context).size.width} x ${MediaQuery.of(context).size.height}');
-    return rects;
+              // AddTransactionWithReceipt(receipt);
+            }
+          : null,
+    );
   }
 }
