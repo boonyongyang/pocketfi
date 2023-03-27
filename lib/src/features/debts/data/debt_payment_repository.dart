@@ -16,8 +16,8 @@ final userDebtPaymentsProvider = StreamProvider.autoDispose
   final controller = StreamController<Iterable<DebtPayment>>();
 
   final sub = FirebaseFirestore.instance
-      .collection(FirebaseCollectionName.users)
-      .doc(userId)
+      // .collection(FirebaseCollectionName.users)
+      // .doc(userId)
       .collection(FirebaseCollectionName.wallets)
       .doc(debt.walletId)
       .collection(FirebaseCollectionName.debts)

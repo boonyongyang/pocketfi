@@ -19,8 +19,8 @@ final userWalletsProvider = StreamProvider.autoDispose<Iterable<Wallet>>((ref) {
   final controller = StreamController<Iterable<Wallet>>();
 
   final sub = FirebaseFirestore.instance
-      .collection(FirebaseCollectionName.users)
-      .doc(userId)
+      // .collection(FirebaseCollectionName.users)
+      // .doc(userId)
       .collection(FirebaseCollectionName.wallets)
       .where(FirebaseFieldName.userId, isEqualTo: userId)
       .orderBy(FirebaseFieldName.createdAt, descending: false)
@@ -164,8 +164,8 @@ final getWalletFromWalletIdProvider =
 
   final userId = ref.watch(userIdProvider);
   final sub = FirebaseFirestore.instance
-      .collection(FirebaseCollectionName.users)
-      .doc(userId)
+      // .collection(FirebaseCollectionName.users)
+      // .doc(userId)
       .collection(FirebaseCollectionName.wallets)
       // .doc(walletId.toString())
       .where(
@@ -273,8 +273,8 @@ class WalletNotifier extends StateNotifier<IsLoading> {
       // }
 
       await FirebaseFirestore.instance
-          .collection(FirebaseCollectionName.users)
-          .doc(userId)
+          // .collection(FirebaseCollectionName.users)
+          // .doc(userId)
           .collection(FirebaseCollectionName.wallets)
           .doc(walletId)
           .set(payload);
@@ -357,8 +357,8 @@ class WalletNotifier extends StateNotifier<IsLoading> {
 
       //update collaborators in owner
       final query3 = FirebaseFirestore.instance
-          .collection(FirebaseCollectionName.users)
-          .doc(FirebaseAuth.instance.currentUser!.uid)
+          // .collection(FirebaseCollectionName.users)
+          // .doc(FirebaseAuth.instance.currentUser!.uid)
           .collection(FirebaseCollectionName.wallets)
           .doc(walletId);
 
@@ -424,8 +424,8 @@ class WalletNotifier extends StateNotifier<IsLoading> {
   }) async {
     try {
       final wallets = await FirebaseFirestore.instance
-          .collection(FirebaseCollectionName.users)
-          .doc(FirebaseAuth.instance.currentUser!.uid)
+          // .collection(FirebaseCollectionName.users)
+          // .doc(FirebaseAuth.instance.currentUser!.uid)
           .collection(FirebaseCollectionName.wallets)
           .get();
       isLoading = true;
@@ -435,8 +435,8 @@ class WalletNotifier extends StateNotifier<IsLoading> {
       }
 
       final query = FirebaseFirestore.instance
-          .collection(FirebaseCollectionName.users)
-          .doc(FirebaseAuth.instance.currentUser!.uid)
+          // .collection(FirebaseCollectionName.users)
+          // .doc(FirebaseAuth.instance.currentUser!.uid)
           .collection(FirebaseCollectionName.wallets)
           .where(FieldPath.documentId, isEqualTo: walletId)
           .limit(1)

@@ -64,10 +64,10 @@ class UserInfoStorage {
           .set(payload);
 
       await FirebaseFirestore.instance
-          .collection(
-            FirebaseCollectionName.users,
-          )
-          .doc(userId)
+          // .collection(
+          //   FirebaseCollectionName.users
+          // )
+          // .doc(userId)
           .collection(FirebaseCollectionName.wallets)
           .doc(walletId)
           .set(walletPayload);

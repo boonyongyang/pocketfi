@@ -18,8 +18,8 @@ class TempDataNotifier extends StateNotifier<bool> {
     for (var user in users) {
       if (user.userId != currentUserId) {
         await FirebaseFirestore.instance
-            .collection(FirebaseCollectionName.users)
-            .doc(currentUserId)
+            // .collection(FirebaseCollectionName.users)
+            // .doc(currentUserId)
             .collection('tempData')
             .doc(user.userId)
             .set({
@@ -34,8 +34,8 @@ class TempDataNotifier extends StateNotifier<bool> {
 
   Future<void> deleteTempDataInFirebase(String currentUserId) {
     return FirebaseFirestore.instance
-        .collection(FirebaseCollectionName.users)
-        .doc(currentUserId)
+        // .collection(FirebaseCollectionName.users)
+        // .doc(currentUserId)
         .collection('tempData')
         .get()
         .then((snapshot) {
@@ -79,8 +79,8 @@ class TempDataNotifier extends StateNotifier<bool> {
     String currentUserId,
   ) async {
     final tempDataSnapshot = await FirebaseFirestore.instance
-        .collection(FirebaseCollectionName.users)
-        .doc(currentUserId)
+        // .collection(FirebaseCollectionName.users)
+        // .doc(currentUserId)
         .collection('tempData')
         .get();
     final walletDoc = FirebaseFirestore.instance
@@ -183,8 +183,8 @@ class TempDataNotifier extends StateNotifier<bool> {
     if (value == true) {
       // user.isChecked = value!;
       await FirebaseFirestore.instance
-          .collection(FirebaseCollectionName.users)
-          .doc(currentUserId)
+          // .collection(FirebaseCollectionName.users)
+          // .doc(currentUserId)
           .collection('tempData')
           .doc(user.userId)
           .update({
@@ -193,8 +193,8 @@ class TempDataNotifier extends StateNotifier<bool> {
     } else if (value == false) {
       // user.isChecked = value!;
       await FirebaseFirestore.instance
-          .collection(FirebaseCollectionName.users)
-          .doc(currentUserId)
+          // .collection(FirebaseCollectionName.users)
+          // .doc(currentUserId)
           .collection('tempData')
           .doc(user.userId)
           .update({
@@ -300,8 +300,8 @@ final getTempDataProvider =
 
   // create a subscription to the user collection
   final sub = FirebaseFirestore.instance
-      .collection(FirebaseCollectionName.users)
-      .doc(userId)
+      // .collection(FirebaseCollectionName.users)
+      // .doc(userId)
       // get the users collection
       .collection('tempData')
       .snapshots()
