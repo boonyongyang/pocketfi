@@ -6,23 +6,32 @@ import 'package:pocketfi/src/common_widgets/buttons/full_width_button_with_text.
 import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/constants/strings.dart';
 import 'package:pocketfi/src/features/category/application/category_services.dart';
+import 'package:pocketfi/src/features/transactions/application/transaction_services.dart';
+import 'package:pocketfi/src/features/transactions/domain/transaction.dart';
 
-class EditAccountIconSheet extends StatefulHookConsumerWidget {
-  const EditAccountIconSheet({super.key});
+class AddNewCategory extends StatefulHookConsumerWidget {
+  const AddNewCategory({super.key});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
-      _EditAccountIconSheetState();
+      _AddNewCategorySheetState();
 }
 
-class _EditAccountIconSheetState extends ConsumerState<EditAccountIconSheet> {
+class _AddNewCategorySheetState extends ConsumerState<AddNewCategory> {
   @override
   Widget build(BuildContext context) {
+    // get transactiontype
+    final transactionTypeText =
+        ref.watch(transactionTypeProvider) == TransactionType.expense
+            ? 'Expense'
+            : 'Income';
+
     final colorList = ref.watch(categoryColorListProvider);
     final selectedColor = ref.watch(selectedCategoryColorProvider);
     final iconList = ref.watch(categoryIconListProvider);
     final selectedIcon = ref.watch(selectedCategoryIconProvider);
 
+    final nameController = useTextEditingController();
     final isSaveButtonEnabled = useState(false);
 
     useEffect(
@@ -30,16 +39,16 @@ class _EditAccountIconSheetState extends ConsumerState<EditAccountIconSheet> {
         void listener() {
           final selectedColor = ref.watch(selectedCategoryColorProvider);
           final selectedIcon = ref.watch(selectedCategoryIconProvider);
-          isSaveButtonEnabled.value =
-              (selectedColor != Colors.grey && selectedIcon != null);
+          isSaveButtonEnabled.value = (nameController.text.isNotEmpty &&
+              selectedColor != Colors.grey &&
+              selectedIcon != null);
         }
 
-        // nameController.addListener(listener);
+        nameController.addListener(listener);
 
-        // return () => nameController.removeListener(listener);
-        return null;
+        return () => nameController.removeListener(listener);
       },
-      [selectedColor, selectedIcon],
+      [nameController, selectedColor, selectedIcon],
     );
 
     debugPrint('${isSaveButtonEnabled.value}');
@@ -48,7 +57,7 @@ class _EditAccountIconSheetState extends ConsumerState<EditAccountIconSheet> {
 
     return SizedBox(
       // max height is 90% of screen height
-      height: MediaQuery.of(context).size.height * 0.80,
+      height: MediaQuery.of(context).size.height * 0.94,
       child: Container(
         color: AppColors.transparent,
         padding: const EdgeInsets.all(16.0),
@@ -66,9 +75,9 @@ class _EditAccountIconSheetState extends ConsumerState<EditAccountIconSheet> {
                   },
                   icon: const Icon(Icons.close),
                 ),
-                const Text(
-                  'Change Account Icon',
-                  style: TextStyle(
+                Text(
+                  'Create new $transactionTypeText Category',
+                  style: const TextStyle(
                     fontWeight: FontWeight.w700,
                     fontSize: 18.0,
                   ),
@@ -76,14 +85,33 @@ class _EditAccountIconSheetState extends ConsumerState<EditAccountIconSheet> {
                 const SizedBox(width: 40.0), // sure?
               ],
             ),
-            Center(
-              child: CircleAvatar(
-                radius: 50,
-                backgroundColor: selectedColor,
-                child: Icon(selectedIcon, color: AppColors.white, size: 50),
-              ),
+            Row(
+              children: [
+                CircleAvatar(
+                  radius: 38,
+                  backgroundColor: selectedColor,
+                  child: Icon(selectedIcon, color: AppColors.white, size: 38),
+                ),
+                ConstrainedBox(
+                  constraints: const BoxConstraints(
+                    maxWidth: 250,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 16.0),
+                    child: TextField(
+                      autofocus: true,
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        hintText: 'Category name',
+                      ),
+                      controller: nameController,
+                      // onSubmitted: (_) => FocusScope.of(context).nextFocus(),
+                    ),
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(height: 50.0),
+            const SizedBox(height: 16.0),
             Row(
               children: [
                 const Text("Color"),
@@ -204,6 +232,8 @@ class _EditAccountIconSheetState extends ConsumerState<EditAccountIconSheet> {
             FullWidthButtonWithText(
               onPressed: isSaveButtonEnabled.value
                   ? () async {
+                      // ScaffoldMessenger.of(context).showSnackBar(
+                      //     const SnackBar(content: Text('Category added')));
                       Fluttertoast.showToast(
                         msg: "Category added!",
                         toastLength: Toast.LENGTH_SHORT,

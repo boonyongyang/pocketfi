@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/constants/strings.dart';
-import 'package:pocketfi/src/features/account/presentation/account_page.dart';
+import 'package:pocketfi/src/routing/account_screen.dart';
 import 'package:pocketfi/src/features/account/presentation/settings_page.dart';
-import 'package:pocketfi/src/features/budget/presentation/budget_page.dart';
-import 'package:pocketfi/src/features/budget/presentation/create_new_budget_view.dart';
-import 'package:pocketfi/src/features/budget/wallet/presentation/create_new_wallet_view.dart';
-import 'package:pocketfi/src/features/budget/wallet/presentation/wallet_page.dart';
-import 'package:pocketfi/src/features/finance/finances_page.dart';
-import 'package:pocketfi/src/features/timeline/presentation/timeline_page.dart';
+import 'package:pocketfi/src/routing/budget_screen.dart';
+import 'package:pocketfi/src/features/budgets/presentation/add_new_budget.dart';
+import 'package:pocketfi/src/features/wallets/presentation/add_new_wallet.dart';
+import 'package:pocketfi/src/features/wallets/presentation/wallet_page.dart';
+import 'package:pocketfi/src/routing/finances_screen.dart';
+import 'package:pocketfi/src/routing/timeline_screen.dart';
 import 'package:pocketfi/src/routing/temp_screens.dart';
 
 class BottomNavBarBeamer extends StatelessWidget {
@@ -55,7 +55,7 @@ class TimelineLocation extends BeamLocation<BeamState> {
           key: ValueKey('timeline'),
           title: Strings.timeline,
           type: BeamPageType.noTransition,
-          // child: RootScreen(label: 'Timeline', detailsPath: '/timeline/details'),
+          // child: RootScreen(label: 'Timeline', detailsPath: '/details'),
           child: TimelinePage(),
         ),
         // if (state.uri.pathSegments.length == 2)
@@ -103,7 +103,7 @@ class BudgetLocation extends BeamLocation<BeamState> {
           const BeamPage(
             key: ValueKey('/createNewBudget'),
             title: Strings.createNewBudget,
-            child: CreateNewBudgetView(),
+            child: AddNewBudget(),
           ),
         if (state.uri.pathSegments.contains('wallet'))
           const BeamPage(
@@ -115,7 +115,7 @@ class BudgetLocation extends BeamLocation<BeamState> {
           const BeamPage(
             key: ValueKey('/createNewWallet'),
             title: Strings.createNewWallet,
-            child: CreateNewWalletView(),
+            child: AddNewWallet(),
           ),
       ];
 }

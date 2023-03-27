@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:pocketfi/src/features/category/application/category_components_providers.dart.dart';
-import 'package:pocketfi/src/features/category/application/category_providers.dart';
-import 'package:pocketfi/src/features/category/presentation/add_new_category_sheet.dart';
+import 'package:pocketfi/src/features/category/application/category_services.dart';
+import 'package:pocketfi/src/features/category/presentation/add_new_category.dart';
 import 'package:pocketfi/src/features/category/presentation/edit_category_sheet.dart';
-import 'package:pocketfi/src/features/timeline/transactions/presentation/add_new_transactions/select_transaction_type.dart';
+import 'package:pocketfi/src/features/transactions/presentation/add_new_transactions/select_transaction_type.dart';
 
 class CategoryPage extends ConsumerWidget {
   const CategoryPage({super.key});
@@ -26,7 +25,7 @@ class CategoryPage extends ConsumerWidget {
                 isScrollControlled: true,
                 context: context,
                 builder: (context) {
-                  return const AddNewCategorySheet();
+                  return const AddNewCategory();
                 },
               );
             },
