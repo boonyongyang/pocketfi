@@ -113,6 +113,12 @@ class Strings {
   static const debt = 'Debt';
   static const addDebt = 'Add Debt';
 
+  // * saving goals
+  static const savingGoals = 'Saving Goals';
+  static const createNewSavingGoal = 'Create New Saving Goal';
+  static const savingGoalName = 'Saving Goal Name';
+  static const noSavingGoalsYet = 'No saving goals available yet';
+
   // * account
   static const account = 'Account';
 

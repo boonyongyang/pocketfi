@@ -61,6 +61,23 @@ final selectedWalletForDebtProvider = StateProvider.autoDispose<Wallet?>(
     return wallets.first;
   },
 );
+final selectedWalletForSavingGoalProvider = StateProvider.autoDispose<Wallet?>(
+  (ref) {
+    final wallets = ref.watch(userWalletsProvider).value;
+    if (wallets == null) {
+      debugPrint('wallets is null');
+      return null;
+    }
+    debugPrint('wallets is ${wallets.last.walletName}');
+
+    // get the latest transaction to see which wallet was used, then return that wallet
+    // check the transaction createdAt date to compare which is the newest transaction and belongs to which wallet collection,
+    // then return that wallet
+    // FIXME this is not the best way to do it, it should be done in the backend
+
+    return wallets.first;
+  },
+);
 
 // final selectedUserProvider =
 //     StateProvider.autoDispose<Map<UserInfoModel, bool>>(

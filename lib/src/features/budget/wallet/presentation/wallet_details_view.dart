@@ -74,208 +74,107 @@ class _WalletDetailsViewState extends ConsumerState<WalletDetailsView> {
         //     return ref.refresh(userWalletsProvider as Refreshable<Future<void>>);
         //   },
         //   child:
-        Scaffold(
-      appBar: AppBar(
-        title: const Text('Wallet Details'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            ref.watch(tempDataProvider.notifier).deleteTempDataInFirebase(
-                  currentUserId!,
-                );
+        WillPopScope(
+      onWillPop: () async {
+        ref.watch(tempDataProvider.notifier).deleteTempDataInFirebase(
+              currentUserId!,
+            );
+        return true;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Wallet Details'),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              ref.watch(tempDataProvider.notifier).deleteTempDataInFirebase(
+                    currentUserId!,
+                  );
 
-            Navigator.pop(context);
-          },
-        ),
-        actions: [
-          if (wallets.valueOrNull != null &&
-              widget.wallet.walletId != walletId &&
-              widget.wallet.ownerId == widget.wallet.userId)
-            IconButton(
-              icon: const Icon(Icons.delete_rounded),
-              onPressed: () async {
-                final deletePost = await const DeleteDialog(
-                  titleOfObjectToDelete: 'Wallet',
-                ).present(context);
-                if (deletePost == null) return;
+              Navigator.pop(context);
+            },
+          ),
+          actions: [
+            if (wallets.valueOrNull != null &&
+                widget.wallet.walletId != walletId &&
+                widget.wallet.ownerId == widget.wallet.userId)
+              IconButton(
+                icon: const Icon(Icons.delete_rounded),
+                onPressed: () async {
+                  final deletePost = await const DeleteDialog(
+                    titleOfObjectToDelete: 'Wallet',
+                  ).present(context);
+                  if (deletePost == null) return;
 
-                if (deletePost) {
-                  await ref
-                      .read(deleteWalletProvider.notifier)
-                      .deleteWallet(walletId: widget.wallet.walletId);
-                  if (mounted) {
-                    Navigator.of(context).maybePop();
+                  if (deletePost) {
+                    await ref
+                        .read(deleteWalletProvider.notifier)
+                        .deleteWallet(walletId: widget.wallet.walletId);
+                    if (mounted) {
+                      Navigator.of(context).maybePop();
+                    }
                   }
-                }
-              },
-            ),
-        ],
-      ),
-      body: Flex(
-        direction: Axis.vertical,
-        children: [
-          Expanded(
-            flex: 4,
-            child: Padding(
-              padding: const EdgeInsets.only(
-                top: 8.0,
+                },
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Row(
-                    children: [
-                      const Padding(
-                        padding: EdgeInsets.only(left: 16.0, right: 32.0),
-                        child: SizedBox(
-                          width: 5,
-                          child: Icon(
-                            AppIcons.wallet,
-                            color: AppColors.mainColor1,
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: widget.wallet.walletName == 'Personal' ||
-                                  widget.wallet.ownerId != widget.wallet.userId
-                              ? Text(
-                                  widget.wallet.walletName,
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    color: AppColors.mainColor1,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                )
-                              : TextField(
-                                  controller: walletNameController,
-                                  decoration: const InputDecoration(
-                                    labelText: Strings.walletName,
-                                  ),
-                                  autofocus: true,
-                                ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      const Padding(
-                        padding: EdgeInsets.only(left: 16.0, right: 32.0),
-                        child: SizedBox(
-                          width: 5,
-                          child: Icon(
-                            Icons.category_rounded,
-                            color: AppColors.mainColor1,
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            children: const [
-                              Expanded(
-                                child: Text(
-                                  'Visible Categories',
-                                  style: TextStyle(
-                                    color: AppColors.mainColor1,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                              ),
-                              Text(
-                                'XX',
-                                style: TextStyle(
-                                  color: AppColors.mainColor1,
-                                  fontSize: 16,
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Icon(
-                                  Icons.arrow_forward_ios_rounded,
-                                  color: AppColors.mainColor1,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  // Row(
-                  //   children: [
-                  //     const Padding(
-                  //       padding: EdgeInsets.only(left: 16.0, right: 32.0),
-                  //       child: SizedBox(
-                  //         width: 5,
-                  //         child: Icon(
-                  //           Icons.people_alt_rounded,
-                  //           color: AppColors.mainColor1,
-                  //         ),
-                  //       ),
-                  //     ),
-                  //     Expanded(
-                  //       child: Padding(
-                  //         padding: const EdgeInsets.all(8.0),
-                  //         child: Row(
-                  //           children: const [
-                  //             Expanded(
-                  //               child: Text(
-                  //                 'Share Wallet with Other People',
-                  //                 style: TextStyle(
-                  //                   color: AppColors.mainColor1,
-                  //                   fontSize: 16,
-                  //                 ),
-                  //               ),
-                  //             ),
-                  //             Padding(
-                  //               padding: EdgeInsets.all(8.0),
-                  //               child: Icon(
-                  //                 Icons.arrow_forward_ios_rounded,
-                  //                 color: AppColors.mainColor1,
-                  //               ),
-                  //             ),
-                  //           ],
-                  //         ),
-                  //       ),
-                  //     ),
-                  //   ],
-                  // ),
-                  GestureDetector(
-                    onTap: () {
-                      if (widget.wallet.ownerId == widget.wallet.userId) {
-                        ref
-                            .watch(tempDataProvider.notifier)
-                            .addTempDataToFirebase(
-                              users,
-                              currentUserId!,
-                            );
-                        // ref
-                        //     .watch(tempDataProvider.notifier)
-                        //     .addTempDataToFirebaseForDetailView(
-                        //       users,
-                        //       currentUserId!,
-                        //     );
-
-                        showModalBottomSheet(
-                          context: context,
-                          builder: (context) => const ShareWalletSheet(
-                              // wallet: widget.wallet,
-                              ),
-                        );
-                      }
-                    },
-                    child: Row(
+          ],
+        ),
+        body: Flex(
+          direction: Axis.vertical,
+          children: [
+            Expanded(
+              flex: 4,
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  top: 8.0,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Row(
                       children: [
                         const Padding(
                           padding: EdgeInsets.only(left: 16.0, right: 32.0),
                           child: SizedBox(
                             width: 5,
                             child: Icon(
-                              Icons.people_alt_rounded,
+                              AppIcons.wallet,
+                              color: AppColors.mainColor1,
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: widget.wallet.walletName == 'Personal' ||
+                                    widget.wallet.ownerId !=
+                                        widget.wallet.userId
+                                ? Text(
+                                    widget.wallet.walletName,
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      color: AppColors.mainColor1,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  )
+                                : TextField(
+                                    controller: walletNameController,
+                                    decoration: const InputDecoration(
+                                      labelText: Strings.walletName,
+                                    ),
+                                    autofocus: true,
+                                  ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.only(left: 16.0, right: 32.0),
+                          child: SizedBox(
+                            width: 5,
+                            child: Icon(
+                              Icons.category_rounded,
                               color: AppColors.mainColor1,
                             ),
                           ),
@@ -284,213 +183,326 @@ class _WalletDetailsViewState extends ConsumerState<WalletDetailsView> {
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Row(
-                              children: [
-                                const Expanded(
+                              children: const [
+                                Expanded(
                                   child: Text(
-                                    'Share Wallet with Other People',
+                                    'Visible Categories',
                                     style: TextStyle(
                                       color: AppColors.mainColor1,
                                       fontSize: 16,
                                     ),
                                   ),
                                 ),
-                                widget.wallet.ownerId == widget.wallet.userId
-                                    ? const Padding(
-                                        padding: EdgeInsets.all(8.0),
-                                        child: Icon(
-                                          Icons.arrow_forward_ios_rounded,
-                                          color: AppColors.mainColor1,
-                                        ),
-                                      )
-                                    : const SizedBox(),
+                                Text(
+                                  'XX',
+                                  style: TextStyle(
+                                    color: AppColors.mainColor1,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: Icon(
+                                    Icons.arrow_forward_ios_rounded,
+                                    color: AppColors.mainColor1,
+                                  ),
+                                ),
                               ],
                             ),
                           ),
                         ),
                       ],
                     ),
-                  ),
-                  ListTile(
-                      dense: true,
-                      leading: const CircleAvatar(
-                        backgroundColor: AppColors.mainColor2,
-                        child: Icon(
-                          Icons.person_rounded,
-                          // color: AppColors.mainColor1,
-                        ),
-                      ),
-                      title: Text(
-                        widget.wallet.ownerName!,
-                      ),
-                      subtitle: Text(
-                        widget.wallet.ownerEmail!,
-                      ),
-                      trailing: Chip(
-                        label: widget.wallet.ownerId != widget.wallet.userId
-                            ? const Text('Owner')
-                            : const Text('You'),
-                        backgroundColor: AppColors.subColor2,
-                      )),
-                  widget.wallet.collaborators != null
-                      ? ListView.builder(
-                          itemCount: widget.wallet.collaborators!.length,
-                          itemBuilder: (context, index) {
-                            return ListTile(
-                              dense: true,
-                              leading: const CircleAvatar(
-                                backgroundColor: AppColors.mainColor2,
-                                child: Icon(
-                                  Icons.person_rounded,
-                                  // color: AppColors.mainColor1,
+                    // Row(
+                    //   children: [
+                    //     const Padding(
+                    //       padding: EdgeInsets.only(left: 16.0, right: 32.0),
+                    //       child: SizedBox(
+                    //         width: 5,
+                    //         child: Icon(
+                    //           Icons.people_alt_rounded,
+                    //           color: AppColors.mainColor1,
+                    //         ),
+                    //       ),
+                    //     ),
+                    //     Expanded(
+                    //       child: Padding(
+                    //         padding: const EdgeInsets.all(8.0),
+                    //         child: Row(
+                    //           children: const [
+                    //             Expanded(
+                    //               child: Text(
+                    //                 'Share Wallet with Other People',
+                    //                 style: TextStyle(
+                    //                   color: AppColors.mainColor1,
+                    //                   fontSize: 16,
+                    //                 ),
+                    //               ),
+                    //             ),
+                    //             Padding(
+                    //               padding: EdgeInsets.all(8.0),
+                    //               child: Icon(
+                    //                 Icons.arrow_forward_ios_rounded,
+                    //                 color: AppColors.mainColor1,
+                    //               ),
+                    //             ),
+                    //           ],
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
+                    GestureDetector(
+                      onTap: () {
+                        if (widget.wallet.ownerId == widget.wallet.userId) {
+                          ref
+                              .watch(tempDataProvider.notifier)
+                              .addTempDataToFirebase(
+                                users,
+                                currentUserId!,
+                              );
+                          // ref
+                          //     .watch(tempDataProvider.notifier)
+                          //     .addTempDataToFirebaseForDetailView(
+                          //       users,
+                          //       currentUserId!,
+                          //     );
+
+                          showModalBottomSheet(
+                            context: context,
+                            builder: (context) => const ShareWalletSheet(
+                                // wallet: widget.wallet,
                                 ),
+                          );
+                        }
+                      },
+                      child: Row(
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.only(left: 16.0, right: 32.0),
+                            child: SizedBox(
+                              width: 5,
+                              child: Icon(
+                                Icons.people_alt_rounded,
+                                color: AppColors.mainColor1,
                               ),
-                              title: Text(
-                                widget.wallet.collaborators![index].displayName,
-                              ),
-                              subtitle: Text(
-                                widget.wallet.collaborators![index].email!,
-                              ),
-                              trailing: widget.wallet.collaborators![index]
-                                          .status ==
-                                      CollaborateRequestStatus.pending.name
-                                  ? const Chip(
-                                      label: Text('Pending'),
-                                    )
-                                  : widget.wallet.collaborators![index]
-                                              .status ==
-                                          CollaborateRequestStatus.rejected.name
-                                      ? const Chip(
-                                          label: Text(
-                                            'Rejected',
-                                            style:
-                                                TextStyle(color: AppColors.red),
-                                          ),
-                                        )
-                                      : widget.wallet.userId ==
-                                              widget.wallet.ownerId
-                                          ? GestureDetector(
-                                              onTap: () async {
-                                                // on press remove the collaborator
-                                                final deleteCollaborator =
-                                                    await const DeleteDialog(
-                                                  titleOfObjectToDelete:
-                                                      'Collaborator',
-                                                ).present(context);
-                                                if (deleteCollaborator == null)
-                                                  return;
-
-                                                if (deleteCollaborator) {
-                                                  await ref
-                                                      .read(checkRequestProvider
-                                                          .notifier)
-                                                      .removeCollaborator(
-                                                        walletId: widget
-                                                            .wallet.walletId,
-                                                        currentUserId: widget
-                                                            .wallet.userId,
-                                                        collaboratorUserId:
-                                                            widget
-                                                                .wallet
-                                                                .collaborators![
-                                                                    index]
-                                                                .userId,
-                                                        collaboratorUserName:
-                                                            widget
-                                                                .wallet
-                                                                .collaborators![
-                                                                    index]
-                                                                .displayName,
-                                                        collaboratorUserEmail:
-                                                            widget
-                                                                .wallet
-                                                                .collaborators![
-                                                                    index]
-                                                                .email!,
-                                                        inviteeId: widget
-                                                            .wallet.ownerId!,
-                                                        // status: widget
-                                                        //     .wallet
-                                                        //     .collaborators![
-                                                        //         index]
-                                                        //     .status,
-                                                      );
-                                                }
-                                              },
-                                              child: const Icon(
-                                                  Icons.remove_circle_rounded),
-                                            )
-                                          : const SizedBox(),
-
-                              // widget.wallet.collaborators![index]
-                              //             .status ==
-                              //         CollaborateRequestStatus.pending.name
-                              //     ? const Chip(
-                              //         label: Text('Pending'),
-                              //       )
-                              //     : GestureDetector(
-                              //         onTap: () {
-                              //           // on press remove the collaborator
-                              //         },
-                              //         child: const Icon(
-                              //             Icons.remove_circle_rounded),
-                              // ),
-                            );
-                          },
-                          shrinkWrap: true,
-                        )
-                      : const SizedBox(),
-                  // ListView.builder(
-                  //   itemCount: getTempData.length,
-                  //   itemBuilder: (context, index) {
-                  //     final user = getTempData[index];
-                  //     return user.isChecked == true
-                  //         ? ListTile(
-                  //             dense: true,
-                  //             leading: const CircleAvatar(
-                  //               backgroundColor: AppColors.mainColor2,
-                  //               child: Icon(
-                  //                 Icons.person_rounded,
-                  //                 // color: AppColors.mainColor1,
-                  //               ),
-                  //             ),
-                  //             title: Text(
-                  //               user.displayName,
-                  //             ),
-                  //             subtitle: Text(
-                  //               user.email!,
-                  //             ),
-                  //           )
-                  //         : const SizedBox();
-                  //   },
-                  //   shrinkWrap: true,
-                  // ),
-
-                  widget.wallet.walletId != walletId
-                      ? Expanded(
-                          flex: 1,
-                          child: Align(
-                            alignment: Alignment.bottomCenter,
-                            child: FullWidthButtonWithText(
-                              text: Strings.saveChanges,
-                              onPressed: () {
-                                _updateNewWalletController(
-                                  walletNameController,
-                                  collaboratorList,
-                                  // initialBalanceController,
-                                  ref,
-                                );
-                              },
                             ),
                           ),
-                        )
-                      : const SizedBox(),
-                ],
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                children: [
+                                  const Expanded(
+                                    child: Text(
+                                      'Share Wallet with Other People',
+                                      style: TextStyle(
+                                        color: AppColors.mainColor1,
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                  ),
+                                  widget.wallet.ownerId == widget.wallet.userId
+                                      ? const Padding(
+                                          padding: EdgeInsets.all(8.0),
+                                          child: Icon(
+                                            Icons.arrow_forward_ios_rounded,
+                                            color: AppColors.mainColor1,
+                                          ),
+                                        )
+                                      : const SizedBox(),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    ListTile(
+                        dense: true,
+                        leading: const CircleAvatar(
+                          backgroundColor: AppColors.mainColor2,
+                          child: Icon(
+                            Icons.person_rounded,
+                            // color: AppColors.mainColor1,
+                          ),
+                        ),
+                        title: Text(
+                          widget.wallet.ownerName!,
+                        ),
+                        subtitle: Text(
+                          widget.wallet.ownerEmail!,
+                        ),
+                        trailing: Chip(
+                          label: widget.wallet.ownerId != widget.wallet.userId
+                              ? const Text('Owner')
+                              : const Text('You'),
+                          backgroundColor: AppColors.subColor2,
+                        )),
+                    widget.wallet.collaborators != null
+                        ? ListView.builder(
+                            itemCount: widget.wallet.collaborators!.length,
+                            itemBuilder: (context, index) {
+                              return ListTile(
+                                dense: true,
+                                leading: const CircleAvatar(
+                                  backgroundColor: AppColors.mainColor2,
+                                  child: Icon(
+                                    Icons.person_rounded,
+                                    // color: AppColors.mainColor1,
+                                  ),
+                                ),
+                                title: Text(
+                                  widget
+                                      .wallet.collaborators![index].displayName,
+                                ),
+                                subtitle: Text(
+                                  widget.wallet.collaborators![index].email!,
+                                ),
+                                trailing: widget.wallet.collaborators![index]
+                                            .status ==
+                                        CollaborateRequestStatus.pending.name
+                                    ? const Chip(
+                                        label: Text('Pending'),
+                                      )
+                                    : widget.wallet.collaborators![index]
+                                                .status ==
+                                            CollaborateRequestStatus
+                                                .rejected.name
+                                        ? const Chip(
+                                            label: Text(
+                                              'Rejected',
+                                              style: TextStyle(
+                                                  color: AppColors.red),
+                                            ),
+                                          )
+                                        : widget.wallet.userId ==
+                                                widget.wallet.ownerId
+                                            ? GestureDetector(
+                                                onTap: () async {
+                                                  // on press remove the collaborator
+                                                  final deleteCollaborator =
+                                                      await const DeleteDialog(
+                                                    titleOfObjectToDelete:
+                                                        'Collaborator',
+                                                  ).present(context);
+                                                  if (deleteCollaborator ==
+                                                      null) return;
+
+                                                  if (deleteCollaborator) {
+                                                    await ref
+                                                        .read(
+                                                            checkRequestProvider
+                                                                .notifier)
+                                                        .removeCollaborator(
+                                                          walletId: widget
+                                                              .wallet.walletId,
+                                                          currentUserId: widget
+                                                              .wallet.userId,
+                                                          collaboratorUserId:
+                                                              widget
+                                                                  .wallet
+                                                                  .collaborators![
+                                                                      index]
+                                                                  .userId,
+                                                          collaboratorUserName:
+                                                              widget
+                                                                  .wallet
+                                                                  .collaborators![
+                                                                      index]
+                                                                  .displayName,
+                                                          collaboratorUserEmail:
+                                                              widget
+                                                                  .wallet
+                                                                  .collaborators![
+                                                                      index]
+                                                                  .email!,
+                                                          inviteeId: widget
+                                                              .wallet.ownerId!,
+                                                          // status: widget
+                                                          //     .wallet
+                                                          //     .collaborators![
+                                                          //         index]
+                                                          //     .status,
+                                                        );
+                                                  }
+                                                },
+                                                child: const Icon(Icons
+                                                    .remove_circle_rounded),
+                                              )
+                                            : const SizedBox(),
+
+                                // widget.wallet.collaborators![index]
+                                //             .status ==
+                                //         CollaborateRequestStatus.pending.name
+                                //     ? const Chip(
+                                //         label: Text('Pending'),
+                                //       )
+                                //     : GestureDetector(
+                                //         onTap: () {
+                                //           // on press remove the collaborator
+                                //         },
+                                //         child: const Icon(
+                                //             Icons.remove_circle_rounded),
+                                // ),
+                              );
+                            },
+                            shrinkWrap: true,
+                          )
+                        : const SizedBox(),
+                    // ListView.builder(
+                    //   itemCount: getTempData.length,
+                    //   itemBuilder: (context, index) {
+                    //     final user = getTempData[index];
+                    //     return user.isChecked == true
+                    //         ? ListTile(
+                    //             dense: true,
+                    //             leading: const CircleAvatar(
+                    //               backgroundColor: AppColors.mainColor2,
+                    //               child: Icon(
+                    //                 Icons.person_rounded,
+                    //                 // color: AppColors.mainColor1,
+                    //               ),
+                    //             ),
+                    //             title: Text(
+                    //               user.displayName,
+                    //             ),
+                    //             subtitle: Text(
+                    //               user.email!,
+                    //             ),
+                    //           )
+                    //         : const SizedBox();
+                    //   },
+                    //   shrinkWrap: true,
+                    // ),
+
+                    widget.wallet.walletId != walletId
+                        ? Expanded(
+                            flex: 1,
+                            child: Align(
+                              alignment: Alignment.bottomCenter,
+                              child: FullWidthButtonWithText(
+                                text: Strings.saveChanges,
+                                onPressed: () {
+                                  _updateNewWalletController(
+                                    walletNameController,
+                                    collaboratorList,
+                                    // initialBalanceController,
+                                    ref,
+                                  );
+                                },
+                              ),
+                            ),
+                          )
+                        : const SizedBox(),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
+        // ),
       ),
-      // ),
     );
   }
 

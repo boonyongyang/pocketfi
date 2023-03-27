@@ -205,9 +205,9 @@ class DebtPage extends ConsumerWidget {
                 ),
               ),
             ),
-            SliverToBoxAdapter(
-              child: SizedBox(height: 10),
-            ),
+            // SliverToBoxAdapter(
+            //   child: SizedBox(height: 10),
+            // ),
             SliverToBoxAdapter(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -246,37 +246,37 @@ class DebtPage extends ConsumerWidget {
                       ),
                     ),
                   ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.1,
-                  ),
-                  SizedBox(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          fixedSize: Size(
-                              MediaQuery.of(context).size.width * 0.35, 55),
-                          backgroundColor: AppColors.mainColor1,
-                          foregroundColor: Colors.white,
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(30),
-                            ),
-                          ),
-                        ),
-                        onPressed: () {},
-                        child: const SizedBox(
-                          child: Text(
-                            'Track',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 17,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
+                  // SizedBox(
+                  //   width: MediaQuery.of(context).size.width * 0.1,
+                  // ),
+                  // SizedBox(
+                  //   child: Padding(
+                  //     padding: const EdgeInsets.all(8.0),
+                  //     child: ElevatedButton(
+                  //       style: ElevatedButton.styleFrom(
+                  //         fixedSize: Size(
+                  //             MediaQuery.of(context).size.width * 0.35, 55),
+                  //         backgroundColor: AppColors.mainColor1,
+                  //         foregroundColor: Colors.white,
+                  //         shape: const RoundedRectangleBorder(
+                  //           borderRadius: BorderRadius.all(
+                  //             Radius.circular(30),
+                  //           ),
+                  //         ),
+                  //       ),
+                  //       onPressed: () {},
+                  //       child: const SizedBox(
+                  //         child: Text(
+                  //           'Track',
+                  //           textAlign: TextAlign.center,
+                  //           style: TextStyle(
+                  //             fontSize: 17,
+                  //           ),
+                  //         ),
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
             ),

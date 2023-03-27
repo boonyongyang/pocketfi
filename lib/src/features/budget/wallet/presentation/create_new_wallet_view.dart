@@ -102,145 +102,95 @@ class _CreateNewWalletViewState extends ConsumerState<CreateNewWalletView> {
       ],
     );
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(Strings.createNewWallet),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            ref.watch(tempDataProvider.notifier).deleteTempDataInFirebase(
-                  currentUserId!,
-                );
+    return WillPopScope(
+      onWillPop: () async {
+        ref.watch(tempDataProvider.notifier).deleteTempDataInFirebase(
+              currentUserId!,
+            );
+        return true;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text(Strings.createNewWallet),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              ref.watch(tempDataProvider.notifier).deleteTempDataInFirebase(
+                    currentUserId!,
+                  );
 
-            Navigator.pop(context);
-          },
+              Navigator.pop(context);
+            },
+          ),
         ),
-      ),
-      body: Flex(
-        direction: Axis.vertical,
-        children: [
-          Expanded(
-            flex: 4,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Row(
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.only(left: 16.0, right: 32.0),
-                      child: SizedBox(
-                        width: 5,
-                        child: Icon(
-                          AppIcons.wallet,
-                          color: AppColors.mainColor1,
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextField(
-                          controller: walletNameController,
-                          decoration: const InputDecoration(
-                            labelText: Strings.walletName,
-                          ),
-                          autofocus: true,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                // Row(
-                //   children: [
-                //     const Padding(
-                //       padding: EdgeInsets.only(left: 16.0, right: 32.0),
-                //       child: SizedBox(
-                //         width: 5,
-                //         child: Icon(
-                //           Icons.money_rounded,
-                //           color: AppColors.mainColor1,
-                //         ),
-                //       ),
-                //     ),
-                //     Expanded(
-                //       child: Padding(
-                //         padding: const EdgeInsets.all(8.0),
-                //         child: TextField(
-                //           controller: initialBalanceController,
-                //           keyboardType: TextInputType.number,
-                //           decoration: const InputDecoration(
-                //             labelText: Strings.walletBalance,
-                //           ),
-                //         ),
-                //       ),
-                //     ),
-                //   ],
-                // ),
-                Row(
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.only(left: 16.0, right: 32.0),
-                      child: SizedBox(
-                        width: 5,
-                        child: Icon(
-                          Icons.category_rounded,
-                          color: AppColors.mainColor1,
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          children: const [
-                            Expanded(
-                              child: Text(
-                                'Visible Categories',
-                                style: TextStyle(
-                                  color: AppColors.mainColor1,
-                                  fontSize: 16,
-                                ),
-                              ),
-                            ),
-                            Text(
-                              'XX',
-                              style: TextStyle(
-                                color: AppColors.mainColor1,
-                                fontSize: 16,
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Icon(
-                                Icons.arrow_forward_ios_rounded,
-                                color: AppColors.mainColor1,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                GestureDetector(
-                  onTap: () {
-                    ref.watch(tempDataProvider.notifier).addTempDataToFirebase(
-                          users,
-                          currentUserId!,
-                        );
-                    showModalBottomSheet(
-                      context: context,
-                      builder: (context) => ShareWalletSheet(),
-                    );
-                  },
-                  child: Row(
+        body: Flex(
+          direction: Axis.vertical,
+          children: [
+            Expanded(
+              flex: 4,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Row(
                     children: [
                       const Padding(
                         padding: EdgeInsets.only(left: 16.0, right: 32.0),
                         child: SizedBox(
                           width: 5,
                           child: Icon(
-                            Icons.people_alt_rounded,
+                            AppIcons.wallet,
+                            color: AppColors.mainColor1,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: TextField(
+                            controller: walletNameController,
+                            decoration: const InputDecoration(
+                              labelText: Strings.walletName,
+                            ),
+                            autofocus: true,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  // Row(
+                  //   children: [
+                  //     const Padding(
+                  //       padding: EdgeInsets.only(left: 16.0, right: 32.0),
+                  //       child: SizedBox(
+                  //         width: 5,
+                  //         child: Icon(
+                  //           Icons.money_rounded,
+                  //           color: AppColors.mainColor1,
+                  //         ),
+                  //       ),
+                  //     ),
+                  //     Expanded(
+                  //       child: Padding(
+                  //         padding: const EdgeInsets.all(8.0),
+                  //         child: TextField(
+                  //           controller: initialBalanceController,
+                  //           keyboardType: TextInputType.number,
+                  //           decoration: const InputDecoration(
+                  //             labelText: Strings.walletBalance,
+                  //           ),
+                  //         ),
+                  //       ),
+                  //     ),
+                  //   ],
+                  // ),
+                  Row(
+                    children: [
+                      const Padding(
+                        padding: EdgeInsets.only(left: 16.0, right: 32.0),
+                        child: SizedBox(
+                          width: 5,
+                          child: Icon(
+                            Icons.category_rounded,
                             color: AppColors.mainColor1,
                           ),
                         ),
@@ -252,11 +202,18 @@ class _CreateNewWalletViewState extends ConsumerState<CreateNewWalletView> {
                             children: const [
                               Expanded(
                                 child: Text(
-                                  'Share Wallet with Other People',
+                                  'Visible Categories',
                                   style: TextStyle(
                                     color: AppColors.mainColor1,
                                     fontSize: 16,
                                   ),
+                                ),
+                              ),
+                              Text(
+                                'XX',
+                                style: TextStyle(
+                                  color: AppColors.mainColor1,
+                                  fontSize: 16,
                                 ),
                               ),
                               Padding(
@@ -272,80 +229,133 @@ class _CreateNewWalletViewState extends ConsumerState<CreateNewWalletView> {
                       ),
                     ],
                   ),
-                ),
-                // for (final user in getTempData)
-                //   if (user.isChecked == true)
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: getTempData.length,
-                    itemBuilder: (context, index) {
-                      final user = getTempData[index];
-                      return user.isChecked == true
-                          ? ListTile(
-                              dense: true,
-                              leading: const CircleAvatar(
-                                backgroundColor: AppColors.mainColor2,
-                                child: Icon(
-                                  Icons.person_rounded,
-                                  // color: AppColors.mainColor1,
-                                ),
-                              ),
-                              title: Text(
-                                user.displayName,
-                              ),
-                              subtitle: Text(
-                                user.email!,
-                              ),
-                            )
-                          : const SizedBox();
+                  GestureDetector(
+                    onTap: () {
+                      ref
+                          .watch(tempDataProvider.notifier)
+                          .addTempDataToFirebase(
+                            users,
+                            currentUserId!,
+                          );
+                      showModalBottomSheet(
+                        context: context,
+                        builder: (context) => ShareWalletSheet(),
+                      );
                     },
-                    shrinkWrap: true,
+                    child: Row(
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.only(left: 16.0, right: 32.0),
+                          child: SizedBox(
+                            width: 5,
+                            child: Icon(
+                              Icons.people_alt_rounded,
+                              color: AppColors.mainColor1,
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              children: const [
+                                Expanded(
+                                  child: Text(
+                                    'Share Wallet with Other People',
+                                    style: TextStyle(
+                                      color: AppColors.mainColor1,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: Icon(
+                                    Icons.arrow_forward_ios_rounded,
+                                    color: AppColors.mainColor1,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                Expanded(
-                  flex: 1,
-                  child: Align(
-                    alignment: Alignment.bottomCenter,
-                    child: FullWidthButtonWithText(
-                        text: Strings.createNewWallet,
-                        onPressed: isCreateButtonEnabled.value
-                            ? () async {
-                                _createNewWalletController(
-                                  walletNameController,
-                                  collaboratorList,
-                                  ref,
-                                );
-                              }
-                            : null),
+                  // for (final user in getTempData)
+                  //   if (user.isChecked == true)
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: getTempData.length,
+                      itemBuilder: (context, index) {
+                        final user = getTempData[index];
+                        return user.isChecked == true
+                            ? ListTile(
+                                dense: true,
+                                leading: const CircleAvatar(
+                                  backgroundColor: AppColors.mainColor2,
+                                  child: Icon(
+                                    Icons.person_rounded,
+                                    // color: AppColors.mainColor1,
+                                  ),
+                                ),
+                                title: Text(
+                                  user.displayName,
+                                ),
+                                subtitle: Text(
+                                  user.email!,
+                                ),
+                              )
+                            : const SizedBox();
+                      },
+                      shrinkWrap: true,
+                    ),
                   ),
-                ),
-                // Expanded(
-                //   flex: 0,
-                //   child: Align(
-                //     alignment: Alignment.bottomCenter,
-                //     child: FullWidthButtonWithText(
-                //       text: 'Send email',
-                //       onPressed: () {
-                //         // sendEmail(
-                //         //   'annebelcyy15@gmail.com', auth,
-                //         //   // tempUserEmail,
-                //         // );
-                //         Navigator.push(
-                //           context,
-                //           MaterialPageRoute(
-                //             builder: (_) => const SendEmailView(),
-                //             // builder: (_) => const CheckBoxExample(),
-                //             // builder: (_) => const MyStatefulWidget(),
-                //           ),
-                //         );
-                //       },
-                //     ),
-                //   ),
-                // ),
-              ],
+                  Expanded(
+                    flex: 1,
+                    child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: FullWidthButtonWithText(
+                          text: Strings.createNewWallet,
+                          onPressed: isCreateButtonEnabled.value
+                              ? () async {
+                                  _createNewWalletController(
+                                    walletNameController,
+                                    collaboratorList,
+                                    ref,
+                                  );
+                                }
+                              : null),
+                    ),
+                  ),
+                  // Expanded(
+                  //   flex: 0,
+                  //   child: Align(
+                  //     alignment: Alignment.bottomCenter,
+                  //     child: FullWidthButtonWithText(
+                  //       text: 'Send email',
+                  //       onPressed: () {
+                  //         // sendEmail(
+                  //         //   'annebelcyy15@gmail.com', auth,
+                  //         //   // tempUserEmail,
+                  //         // );
+                  //         Navigator.push(
+                  //           context,
+                  //           MaterialPageRoute(
+                  //             builder: (_) => const SendEmailView(),
+                  //             // builder: (_) => const CheckBoxExample(),
+                  //             // builder: (_) => const MyStatefulWidget(),
+                  //           ),
+                  //         );
+                  //       },
+                  //     ),
+                  //   ),
+                  // ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

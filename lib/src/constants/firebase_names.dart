@@ -54,6 +54,17 @@ class FirebaseFieldName {
   static const paymentDate = 'payment_date';
   static const paidMonth = 'minimum_pay';
 
+  static const savingGoalId = 'saving_goal_id';
+  static const savingGoalName = 'saving_goal_name';
+  static const savingGoalAmount = 'saving_goal_amount';
+  static const savingGoalDueDate = 'saving_goal_due_date';
+  static const savingGoalCurrentAmount = 'saving_goal_current_amount';
+  static const savingGoalStartDate = 'saving_goal_start_date';
+
+  static const savingGoalHistoryId = 'saving_goal_history_id';
+  static const savingGoalSavedAmount = 'saving_goal_saved_amount';
+  static const savingGoalSavedDate = 'saving_goal_saved_date';
+
   const FirebaseFieldName._(); // private constructor
 }
 
@@ -80,6 +91,8 @@ class FirebaseCollectionName {
 
   static const debts = 'debts';
   static const debtPayments = 'debt_payments';
+
+  static const savingGoals = 'saving_goals';
 
   const FirebaseCollectionName._(); // private constructor
 }

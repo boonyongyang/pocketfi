@@ -112,15 +112,17 @@ class DebtTiles extends ConsumerWidget {
                       ),
                       Row(
                         children: [
-                          const Icon(
+                          Icon(
                             Icons.wallet,
-                            color: AppColors.mainColor1,
+                            color: Colors.grey[600],
+                            size: 14,
                           ),
                           Text(
                             ' ${wallet.walletName}',
-                            style: const TextStyle(
-                                // fontSize: 16,
-                                ),
+                            style: TextStyle(
+                              color: Colors.grey[600],
+                              fontSize: 12,
+                            ),
                           ),
                         ],
                       ),
