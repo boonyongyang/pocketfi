@@ -163,8 +163,6 @@ class CheckRequestNotifier extends StateNotifier<bool> {
     String walletId,
   ) async {
     final walletDocRef = FirebaseFirestore.instance
-        .collection(FirebaseCollectionName.users)
-        .doc(inviteeId)
         .collection(FirebaseCollectionName.wallets)
         .doc(walletId);
 
@@ -231,8 +229,6 @@ class CheckRequestNotifier extends StateNotifier<bool> {
     ).toJson();
     try {
       await FirebaseFirestore.instance
-          .collection(FirebaseCollectionName.users)
-          .doc(currentUserId)
           .collection(FirebaseCollectionName.wallets)
           .doc(walletId)
           .set(payload);
@@ -293,8 +289,6 @@ class CheckRequestNotifier extends StateNotifier<bool> {
     debugPrint('currentUserName: $collaboratorUserName');
     debugPrint('currentUserEmail: $collaboratorUserEmail');
     final walletDocRef = FirebaseFirestore.instance
-        .collection(FirebaseCollectionName.users)
-        .doc(inviteeId)
         .collection(FirebaseCollectionName.wallets)
         .doc(walletId);
 
@@ -360,8 +354,6 @@ class CheckRequestNotifier extends StateNotifier<bool> {
         walletDocRef.delete();
 
         await FirebaseFirestore.instance
-            .collection(FirebaseCollectionName.users)
-            .doc(inviteeId)
             .collection(FirebaseCollectionName.wallets)
             .doc(walletId)
             .set(payload);
@@ -438,8 +430,6 @@ class CheckRequestNotifier extends StateNotifier<bool> {
   }) async {
     try {
       await FirebaseFirestore.instance
-          .collection(FirebaseCollectionName.users)
-          .doc(collaboratorUserId)
           .collection(FirebaseCollectionName.wallets)
           .doc(walletId)
           .delete();
@@ -560,7 +550,7 @@ final getPendingRequestProvider = StreamProvider.autoDispose<Iterable>((ref) {
   final currentUserId = ref.watch(userIdProvider);
 
   final querySnapshot = FirebaseFirestore.instance
-      .collectionGroup(FirebaseCollectionName.wallets)
+      .collection(FirebaseCollectionName.wallets)
       .snapshots()
       .listen((snapshot) {
     final docs = snapshot.docs;
