@@ -91,6 +91,13 @@ class AccountPageBody extends ConsumerWidget {
             ),
           ),
           AccountPageMenu(
+            text: "Licences",
+            icon: Icons.article,
+            press: () => showLicensePage(
+              context: context,
+            ),
+          ),
+          AccountPageMenu(
             text: "Log Out",
             color: Colors.red,
             icon: Icons.logout,

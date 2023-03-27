@@ -49,8 +49,8 @@ final userTransactionsProvider =
 
     final sub = FirebaseFirestore.instance
         .collectionGroup(FirebaseCollectionName.transactions)
-        // .where(TransactionKey.userId, isEqualTo: userId) // * not needed anymore
-        .where(FirebaseFieldName.walletId, isEqualTo: walletId)
+        .where(TransactionKey.userId, isEqualTo: userId) // * not needed anymore
+        // .where(FirebaseFieldName.walletId, isEqualTo: walletId)
         // .orderBy(FirebaseFieldName.walletId)
         .orderBy(TransactionKey.date, descending: true)
         .snapshots()
