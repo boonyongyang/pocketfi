@@ -95,7 +95,7 @@ class _UpdateWalletState extends ConsumerState<UpdateWallet> {
           actions: [
             if (wallets.valueOrNull != null &&
                 widget.wallet.walletId != walletId &&
-                widget.wallet.ownerId == widget.wallet.userId)
+                widget.wallet.ownerId == currentUserId)
               IconButton(
                 icon: const Icon(Icons.delete_rounded),
                 onPressed: () async {
@@ -144,8 +144,7 @@ class _UpdateWalletState extends ConsumerState<UpdateWallet> {
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: widget.wallet.walletName == 'Personal' ||
-                                    widget.wallet.ownerId !=
-                                        widget.wallet.userId
+                                    widget.wallet.ownerId != currentUserId
                                 ? Text(
                                     widget.wallet.walletName,
                                     style: const TextStyle(
@@ -252,7 +251,7 @@ class _UpdateWalletState extends ConsumerState<UpdateWallet> {
                     // ),
                     GestureDetector(
                       onTap: () {
-                        if (widget.wallet.ownerId == widget.wallet.userId) {
+                        if (widget.wallet.ownerId == currentUserId) {
                           ref
                               .watch(tempDataProvider.notifier)
                               .addTempDataToFirebase(
@@ -300,7 +299,7 @@ class _UpdateWalletState extends ConsumerState<UpdateWallet> {
                                       ),
                                     ),
                                   ),
-                                  widget.wallet.ownerId == widget.wallet.userId
+                                  widget.wallet.ownerId == currentUserId
                                       ? const Padding(
                                           padding: EdgeInsets.all(8.0),
                                           child: Icon(
@@ -332,7 +331,7 @@ class _UpdateWalletState extends ConsumerState<UpdateWallet> {
                           widget.wallet.ownerEmail!,
                         ),
                         trailing: Chip(
-                          label: widget.wallet.ownerId != widget.wallet.userId
+                          label: widget.wallet.ownerId != currentUserId
                               ? const Text('Owner')
                               : const Text('You'),
                           backgroundColor: AppColors.subColor2,
@@ -374,8 +373,7 @@ class _UpdateWalletState extends ConsumerState<UpdateWallet> {
                                                   color: AppColors.red),
                                             ),
                                           )
-                                        : widget.wallet.userId ==
-                                                widget.wallet.ownerId
+                                        : currentUserId == widget.wallet.ownerId
                                             ? GestureDetector(
                                                 onTap: () async {
                                                   // on press remove the collaborator
@@ -474,7 +472,7 @@ class _UpdateWalletState extends ConsumerState<UpdateWallet> {
                     //   shrinkWrap: true,
                     // ),
 
-                    widget.wallet.walletId != walletId
+                    widget.wallet.ownerId == currentUserId
                         ? Expanded(
                             flex: 1,
                             child: Align(

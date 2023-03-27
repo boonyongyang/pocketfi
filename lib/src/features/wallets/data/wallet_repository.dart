@@ -13,27 +13,72 @@ import 'package:pocketfi/src/utils/document_id_from_current_date.dart';
 import 'package:pocketfi/src/features/authentication/application/user_id_provider.dart';
 import 'package:pocketfi/src/features/wallets/domain/shared_and_user_wallet.dart';
 
+// final userWalletsProvider = StreamProvider.autoDispose<Iterable<Wallet>>((ref) {
+//   final userId = ref.watch(userIdProvider);
+//   final controller = StreamController<Iterable<Wallet>>();
+
+//   final sub = FirebaseFirestore.instance
+//       .collection(FirebaseCollectionName.wallets)
+//       .where(FirebaseFieldName.userId, isEqualTo: userId)
+//       .orderBy(FirebaseFieldName.createdAt, descending: false)
+//       .snapshots()
+//       .listen((snapshot) {
+//     final document = snapshot.docs;
+//     final personalWallets = document
+//         .where(
+//           (doc) => !doc.metadata.hasPendingWrites,
+//         )
+//         .map(
+//           (doc) => Wallet(doc.data()),
+//         );
+//     final sharedWallets = snapshot.docs
+//         .where((doc) {
+//           final collaborators = doc.data()[FirebaseFieldName.collaborators];
+//           return collaborators != null &&
+//               (collaborators as List).any((collaborator) =>
+//                   collaborator[FirebaseFieldName.userId] == userId);
+//         })
+//         .where(
+//           (doc) => !doc.metadata.hasPendingWrites,
+//         )
+//         .map((doc) => Wallet(doc.data()));
+//     final wallets = [...personalWallets, ...sharedWallets];
+//     controller.sink.add(wallets);
+//   });
+
+//   ref.onDispose(() {
+//     sub.cancel();
+//     controller.close();
+//   });
+//   return controller.stream;
+// });
+
 final userWalletsProvider = StreamProvider.autoDispose<Iterable<Wallet>>((ref) {
   final userId = ref.watch(userIdProvider);
   final controller = StreamController<Iterable<Wallet>>();
 
   final sub = FirebaseFirestore.instance
-      // .collection(FirebaseCollectionName.users)
-      // .doc(userId)
       .collection(FirebaseCollectionName.wallets)
-      .where(FirebaseFieldName.userId, isEqualTo: userId)
-      .orderBy(FirebaseFieldName.createdAt, descending: false)
       .snapshots()
       .listen((snapshot) {
     final document = snapshot.docs;
-    final wallets = document
+    final personalWallets = document
         .where(
-          (doc) => !doc.metadata.hasPendingWrites,
+          (doc) =>
+              doc.data()[FirebaseFieldName.userId] == userId &&
+              !doc.metadata.hasPendingWrites,
         )
         .map(
           (doc) => Wallet(doc.data()),
         );
-    // .where((doc) => !doc.metadata.hasPendingWrites)
+    final sharedWallets = document.where((doc) {
+      final collaborators = doc.data()[FirebaseFieldName.collaborators];
+      return collaborators != null &&
+          (collaborators as List).any((collaborator) =>
+              collaborator[FirebaseFieldName.userId] == userId &&
+              collaborator[FirebaseFieldName.status] == 'accepted');
+    }).map((doc) => Wallet(doc.data()));
+    final wallets = [...personalWallets, ...sharedWallets];
     controller.sink.add(wallets);
   });
 
@@ -245,14 +290,15 @@ class WalletNotifier extends StateNotifier<IsLoading> {
     final walletId = documentIdFromCurrentDate();
 
     final payload = WalletPayload(
-        walletId: walletId,
-        walletName: walletName,
-        // walletBalance: walletBalance,
-        userId: userId,
-        ownerId: userId,
-        ownerName: ownerName,
-        ownerEmail: ownerEmail,
-        collaborators: users);
+      walletId: walletId,
+      walletName: walletName,
+      // walletBalance: walletBalance,
+      userId: userId,
+      ownerId: userId,
+      ownerName: ownerName,
+      ownerEmail: ownerEmail,
+      collaborators: users,
+    );
     // final collaboratorPayload = UserInfoPayload(
     //   userId: users!.userId,
     //   displayName: users.displayName,

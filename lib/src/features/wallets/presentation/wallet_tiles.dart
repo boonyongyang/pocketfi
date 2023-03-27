@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/constants/app_icons.dart';
+import 'package:pocketfi/src/features/authentication/application/user_id_provider.dart';
 import 'package:pocketfi/src/features/wallets/domain/wallet.dart';
 
 class WalletTiles extends ConsumerWidget {
@@ -17,7 +18,7 @@ class WalletTiles extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // final userInfo = ref.watch(userIdProvider);
+    final currentUserId = ref.watch(userIdProvider);
     // wallet.userId = userInfo.userId;
     return GestureDetector(
       onTap: onTap,
@@ -49,7 +50,7 @@ class WalletTiles extends ConsumerWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
                   children: [
-                    if (wallet.ownerId != wallet.userId)
+                    if (wallet.ownerId != currentUserId)
                       const CircleAvatar(
                         backgroundColor: AppColors.subColor1,
                         child: Icon(
@@ -57,7 +58,7 @@ class WalletTiles extends ConsumerWidget {
                           color: Colors.white,
                         ),
                       ),
-                    if (wallet.ownerId == wallet.userId)
+                    if (wallet.ownerId == currentUserId)
                       const CircleAvatar(
                         backgroundColor: AppColors.subColor2,
                         child: Icon(
