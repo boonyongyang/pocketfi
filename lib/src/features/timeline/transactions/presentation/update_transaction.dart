@@ -22,7 +22,7 @@ import 'package:pocketfi/src/features/category/application/category_providers.da
 import 'package:pocketfi/src/features/category/domain/category.dart';
 import 'package:pocketfi/src/features/category/presentation/category_page.dart';
 import 'package:pocketfi/src/features/timeline/bookmarks/application/bookmark_services.dart';
-import 'package:pocketfi/src/features/timeline/transactions/application/transaction_providers.dart';
+import 'package:pocketfi/src/features/timeline/transactions/application/transaction_services.dart';
 import 'package:pocketfi/src/features/timeline/transactions/date_picker/presentation/transaction_date_picker.dart';
 import 'package:pocketfi/src/features/timeline/transactions/domain/tag.dart';
 import 'package:pocketfi/src/features/shared/image_upload/data/image_file_notifier.dart';
@@ -109,9 +109,7 @@ class UpdateTransactionState extends ConsumerState<UpdateTransaction> {
               if (isConfirmDelete == null) return;
 
               if (isConfirmDelete) {
-                await ref
-                    .read(deleteTransactionProvider.notifier)
-                    .deleteTransaction(
+                await ref.read(transactionProvider.notifier).deleteTransaction(
                       transactionId: selectedTransaction!.transactionId,
                       userId: selectedTransaction.userId,
                       walletId: selectedTransaction.walletId,
@@ -765,7 +763,7 @@ class SaveButton extends ConsumerWidget {
               }
 
               final isUpdated = await ref
-                  .read(updateTransactionProvider.notifier)
+                  .read(transactionProvider.notifier)
                   .updateTransaction(
                     transactionId: transaction!.transactionId,
                     userId: userId,

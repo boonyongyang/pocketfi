@@ -21,7 +21,7 @@ import 'package:pocketfi/src/features/category/application/category_providers.da
 import 'package:pocketfi/src/features/category/domain/category.dart';
 import 'package:pocketfi/src/features/category/presentation/category_page.dart';
 import 'package:pocketfi/src/features/timeline/bookmarks/application/bookmark_services.dart';
-import 'package:pocketfi/src/features/timeline/transactions/application/transaction_providers.dart';
+import 'package:pocketfi/src/features/timeline/transactions/application/transaction_services.dart';
 import 'package:pocketfi/src/features/timeline/transactions/date_picker/application/selected_date_notifier.dart';
 import 'package:pocketfi/src/features/timeline/transactions/date_picker/presentation/transaction_date_picker.dart';
 import 'package:pocketfi/src/features/timeline/transactions/domain/tag.dart';
@@ -651,8 +651,8 @@ class SaveButton extends ConsumerWidget {
               debugPrint('walletName is: ${selectedWallet!.walletId}');
 
               final isCreated = await ref
-                  .read(createNewTransactionProvider.notifier)
-                  .createNewTransaction(
+                  .read(transactionProvider.notifier)
+                  .addNewTransaction(
                     userId: userId,
                     walletId: selectedWallet!.walletId, // ? sure?
                     walletName: selectedWallet!.walletName, // ? sure?
