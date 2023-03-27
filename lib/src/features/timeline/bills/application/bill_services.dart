@@ -39,8 +39,9 @@ final userBillsProvider = StreamProvider.autoDispose<Iterable<Bill>>(
         // .collection(FirebaseCollectionName.wallets)
         // .doc(walletId)
         // .collection(FirebaseCollectionName.bills)
-        .collectionGroup(FirebaseCollectionName.bills)
         // .where(FirebaseFieldName.walletId, isEqualTo: walletId)
+        .collectionGroup(FirebaseCollectionName.bills)
+        .where(FirebaseFieldName.userId, isEqualTo: userId)
         .orderBy(BillKey.dueDate, descending: true)
         .snapshots()
         .listen(
@@ -53,7 +54,6 @@ final userBillsProvider = StreamProvider.autoDispose<Iterable<Bill>>(
             .map(
               (doc) => Bill.fromJson(
                 billId: doc.id,
-                // transactionId: doc.id,
                 json: doc.data(),
               ),
             );
