@@ -3,7 +3,7 @@ import 'package:pocketfi/src/features/authentication/application/auth_state_prov
 import 'package:pocketfi/src/features/budget/wallet/application/delete_wallet_provider.dart';
 import 'package:pocketfi/src/features/budget/wallet/application/update_wallet_provider.dart';
 import 'package:pocketfi/src/features/timeline/bills/application/bill_services.dart';
-import 'package:pocketfi/src/features/timeline/transactions/application/transaction_providers.dart';
+import 'package:pocketfi/src/features/timeline/transactions/application/transaction_services.dart';
 import 'package:pocketfi/src/features/shared/image_upload/application/image_uploader_provider.dart';
 
 // create isLoadingProvider
@@ -13,17 +13,19 @@ final isLoadingProvider = Provider<bool>((ref) {
   final isUploadingImage = ref.watch(imageUploadProvider);
   final isUpdatingWallet = ref.watch(updateWalletProvider);
   final isDeletingWallet = ref.watch(deleteWalletProvider);
-  final isCreatingTransaction = ref.watch(createNewTransactionProvider);
-  final isUpdatingTransaction = ref.watch(updateTransactionProvider);
-  final isDeletingTransaction = ref.watch(deleteTransactionProvider);
+  final isProcessingTransaction = ref.watch(transactionProvider);
+  // final isCreatingTransaction = ref.watch(transactionProvider);
+  // final isUpdatingTransaction = ref.watch(transactionProvider);
+  // final isDeletingTransaction = ref.watch(transactionProvider);
   final isCreatingBill = ref.watch(billProvider);
 
   return authState.isLoading ||
       isUploadingImage ||
       isUpdatingWallet ||
       isDeletingWallet ||
-      isCreatingTransaction ||
-      isUpdatingTransaction ||
-      isDeletingTransaction ||
+      isProcessingTransaction ||
+      // isCreatingTransaction ||
+      // isUpdatingTransaction ||
+      // isDeletingTransaction ||
       isCreatingBill;
 });

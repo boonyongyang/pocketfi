@@ -17,7 +17,7 @@ import 'package:pocketfi/src/features/budget/wallet/presentation/select_wallet_d
 import 'package:pocketfi/src/features/category/application/category_providers.dart';
 import 'package:pocketfi/src/features/category/domain/category.dart';
 import 'package:pocketfi/src/features/category/presentation/category_page.dart';
-import 'package:pocketfi/src/features/timeline/transactions/application/transaction_providers.dart';
+import 'package:pocketfi/src/features/timeline/transactions/application/transaction_services.dart';
 import 'package:pocketfi/src/features/timeline/transactions/data/transaction_notifiers.dart';
 import 'package:pocketfi/src/features/timeline/transactions/date_picker/presentation/transaction_date_picker.dart';
 import 'package:pocketfi/src/features/timeline/transactions/domain/tag.dart';
@@ -582,8 +582,8 @@ class SaveButton extends ConsumerWidget {
               debugPrint('walletName is: ${selectedWallet!.walletId}');
 
               final isAdded = await ref
-                  .read(createNewTransactionProvider.notifier)
-                  .createNewTransaction(
+                  .read(transactionProvider.notifier)
+                  .addNewTransaction(
                     userId: userId,
                     amount: double.parse(amount),
                     type: transaction.type,

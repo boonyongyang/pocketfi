@@ -19,17 +19,17 @@ final selectedTransactionProvider =
   (_) => SelectedTransactionNotifier(null),
 );
 
-final createNewTransactionProvider =
-    StateNotifierProvider<CreateNewTransactionNotifier, IsLoading>(
-        (ref) => CreateNewTransactionNotifier());
+final transactionProvider =
+    StateNotifierProvider<TransactionNotifier, IsLoading>(
+        (ref) => TransactionNotifier());
 
-final updateTransactionProvider =
-    StateNotifierProvider<UpdateTransactionNotifier, IsLoading>(
-        (ref) => UpdateTransactionNotifier());
+// final transactionProvider =
+//     StateNotifierProvider<TransactionNotifier, IsLoading>(
+//         (ref) => TransactionNotifier());
 
-final deleteTransactionProvider =
-    StateNotifierProvider<DeleteTransactionNotifier, IsLoading>(
-        (ref) => DeleteTransactionNotifier());
+// final transactionProvider =
+//     StateNotifierProvider<TransactionNotifier, IsLoading>(
+//         (ref) => TransactionNotifier());
 
 // * get all transactions from all wallets
 final userTransactionsProvider =
