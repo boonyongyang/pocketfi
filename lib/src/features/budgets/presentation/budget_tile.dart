@@ -28,7 +28,8 @@ class BudgetTile extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final category = getCategoryWithCategoryName(budget.categoryName);
-    final wallet = ref.watch(getWalletWithWalletId(budget.walletId)).value;
+    final wallet =
+        ref.watch(getWalletFromWalletIdProvider(budget.walletId)).value;
     if (wallet == null) {
       return Container();
     }

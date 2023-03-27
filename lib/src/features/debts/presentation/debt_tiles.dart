@@ -17,7 +17,8 @@ class DebtTiles extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final wallet = ref.watch(getWalletWithWalletId(debt.walletId)).value;
+    final wallet =
+        ref.watch(getWalletFromWalletIdProvider(debt.walletId)).value;
     if (wallet == null) {
       return Container();
     }

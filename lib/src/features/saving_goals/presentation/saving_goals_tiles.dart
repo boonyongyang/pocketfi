@@ -17,7 +17,8 @@ class SavingGoalsTiles extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final wallet = ref.watch(getWalletWithWalletId(savingGoal.walletId)).value;
+    final wallet =
+        ref.watch(getWalletFromWalletIdProvider(savingGoal.walletId)).value;
     if (wallet == null) {
       return Container();
     }
