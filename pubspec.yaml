@@ -82,8 +82,8 @@ dev_dependencies:
 
 flutter_native_splash:
   color: "FFFFFF"
-  image: assets/icon/pocketfi_512px.png
-  fill: true
+  image: assets/icon/pocketfi_no_bg_1152.png
+  fill: false
   android: true
   ios: true
   web: false
@@ -94,10 +94,10 @@ flutter_native_splash:
 flutter_icons:
   android: true
   ios: true
-  image_path: "assets/icon/pocketfi_512px.png"
+  image_path: "assets/icon/pocketfi_no_bg_86.png"
   # adaptive_icon_background: "#0C0E1E"
-  adaptive_icon_background: "#FFFFFF"
-  adaptive_icon_foreground: "assets/icon/pocketfi_512px.png"
+  # adaptive_icon_background: "#FFFFFF"
+  # adaptive_icon_foreground: "assets/icon/pocketfi_512px.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -127,6 +127,8 @@ flutter:
     - assets/icon/pocketfi_no_bg.png
     - assets/icon/pocketfi_phone_size.png
     - assets/icon/pocketfi_512px.png
+    - assets/icon/pocketfi_no_bg_1152.png
+    - assets/icon/pocketfi_no_bg_86.png
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
