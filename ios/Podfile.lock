@@ -675,6 +675,11 @@ PODS:
   - Flutter (1.0.0)
   - flutter_email_sender (0.0.1):
     - Flutter
+  - flutter_image_compress (1.0.0):
+    - Flutter
+    - Mantle
+    - SDWebImage
+    - SDWebImageWebPCoder
   - flutter_native_splash (0.0.1):
     - Flutter
   - fluttertoast (0.0.2):
@@ -812,6 +817,9 @@ PODS:
   - libwebp/webp (1.2.4)
   - local_auth_ios (0.0.1):
     - Flutter
+  - Mantle (2.2.0):
+    - Mantle/extobjc (= 2.2.0)
+  - Mantle/extobjc (2.2.0)
   - MLImage (1.0.0-beta3)
   - MLKitCommon (8.0.0):
     - GoogleDataTransport (~> 9.0)
@@ -848,6 +856,12 @@ PODS:
     - Flutter
   - PromisesObjC (2.1.1)
   - Protobuf (3.22.0)
+  - SDWebImage (5.15.2):
+    - SDWebImage/Core (= 5.15.2)
+  - SDWebImage/Core (5.15.2)
+  - SDWebImageWebPCoder (0.11.0):
+    - libwebp (~> 1.0)
+    - SDWebImage/Core (~> 5.15)
   - share_plus (0.0.1):
     - Flutter
   - shared_preferences_foundation (0.0.1):
@@ -874,6 +888,7 @@ DEPENDENCIES:
   - firebase_storage (from `.symlinks/plugins/firebase_storage/ios`)
   - Flutter (from `Flutter`)
   - flutter_email_sender (from `.symlinks/plugins/flutter_email_sender/ios`)
+  - flutter_image_compress (from `.symlinks/plugins/flutter_image_compress/ios`)
   - flutter_native_splash (from `.symlinks/plugins/flutter_native_splash/ios`)
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
   - google_mlkit_commons (from `.symlinks/plugins/google_mlkit_commons/ios`)
@@ -920,12 +935,15 @@ SPEC REPOS:
     - leveldb-library
     - Libuv-gRPC
     - libwebp
+    - Mantle
     - MLImage
     - MLKitTextRecognition
     - MLKitTextRecognitionCommon
     - nanopb
     - PromisesObjC
     - Protobuf
+    - SDWebImage
+    - SDWebImageWebPCoder
     - Toast
     - WeScan
 
@@ -944,6 +962,8 @@ EXTERNAL SOURCES:
     :path: Flutter
   flutter_email_sender:
     :path: ".symlinks/plugins/flutter_email_sender/ios"
+  flutter_image_compress:
+    :path: ".symlinks/plugins/flutter_image_compress/ios"
   flutter_native_splash:
     :path: ".symlinks/plugins/flutter_native_splash/ios"
   fluttertoast:
@@ -999,6 +1019,7 @@ SPEC CHECKSUMS:
   FirebaseStorage: 0efbff0ac978981866d89804191688ae50d64033
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
   flutter_email_sender: 02d7443217d8c41483223627972bfdc09f74276b
+  flutter_image_compress: 5a5e9aee05b6553048b8df1c3bc456d0afaac433
   flutter_native_splash: 52501b97d1c0a5f898d687f1646226c1f93c56ef
   fluttertoast: eb263d302cc92e04176c053d2385237e9f43fad0
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
@@ -1020,6 +1041,7 @@ SPEC CHECKSUMS:
   Libuv-gRPC: 55e51798e14ef436ad9bc45d12d43b77b49df378
   libwebp: f62cb61d0a484ba548448a4bd52aabf150ff6eef
   local_auth_ios: c6cf091ded637a88f24f86a8875d8b0f526e2605
+  Mantle: c5aa8794a29a022dfbbfc9799af95f477a69b62d
   MLImage: 489dfec109f21da8621b28d476401aaf7a0d4ff4
   MLKitCommon: 8e5dbe4b12a434e790734211e1b00ed2db3c94ae
   MLKitTextRecognition: f6fda8923564f6cebe2bb952a1adb0414e1d731b
@@ -1030,6 +1052,8 @@ SPEC CHECKSUMS:
   permission_handler_apple: 44366e37eaf29454a1e7b1b7d736c2cceaeb17ce
   PromisesObjC: ab77feca74fa2823e7af4249b8326368e61014cb
   Protobuf: 5e6cbc143d02fe08585d86b0098f8b755d2caaab
+  SDWebImage: 8ab87d4b3e5cc4927bd47f78db6ceb0b94442577
+  SDWebImageWebPCoder: 295a6573c512f54ad2dd58098e64e17dcf008499
   share_plus: 056a1e8ac890df3e33cb503afffaf1e9b4fbae68
   shared_preferences_foundation: 986fc17f3d3251412d18b0265f9c64113a8c2472
   sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904

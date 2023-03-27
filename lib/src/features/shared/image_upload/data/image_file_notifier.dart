@@ -72,3 +72,23 @@ class ReceiptFileNotifier extends StateNotifier<XFile?> {
 
 final receiptFileProvider = StateNotifierProvider<ReceiptFileNotifier, XFile?>(
     (ref) => ReceiptFileNotifier());
+
+class ReceiptStringPathNotifier extends StateNotifier<String?> {
+  ReceiptStringPathNotifier() : super(null);
+
+  void setReceiptStringPath(String? imagePath) {
+    state = imagePath;
+  }
+
+  // void setReceiptImageFile(XFile? imageFile) {
+  //   state = File(imageFile!.path);
+  // }
+
+  void clearPath() {
+    state = null;
+  }
+}
+
+final receiptStringPathProvider =
+    StateNotifierProvider<ReceiptStringPathNotifier, String?>(
+        (ref) => ReceiptStringPathNotifier());
