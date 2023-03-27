@@ -13,11 +13,7 @@ final userDebtsProvider = StreamProvider.autoDispose<Iterable<Debt>>((ref) {
   final controller = StreamController<Iterable<Debt>>();
 
   final sub = FirebaseFirestore.instance
-      // .collection(FirebaseCollectionName.users)
-      // .doc(userId)
-      // .collection(FirebaseCollectionName.wallets)
-      // .doc(walletId)
-      .collectionGroup(FirebaseCollectionName.debts)
+      .collection(FirebaseCollectionName.debts)
       .where(FirebaseFieldName.userId, isEqualTo: userId)
       .snapshots()
       .listen((snapshot) {
@@ -62,15 +58,6 @@ class DebtNotifier extends StateNotifier<IsLoading> {
 
     final debtId = documentIdFromCurrentDate();
 
-    // final walletDoc = await FirebaseFirestore.instance
-    //     .collection(FirebaseCollectionName.users)
-    //     .doc(userId)
-    //     .collection(FirebaseCollectionName.debts)
-    //     .get();
-
-    // Check if the owner ID of the wallet and the user ID are the same
-    // final ownerId = walletDoc.docs.first.get(FirebaseFieldName.ownerId);
-
     final payload = Debt(
       debtId: debtId,
       debtName: debtName,
@@ -88,10 +75,6 @@ class DebtNotifier extends StateNotifier<IsLoading> {
     ).toJson();
 
     await FirebaseFirestore.instance
-        .collection(FirebaseCollectionName.users)
-        .doc(userId)
-        .collection(FirebaseCollectionName.wallets)
-        .doc(walletId)
         .collection(FirebaseCollectionName.debts)
         .doc(debtId)
         .set(payload);
@@ -115,10 +98,6 @@ class DebtNotifier extends StateNotifier<IsLoading> {
       isLoading = true;
       // change the debt name and the debt amount
       final query = FirebaseFirestore.instance
-          .collection(FirebaseCollectionName.users)
-          .doc(userId)
-          .collection(FirebaseCollectionName.wallets)
-          .doc(walletId)
           .collection(FirebaseCollectionName.debts)
           .where(FirebaseFieldName.debtId, isEqualTo: debtId)
           .get();
@@ -143,8 +122,6 @@ class DebtNotifier extends StateNotifier<IsLoading> {
           }
         }
       });
-
-      // change the wallet?
       return true;
     } catch (_) {
       return false;
@@ -162,10 +139,6 @@ class DebtNotifier extends StateNotifier<IsLoading> {
       isLoading = true;
 
       final query = FirebaseFirestore.instance
-          .collection(FirebaseCollectionName.users)
-          .doc(userId)
-          .collection(FirebaseCollectionName.wallets)
-          .doc(walletId)
           .collection(FirebaseCollectionName.debts)
           .where(FirebaseFieldName.debtId, isEqualTo: debtId)
           .limit(1)

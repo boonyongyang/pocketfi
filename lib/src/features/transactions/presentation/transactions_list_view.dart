@@ -48,6 +48,7 @@ class TransactionListView extends ConsumerWidget {
             TransactionCard(
               transaction: transaction,
               onTapped: () {
+                // setNewTransactionState(ref);
                 ref
                     .read(selectedTransactionProvider.notifier)
                     .setSelectedTransaction(transaction);

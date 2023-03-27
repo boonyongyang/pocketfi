@@ -24,13 +24,7 @@ final userBillsProvider = StreamProvider.autoDispose<Iterable<Bill>>(
     };
 
     final sub = FirebaseFirestore.instance
-        // .collection(FirebaseCollectionName.users)
-        // .doc(userId)
-        // .collection(FirebaseCollectionName.wallets)
-        // .doc(walletId)
-        // .collection(FirebaseCollectionName.bills)
-        // .where(FirebaseFieldName.walletId, isEqualTo: walletId)
-        .collectionGroup(FirebaseCollectionName.bills)
+        .collection(FirebaseCollectionName.bills)
         .where(FirebaseFieldName.userId, isEqualTo: userId)
         .orderBy(BillKey.dueDate, descending: true)
         .snapshots()
@@ -96,10 +90,6 @@ class BillNotifier extends StateNotifier<IsLoading> {
       debugPrint('uploading new bill..');
 
       await FirebaseFirestore.instance
-          .collection(FirebaseCollectionName.users)
-          .doc(userId)
-          .collection(FirebaseCollectionName.wallets)
-          .doc(walletId)
           .collection(FirebaseCollectionName.bills)
           .doc(billId)
           .set(payload);
@@ -130,10 +120,6 @@ class BillNotifier extends StateNotifier<IsLoading> {
 
     try {
       await FirebaseFirestore.instance
-          .collection(FirebaseCollectionName.users)
-          .doc(userId)
-          .collection(FirebaseCollectionName.wallets)
-          .doc(walletId)
           .collection(FirebaseCollectionName.bills)
           .doc(billId)
           .update({
@@ -162,11 +148,6 @@ class BillNotifier extends StateNotifier<IsLoading> {
     try {
       isLoading = true;
       final querySnaptshot = FirebaseFirestore.instance
-          .collection(FirebaseCollectionName.users)
-          .doc(userId)
-          // .doc(FirebaseAuth.instance.currentUser!.uid)
-          .collection(FirebaseCollectionName.wallets)
-          .doc(walletId)
           .collection(FirebaseCollectionName.bills)
           .where(FieldPath.documentId, isEqualTo: billId)
           .limit(1)

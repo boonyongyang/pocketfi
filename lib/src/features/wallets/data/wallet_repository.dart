@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/constants/firebase_names.dart';
@@ -196,7 +195,8 @@ final getWalletFromWalletIdProvider =
 final getWalletWithWalletId =
     FutureProvider.family<Wallet, String>((ref, walletId) async {
   final snapshot = await FirebaseFirestore.instance
-      .collectionGroup(FirebaseCollectionName.wallets)
+      // .collectionGroup(FirebaseCollectionName.wallets)
+      .collection(FirebaseCollectionName.wallets)
       .where(FirebaseFieldName.walletId, isEqualTo: walletId)
       .limit(1)
       .get();
@@ -333,7 +333,8 @@ class WalletNotifier extends StateNotifier<IsLoading> {
       // );
       // update wallet name in all users
       final query2 = FirebaseFirestore.instance
-          .collectionGroup(FirebaseCollectionName.wallets)
+          // .collectionGroup(FirebaseCollectionName.wallets)
+          .collection(FirebaseCollectionName.wallets)
           .where(FirebaseFieldName.walletId, isEqualTo: walletId)
           .get();
 
@@ -398,7 +399,8 @@ class WalletNotifier extends StateNotifier<IsLoading> {
 
       // * update all transactions' walletName in this wallet
       final walletTransactions = FirebaseFirestore.instance
-          .collectionGroup(FirebaseCollectionName.transactions)
+          // .collectionGroup(FirebaseCollectionName.transactions)
+          .collection(FirebaseCollectionName.wallets)
           .where(FirebaseFieldName.walletId, isEqualTo: walletId)
           .get();
 

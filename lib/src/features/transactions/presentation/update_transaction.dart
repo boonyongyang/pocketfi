@@ -70,146 +70,155 @@ class UpdateTransactionState extends ConsumerState<UpdateTransaction> {
 
     // debugPrint('transaction date: ${selectedTransaction?.date}');
 
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppColors.mainColor1,
-        shadowColor: Colors.transparent,
-        centerTitle: true,
-        title: const Text(
-          Strings.editTransaction,
-          style: TextStyle(
-            color: AppColors.white,
-            fontSize: 20,
-          ),
-        ),
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back_ios,
-            color: AppColors.white,
-          ),
-          onPressed: () {
-            Navigator.of(context).pop();
-            resetCategoryState(ref);
-            ref.read(transactionTypeProvider.notifier).setTransactionType(0);
-            ref.read(imageFileProvider.notifier).clearImageFile();
-          },
-        ),
-        actions: [
-          IconButton(
-            icon: const Icon(
-              Icons.delete_rounded,
-              color: AppColors.red,
+    return WillPopScope(
+      onWillPop: () {
+        ref.read(imageFileProvider.notifier).clearImageFile();
+        return Future.value(true);
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: AppColors.mainColor1,
+          shadowColor: Colors.transparent,
+          centerTitle: true,
+          title: const Text(
+            Strings.editTransaction,
+            style: TextStyle(
+              color: AppColors.white,
+              fontSize: 20,
             ),
-            onPressed: () async {
-              final isConfirmDelete = await const DeleteDialog(
-                titleOfObjectToDelete: Strings.transaction,
-              ).present(context);
-
-              if (isConfirmDelete == null) return;
-
-              if (isConfirmDelete) {
-                await ref.read(transactionProvider.notifier).deleteTransaction(
-                      transactionId: selectedTransaction!.transactionId,
-                      userId: selectedTransaction.userId,
-                      walletId: selectedTransaction.walletId,
-                    );
-                resetCategoryState(ref);
-                ref
-                    .read(transactionTypeProvider.notifier)
-                    .setTransactionType(0);
-                if (mounted) {
-                  Navigator.of(context).maybePop();
-                }
-              }
+          ),
+          leading: IconButton(
+            icon: const Icon(
+              Icons.arrow_back_ios,
+              color: AppColors.white,
+            ),
+            onPressed: () {
+              Navigator.of(context).pop();
+              resetCategoryState(ref);
+              ref.read(transactionTypeProvider.notifier).setTransactionType(0);
+              ref.read(imageFileProvider.notifier).clearImageFile();
             },
           ),
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Container(
-          padding: EdgeInsets.only(
-            bottom: MediaQuery.of(context).viewInsets.bottom + 10,
-          ),
-          child: Column(
-            children: [
-              const SelectTransactionType(
-                noOfTabs: 3,
+          actions: [
+            IconButton(
+              icon: const Icon(
+                Icons.delete_rounded,
+                color: AppColors.red,
               ),
-              TransactionAmountField(amountController: amountController),
-              const SelectCurrency(),
-              // * Select Category and Wallet
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    const SizedBox(width: 8.0),
-                    SelectCategory(
-                      categories: categories,
-                      selectedCategory: getCategoryWithCategoryName(
-                          ref.watch(selectedTransactionProvider)?.categoryName),
-                    ),
-                    const Spacer(),
-                    const Icon(AppIcons.wallet, color: AppColors.mainColor1),
-                    const SizedBox(width: 8.0),
-                    const SelectWalletDropdownList(),
-                    const SizedBox(width: 8.0),
-                  ],
+              onPressed: () async {
+                final isConfirmDelete = await const DeleteDialog(
+                  titleOfObjectToDelete: Strings.transaction,
+                ).present(context);
+
+                if (isConfirmDelete == null) return;
+
+                if (isConfirmDelete) {
+                  await ref
+                      .read(transactionProvider.notifier)
+                      .deleteTransaction(
+                        transactionId: selectedTransaction!.transactionId,
+                        userId: selectedTransaction.userId,
+                        walletId: selectedTransaction.walletId,
+                      );
+                  resetCategoryState(ref);
+                  ref
+                      .read(transactionTypeProvider.notifier)
+                      .setTransactionType(0);
+                  if (mounted) {
+                    Navigator.of(context).maybePop();
+                  }
+                }
+              },
+            ),
+          ],
+        ),
+        body: SingleChildScrollView(
+          child: Container(
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).viewInsets.bottom + 10,
+            ),
+            child: Column(
+              children: [
+                const SelectTransactionType(
+                  noOfTabs: 3,
                 ),
-              ),
-              // * DatePicker, Note, Photo, Tags and Recurrence
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 24.0,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    const TransactionDatePicker(),
-                    WriteOptionalNote(noteController: noteController),
-                    selectPhoto(),
-                    showIfPhotoIsAdded(),
-                    const SizedBox(height: 8.0),
-                    selectTags(),
-                    selectReccurence(),
-                    Center(
-                      child: Row(
-                        children: [
-                          IconButton(
-                            splashRadius: 22,
-                            icon: Icon(
-                              isBookmark!
-                                  ? Icons.bookmark
-                                  : Icons.bookmark_outline,
-                              color: AppColors.mainColor2,
-                              size: 32,
-                            ),
-                            onPressed: () {
-                              ref
-                                  .read(selectedTransactionProvider.notifier)
-                                  .toggleBookmark(ref);
-                            },
-                          ),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width - 100,
-                            child: SaveButton(
-                              isSaveButtonEnabled: isSaveButtonEnabled,
-                              noteController: noteController,
-                              amountController: amountController,
-                              category: selectedCategory,
-                              mounted: mounted,
-                              selectedWallet: selectedWallet,
-                              date: selectedTransaction?.date,
-                              isBookmark: isBookmark,
-                            ),
-                          ),
-                        ],
+                TransactionAmountField(amountController: amountController),
+                const SelectCurrency(),
+                // * Select Category and Wallet
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      const SizedBox(width: 8.0),
+                      SelectCategory(
+                        categories: categories,
+                        selectedCategory: getCategoryWithCategoryName(ref
+                            .watch(selectedTransactionProvider)
+                            ?.categoryName),
                       ),
-                    ),
-                  ],
+                      const Spacer(),
+                      const Icon(AppIcons.wallet, color: AppColors.mainColor1),
+                      const SizedBox(width: 8.0),
+                      const SelectWalletDropdownList(),
+                      const SizedBox(width: 8.0),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+                // * DatePicker, Note, Photo, Tags and Recurrence
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 24.0,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      const TransactionDatePicker(),
+                      WriteOptionalNote(noteController: noteController),
+                      selectPhoto(),
+                      showIfPhotoIsAdded(),
+                      const SizedBox(height: 8.0),
+                      selectTags(),
+                      selectReccurence(),
+                      Center(
+                        child: Row(
+                          children: [
+                            IconButton(
+                              splashRadius: 22,
+                              icon: Icon(
+                                isBookmark!
+                                    ? Icons.bookmark
+                                    : Icons.bookmark_outline,
+                                color: AppColors.mainColor2,
+                                size: 32,
+                              ),
+                              onPressed: () {
+                                ref
+                                    .read(selectedTransactionProvider.notifier)
+                                    .toggleBookmark(ref);
+                              },
+                            ),
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width - 100,
+                              child: SaveButton(
+                                isSaveButtonEnabled: isSaveButtonEnabled,
+                                noteController: noteController,
+                                amountController: amountController,
+                                category: selectedCategory,
+                                mounted: mounted,
+                                selectedWallet: selectedWallet,
+                                date: selectedTransaction?.date,
+                                isBookmark: isBookmark,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

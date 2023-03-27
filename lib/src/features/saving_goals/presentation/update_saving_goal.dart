@@ -311,7 +311,8 @@ class _UpdateSavingGoalViewState extends ConsumerState<UpdateSavingGoalView> {
                       savingGoalName,
                       savingGoalAmount,
                       widget.savingGoal,
-                      _selectedDateRange!.start,
+                      _selectedDateRange!
+                          .start, // !! issue: on update, must click in select date range button to not get null
                       _selectedDateRange!.end,
                       // ref.watch(transactionDateProvider),
                       // selectedWallet!,

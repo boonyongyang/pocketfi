@@ -17,7 +17,8 @@ final userBudgetsProvider = StreamProvider.autoDispose<Iterable<Budget>>((ref) {
   final controller = StreamController<Iterable<Budget>>();
 
   final sub = FirebaseFirestore.instance
-      .collectionGroup(FirebaseCollectionName.budgets)
+      // .collectionGroup(FirebaseCollectionName.budgets)
+      .collection(FirebaseCollectionName.budgets)
       .where(FirebaseFieldName.userId, isEqualTo: userId)
       .snapshots()
       .listen((snapshot) {
@@ -167,12 +168,12 @@ final userBudgetsProvider = StreamProvider.autoDispose<Iterable<Budget>>((ref) {
 final totalAmountProvider = StreamProvider.autoDispose<double>((ref) {
   final userId = ref.watch(userIdProvider);
   // !temporary only
-  const walletId = '2023-03-01T12:02:23.282294';
+  // const walletId = '2023-03-01T12:02:23.282294';
   final controller = StreamController<double>();
 
-  final refs = FirebaseFirestore.instance
-      .collection(FirebaseCollectionName.users)
-      .doc(userId);
+  // final refs = FirebaseFirestore.instance
+  //     .collection(FirebaseCollectionName.users)
+  //     .doc(userId);
   // .where(FirebaseFieldName.userId, isEqualTo: userId)
   // .snapshots();
   final sub = FirebaseFirestore.instance
@@ -181,7 +182,8 @@ final totalAmountProvider = StreamProvider.autoDispose<double>((ref) {
       // .collection(FirebaseCollectionName.wallets)
       // .doc(walletId)
       // .collection(FirebaseCollectionName.budgets)
-      .collectionGroup(FirebaseCollectionName.budgets)
+      // .collectionGroup(FirebaseCollectionName.budgets)
+      .collection(FirebaseCollectionName.budgets)
       .where(FirebaseFieldName.userId, isEqualTo: userId)
       .snapshots()
       .listen((snapshot) {
@@ -242,31 +244,13 @@ class BudgetNotifier extends StateNotifier<IsLoading> {
     isLoading = true;
 
     final budgetId = documentIdFromCurrentDate();
-    //! still need to fix to get the correct walletid
-    // final walletId = await FirebaseFirestore.instance
-    //     .collection(FirebaseCollectionName.users)
-    //     .doc(userId)
-    //     .collection(FirebaseCollectionName.wallets)
-    //     .limit(1)
-    //     .get()
-    //     .then((value) => value.docs.first.id);
-
-    // final payload = BudgetPayload(
-    //   budgetId: budgetId,
-    //   budgetName: budgetName,
-    //   budgetAmount: budgetAmount,
-    //   usedAmount: 0.00,
-    //   walletId: walletId,
-    //   userId: userId,
-    //   categoryName: categoryName,
-    // );
 
     final walletDoc = await FirebaseFirestore.instance
-        .collectionGroup(FirebaseCollectionName.wallets)
+        // .collectionGroup(FirebaseCollectionName.wallets)
+        .collection(FirebaseCollectionName.wallets)
         .where(FirebaseFieldName.walletId, isEqualTo: walletId)
         .get();
 
-    // Check if the owner ID of the wallet and the user ID are the same
     final ownerId = walletDoc.docs.first.get(FirebaseFieldName.ownerId);
 
     final payload = Budget(
@@ -281,42 +265,10 @@ class BudgetNotifier extends StateNotifier<IsLoading> {
     ).toJson();
 
     try {
-      final query = FirebaseFirestore.instance
-          .collectionGroup(FirebaseCollectionName.wallets)
-          .where(FirebaseFieldName.walletId, isEqualTo: walletId)
-          .get();
-
-      await query.then(
-        (query) async {
-          for (final doc in query.docs) {
-            await doc.reference
-                .collection(FirebaseCollectionName.budgets)
-                .doc(budgetId)
-                .set(payload);
-          }
-        },
-      );
-
-      // await FirebaseFirestore.instance
-      //     .collection(FirebaseCollectionName.users)
-      //     .doc(userId)
-      //     .collection(FirebaseCollectionName.wallets)
-      //     .doc(walletId)
-      //     .collection(FirebaseCollectionName.budgets)
-      //     .doc(budgetId)
-      //     .set(payload);
-      // final walletSnapshots = await FirebaseFirestore.instance
-      //     .collection(FirebaseCollectionName.users)
-      //     .doc(userId)
-      //     .collection(FirebaseCollectionName.wallets)
-      //     .where(FirebaseFieldName.walletId, isEqualTo: walletId)
-      //     .get();
-      // for (final walletSnapshot in walletSnapshots.docs) {
-      //   await walletSnapshot.reference
-      //       .collection(FirebaseCollectionName.budgets)
-      //       .doc(budgetId)
-      //       .set(payload);
-      // }
+      await FirebaseFirestore.instance
+          .collection(FirebaseCollectionName.budgets)
+          .doc(budgetId)
+          .set(payload);
 
       return true;
     } catch (e) {
@@ -336,9 +288,8 @@ class BudgetNotifier extends StateNotifier<IsLoading> {
   }) async {
     try {
       isLoading = true;
-      // change the budget name and the budet amount
       final query = FirebaseFirestore.instance
-          .collectionGroup(FirebaseCollectionName.budgets)
+          .collection(FirebaseCollectionName.budgets)
           .where(FirebaseFieldName.budgetId, isEqualTo: budgetId)
           .get();
       await query.then((query) async {
@@ -354,8 +305,6 @@ class BudgetNotifier extends StateNotifier<IsLoading> {
           }
         }
       });
-
-      // change the wallet?
       return true;
     } catch (_) {
       return false;
@@ -369,30 +318,10 @@ class BudgetNotifier extends StateNotifier<IsLoading> {
     required String budgetId,
   }) async {
     try {
-      //!need to check the correct wallet
-      final wallets = await FirebaseFirestore.instance
-          .collection(FirebaseCollectionName.users)
-          .doc(FirebaseAuth.instance.currentUser!.uid)
-          .collection(FirebaseCollectionName.wallets)
-          .get();
       isLoading = true;
 
-      // if (wallets.docs.length == 1) {
-      //   return false;
-      // }
-
-      // final query = FirebaseFirestore.instance
-      //     .collection(FirebaseCollectionName.users)
-      //     .doc(FirebaseAuth.instance.currentUser!.uid)
-      //     .collection(FirebaseCollectionName.wallets)
-      //     .doc(wallets.docs.first.id)
-      //     .collection(FirebaseCollectionName.budgets)
-      //     .where(FieldPath.documentId, isEqualTo: budgetId)
-      //     .limit(1)
-      //     .get();
-
       final query = FirebaseFirestore.instance
-          .collectionGroup(FirebaseCollectionName.budgets)
+          .collection(FirebaseCollectionName.budgets)
           .where(FirebaseFieldName.budgetId, isEqualTo: budgetId)
           .get();
 

@@ -103,11 +103,12 @@ class DebtTiles extends ConsumerWidget {
                               ),
                             ),
                           ),
-                          IconButton(
-                              onPressed: () {},
-                              icon: const Icon(
-                                Icons.edit_rounded,
-                              ))
+                          // IconButton(
+                          //   onPressed: () {},
+                          //   icon: const Icon(
+                          //     Icons.edit_rounded,
+                          //   ),
+                          // ),
                         ],
                       ),
                       Row(

@@ -14,11 +14,7 @@ final userSavingGoalsProvider =
   final controller = StreamController<Iterable<SavingGoal>>();
 
   final sub = FirebaseFirestore.instance
-      // .collection(FirebaseCollectionName.users)
-      // .doc(userId)
-      // .collection(FirebaseCollectionName.wallets)
-      // .doc(walletId)
-      .collectionGroup(FirebaseCollectionName.savingGoals)
+      .collection(FirebaseCollectionName.savingGoals)
       .where(FirebaseFieldName.userId, isEqualTo: userId)
       .snapshots()
       .listen((snapshot) {
@@ -67,10 +63,6 @@ class SavingGoalNotifier extends StateNotifier<IsLoading> {
     ).toJson();
 
     await FirebaseFirestore.instance
-        .collection(FirebaseCollectionName.users)
-        .doc(userId)
-        .collection(FirebaseCollectionName.wallets)
-        .doc(walletId)
         .collection(FirebaseCollectionName.savingGoals)
         .doc(savingGoalId)
         .set(payload);
@@ -92,10 +84,6 @@ class SavingGoalNotifier extends StateNotifier<IsLoading> {
       isLoading = true;
 
       final query = FirebaseFirestore.instance
-          .collection(FirebaseCollectionName.users)
-          .doc(userId)
-          .collection(FirebaseCollectionName.wallets)
-          .doc(walletId)
           .collection(FirebaseCollectionName.savingGoals)
           .where(FirebaseFieldName.savingGoalId, isEqualTo: savingGoalId)
           .get();
@@ -131,10 +119,6 @@ class SavingGoalNotifier extends StateNotifier<IsLoading> {
     isLoading = true;
 
     await FirebaseFirestore.instance
-        .collection(FirebaseCollectionName.users)
-        .doc(userId)
-        .collection(FirebaseCollectionName.wallets)
-        .doc(walletId)
         .collection(FirebaseCollectionName.savingGoals)
         .doc(savingGoalId)
         .delete();

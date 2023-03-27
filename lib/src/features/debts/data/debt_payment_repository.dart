@@ -8,7 +8,6 @@ import 'package:pocketfi/src/features/authentication/application/user_id_provide
 import 'package:pocketfi/src/features/debts/domain/debt.dart';
 import 'package:pocketfi/src/features/debts/domain/debt_payments.dart';
 import 'package:pocketfi/src/utils/document_id_from_current_date.dart';
-import 'package:pocketfi/src/features/transactions/domain/transaction.dart';
 
 final userDebtPaymentsProvider = StreamProvider.autoDispose
     .family<Iterable<DebtPayment>, Debt>((ref, Debt debt) {
@@ -16,10 +15,6 @@ final userDebtPaymentsProvider = StreamProvider.autoDispose
   final controller = StreamController<Iterable<DebtPayment>>();
 
   final sub = FirebaseFirestore.instance
-      // .collection(FirebaseCollectionName.users)
-      // .doc(userId)
-      .collection(FirebaseCollectionName.wallets)
-      .doc(debt.walletId)
       .collection(FirebaseCollectionName.debts)
       .doc(debt.debtId)
       .collection(FirebaseCollectionName.debtPayments)
@@ -99,10 +94,6 @@ class DebtPaymentNotifier extends StateNotifier<IsLoading> {
 
     try {
       await FirebaseFirestore.instance
-          .collection(FirebaseCollectionName.users)
-          .doc(userId)
-          .collection(FirebaseCollectionName.wallets)
-          .doc(walletId)
           .collection(FirebaseCollectionName.debts)
           .doc(debtId)
           .collection(FirebaseCollectionName.debtPayments)
@@ -138,10 +129,6 @@ class DebtPaymentNotifier extends StateNotifier<IsLoading> {
       isLoading = true;
 
       final query = FirebaseFirestore.instance
-          .collection(FirebaseCollectionName.users)
-          .doc(userId)
-          .collection(FirebaseCollectionName.wallets)
-          .doc(walletId)
           .collection(FirebaseCollectionName.debts)
           .doc(debtId)
           .collection(FirebaseCollectionName.debtPayments)
