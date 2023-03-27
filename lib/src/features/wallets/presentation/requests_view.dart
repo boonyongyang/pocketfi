@@ -11,7 +11,6 @@ import 'package:pocketfi/src/constants/firebase_names.dart';
 import 'package:pocketfi/src/features/authentication/application/user_id_provider.dart';
 import 'package:pocketfi/src/features/authentication/application/user_info_model_provider.dart';
 import 'package:pocketfi/src/features/authentication/domain/collaborators_info.dart';
-import 'package:pocketfi/src/features/wallets/data/add_shared_wallet_to_collaborator.dart';
 import 'package:pocketfi/src/features/wallets/data/check_request_service.dart';
 import 'package:pocketfi/src/features/wallets/presentation/test_pop_request.dart';
 
