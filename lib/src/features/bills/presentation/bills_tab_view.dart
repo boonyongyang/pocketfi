@@ -151,9 +151,10 @@ class BillsTabView extends ConsumerWidget {
           RefreshIndicator(
             onRefresh: () {
               ref.refresh(userBillsProvider);
+              debugPrint('refresh bills');
               return Future.delayed(
                 const Duration(
-                  milliseconds: 500,
+                  milliseconds: 1000,
                 ),
               );
             },

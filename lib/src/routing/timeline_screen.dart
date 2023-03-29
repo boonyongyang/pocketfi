@@ -136,8 +136,8 @@ class _MainViewState extends ConsumerState<TimelinePage>
                       toastLength: Toast.LENGTH_SHORT,
                       gravity: ToastGravity.BOTTOM,
                       timeInSecForIosWeb: 1,
-                      backgroundColor: Colors.black,
-                      textColor: Colors.white,
+                      backgroundColor: Colors.white,
+                      textColor: Colors.black,
                       fontSize: 16.0,
                     );
                   },
@@ -145,7 +145,6 @@ class _MainViewState extends ConsumerState<TimelinePage>
               ],
             ),
           ),
-          // actions: [],
           bottom: TabBar(
             indicatorColor: AppColors.mainColor2,
             labelColor: AppColors.mainColor2,
@@ -175,9 +174,6 @@ class _MainViewState extends ConsumerState<TimelinePage>
                   Text('Bills'),
                 ],
               )),
-              // Tab(icon: FaIcon(FontAwesomeIcons.moneyBills)),
-              // Tab(icon: FaIcon(FontAwesomeIcons.chartPie)),
-              // Tab(icon: Icon(Icons.receipt_long)),
             ],
           ),
         ),

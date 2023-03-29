@@ -9,6 +9,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:pocketfi/src/features/receipts/add_receipt_transaction.dart';
 import 'package:pocketfi/src/features/shared/image_upload/data/image_file_notifier.dart';
 import 'package:pocketfi/src/features/receipts/receipt_highlight_image.dart';
 import 'package:pocketfi/src/features/receipts/scanned_text_page.dart';
@@ -64,7 +65,7 @@ class ScanReceiptPageState extends ConsumerState<ScanReceiptPage> {
           centerTitle: true,
           title: const Text('Verify Receipt Details'),
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
+            icon: const Icon(Icons.close),
             onPressed: () {
               ref.read(receiptStringPathProvider.notifier).clearPath();
               Navigator.pop(context);
@@ -73,22 +74,29 @@ class ScanReceiptPageState extends ConsumerState<ScanReceiptPage> {
         ),
         body: SingleChildScrollView(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
             children: [
-              const Center(child: SizedBox(height: 20)),
-              const Text('Cropped image path:'),
-              Padding(
-                padding: const EdgeInsets.only(top: 0, left: 0, right: 0),
-                child: Text(
-                  _imagePath.toString(),
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(fontSize: 14),
-                ),
-              ),
+              // const Center(child: SizedBox(height: 20)),
+              // const Text('Cropped image path:'),
+              // Padding(
+              //   padding: const EdgeInsets.only(top: 0, left: 0, right: 0),
+              //   child: Text(
+              //     _imagePath.toString(),
+              //     textAlign: TextAlign.center,
+              //     style: const TextStyle(fontSize: 14),
+              //   ),
+              // ),
+              // Visibility(
+              //   visible: _imagePath != null,
+              //   child: ReceiptHighlightImage(
+              //     recognizedText: recognizedText,
+              //     imagePath: _imagePath,
+              //     extractedTextRects: extractedTextRects,
+              //   ),
+              // ),
               Visibility(
                 visible: _imagePath != null,
-                child: ReceiptHighlightImage(
+                child: AddReceiptTransaction(
                   recognizedText: recognizedText,
                   imagePath: _imagePath,
                   extractedTextRects: extractedTextRects,

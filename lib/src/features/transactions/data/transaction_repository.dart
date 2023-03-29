@@ -6,10 +6,13 @@ import 'package:cloud_firestore/cloud_firestore.dart'
     show FieldPath, FirebaseFirestore;
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/constants/firebase_names.dart';
 import 'package:pocketfi/src/constants/typedefs.dart';
 import 'package:pocketfi/src/features/authentication/application/user_id_provider.dart';
+import 'package:pocketfi/src/features/receipts/domain/receipt.dart';
+import 'package:pocketfi/src/features/receipts/receipt_text_rect.dart';
 import 'package:pocketfi/src/features/transactions/domain/transaction.dart';
 import 'package:pocketfi/src/features/shared/image_upload/exceptions/could_not_build_thumbnail_exception.dart';
 import 'package:pocketfi/src/features/shared/image_upload/extensions/get_image_data_aspect_ratio.dart';
@@ -68,6 +71,133 @@ class TransactionNotifier extends StateNotifier<IsLoading> {
   set isLoading(bool isLoading) => state = isLoading;
 
 // * add new transaction in AddNewTransaction
+  Future<bool> addNewReceiptTransaction({
+    required UserId userId,
+    required double amount,
+    required DateTime date,
+    required TransactionType type,
+    required String categoryName,
+    required String walletId,
+    required String walletName,
+    required String imagePath,
+    required RecognizedText recognizedText,
+    required List<ReceiptTextRect> extractedTextRects,
+    // required Receipt? receipt,
+    String? merchant,
+    String? note,
+    bool isBookmark = false,
+  }) async {
+    isLoading = true;
+
+    debugPrint('createNewTransaction()');
+
+    final transactionId = documentIdFromCurrentDate();
+    final imageFile = File(imagePath);
+
+    try {
+      final Map<String, dynamic> payload;
+      late Uint8List thumbnailUint8List;
+      // decode the image
+      final fileAsImage = img.decodeImage(imageFile.readAsBytesSync());
+      if (fileAsImage == null) {
+        isLoading = false;
+        // return false;
+        throw const CouldNotBuildThumbnailException();
+      }
+
+      // create thumbnail
+      final thumbnail = img.copyResize(
+        fileAsImage,
+        // width: Constants.imageThumbnailWidth,
+        height: ImageConstants.imageThumbnailHeight,
+      );
+      // encode the thumbnail
+      final thumbnailData = img.encodeJpg(thumbnail);
+      // convert the thumbnail to a Uint8List
+      thumbnailUint8List = Uint8List.fromList(thumbnailData);
+
+      // calculate the aspect ratio
+      final thumbnailAspectRatio = await thumbnailUint8List.getAspectRatio();
+
+      // calculate references
+      final fileName = const Uuid().v4();
+
+      // create references to the thumbnail and the image itself
+      final thumbnailRef = FirebaseStorage.instance
+          .ref()
+          .child(userId)
+          .child('transactions')
+          .child(FirebaseCollectionName.thumbnails)
+          .child(fileName);
+
+      // create references to the original file in
+      final originalFileRef = FirebaseStorage.instance
+          .ref()
+          .child(userId)
+          .child('transactions')
+          .child('images')
+          .child(fileName);
+
+      // upload the thumbnail
+      final thumbnailUploadTask =
+          await thumbnailRef.putData(thumbnailUint8List);
+      final thumbnailStorageId = thumbnailUploadTask.ref.name;
+
+      // upload the original file
+      final originalFileUploadTask = await originalFileRef.putFile(imageFile);
+      final originalFileStorageId = originalFileUploadTask.ref.name;
+
+      // set the transaction in to payload  using toJson()
+      payload = Transaction(
+        transactionId: transactionId,
+        userId: userId,
+        walletId: walletId,
+        walletName: walletName,
+        amount: amount,
+        date: date,
+        isBookmark: isBookmark,
+        type: type,
+        categoryName: categoryName,
+        description: note,
+        receipt: Receipt(
+          transactionId: transactionId,
+          amount: amount,
+          date: date,
+          // file: imageFile,
+          merchant: merchant,
+          note: note,
+          scannedText: recognizedText.text,
+          extractedTextRects: extractedTextRects,
+          transactionImage: TransactionImage(
+            transactionId: transactionId,
+            thumbnailUrl: await thumbnailRef.getDownloadURL(),
+            fileUrl: await originalFileRef.getDownloadURL(),
+            fileName: fileName,
+            aspectRatio: thumbnailAspectRatio,
+            thumbnailStorageId: thumbnailStorageId,
+            originalFileStorageId: originalFileStorageId,
+          ),
+        ),
+      ).toJson();
+
+      debugPrint('uploading new transaction..');
+      debugPrint('payload: $payload');
+
+      await FirebaseFirestore.instance
+          .collection(FirebaseCollectionName.transactions)
+          .doc(transactionId)
+          .set(payload);
+      debugPrint('Transaction added $payload');
+
+      return true;
+    } catch (e) {
+      debugPrint('Error adding transaction: $e');
+      return false;
+    } finally {
+      isLoading = false;
+    }
+  }
+
   Future<bool> addNewTransaction({
     required UserId userId,
     required double amount,
