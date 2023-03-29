@@ -44,7 +44,6 @@ class Transaction {
   final DateTime date;
   final bool isBookmark;
   final String? description;
-  final Receipt? receipt;
   // final String? thumbnailUrl; // image
   // final String? fileUrl; // image
   // final String? fileName; // image
@@ -52,6 +51,7 @@ class Transaction {
   // final String? thumbnailStorageId; // image
   // final String? originalFileStorageId; // image
   final TransactionImage? transactionImage;
+  // final Receipt? receipt;
   // final List<Tag> tags;
 
   const Transaction({
@@ -67,7 +67,7 @@ class Transaction {
     this.isBookmark = false,
     this.createdAt,
     this.transactionImage,
-    this.receipt,
+    // this.receipt,
     // this.thumbnailUrl,
     // this.fileUrl,
     // this.fileName,
@@ -102,12 +102,12 @@ class Transaction {
                   json: json[TransactionKey.transactionImage],
                 )
               : null,
-          receipt: json[TransactionKey.receipt] != null
-              ? Receipt.fromJson(
-                  transactionId: transactionId,
-                  json: json[TransactionKey.receipt],
-                )
-              : null,
+          // receipt: json[TransactionKey.receipt] != null
+          //     ? Receipt.fromJson(
+          //         transactionId: transactionId,
+          //         json: json[TransactionKey.receipt],
+          //       )
+          //     : null,
           // thumbnailUrl: json[TransactionKey.thumbnailUrl],
           // fileUrl: json[TransactionKey.fileUrl],
           // fileName: json[TransactionKey.fileName],
@@ -135,7 +135,7 @@ class Transaction {
         // TransactionKey.originalFileStorageId: originalFileStorageId,
         if (transactionImage != null)
           TransactionKey.transactionImage: transactionImage!.toJson(),
-        if (receipt != null) TransactionKey.receipt: receipt!.toJson(),
+        // if (receipt != null) TransactionKey.receipt: receipt!.toJson(),
         // TransactionKey.tags: [
         //   for (final tag in tags)
         //     {
@@ -166,7 +166,7 @@ class Transaction {
     // String? thumbnailStorageId,
     // String? originalFileStorageId,
     TransactionImage? transactionImage,
-    Receipt? receipt,
+    // Receipt? receipt,
   }) =>
       Transaction(
         transactionId: transactionId ?? this.transactionId,
@@ -189,7 +189,7 @@ class Transaction {
         // originalFileStorageId:
         //     originalFileStorageId ?? this.originalFileStorageId,
         transactionImage: transactionImage ?? this.transactionImage,
-        receipt: receipt ?? this.receipt,
+        // receipt: receipt ?? this.receipt,
       );
 }
 
@@ -211,7 +211,7 @@ class TransactionKey {
   static const thumbnailStorageId = 'thumbnail_storage_id';
   static const originalFileStorageId = 'original_file_storage_id';
   static const transactionImage = 'transaction_image';
-  static const receipt = 'receipt';
+  // static const receipt = 'receipt';
   // TODO: add tags
   static const tags = 'tags';
   // static const shared = 'shared';

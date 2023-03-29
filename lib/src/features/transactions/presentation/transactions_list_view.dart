@@ -52,15 +52,15 @@ class TransactionListView extends ConsumerWidget {
                 ref
                     .read(selectedTransactionProvider.notifier)
                     .setSelectedTransaction(transaction);
-                if (transaction.receipt?.transactionImage != null) {
-                  ref.read(imageFileProvider.notifier).setImageFile(
-                      // ! recheck this fileUrl!
-                      File(transaction.receipt!.transactionImage!.fileUrl
-                          .toString()));
+                // if (transaction.receipt?.transactionImage != null) {
+                //   ref.read(imageFileProvider.notifier).setImageFile(
+                //       // ! recheck this fileUrl!
+                //       File(transaction.receipt!.transactionImage!.fileUrl
+                //           .toString()));
 
-                  debugPrint(
-                      'imageFileProvider is ${ref.read(imageFileProvider)}');
-                }
+                //   debugPrint(
+                //       'imageFileProvider is ${ref.read(imageFileProvider)}');
+                // }
 
                 if (transaction.transactionImage?.fileUrl != null) {
                   ref.read(imageFileProvider.notifier).setImageFile(
