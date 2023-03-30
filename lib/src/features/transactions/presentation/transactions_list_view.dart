@@ -5,7 +5,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:pocketfi/src/constants/strings.dart';
 import 'package:pocketfi/src/features/shared/image_upload/data/image_file_notifier.dart';
-import 'package:pocketfi/src/features/bookmarks/application/bookmark_services.dart';
 import 'package:pocketfi/src/features/transactions/application/transaction_services.dart';
 import 'package:pocketfi/src/features/transactions/domain/transaction.dart';
 import 'package:pocketfi/src/features/transactions/presentation/transaction_card.dart';

@@ -9,7 +9,7 @@ import 'package:pocketfi/src/features/transactions/data/transaction_repository.d
 import 'package:pocketfi/src/features/transactions/date_picker/application/transaction_date_services.dart';
 import 'package:pocketfi/src/features/transactions/domain/transaction.dart';
 import 'package:pocketfi/src/features/transactions/presentation/add_new_transactions/select_transaction_type.dart';
-import 'package:pocketfi/src/features/transactions/presentation/overview/overview_month_selector.dart';
+import 'package:pocketfi/src/features/overview/presentation/overview_month_selector.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class OverviewTabView extends ConsumerWidget {
@@ -20,54 +20,11 @@ class OverviewTabView extends ConsumerWidget {
     final transactionType = ref.watch(transactionTypeProvider);
     final userTransactions = ref.watch(userTransactionsProvider);
     final screenHeight = MediaQuery.of(context).size.height;
-    // final month = DateTime.now();
     final month = ref.watch(overviewMonthProvider);
 
     List<Category> categoriesList = transactionType == TransactionType.expense
         ? ref.watch(expenseCategoriesProvider)
         : ref.watch(incomeCategoriesProvider);
-
-    // final filteredCategories = categoriesList.where(
-    //   (category) => userTransactions.when(
-    //     data: (transactions) => transactions.any(
-    //       (tran) => tran.categoryName == category.name,
-    //     ),
-    //     loading: () => false,
-    //     error: (error, stackTrace) {
-    //       debugPrint(error.toString());
-    //       return false;
-    //     },
-    //   ),
-    // );
-
-    // final filteredCategories = categoriesList.where((category) {
-    //   debugPrint(
-    //       'date of transaction is ${currentMonthTransactions.first.date}');
-    //   return currentMonthTransactions.any((tran) {
-    //     return tran.categoryName == category.name;
-    //   });
-    // }).toList();
-
-    // double getCategoryTotalAmountForCurrentMonth(
-    //     String categoryName, List<Transaction> transactions) {
-    //   final categoryTransactions = transactions.where((tran) {
-    //     return tran.categoryName == categoryName &&
-    //         tran.date.month == now.month &&
-    //         tran.date.year == now.year;
-    //   }).toList();
-    //   return getTotalAmount(categoryTransactions);
-    // }
-
-    // final currentMonthTransactions = userTransactions.when(
-    //   data: (transactions) => transactions.where((tran) {
-    //     return tran.date.month == now.month && tran.date.year == now.year;
-    //   }).toList(), // Add explicit cast here
-    //   loading: () => [] as List<Transaction>, // Add explicit cast here
-    //   error: (error, stackTrace) {
-    //     debugPrint(error.toString());
-    //     return [] as List<Transaction>; // Add explicit cast here
-    //   },
-    // );
 
     final currentMonthTransactions = userTransactions.when<List<Transaction>>(
       data: (transactions) => transactions.where((tran) {
@@ -80,23 +37,6 @@ class OverviewTabView extends ConsumerWidget {
         return [];
       },
     );
-
-    // final currentMonthTransactions = userTransactions.when(
-    //   data: (transactions) {
-    //     if (transactions is List<Transaction>) {
-    //       return transactions.where((tran) {
-    //         return tran.date.month == now.month && tran.date.year == now.year;
-    //       }).toList();
-    //     } else {
-    //       return [];
-    //     }
-    //   },
-    //   loading: () => [] as List<Transaction>,
-    //   error: (error, stackTrace) {
-    //     debugPrint(error.toString());
-    //     return [] as List<Transaction>;
-    //   },
-    // );
 
     // A function to calculate the total amount for a category in the current month
     double getCategoryTotalAmountForCurrentMonth(
@@ -178,20 +118,6 @@ class OverviewTabView extends ConsumerWidget {
                                   xValueMapper: (Category category, _) =>
                                       category.name,
                                   yValueMapper: (Category category, _) {
-                                    // return userTransactions.when(
-                                    //   data: (transactions) {
-                                    //     final categoryTransactions = transactions.where(
-                                    //         (tran) => tran.categoryName == category.name);
-                                    //     final totalAmount =
-                                    //         getTotalAmount(categoryTransactions.toList());
-                                    //     return totalAmount;
-                                    //   },
-                                    //   loading: () => 0,
-                                    //   error: (error, stackTrace) {
-                                    //     debugPrint(error.toString());
-                                    //     return 0;
-                                    //   },
-                                    // );
                                     return getCategoryTotalAmountForCurrentMonth(
                                       category.name,
                                       currentMonthTransactions,
@@ -274,76 +200,6 @@ class OverviewTabView extends ConsumerWidget {
                 ),
               ),
             ),
-            // SizedBox(
-            //   height: screenHeight * 0.9,
-            //   child: userTransactions.when(
-            //     data: (transactions) {
-            //       final categories = ref.watch(categoriesProvider);
-            //       final filteredCategories = categories
-            //           .where(
-            //             (category) => transactions.any(
-            //               (tran) => tran.categoryName == category.name,
-            //             ),
-            //           )
-            //           .toList();
-            //       filteredCategories.sort((a, b) {
-            //         final aTransactions = transactions
-            //             .where((tran) => tran.categoryName == a.name)
-            //             .toList();
-            //         final bTransactions = transactions
-            //             .where((tran) => tran.categoryName == b.name)
-            //             .toList();
-            //         final aTotalAmount = getTotalAmount(aTransactions);
-            //         final bTotalAmount = getTotalAmount(bTransactions);
-            //         return bTotalAmount.compareTo(aTotalAmount);
-            //       });
-            //       // return ListView.builder(
-            //       //   physics: const NeverScrollableScrollPhysics(),
-            //       //   itemCount: filteredCategories.length,
-            //       //   itemBuilder: (context, index) {
-            //       //     final category = filteredCategories[index];
-            //       //     final categoryTransactions = transactions
-            //       //         .where((tran) => tran.categoryName == category.name)
-            //       //         .toList();
-            //       //     final totalAmount = getTotalAmount(categoryTransactions);
-            //       //     final numTransactions = categoryTransactions.length;
-            //       //     final percentage =
-            //       //         totalAmount / getTotalAmount(transactions.toList());
-            //       //     return CategoryListTile(
-            //       //       category: category.name,
-            //       //       icon: category.icon,
-            //       //       totalAmount: totalAmount,
-            //       //       color: category.color,
-            //       //       numTransactions: numTransactions,
-            //       //       percentage: percentage.toStringAsFixed(2),
-            //       //     );
-            //       //   },
-            //       // );
-            //       return ListView.builder(
-            //         physics: const NeverScrollableScrollPhysics(),
-            //         itemCount: filteredCategories.length,
-            //         itemBuilder: (context, index) {
-            //           final category = filteredCategories[index];
-            //           return CategoryListTile(
-            //             category: category.name,
-            //             icon: category.icon,
-            //             color: category.color,
-            //             currentMonthTransactions: currentMonthTransactions,
-            //           );
-            //         },
-            //       );
-            //     },
-            //     loading: () => const Center(
-            //       child: CircularProgressIndicator(),
-            //     ),
-            //     error: (error, stackTrace) {
-            //       debugPrint(error.toString());
-            //       return const Center(
-            //         child: Text('Error'),
-            //       );
-            //     },
-            //   ),
-            // ),
             SizedBox(height: screenHeight * 0.3)
           ],
         ),
@@ -357,79 +213,7 @@ class OverviewTabView extends ConsumerWidget {
       (previousValue, element) => previousValue + element.amount,
     );
   }
-
-  // double getTotalAmountOfAllTransactions(List<Transaction> transactions) {
-  //   return transactions.fold(0, (sum, transaction) => sum + transaction.amount);
-  // }
 }
-
-// class CategoryListTile extends StatelessWidget {
-//   const CategoryListTile({
-//     super.key,
-//     required this.category,
-//     required this.totalAmount,
-//     required this.icon,
-//     required this.color,
-//     required this.numTransactions,
-//     required this.percentage,
-//   });
-
-//   final String percentage;
-//   final String category;
-//   final double totalAmount;
-//   final Icon icon;
-//   final Color color;
-//   final int numTransactions;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     final amountStr = '-MYR ${totalAmount.toStringAsFixed(2)}';
-//     return GestureDetector(
-//       onTap: () {
-//         // navigate to category details
-//       },
-//       child: Padding(
-//         padding: const EdgeInsets.all(8.0),
-//         child: Row(
-//           children: [
-//             CircleAvatar(
-//               backgroundColor: color,
-//               child: icon,
-//             ),
-//             const SizedBox(width: 12.0),
-//             Column(
-//               mainAxisAlignment: MainAxisAlignment.start,
-//               crossAxisAlignment: CrossAxisAlignment.start,
-//               children: [
-//                 Text(
-//                   category,
-//                   style: const TextStyle(fontSize: 16),
-//                 ),
-//                 Text(
-//                   '$numTransactions transactions',
-//                   style: const TextStyle(
-//                     fontSize: 14,
-//                     color: Colors.grey,
-//                   ),
-//                 ),
-//               ],
-//             ),
-//             const Spacer(),
-//             Text(
-//               // percentage.toString(),
-//               amountStr,
-//               style: const TextStyle(
-//                 fontSize: 16,
-//                 fontWeight: FontWeight.w400,
-//                 color: Colors.red,
-//               ),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
 
 class CategoryListTile extends StatelessWidget {
   const CategoryListTile({
@@ -449,18 +233,6 @@ class CategoryListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final categoryTransactions = currentMonthTransactions
-    //     .where((tran) => tran.categoryName == category)
-    //     .toList();
-    // final numTransactions = categoryTransactions.length;
-    // final totalAmount = getTotalAmount(categoryTransactions);
-    // final totalAmountAllCategories = getTotalAmount(currentMonthTransactions);
-    // final percentage = totalAmountAllCategories > 0
-    //     ? totalAmount / totalAmountAllCategories
-    //     : 0.0;
-    // final percentageStr = '${(percentage * 100).toStringAsFixed(1)}%';
-    // final amountStr = '-MYR ${totalAmount.toStringAsFixed(2)}';
-
     final transactionsOfType =
         currentMonthTransactions.where((tran) => tran.type == type).toList();
 
@@ -504,7 +276,7 @@ class CategoryListTile extends StatelessWidget {
               children: [
                 Text(
                   categoryName,
-                  style: const TextStyle(fontSize: 16),
+                  style: const TextStyle(fontSize: 14),
                 ),
                 Text(
                   // if numTransactions is more than 1 then plural

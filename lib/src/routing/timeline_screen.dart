@@ -19,7 +19,7 @@ import 'package:pocketfi/src/features/shared/image_upload/data/image_file_notifi
 import 'package:pocketfi/src/features/bills/presentation/bills_tab_view.dart';
 import 'package:pocketfi/src/features/bookmarks/presentation/bookmark_page.dart';
 import 'package:pocketfi/src/features/transactions/domain/transaction.dart';
-import 'package:pocketfi/src/features/transactions/presentation/overview_tab_view.dart';
+import 'package:pocketfi/src/features/overview/presentation/overview_tab_view.dart';
 import 'package:pocketfi/src/features/receipts/scan_receipt_page.dart';
 import 'package:pocketfi/src/features/receipts/scanning_test.dart';
 import 'package:pocketfi/src/features/shared/image_upload/helpers/image_picker_helper.dart';
