@@ -1,10 +1,9 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart' show immutable;
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
-import 'package:pocketfi/src/features/receipts/receipt_text_rect.dart';
+import 'package:pocketfi/src/features/receipts/domain/receipt_text_rect.dart';
 import 'package:pocketfi/src/features/transactions/domain/transaction.dart';
 import 'package:pocketfi/src/features/transactions/domain/transaction_image.dart';
 

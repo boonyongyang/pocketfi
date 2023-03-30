@@ -17,7 +17,7 @@ import 'package:pocketfi/src/constants/app_icons.dart';
 import 'package:pocketfi/src/constants/strings.dart';
 import 'package:pocketfi/src/features/authentication/application/user_id_provider.dart';
 import 'package:pocketfi/src/features/receipts/application/receipt_services.dart';
-import 'package:pocketfi/src/features/receipts/receipt_text_rect.dart';
+import 'package:pocketfi/src/features/receipts/domain/receipt_text_rect.dart';
 import 'package:pocketfi/src/features/receipts/scanned_text_page.dart';
 import 'package:pocketfi/src/features/wallets/application/wallet_services.dart';
 import 'package:pocketfi/src/features/wallets/domain/wallet.dart';

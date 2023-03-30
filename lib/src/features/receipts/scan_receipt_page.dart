@@ -13,7 +13,7 @@ import 'package:pocketfi/src/features/receipts/add_receipt_transaction.dart';
 import 'package:pocketfi/src/features/shared/image_upload/data/image_file_notifier.dart';
 import 'package:pocketfi/src/features/receipts/receipt_highlight_image.dart';
 import 'package:pocketfi/src/features/receipts/scanned_text_page.dart';
-import 'package:pocketfi/src/features/receipts/receipt_text_rect.dart';
+import 'package:pocketfi/src/features/receipts/domain/receipt_text_rect.dart';
 
 class ScanReceiptPage extends StatefulHookConsumerWidget {
   const ScanReceiptPage({

@@ -251,7 +251,7 @@ enum IncomeCategory {
   business(
     name: "Business",
     icons: Icon(
-      Icons.attach_money,
+      Icons.business,
       color: AppColors.white,
     ),
     color: AppColors.business,

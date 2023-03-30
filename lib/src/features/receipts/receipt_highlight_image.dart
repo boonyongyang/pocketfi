@@ -11,7 +11,7 @@ import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/features/category/application/category_services.dart';
 import 'package:pocketfi/src/features/receipts/add_transaction_with_receipt.dart';
 import 'package:pocketfi/src/features/receipts/domain/receipt.dart';
-import 'package:pocketfi/src/features/receipts/receipt_text_rect.dart';
+import 'package:pocketfi/src/features/receipts/domain/receipt_text_rect.dart';
 import 'package:pocketfi/src/features/receipts/scanned_text_page.dart';
 import 'package:pocketfi/src/features/transactions/date_picker/application/transaction_date_services.dart';
 import 'package:pocketfi/src/features/transactions/date_picker/presentation/transaction_date_picker.dart';
