@@ -85,7 +85,8 @@ class _UpdateSavingGoalViewState extends ConsumerState<UpdateSavingGoalView> {
                       userId: widget.savingGoal.userId,
                     );
                 if (mounted) {
-                  Navigator.of(context).maybePop();
+                  Navigator.pop(context);
+                  Navigator.pop(context);
                 }
               }
             },
@@ -311,9 +312,13 @@ class _UpdateSavingGoalViewState extends ConsumerState<UpdateSavingGoalView> {
                       savingGoalName,
                       savingGoalAmount,
                       widget.savingGoal,
-                      _selectedDateRange!
-                          .start, // !! issue: on update, must click in select date range button to not get null
-                      _selectedDateRange!.end,
+                      _selectedDateRange == null
+                          ? widget.savingGoal.startDate
+                          : _selectedDateRange!.start,
+                      // !! issue: on update, must click in select date range button to not get null
+                      _selectedDateRange == null
+                          ? widget.savingGoal.dueDate
+                          : _selectedDateRange!.end,
                       // ref.watch(transactionDateProvider),
                       // selectedWallet!,
                       ref,
@@ -354,6 +359,7 @@ class _UpdateSavingGoalViewState extends ConsumerState<UpdateSavingGoalView> {
     if (isCreated && mounted) {
       savingGoalName.clear();
       savingGoalAmount.clear();
+      Navigator.pop(context);
       Navigator.pop(context);
     }
   }

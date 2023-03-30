@@ -33,6 +33,30 @@ final userSavingGoalsProvider =
   return controller.stream;
 });
 
+final totalAmountProvider = StreamProvider.autoDispose<double>((ref) {
+  final userId = ref.watch(userIdProvider);
+  final controller = StreamController<double>();
+  final sub = FirebaseFirestore.instance
+      .collection(FirebaseCollectionName.savingGoals)
+      .where(FirebaseFieldName.userId, isEqualTo: userId)
+      .snapshots()
+      .listen((snapshot) {
+    final document = snapshot.docs;
+    final budgets = document.map(
+      (doc) => SavingGoal.fromJson(doc.data()).savingGoalAmount,
+    );
+    var totalAmount =
+        budgets.fold(0.00, (previousValue, element) => previousValue + element);
+    controller.sink.add(totalAmount);
+  });
+
+  ref.onDispose(() {
+    sub.cancel();
+    controller.close();
+  });
+  return controller.stream;
+});
+
 class SavingGoalNotifier extends StateNotifier<IsLoading> {
   SavingGoalNotifier() : super(false);
 

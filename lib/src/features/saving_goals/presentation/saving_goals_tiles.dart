@@ -191,7 +191,7 @@ class SavingGoalsTiles extends ConsumerWidget {
                                   //   ),
                                   // ),
                                   Text(
-                                    'MYR ${savingGoal.savingGoalCurrentAmount.toStringAsFixed(2)}',
+                                    'MYR ${savingGoal.savingGoalSavedAmount.toStringAsFixed(2)}',
                                     style: const TextStyle(
                                       color: AppColors.mainColor1,
                                       fontSize: 15,

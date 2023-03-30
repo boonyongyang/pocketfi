@@ -17,6 +17,7 @@ class SavingGoalsPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final savingGoals = ref.watch(userSavingGoalsProvider);
+    final totalSavingGoalsAmount = ref.watch(totalAmountProvider).value;
     return RefreshIndicator(
       onRefresh: () async {
         ref.refresh(userSavingGoalsProvider);
@@ -36,8 +37,8 @@ class SavingGoalsPage extends ConsumerWidget {
                     child: Column(
                       children: [
                         Row(
-                          children: const [
-                            Text(
+                          children: [
+                            const Text(
                               'Total',
                               style: TextStyle(
                                 color: AppColors.mainColor1,
@@ -45,12 +46,12 @@ class SavingGoalsPage extends ConsumerWidget {
                                 fontSize: 20,
                               ),
                             ),
-                            Spacer(),
+                            const Spacer(),
                             // Calculation part
                             Text(
                               // 'RM XX.XX',
-                              'RM XXX.XX',
-                              style: TextStyle(
+                              'RM ${totalSavingGoalsAmount?.toStringAsFixed(2)}',
+                              style: const TextStyle(
                                 color: AppColors.mainColor1,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 20,
@@ -95,8 +96,10 @@ class SavingGoalsPage extends ConsumerWidget {
                           return SavingGoalsTiles(
                             savingGoal: savingGoal,
                             onTap: () {
-                              Navigator.push(
+                              Navigator.of(
                                 context,
+                                rootNavigator: true,
+                              ).push(
                                 MaterialPageRoute(
                                   builder: (_) => SavingGoalDetailView(
                                     savingGoal: savingGoal,

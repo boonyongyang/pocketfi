@@ -272,6 +272,7 @@ class _PaidDebtSheetState extends ConsumerState<PaidDebtSheet> {
                 widget.debtPayment.debtId,
                 widget.debtPayment.debtPaymentId,
                 widget.debtPayment.walletId,
+                widget.debtPayment.transactionId,
                 ref,
               );
               // _addPaidDebt(
@@ -307,6 +308,7 @@ class _PaidDebtSheetState extends ConsumerState<PaidDebtSheet> {
     String debtId,
     String debtPaymentId,
     String walletId,
+    String transactionId,
     WidgetRef ref,
   ) async {
     // await _debtRepository.addPaidDebt(debt);
@@ -315,13 +317,14 @@ class _PaidDebtSheetState extends ConsumerState<PaidDebtSheet> {
       return;
     }
 
-    final isCreated = await ref
-        .read(debtPaymentProvider.notifier)
-        .deletePaidDebt(
-            debtId: debtId,
-            userId: userId,
-            debtPaymentId: debtPaymentId,
-            walletId: walletId);
+    final isCreated =
+        await ref.read(debtPaymentProvider.notifier).deletePaidDebt(
+              debtId: debtId,
+              userId: userId,
+              debtPaymentId: debtPaymentId,
+              transactionId: transactionId,
+              walletId: walletId,
+            );
     if (isCreated && mounted) {
       Navigator.pop(context);
     }
