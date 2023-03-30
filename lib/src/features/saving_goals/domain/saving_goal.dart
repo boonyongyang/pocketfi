@@ -55,21 +55,22 @@ class SavingGoal {
 
   double calculateSavingsPerDay() {
     double amountToSavePerDay = 0;
+    double remainingAmountToSave = savingGoalAmount - savingGoalSavedAmount;
     DateTime todayDate = DateTime.now();
     if (todayDate.difference(startDate).inDays == 0) {
       final differenceInDays = dueDate.difference(startDate).inDays;
 
-      return savingGoalAmount / differenceInDays;
+      return remainingAmountToSave / differenceInDays;
     } else if (todayDate.isAfter(startDate) && todayDate.isBefore(dueDate)) {
       final differenceInDaysToday = todayDate.difference(startDate).inDays;
 
-      return savingGoalAmount / differenceInDaysToday;
+      return remainingAmountToSave / differenceInDaysToday;
     } else if (startDate.difference(todayDate).inDays < 0) {
       return 0;
     }
 
     if (todayDate.difference(dueDate).inDays == 1) {
-      return savingGoalAmount - savingGoalSavedAmount;
+      return remainingAmountToSave;
     }
     return amountToSavePerDay;
   }
@@ -78,23 +79,24 @@ class SavingGoal {
     double amountToSavePerWeek = 0;
     int daysInAWeek = 7;
     DateTime todayDate = DateTime.now();
+    double remainingAmountToSave = savingGoalAmount - savingGoalSavedAmount;
 
     // int daysInAMonth = 30;
 
     if (todayDate.difference(startDate).inDays == 0) {
       final differenceInWeeks =
           dueDate.difference(startDate).inDays / daysInAWeek;
-      return savingGoalAmount / differenceInWeeks;
+      return remainingAmountToSave / differenceInWeeks;
     } else if (todayDate.isAfter(startDate) && todayDate.isBefore(dueDate)) {
       final differenceInWeeksToday =
           todayDate.difference(startDate).inDays / daysInAWeek;
-      return savingGoalAmount / differenceInWeeksToday;
+      return remainingAmountToSave / differenceInWeeksToday;
     } else if (startDate.difference(todayDate).inDays < 0) {
       return 0;
     }
 
     if (todayDate.difference(dueDate).inDays == 1) {
-      return (savingGoalAmount - savingGoalSavedAmount) / daysInAWeek;
+      return remainingAmountToSave / daysInAWeek;
     }
     return amountToSavePerWeek;
   }
@@ -102,6 +104,7 @@ class SavingGoal {
   double calculateSavingsPerMonth() {
     double amountToSavePerMonth = 0;
     DateTime todayDate = DateTime.now();
+    double remainingAmountToSave = savingGoalAmount - savingGoalSavedAmount;
 
     // int daysInAWeek = 7;
     int daysInAMonth = 30;
@@ -109,24 +112,52 @@ class SavingGoal {
     if (todayDate.difference(startDate).inDays == 0) {
       final differenceInMonths =
           dueDate.difference(startDate).inDays / daysInAMonth;
-      return savingGoalAmount / differenceInMonths;
+      return remainingAmountToSave / differenceInMonths;
     } else if (todayDate.isAfter(startDate) && todayDate.isBefore(dueDate)) {
       final differenceInMonthsToday =
           todayDate.difference(startDate).inDays / daysInAMonth;
-      return savingGoalAmount / differenceInMonthsToday;
+      return remainingAmountToSave / differenceInMonthsToday;
     } else if (startDate.difference(todayDate).inDays < 0) {
       return 0;
     }
 
     if (todayDate.difference(dueDate).inDays == 1) {
-      return (savingGoalAmount - savingGoalSavedAmount) / daysInAMonth;
+      return remainingAmountToSave / daysInAMonth;
     }
     return amountToSavePerMonth;
   }
 
+  String daysLeft() {
+    DateTime todayDate = DateTime.now();
+    // Duration duration = dueDate.difference(todayDate);
+    // // final differenceInDays = dueDate.difference(todayDate).inDays;
+    String remainingTime;
+    Duration duration = dueDate.difference(todayDate);
+    int days = duration.inDays;
+    int years = (days / 365).floor();
+    int remainingDays = days - (years * 365);
+    int months = (remainingDays / 30).floor();
+    remainingDays -= months * 30;
+
+    if (days > 30) {
+      remainingTime = '$months months $remainingDays days';
+    } else if (days > 0) {
+      remainingTime = '$days days';
+    } else {
+      remainingTime = 'Due date has passed';
+    }
+
+    if (years > 0) {
+      remainingTime = '$years years $months months $remainingDays days';
+    }
+
+    return remainingTime;
+  }
+
   int calculateDaysLeft() {
     DateTime todayDate = DateTime.now();
-    final differenceInDays = dueDate.difference(todayDate).inDays;
-    return differenceInDays;
+    Duration duration = dueDate.difference(todayDate);
+    int days = duration.inDays;
+    return days;
   }
 }

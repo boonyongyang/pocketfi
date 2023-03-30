@@ -6,6 +6,7 @@ import 'package:pocketfi/src/constants/firebase_names.dart';
 import 'package:pocketfi/src/constants/typedefs.dart';
 import 'package:pocketfi/src/features/authentication/application/user_id_provider.dart';
 import 'package:pocketfi/src/features/saving_goals/domain/saving_goal.dart';
+import 'package:pocketfi/src/features/saving_goals/domain/saving_goal_history.dart';
 import 'package:pocketfi/src/utils/document_id_from_current_date.dart';
 
 final userSavingGoalsProvider =
@@ -27,6 +28,31 @@ final userSavingGoalsProvider =
         .map((e) => SavingGoal.fromJson(e.data()))
         .toList();
     controller.add(savingGoals);
+  });
+
+  ref.onDispose(sub.cancel);
+  return controller.stream;
+});
+final userSavingGoalsHistoryProvider = StreamProvider.autoDispose
+    .family<Iterable<SavingGoalHistory>, String>((ref, String savingGoalId) {
+  final userId = ref.watch(userIdProvider);
+  final controller = StreamController<Iterable<SavingGoalHistory>>();
+
+  final sub = FirebaseFirestore.instance
+      .collection(FirebaseCollectionName.savingGoalsHistory)
+      .where(FirebaseFieldName.userId, isEqualTo: userId)
+      .where(FirebaseFieldName.savingGoalId, isEqualTo: savingGoalId)
+      .snapshots()
+      .listen((snapshot) {
+    final document = snapshot.docs;
+    final savingGoalsHistory = document
+        .where(
+          //   (element) => element.data()[FirebaseFieldName.userId] == userId,
+          (doc) => !doc.metadata.hasPendingWrites,
+        )
+        .map((e) => SavingGoalHistory.fromJson(e.data()))
+        .toList();
+    controller.add(savingGoalsHistory);
   });
 
   ref.onDispose(sub.cancel);
@@ -80,6 +106,26 @@ final totalSavedAmountProvider = StreamProvider.autoDispose<double>((ref) {
   });
   return controller.stream;
 });
+
+// final savingProvider = FutureProvider.family.autoDispose<SavingGoal, String>(
+//   (ref, String savingGoalId) async {
+//     final snapshot = await FirebaseFirestore.instance
+//         .collection(FirebaseCollectionName.savingGoals)
+//         .where(FirebaseFieldName.savingGoalId, isEqualTo: savingGoalId)
+//         // .doc(savingGoal.savingGoalId)
+//         .limit(1)
+//         .get();
+
+//     final document = snapshot.docs;
+//     final savingGoal = document
+//         .map(
+//           (doc) => SavingGoal.fromJson(doc.data()),
+//         )
+//         .first;
+
+//     return savingGoal;
+//   },
+// );
 
 class SavingGoalNotifier extends StateNotifier<IsLoading> {
   SavingGoalNotifier() : super(false);
@@ -178,6 +224,8 @@ class SavingGoalNotifier extends StateNotifier<IsLoading> {
   Future<bool> depositSavingGoalAmount({
     required String savingGoalId,
     required double amount,
+    required UserId userId,
+    required String walletId,
   }) async {
     isLoading = true;
 
@@ -196,6 +244,23 @@ class SavingGoalNotifier extends StateNotifier<IsLoading> {
       }
     });
 
+    final savingGoalHistoryId = documentIdFromCurrentDate();
+
+    final historyPayload = SavingGoalHistory(
+      savingGoalHistoryId: savingGoalHistoryId,
+      savingGoalId: savingGoalId,
+      savingGoalEnterAmount: amount,
+      savingGoalStatus: SavingGoalStatus.deposit.name,
+      savingGoalEnterDate: DateTime.now(),
+      userId: userId,
+      walletId: walletId,
+    ).toJson();
+
+    await FirebaseFirestore.instance
+        .collection(FirebaseCollectionName.savingGoalsHistory)
+        .doc(savingGoalHistoryId)
+        .set(historyPayload);
+
     isLoading = false;
     return true;
   }
@@ -203,6 +268,8 @@ class SavingGoalNotifier extends StateNotifier<IsLoading> {
   Future<bool> withdrawSavingGoalAmount({
     required String savingGoalId,
     required double amount,
+    required UserId userId,
+    required String walletId,
   }) async {
     isLoading = true;
 
@@ -220,6 +287,23 @@ class SavingGoalNotifier extends StateNotifier<IsLoading> {
         });
       }
     });
+
+    final savingGoalHistoryId = documentIdFromCurrentDate();
+
+    final historyPayload = SavingGoalHistory(
+      savingGoalHistoryId: savingGoalHistoryId,
+      savingGoalId: savingGoalId,
+      savingGoalEnterAmount: amount,
+      savingGoalStatus: SavingGoalStatus.withdraw.name,
+      savingGoalEnterDate: DateTime.now(),
+      userId: userId,
+      walletId: walletId,
+    ).toJson();
+
+    await FirebaseFirestore.instance
+        .collection(FirebaseCollectionName.savingGoalsHistory)
+        .doc(savingGoalHistoryId)
+        .set(historyPayload);
 
     isLoading = false;
     return true;

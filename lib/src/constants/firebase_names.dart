@@ -62,6 +62,7 @@ class FirebaseFieldName {
   static const savingGoalHistoryId = 'saving_goal_history_id';
   static const savingGoalSavedAmount = 'saving_goal_saved_amount';
   static const savingGoalSavedDate = 'saving_goal_saved_date';
+  static const savingGoalStatus = 'saving_goal_status';
 
   const FirebaseFieldName._(); // private constructor
 }
@@ -91,6 +92,7 @@ class FirebaseCollectionName {
   static const debtPayments = 'debt_payments';
 
   static const savingGoals = 'saving_goals';
+  static const savingGoalsHistory = 'saving_goals_history';
 
   const FirebaseCollectionName._(); // private constructor
 }

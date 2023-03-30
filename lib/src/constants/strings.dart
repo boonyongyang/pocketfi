@@ -119,6 +119,10 @@ class Strings {
   static const savingGoalName = 'Saving Goal Name';
   static const noSavingGoalsYet = 'No saving goals available yet';
   static const confirm = 'Confirm';
+  static const withdraw = 'Withdraw';
+  static const deposit = 'Deposit';
+  static const noSavingGoalsHistoryYet =
+      'No saving goals history available yet';
 
   // * account
   static const account = 'Account';
