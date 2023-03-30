@@ -18,6 +18,13 @@ class SavingGoalsPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final savingGoals = ref.watch(userSavingGoalsProvider);
     final totalSavingGoalsAmount = ref.watch(totalAmountProvider).value;
+    final totalSavedAmount = ref.watch(totalSavedAmountProvider).value;
+    if (totalSavedAmount == null || totalSavingGoalsAmount == null) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+    final totalAmountLeft = totalSavingGoalsAmount - totalSavedAmount;
     return RefreshIndicator(
       onRefresh: () async {
         ref.refresh(userSavingGoalsProvider);
@@ -50,7 +57,7 @@ class SavingGoalsPage extends ConsumerWidget {
                             // Calculation part
                             Text(
                               // 'RM XX.XX',
-                              'RM ${totalSavingGoalsAmount?.toStringAsFixed(2)}',
+                              'MYR ${totalSavingGoalsAmount.toStringAsFixed(2)}',
                               style: const TextStyle(
                                 color: AppColors.mainColor1,
                                 fontWeight: FontWeight.bold,
@@ -64,12 +71,29 @@ class SavingGoalsPage extends ConsumerWidget {
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
-                          children: const [
+                          children: [
                             // Calculation part
                             Text(
-                              'RM XX.XX left',
-                              style: TextStyle(
-                                color: AppColors.mainColor2,
+                              'MYR ${totalSavedAmount.toStringAsFixed(2)}',
+                              style: const TextStyle(
+                                color: AppColors.green,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            // Calculation part
+                            Text(
+                              'MYR ${totalAmountLeft.toStringAsFixed(2)}',
+                              style: const TextStyle(
+                                color: AppColors.red,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 20,
                               ),

@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:pocketfi/src/common_widgets/buttons/full_width_button_with_text.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
+import 'package:pocketfi/src/features/saving_goals/application/saving_goal_services.dart';
 import 'package:pocketfi/src/features/saving_goals/domain/saving_goal.dart';
 import 'package:pocketfi/src/features/saving_goals/presentation/deposit_sheet.dart';
 
@@ -33,6 +34,7 @@ class _SavingGoalOverviewViewState
     int days = calculateDaysLeft % 30; // get the remaining days
 
     final amountToSave = useTextEditingController();
+    final amountToWithdraw = useTextEditingController();
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -365,12 +367,17 @@ class _SavingGoalOverviewViewState
                                   TextButton(
                                     onPressed: () {
                                       Navigator.of(context).pop();
+//
                                     },
                                     child: const Text('Cancel'),
                                   ),
                                   TextButton(
                                     onPressed: () {
-                                      Navigator.of(context).pop();
+                                      addDeposit(
+                                        amountToSave,
+                                        widget.savingGoal,
+                                        ref,
+                                      );
                                     },
                                     child: const Text('Confirm',
                                         style: TextStyle(
@@ -421,7 +428,7 @@ class _SavingGoalOverviewViewState
                                   ),
                                 ),
                                 content: TextField(
-                                  controller: amountToSave,
+                                  controller: amountToWithdraw,
                                   keyboardType: TextInputType.number,
                                   decoration: const InputDecoration(
                                     labelText: 'Enter amount',
@@ -440,7 +447,21 @@ class _SavingGoalOverviewViewState
                                   ),
                                   TextButton(
                                     onPressed: () {
-                                      Navigator.of(context).pop();
+                                      double.parse(amountToWithdraw.text) <=
+                                              widget.savingGoal
+                                                  .savingGoalSavedAmount
+                                          ? withdrawal(
+                                              amountToWithdraw,
+                                              widget.savingGoal,
+                                              ref,
+                                            )
+                                          : ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                              const SnackBar(
+                                                content: Text(
+                                                    'Insufficient Balance'),
+                                              ),
+                                            );
                                     },
                                     child: const Text('Confirm',
                                         style: TextStyle(
@@ -469,5 +490,65 @@ class _SavingGoalOverviewViewState
         ),
       ),
     );
+  }
+
+  Future<void> addDeposit(
+    TextEditingController amountToDeposit,
+    SavingGoal savingGoal,
+    WidgetRef ref,
+  ) async {
+    final isUpdated =
+        await ref.read(savingGoalProvider.notifier).depositSavingGoalAmount(
+              savingGoalId: savingGoal.savingGoalId,
+              amount: double.parse(amountToDeposit.text),
+            );
+
+    if (isUpdated && mounted) {
+      Navigator.of(context).pop();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Deposit successful!'),
+        ),
+      );
+    }
+    debugPrint('isUpdated: $isUpdated');
+    if (!isUpdated && mounted) {
+      Navigator.of(context).pop();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Deposit failed!'),
+        ),
+      );
+    }
+  }
+
+  Future<void> withdrawal(
+    TextEditingController amountToWithdraw,
+    SavingGoal savingGoal,
+    WidgetRef ref,
+  ) async {
+    final isUpdated =
+        await ref.read(savingGoalProvider.notifier).withdrawSavingGoalAmount(
+              savingGoalId: savingGoal.savingGoalId,
+              amount: double.parse(amountToWithdraw.text),
+            );
+
+    if (isUpdated && mounted) {
+      Navigator.of(context).pop();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Withdraw successful!'),
+        ),
+      );
+    }
+    debugPrint('isUpdated: $isUpdated');
+    if (!isUpdated && mounted) {
+      Navigator.of(context).pop();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Withdraw failed!'),
+        ),
+      );
+    }
   }
 }
