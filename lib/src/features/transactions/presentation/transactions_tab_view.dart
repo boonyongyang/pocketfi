@@ -28,7 +28,7 @@ class TransactionsTabView extends ConsumerWidget {
         data: (trans) {
           if (trans.isEmpty) {
             return const EmptyContentsWithTextAnimationView(
-              text: Strings.youHaveNoPosts,
+              text: Strings.youHaveNoRecords,
             );
           } else {
             return TransactionListView(

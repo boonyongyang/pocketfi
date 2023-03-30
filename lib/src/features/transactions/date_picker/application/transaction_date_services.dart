@@ -64,6 +64,24 @@ class TransactionDateNotifier extends StateNotifier<DateTime> {
   }
 }
 
+// * this is for Overview Month Selection for month only
+final overviewMonthProvider =
+    StateNotifierProvider<OverviewMonthNotifier, DateTime>(
+  (ref) => OverviewMonthNotifier(),
+);
+
+class OverviewMonthNotifier extends StateNotifier<DateTime> {
+  OverviewMonthNotifier() : super(DateTime.now());
+
+  void setMonth(DateTime date) {
+    state = date;
+  }
+
+  resetMonth() {
+    state = DateTime.now();
+  }
+}
+
 // * this is for
 // final getDateProvider =
 //     StateNotifierProvider.family<DateNotifier, DateTime, DateTime?>(

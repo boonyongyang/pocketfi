@@ -8,6 +8,7 @@ import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:path/path.dart' show join;
 import 'package:path_provider/path_provider.dart';
 import 'package:pocketfi/src/common_widgets/dialogs/alert_dialog_model.dart';
@@ -17,6 +18,7 @@ import 'package:pocketfi/src/constants/strings.dart';
 import 'package:pocketfi/src/features/shared/image_upload/data/image_file_notifier.dart';
 import 'package:pocketfi/src/features/bills/presentation/bills_tab_view.dart';
 import 'package:pocketfi/src/features/bookmarks/presentation/bookmark_page.dart';
+import 'package:pocketfi/src/features/transactions/domain/transaction.dart';
 import 'package:pocketfi/src/features/transactions/presentation/overview_tab_view.dart';
 import 'package:pocketfi/src/features/receipts/scan_receipt_page.dart';
 import 'package:pocketfi/src/features/receipts/scanning_test.dart';
@@ -37,8 +39,34 @@ class TimelinePage extends ConsumerStatefulWidget {
 
 class _MainViewState extends ConsumerState<TimelinePage>
     with AutomaticKeepAliveClientMixin<TimelinePage> {
+  double getTotalAmount() {
+    final transactions = ref.watch(userTransactionsProvider).value;
+    double total = 0.0;
+    if (transactions != null) {
+      for (Transaction transaction in transactions) {
+        if (transaction.type == TransactionType.expense) {
+          total -= transaction.amount;
+        } else if (transaction.type == TransactionType.income) {
+          total += transaction.amount;
+        }
+      }
+    }
+    return total;
+  }
+
+  String getNetAmountString() {
+    double netAmount = getTotalAmount();
+    String sign = netAmount < 0 ? '-' : '';
+    String formattedAmount = NumberFormat.currency(
+      symbol: 'MYR ',
+      decimalDigits: 2,
+    ).format(netAmount.abs());
+    return '$sign$formattedAmount';
+  }
+
   @override
   Widget build(BuildContext context) {
+    String netAmount = getNetAmountString();
     super.build(context);
     return DefaultTabController(
       length: 3,
@@ -90,16 +118,16 @@ class _MainViewState extends ConsumerState<TimelinePage>
                 ),
                 Center(
                   child: Column(
-                    children: const [
+                    children: [
                       Text(
-                        // Strings.appName,
-                        '- MYR 3,250.50',
-                        style: TextStyle(
+                        // '- MYR 3,250.50',
+                        netAmount,
+                        style: const TextStyle(
                           fontSize: 20,
                           color: Colors.white,
                         ),
                       ),
-                      Padding(
+                      const Padding(
                         padding: EdgeInsets.only(top: 4.0),
                         child: Text(
                           'Cash Flow',
