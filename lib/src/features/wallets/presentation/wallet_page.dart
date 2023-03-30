@@ -10,6 +10,8 @@ import 'package:pocketfi/src/features/wallets/data/wallet_repository.dart';
 import 'package:pocketfi/src/features/wallets/presentation/update_wallet.dart';
 import 'package:pocketfi/src/features/wallets/presentation/wallet_tiles.dart';
 
+import 'add_new_wallet.dart';
+
 class WalletPage extends ConsumerWidget {
   // final Iterable<Wallet> wallets;
   // final Wallet wallet;
@@ -115,7 +117,13 @@ class WalletPage extends ConsumerWidget {
                 alignment: Alignment.bottomCenter,
                 child: FullWidthButtonWithText(
                   text: Strings.createNewWallet,
-                  onPressed: () => context.beamToNamed('createNewWallet'),
+                  onPressed: () {
+                    Navigator.of(context, rootNavigator: true).push(
+                      MaterialPageRoute(
+                        builder: (context) => const AddNewWallet(),
+                      ),
+                    );
+                  },
                 ),
                 // Padding(
                 //   padding: EdgeInsets.all(8.0),

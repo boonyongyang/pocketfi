@@ -196,6 +196,7 @@ class _UpdateDebtViewState extends ConsumerState<UpdateDebt> {
                           decoration: const InputDecoration(
                             labelText: 'Debt Name',
                           ),
+                          autofocus: true,
                         ),
                       ),
                     ),

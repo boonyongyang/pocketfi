@@ -102,6 +102,7 @@ class _AddDebtViewState extends ConsumerState<AddNewDebt> {
                           decoration: const InputDecoration(
                             labelText: 'Debt Name',
                           ),
+                          autofocus: true,
                         ),
                       ),
                     ),

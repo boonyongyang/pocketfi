@@ -16,11 +16,11 @@ class DebtHistoryView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final debtPayments = ref.watch(userDebtPaymentsProvider(debt));
+    final debtPayments = ref.watch(userDebtPaymentsProvider);
     var totalAmountPaid = 0.0;
     var totalInterestPaid = 0.0;
 
-    final debtPaymentsList = ref.watch(userDebtPaymentsProvider(debt)).value;
+    final debtPaymentsList = ref.watch(userDebtPaymentsProvider).value;
     if (debtPaymentsList != null) {
       for (var debtPayment in debtPaymentsList) {
         totalAmountPaid += debtPayment.principleAmount;

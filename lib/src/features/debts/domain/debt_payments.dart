@@ -16,6 +16,7 @@ class DebtPayment {
   final DateTime? paymentDate;
   final bool isPaid;
   final String walletId;
+  final String transactionId;
 
   const DebtPayment({
     required this.debtPaymentId,
@@ -29,6 +30,7 @@ class DebtPayment {
     this.paymentDate,
     required this.isPaid,
     required this.walletId,
+    required this.transactionId,
   });
 
   DebtPayment.fromJson(Map<String, dynamic> json)
@@ -43,6 +45,7 @@ class DebtPayment {
             (json[FirebaseFieldName.paymentDate] as Timestamp).toDate(),
         paidMonth = json[FirebaseFieldName.paidMonth],
         walletId = json[FirebaseFieldName.walletId],
+        transactionId = json[FirebaseFieldName.transactionId],
         isPaid = json[FirebaseFieldName.isPaid];
 
   Map<String, dynamic> toJson() => {
@@ -56,6 +59,7 @@ class DebtPayment {
         FirebaseFieldName.paidMonth: paidMonth,
         FirebaseFieldName.paymentDate: FieldValue.serverTimestamp(),
         FirebaseFieldName.walletId: walletId,
+        FirebaseFieldName.transactionId: transactionId,
         FirebaseFieldName.isPaid: isPaid,
       };
 
@@ -70,6 +74,7 @@ class DebtPayment {
     String? paidMonth,
     DateTime? paymentDate,
     bool? isPaid,
+    String? transactionId,
     String? walletId,
   }) {
     return DebtPayment(
@@ -83,6 +88,7 @@ class DebtPayment {
       paidMonth: paidMonth ?? this.paidMonth,
       paymentDate: paymentDate ?? this.paymentDate,
       walletId: walletId ?? this.walletId,
+      transactionId: transactionId ?? this.transactionId,
       isPaid: isPaid ?? this.isPaid,
     );
   }

@@ -17,6 +17,14 @@ class SavingGoalsPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final savingGoals = ref.watch(userSavingGoalsProvider);
+    final totalSavingGoalsAmount = ref.watch(totalAmountProvider).value;
+    final totalSavedAmount = ref.watch(totalSavedAmountProvider).value;
+    if (totalSavedAmount == null || totalSavingGoalsAmount == null) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+    final totalAmountLeft = totalSavingGoalsAmount - totalSavedAmount;
     return RefreshIndicator(
       onRefresh: () async {
         ref.refresh(userSavingGoalsProvider);
@@ -36,8 +44,8 @@ class SavingGoalsPage extends ConsumerWidget {
                     child: Column(
                       children: [
                         Row(
-                          children: const [
-                            Text(
+                          children: [
+                            const Text(
                               'Total',
                               style: TextStyle(
                                 color: AppColors.mainColor1,
@@ -45,12 +53,12 @@ class SavingGoalsPage extends ConsumerWidget {
                                 fontSize: 20,
                               ),
                             ),
-                            Spacer(),
+                            const Spacer(),
                             // Calculation part
                             Text(
                               // 'RM XX.XX',
-                              'RM XXX.XX',
-                              style: TextStyle(
+                              'MYR ${totalSavingGoalsAmount.toStringAsFixed(2)}',
+                              style: const TextStyle(
                                 color: AppColors.mainColor1,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 20,
@@ -63,12 +71,29 @@ class SavingGoalsPage extends ConsumerWidget {
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
-                          children: const [
+                          children: [
                             // Calculation part
                             Text(
-                              'RM XX.XX left',
-                              style: TextStyle(
-                                color: AppColors.mainColor2,
+                              'MYR ${totalSavedAmount.toStringAsFixed(2)}',
+                              style: const TextStyle(
+                                color: AppColors.green,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            // Calculation part
+                            Text(
+                              'MYR ${totalAmountLeft.toStringAsFixed(2)}',
+                              style: const TextStyle(
+                                color: AppColors.red,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 20,
                               ),
@@ -95,8 +120,10 @@ class SavingGoalsPage extends ConsumerWidget {
                           return SavingGoalsTiles(
                             savingGoal: savingGoal,
                             onTap: () {
-                              Navigator.push(
+                              Navigator.of(
                                 context,
+                                rootNavigator: true,
+                              ).push(
                                 MaterialPageRoute(
                                   builder: (_) => SavingGoalDetailView(
                                     savingGoal: savingGoal,

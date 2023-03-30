@@ -180,52 +180,52 @@ class _AddNewWalletState extends ConsumerState<AddNewWallet> {
                   //     ),
                   //   ],
                   // ),
-                  Row(
-                    children: [
-                      const Padding(
-                        padding: EdgeInsets.only(left: 16.0, right: 32.0),
-                        child: SizedBox(
-                          width: 5,
-                          child: Icon(
-                            Icons.category_rounded,
-                            color: AppColors.mainColor1,
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            children: const [
-                              Expanded(
-                                child: Text(
-                                  'Visible Categories',
-                                  style: TextStyle(
-                                    color: AppColors.mainColor1,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                              ),
-                              Text(
-                                'XX',
-                                style: TextStyle(
-                                  color: AppColors.mainColor1,
-                                  fontSize: 16,
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Icon(
-                                  Icons.arrow_forward_ios_rounded,
-                                  color: AppColors.mainColor1,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                  // Row(
+                  //   children: [
+                  //     const Padding(
+                  //       padding: EdgeInsets.only(left: 16.0, right: 32.0),
+                  //       child: SizedBox(
+                  //         width: 5,
+                  //         child: Icon(
+                  //           Icons.category_rounded,
+                  //           color: AppColors.mainColor1,
+                  //         ),
+                  //       ),
+                  //     ),
+                  //     Expanded(
+                  //       child: Padding(
+                  //         padding: const EdgeInsets.all(8.0),
+                  //         child: Row(
+                  //           children: const [
+                  //             Expanded(
+                  //               child: Text(
+                  //                 'Visible Categories',
+                  //                 style: TextStyle(
+                  //                   color: AppColors.mainColor1,
+                  //                   fontSize: 16,
+                  //                 ),
+                  //               ),
+                  //             ),
+                  //             Text(
+                  //               'XX',
+                  //               style: TextStyle(
+                  //                 color: AppColors.mainColor1,
+                  //                 fontSize: 16,
+                  //               ),
+                  //             ),
+                  //             Padding(
+                  //               padding: EdgeInsets.all(8.0),
+                  //               child: Icon(
+                  //                 Icons.arrow_forward_ios_rounded,
+                  //                 color: AppColors.mainColor1,
+                  //               ),
+                  //             ),
+                  //           ],
+                  //         ),
+                  //       ),
+                  //     ),
+                  //   ],
+                  // ),
                   GestureDetector(
                     onTap: () {
                       ref

@@ -19,7 +19,7 @@ class UpcomingDebtView extends ConsumerWidget {
         // annualInterestRate: debt.annualInterestRate,
         // createdAt: debt.createdAt!,
         );
-    final debtHistories = ref.watch(userDebtPaymentsProvider(debt)).value;
+    final debtHistories = ref.watch(userDebtPaymentsProvider).value;
     if (debtHistories == null) {
       return Container();
     }

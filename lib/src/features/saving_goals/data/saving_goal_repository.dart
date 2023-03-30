@@ -33,6 +33,54 @@ final userSavingGoalsProvider =
   return controller.stream;
 });
 
+final totalAmountProvider = StreamProvider.autoDispose<double>((ref) {
+  final userId = ref.watch(userIdProvider);
+  final controller = StreamController<double>();
+  final sub = FirebaseFirestore.instance
+      .collection(FirebaseCollectionName.savingGoals)
+      .where(FirebaseFieldName.userId, isEqualTo: userId)
+      .snapshots()
+      .listen((snapshot) {
+    final document = snapshot.docs;
+    final savingGoal = document.map(
+      (doc) => SavingGoal.fromJson(doc.data()).savingGoalAmount,
+    );
+    var totalAmount = savingGoal.fold(
+        0.00, (previousValue, element) => previousValue + element);
+    controller.sink.add(totalAmount);
+  });
+
+  ref.onDispose(() {
+    sub.cancel();
+    controller.close();
+  });
+  return controller.stream;
+});
+
+final totalSavedAmountProvider = StreamProvider.autoDispose<double>((ref) {
+  final userId = ref.watch(userIdProvider);
+  final controller = StreamController<double>();
+  final sub = FirebaseFirestore.instance
+      .collection(FirebaseCollectionName.savingGoals)
+      .where(FirebaseFieldName.userId, isEqualTo: userId)
+      .snapshots()
+      .listen((snapshot) {
+    final document = snapshot.docs;
+    final savingGoal = document.map(
+      (doc) => SavingGoal.fromJson(doc.data()).savingGoalSavedAmount,
+    );
+    var totalSaavedAmount = savingGoal.fold(
+        0.00, (previousValue, element) => previousValue + element);
+    controller.sink.add(totalSaavedAmount);
+  });
+
+  ref.onDispose(() {
+    sub.cancel();
+    controller.close();
+  });
+  return controller.stream;
+});
+
 class SavingGoalNotifier extends StateNotifier<IsLoading> {
   SavingGoalNotifier() : super(false);
 
@@ -122,6 +170,56 @@ class SavingGoalNotifier extends StateNotifier<IsLoading> {
         .collection(FirebaseCollectionName.savingGoals)
         .doc(savingGoalId)
         .delete();
+
+    isLoading = false;
+    return true;
+  }
+
+  Future<bool> depositSavingGoalAmount({
+    required String savingGoalId,
+    required double amount,
+  }) async {
+    isLoading = true;
+
+    final query = FirebaseFirestore.instance
+        .collection(FirebaseCollectionName.savingGoals)
+        .where(FirebaseFieldName.savingGoalId, isEqualTo: savingGoalId)
+        .get();
+
+    await query.then((query) async {
+      for (final doc in query.docs) {
+        final currentAmount = doc[FirebaseFieldName.savingGoalSavedAmount];
+        final newAmount = currentAmount + amount;
+        await doc.reference.update({
+          FirebaseFieldName.savingGoalSavedAmount: newAmount,
+        });
+      }
+    });
+
+    isLoading = false;
+    return true;
+  }
+
+  Future<bool> withdrawSavingGoalAmount({
+    required String savingGoalId,
+    required double amount,
+  }) async {
+    isLoading = true;
+
+    final query = FirebaseFirestore.instance
+        .collection(FirebaseCollectionName.savingGoals)
+        .where(FirebaseFieldName.savingGoalId, isEqualTo: savingGoalId)
+        .get();
+
+    await query.then((query) async {
+      for (final doc in query.docs) {
+        final currentAmount = doc[FirebaseFieldName.savingGoalSavedAmount];
+        final newAmount = currentAmount - amount;
+        await doc.reference.update({
+          FirebaseFieldName.savingGoalSavedAmount: newAmount,
+        });
+      }
+    });
 
     isLoading = false;
     return true;

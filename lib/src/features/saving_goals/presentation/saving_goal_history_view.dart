@@ -13,7 +13,7 @@ class SavingGoalHistoryView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final remainingAmount =
-        savingGoal.savingGoalAmount - savingGoal.savingGoalCurrentAmount;
+        savingGoal.savingGoalAmount - savingGoal.savingGoalSavedAmount;
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -51,7 +51,7 @@ class SavingGoalHistoryView extends ConsumerWidget {
                           ),
                         ),
                         Text(
-                          savingGoal.savingGoalCurrentAmount.toStringAsFixed(2),
+                          savingGoal.savingGoalSavedAmount.toStringAsFixed(2),
                           style: const TextStyle(
                             fontSize: 30,
                             color: AppColors.mainColor2,

@@ -1,4 +1,3 @@
-import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/common_widgets/animations/error_animation_view.dart';
@@ -7,6 +6,7 @@ import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/features/authentication/application/user_id_provider.dart';
 import 'package:pocketfi/src/features/wallets/data/temp_user_provider.dart';
 import 'package:pocketfi/src/features/wallets/data/wallet_repository.dart';
+import 'package:pocketfi/src/features/wallets/presentation/add_new_wallet.dart';
 import 'package:pocketfi/src/features/wallets/presentation/update_wallet.dart';
 import 'package:pocketfi/src/features/wallets/presentation/wallet_tiles.dart';
 
@@ -77,7 +77,12 @@ class WalletBottomSheet extends ConsumerWidget {
                       ref
                           .watch(tempDataProvider.notifier)
                           .deleteTempDataInFirebase(userId!);
-                      context.beamToNamed('createNewWallet');
+                      // context.beamToNamed('createNewWallet');
+                      Navigator.of(context, rootNavigator: true).push(
+                        MaterialPageRoute(
+                          builder: (context) => const AddNewWallet(),
+                        ),
+                      );
                     },
                   ),
                 ),
@@ -96,10 +101,9 @@ class WalletBottomSheet extends ConsumerWidget {
                         onTap: () {
                           // specificWallet.when(data: (specificWallet) {
                           // final walletId = specificWallet.wallet.walletId;
-                          Navigator.push(
-                            context,
+                          Navigator.of(context, rootNavigator: true).push(
                             MaterialPageRoute(
-                              builder: (_) => UpdateWallet(
+                              builder: (context) => UpdateWallet(
                                 wallet: wallet,
                               ),
                             ),

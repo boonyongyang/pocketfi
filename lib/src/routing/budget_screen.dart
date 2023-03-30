@@ -11,8 +11,10 @@ import 'package:pocketfi/src/constants/strings.dart';
 import 'package:pocketfi/src/features/authentication/application/user_id_provider.dart';
 import 'package:pocketfi/src/features/budgets/application/budget_services.dart';
 import 'package:pocketfi/src/features/budgets/data/budget_repository.dart';
+import 'package:pocketfi/src/features/budgets/presentation/add_new_budget.dart';
 import 'package:pocketfi/src/features/budgets/presentation/update_budget.dart';
 import 'package:pocketfi/src/features/budgets/presentation/budget_tile.dart';
+import 'package:pocketfi/src/features/wallets/data/check_request_service.dart';
 import 'package:pocketfi/src/features/wallets/presentation/requests_view.dart';
 import 'package:pocketfi/src/features/wallets/presentation/wallet_bottom_sheet.dart';
 
@@ -32,6 +34,10 @@ class _BudgetPageState extends ConsumerState<BudgetPage> {
     final totalAmount = ref.watch(totalAmountProvider).value;
 
     final currentUserId = ref.watch(userIdProvider);
+    final walletRequests = ref.watch(getPendingRequestProvider).value;
+    if (walletRequests == null) {
+      return Container();
+    }
     // final isPending =
     //     ref.watch(checkRequestProvider.notifier).checkRequest(currentUserId!);
 
@@ -40,9 +46,14 @@ class _BudgetPageState extends ConsumerState<BudgetPage> {
         title: const Text('Budget'),
         actions: [
           IconButton(
-            icon: const Icon(
-              Icons.notifications_rounded,
-            ),
+            icon: walletRequests.isNotEmpty
+                ? const Icon(
+                    Icons.notifications_active_rounded,
+                    color: AppColors.mainColor2,
+                  )
+                : const Icon(
+                    Icons.notifications_rounded,
+                  ),
             onPressed: () async {
               Navigator.of(context, rootNavigator: true).push(
                 MaterialPageRoute(
@@ -190,7 +201,12 @@ class _BudgetPageState extends ConsumerState<BudgetPage> {
                 child: FullWidthButtonWithText(
                   text: Strings.createNewBudget,
                   onPressed: () {
-                    context.beamToNamed("createNewBudget");
+                    Navigator.of(context, rootNavigator: true).push(
+                      MaterialPageRoute(
+                        builder: (context) => const AddNewBudget(),
+                      ),
+                    );
+                    // context.beamToNamed("createNewBudget");
                     debugPrint('totalAmount: $totalAmount');
                   },
                   // },

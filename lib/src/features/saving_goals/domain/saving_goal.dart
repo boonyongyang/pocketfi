@@ -8,7 +8,7 @@ class SavingGoal {
   final String savingGoalId;
   final String savingGoalName;
   final double savingGoalAmount;
-  final double savingGoalCurrentAmount;
+  final double savingGoalSavedAmount;
   final DateTime? createdAt;
   final String walletId;
   final UserId userId;
@@ -22,7 +22,7 @@ class SavingGoal {
     required this.savingGoalAmount,
     required this.walletId,
     required this.userId,
-    this.savingGoalCurrentAmount = 0.0,
+    this.savingGoalSavedAmount = 0.0,
     this.createdAt,
     required this.startDate,
     required this.dueDate,
@@ -32,8 +32,7 @@ class SavingGoal {
       : savingGoalId = json[FirebaseFieldName.savingGoalId],
         savingGoalName = json[FirebaseFieldName.savingGoalName],
         savingGoalAmount = json[FirebaseFieldName.savingGoalAmount],
-        savingGoalCurrentAmount =
-            json[FirebaseFieldName.savingGoalCurrentAmount],
+        savingGoalSavedAmount = json[FirebaseFieldName.savingGoalSavedAmount],
         walletId = json[FirebaseFieldName.walletId],
         userId = json[FirebaseFieldName.userId] as UserId,
         dueDate =
@@ -46,11 +45,88 @@ class SavingGoal {
         FirebaseFieldName.savingGoalId: savingGoalId,
         FirebaseFieldName.savingGoalName: savingGoalName,
         FirebaseFieldName.savingGoalAmount: savingGoalAmount,
-        FirebaseFieldName.savingGoalCurrentAmount: savingGoalCurrentAmount,
+        FirebaseFieldName.savingGoalSavedAmount: savingGoalSavedAmount,
         FirebaseFieldName.walletId: walletId,
         FirebaseFieldName.userId: userId,
         FirebaseFieldName.savingGoalDueDate: dueDate,
         FirebaseFieldName.savingGoalStartDate: startDate,
         FirebaseFieldName.createdAt: FieldValue.serverTimestamp(),
       };
+
+  double calculateSavingsPerDay() {
+    double amountToSavePerDay = 0;
+    DateTime todayDate = DateTime.now();
+    if (todayDate.difference(startDate).inDays == 0) {
+      final differenceInDays = dueDate.difference(startDate).inDays;
+
+      return savingGoalAmount / differenceInDays;
+    } else if (todayDate.isAfter(startDate) && todayDate.isBefore(dueDate)) {
+      final differenceInDaysToday = todayDate.difference(startDate).inDays;
+
+      return savingGoalAmount / differenceInDaysToday;
+    } else if (startDate.difference(todayDate).inDays < 0) {
+      return 0;
+    }
+
+    if (todayDate.difference(dueDate).inDays == 1) {
+      return savingGoalAmount - savingGoalSavedAmount;
+    }
+    return amountToSavePerDay;
+  }
+
+  double calculateSavingsPerWeek() {
+    double amountToSavePerWeek = 0;
+    int daysInAWeek = 7;
+    DateTime todayDate = DateTime.now();
+
+    // int daysInAMonth = 30;
+
+    if (todayDate.difference(startDate).inDays == 0) {
+      final differenceInWeeks =
+          dueDate.difference(startDate).inDays / daysInAWeek;
+      return savingGoalAmount / differenceInWeeks;
+    } else if (todayDate.isAfter(startDate) && todayDate.isBefore(dueDate)) {
+      final differenceInWeeksToday =
+          todayDate.difference(startDate).inDays / daysInAWeek;
+      return savingGoalAmount / differenceInWeeksToday;
+    } else if (startDate.difference(todayDate).inDays < 0) {
+      return 0;
+    }
+
+    if (todayDate.difference(dueDate).inDays == 1) {
+      return (savingGoalAmount - savingGoalSavedAmount) / daysInAWeek;
+    }
+    return amountToSavePerWeek;
+  }
+
+  double calculateSavingsPerMonth() {
+    double amountToSavePerMonth = 0;
+    DateTime todayDate = DateTime.now();
+
+    // int daysInAWeek = 7;
+    int daysInAMonth = 30;
+
+    if (todayDate.difference(startDate).inDays == 0) {
+      final differenceInMonths =
+          dueDate.difference(startDate).inDays / daysInAMonth;
+      return savingGoalAmount / differenceInMonths;
+    } else if (todayDate.isAfter(startDate) && todayDate.isBefore(dueDate)) {
+      final differenceInMonthsToday =
+          todayDate.difference(startDate).inDays / daysInAMonth;
+      return savingGoalAmount / differenceInMonthsToday;
+    } else if (startDate.difference(todayDate).inDays < 0) {
+      return 0;
+    }
+
+    if (todayDate.difference(dueDate).inDays == 1) {
+      return (savingGoalAmount - savingGoalSavedAmount) / daysInAMonth;
+    }
+    return amountToSavePerMonth;
+  }
+
+  int calculateDaysLeft() {
+    DateTime todayDate = DateTime.now();
+    final differenceInDays = dueDate.difference(todayDate).inDays;
+    return differenceInDays;
+  }
 }

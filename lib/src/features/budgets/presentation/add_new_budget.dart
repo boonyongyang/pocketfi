@@ -104,6 +104,7 @@ class _AddNewBudgetState extends ConsumerState<AddNewBudget> {
                           decoration: const InputDecoration(
                             labelText: Strings.budgetName,
                           ),
+                          autofocus: true,
                         ),
                       ),
                     ),
