@@ -5,9 +5,10 @@ class Strings {
   static const appName = 'PocketFi!';
   static const welcomeToAppName = 'Welcome to ${Strings.appName}';
   static const youHaveNoRecords =
-      'You have not made a record yet. ' 'Why don\'t you take the first step?';
+      // 'You have not made a record yet. ' 'Why don\'t you take the first step?';
+      "Nobody seems to have made any records yet. Take the first step and upload your first record!";
   static const noRecordsAvailable =
-      "Nobody seems to have made any records yet. Why don't you take the first step and upload your first record?!";
+      "Nobody seems to have made any records yet. Take the first step and upload your first record!";
   static const enterYourSearchTerm =
       'Enter your search term in order go get started. You can search in the description of all records available in the system';
 

@@ -84,38 +84,38 @@ class _MainViewState extends ConsumerState<TimelinePage>
                   ),
                   onPressed: () {},
                 ),
-                IconButton(
-                  icon: const Icon(
-                    Icons.videocam,
-                    color: Colors.white,
-                  ),
-                  onPressed: () async {
-                    // pick a video first
-                    final videoFile =
-                        await ImagePickerHelper.pickVideoFromGallery();
-                    if (videoFile == null) {
-                      // no video available so return early
-                      return;
-                    }
+                // IconButton(
+                //   icon: const Icon(
+                //     Icons.videocam,
+                //     color: Colors.white,
+                //   ),
+                //   onPressed: () async {
+                //     // pick a video first
+                //     final videoFile =
+                //         await ImagePickerHelper.pickVideoFromGallery();
+                //     if (videoFile == null) {
+                //       // no video available so return early
+                //       return;
+                //     }
 
-                    // refresh the provider so it does not contain the previous
-                    ref.refresh(userTransactionsProvider);
+                //     // refresh the provider so it does not contain the previous
+                //     ref.refresh(userTransactionsProvider);
 
-                    // go to the screen to create a new post
-                    if (!mounted) return;
+                //     // go to the screen to create a new post
+                //     if (!mounted) return;
 
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //     builder: (_) => CreateNewPostView(
-                    //       fileToPost: videoFile,
-                    //       fileType: FileType.video,
-                    //     ),
-                    //   ),
-                    // );
-                    context.beamToNamed('/transactions');
-                  },
-                ),
+                //     // Navigator.push(
+                //     //   context,
+                //     //   MaterialPageRoute(
+                //     //     builder: (_) => CreateNewPostView(
+                //     //       fileToPost: videoFile,
+                //     //       fileType: FileType.video,
+                //     //     ),
+                //     //   ),
+                //     // );
+                //     context.beamToNamed('/transactions');
+                //   },
+                // ),
                 Center(
                   child: Column(
                     children: [
@@ -140,19 +140,19 @@ class _MainViewState extends ConsumerState<TimelinePage>
                     ],
                   ),
                 ),
-                IconButton(
-                  icon: const Icon(
-                    Icons.camera,
-                    color: Colors.white,
-                  ),
-                  onPressed: () {
-                    Navigator.of(context, rootNavigator: true).push(
-                      MaterialPageRoute(
-                        builder: (context) => const ScanReceipt(),
-                      ),
-                    );
-                  },
-                ),
+                // IconButton(
+                //   icon: const Icon(
+                //     Icons.camera,
+                //     color: Colors.white,
+                //   ),
+                //   onPressed: () {
+                //     Navigator.of(context, rootNavigator: true).push(
+                //       MaterialPageRoute(
+                //         builder: (context) => const ScanReceipt(),
+                //       ),
+                //     );
+                //   },
+                // ),
                 IconButton(
                   icon: const Icon(
                     Icons.search,
@@ -215,27 +215,27 @@ class _MainViewState extends ConsumerState<TimelinePage>
         floatingActionButton: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
+            // FloatingActionButton(
+            //   heroTag: null,
+            //   backgroundColor: const Color(0xFFFCD46A),
+            //   child: const Icon(Icons.kayaking),
+            //   onPressed: () async {
+            //     // * implement `hightlight` text feature
+            //     Navigator.of(context, rootNavigator: true).push(
+            //       MaterialPageRoute(
+            //         builder: (context) {
+            //           return const ScanningTest();
+            //         },
+            //         fullscreenDialog: true,
+            //       ),
+            //     );
+            //   },
+            // ),
+            // const SizedBox(height: 16),
             FloatingActionButton(
               heroTag: null,
               backgroundColor: const Color(0xFFFCD46A),
               child: const Icon(Icons.camera_alt),
-              onPressed: () async {
-                // * implement `hightlight` text feature
-                Navigator.of(context, rootNavigator: true).push(
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return const ScanningTest();
-                    },
-                    fullscreenDialog: true,
-                  ),
-                );
-              },
-            ),
-            const SizedBox(height: 16),
-            FloatingActionButton(
-              heroTag: null,
-              backgroundColor: const Color(0xFFFCD46A),
-              child: const Icon(Icons.kayaking),
 
               // * implement edge detection scanning
               onPressed: () async {
@@ -256,46 +256,46 @@ class _MainViewState extends ConsumerState<TimelinePage>
               },
             ),
             const SizedBox(height: 16),
-            FloatingActionButton(
-              heroTag: null,
-              backgroundColor: AppColors.subColor2,
-              child: const Icon(Icons.receipt),
-              onPressed: () async {
-                // * implementing receipt scanning
-                final XFile? pickedImage;
+            // FloatingActionButton(
+            //   heroTag: null,
+            //   backgroundColor: AppColors.subColor2,
+            //   child: const Icon(Icons.receipt),
+            //   onPressed: () async {
+            //     // * implementing receipt scanning
+            //     final XFile? pickedImage;
 
-                final isCamera = await const SelectionDialog(
-                  title: Strings.scanReceiptFrom,
-                ).present(context);
+            //     final isCamera = await const SelectionDialog(
+            //       title: Strings.scanReceiptFrom,
+            //     ).present(context);
 
-                if (isCamera == null) return;
+            //     if (isCamera == null) return;
 
-                pickedImage = isCamera
-                    ? await ImagePicker().pickImage(
-                        source: ImageSource.camera,
-                      )
-                    : await ImagePicker().pickImage(
-                        source: ImageSource.gallery,
-                      );
+            //     pickedImage = isCamera
+            //         ? await ImagePicker().pickImage(
+            //             source: ImageSource.camera,
+            //           )
+            //         : await ImagePicker().pickImage(
+            //             source: ImageSource.gallery,
+            //           );
 
-                if (pickedImage != null) {
-                  if (mounted) {
-                    Navigator.of(context, rootNavigator: true).push(
-                      MaterialPageRoute(
-                        builder: (context) {
-                          // ref
-                          //     .read(receiptFileProvider.notifier)
-                          //     .setReceiptImageFile(pickedImage);
-                          return VerifyReceiptDetails(pickedImage: pickedImage);
-                        },
-                        fullscreenDialog: true,
-                      ),
-                    );
-                  }
-                }
-              },
-            ),
-            const SizedBox(height: 16),
+            //     if (pickedImage != null) {
+            //       if (mounted) {
+            //         Navigator.of(context, rootNavigator: true).push(
+            //           MaterialPageRoute(
+            //             builder: (context) {
+            //               // ref
+            //               //     .read(receiptFileProvider.notifier)
+            //               //     .setReceiptImageFile(pickedImage);
+            //               return VerifyReceiptDetails(pickedImage: pickedImage);
+            //             },
+            //             fullscreenDialog: true,
+            //           ),
+            //         );
+            //       }
+            //     }
+            //   },
+            // ),
+            // const SizedBox(height: 16),
             FloatingActionButton(
               // heroTag: 'bookmarks',
               heroTag: null,

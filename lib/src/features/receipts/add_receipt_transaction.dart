@@ -784,28 +784,30 @@ class SelectCategory extends ConsumerWidget {
                                 padding: const EdgeInsets.all(8.0),
                                 child: GestureDetector(
                                   onTap: () {
+                                    // ref
+                                    //             .watch(
+                                    //                 selectedTransactionProvider)
+                                    //             ?.categoryName ==
+                                    //         null
+                                    //     ? ref
+                                    //         .read(selectedCategoryProvider
+                                    //             .notifier)
+                                    //         .state = categories[index]
+                                    //     : ref
+                                    //         .read(selectedTransactionProvider
+                                    //             .notifier)
+                                    //         .updateCategory(
+                                    //             categories[index], ref);
+
                                     ref
-                                                .watch(
-                                                    selectedTransactionProvider)
-                                                ?.categoryName ==
-                                            null
-                                        ? ref
-                                            .read(selectedCategoryProvider
-                                                .notifier)
-                                            .state = categories[index]
-                                        : ref
-                                            .read(selectedTransactionProvider
-                                                .notifier)
-                                            .updateCategory(
-                                                categories[index], ref);
+                                        .read(selectedCategoryProvider.notifier)
+                                        .state = categories[index];
 
                                     debugPrint(
                                         'selected category: ${categories[index].name}');
                                     Navigator.of(context).pop();
                                   },
                                   child: Column(
-                                    // mainAxisAlignment: MainAxisAlignment.center,
-                                    // mainAxisSize: MainAxisSize.min,
                                     children: [
                                       CircleAvatar(
                                         radius: 20,

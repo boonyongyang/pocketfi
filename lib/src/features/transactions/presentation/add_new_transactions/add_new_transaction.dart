@@ -415,7 +415,6 @@ class SelectCategory extends ConsumerWidget {
                                     fontWeight: FontWeight.bold,
                                   )),
                               IconButton(
-                                // icon: const Icon(Icons.add_outlined),
                                 icon: const Icon(Icons.settings),
                                 onPressed: () {
                                   Navigator.push(
@@ -464,8 +463,6 @@ class SelectCategory extends ConsumerWidget {
                                     Navigator.of(context).pop();
                                   },
                                   child: Column(
-                                    // mainAxisAlignment: MainAxisAlignment.center,
-                                    // mainAxisSize: MainAxisSize.min,
                                     children: [
                                       CircleAvatar(
                                         radius: 20,

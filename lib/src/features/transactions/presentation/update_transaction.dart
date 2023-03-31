@@ -21,7 +21,6 @@ import 'package:pocketfi/src/features/wallets/presentation/select_wallet_dropdow
 import 'package:pocketfi/src/features/category/application/category_services.dart';
 import 'package:pocketfi/src/features/category/domain/category.dart';
 import 'package:pocketfi/src/features/category/presentation/category_page.dart';
-import 'package:pocketfi/src/features/bookmarks/application/bookmark_services.dart';
 import 'package:pocketfi/src/features/transactions/application/transaction_services.dart';
 import 'package:pocketfi/src/features/transactions/date_picker/presentation/transaction_date_picker.dart';
 import 'package:pocketfi/src/features/transactions/domain/tag.dart';
@@ -73,6 +72,8 @@ class UpdateTransactionState extends ConsumerState<UpdateTransaction> {
     return WillPopScope(
       onWillPop: () {
         ref.read(imageFileProvider.notifier).clearImageFile();
+        resetCategoryState(ref);
+        ref.read(transactionTypeProvider.notifier).setTransactionType(0);
         return Future.value(true);
       },
       child: Scaffold(
@@ -347,7 +348,7 @@ class UpdateTransactionState extends ConsumerState<UpdateTransaction> {
             borderRadius: BorderRadius.circular(20.0),
           ),
           child: CachedNetworkImage(
-            imageUrl: transaction!.transactionImage!.fileUrl!,
+            imageUrl: transaction?.transactionImage?.fileUrl ?? '',
             width: double.infinity,
             height: 150.0,
             fit: BoxFit.cover,
