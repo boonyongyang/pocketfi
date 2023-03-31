@@ -64,6 +64,88 @@ final userTransactionsProvider =
     return controller.stream;
   },
 );
+final userTransactionsInWalletProvider =
+    StreamProvider.autoDispose.family<Iterable<Transaction>, String>(
+  (ref, String walletId) {
+    final userId = ref.watch(userIdProvider);
+    final controller = StreamController<Iterable<Transaction>>();
+
+    controller.onListen = () {
+      controller.sink.add([]);
+    };
+
+    debugPrint(userId);
+
+    final sub = FirebaseFirestore.instance
+        .collection(FirebaseCollectionName.transactions)
+        .where(TransactionKey.userId, isEqualTo: userId)
+        .where(TransactionKey.walletId, isEqualTo: walletId)
+        .orderBy(TransactionKey.date, descending: true)
+        .snapshots()
+        .listen(
+      (snapshot) {
+        final documents = snapshot.docs;
+        final transactions = documents
+            .where(
+              (doc) => !doc.metadata.hasPendingWrites,
+            )
+            .map(
+              (doc) => Transaction.fromJson(
+                transactionId: doc.id,
+                json: doc.data(),
+              ),
+            );
+        controller.sink.add(transactions);
+      },
+    );
+    ref.onDispose(() {
+      sub.cancel();
+      controller.close();
+    });
+    return controller.stream;
+  },
+);
+final userTransactionsInBudgetProvider =
+    StreamProvider.autoDispose.family<Iterable<Transaction>, String>(
+  (ref, String budgetId) {
+    final userId = ref.watch(userIdProvider);
+    final controller = StreamController<Iterable<Transaction>>();
+
+    controller.onListen = () {
+      controller.sink.add([]);
+    };
+
+    debugPrint(userId);
+
+    final sub = FirebaseFirestore.instance
+        .collection(FirebaseCollectionName.transactions)
+        .where(TransactionKey.userId, isEqualTo: userId)
+        .where(FirebaseFieldName.budgetId, isEqualTo: budgetId)
+        .orderBy(TransactionKey.date, descending: true)
+        .snapshots()
+        .listen(
+      (snapshot) {
+        final documents = snapshot.docs;
+        final transactions = documents
+            .where(
+              (doc) => !doc.metadata.hasPendingWrites,
+            )
+            .map(
+              (doc) => Transaction.fromJson(
+                transactionId: doc.id,
+                json: doc.data(),
+              ),
+            );
+        controller.sink.add(transactions);
+      },
+    );
+    ref.onDispose(() {
+      sub.cancel();
+      controller.close();
+    });
+    return controller.stream;
+  },
+);
 
 class TransactionNotifier extends StateNotifier<IsLoading> {
   TransactionNotifier() : super(false);
@@ -322,6 +404,7 @@ class TransactionNotifier extends StateNotifier<IsLoading> {
               originalFileStorageId: originalFileStorageId,
             )).toJson();
       }
+
       debugPrint('uploading new transaction..');
 
       await FirebaseFirestore.instance

@@ -10,10 +10,10 @@ import 'package:pocketfi/src/features/saving_goals/domain/saving_goal.dart';
 import 'package:pocketfi/src/features/saving_goals/presentation/deposit_sheet.dart';
 
 class SavingGoalOverviewView extends StatefulHookConsumerWidget {
-  SavingGoal savingGoal;
-  SavingGoalOverviewView({
+  // SavingGoal selectedSavingGoal;
+  const SavingGoalOverviewView({
     super.key,
-    required this.savingGoal,
+    // required this.selectedSavingGoal,
   });
 
   @override
@@ -25,19 +25,23 @@ class _SavingGoalOverviewViewState
     extends ConsumerState<SavingGoalOverviewView> {
   @override
   Widget build(BuildContext context) {
-    var amountToSavePerDay = widget.savingGoal.calculateSavingsPerDay();
-    var amountToSavePerWeek = widget.savingGoal.calculateSavingsPerWeek();
-    var amountToSavePerMonth = widget.savingGoal.calculateSavingsPerMonth();
-    var calculateDaysLeft = widget.savingGoal.calculateDaysLeft();
-    int years = calculateDaysLeft ~/ 12; // get the number of years
-    int months = calculateDaysLeft % 12; // get the remaining months
-    int days = calculateDaysLeft % 30; // get the remaining days
+    final selectedSavingGoal = ref.watch(selectedSavingGoalProvider);
+    // if (selectedSavingGoal == null) {
+    //   return Container();
+    // }
+    var amountToSavePerDay = selectedSavingGoal!.calculateSavingsPerDay();
+    var amountToSavePerWeek = selectedSavingGoal.calculateSavingsPerWeek();
+    var amountToSavePerMonth = selectedSavingGoal.calculateSavingsPerMonth();
+    var daysLeft = selectedSavingGoal.daysLeft();
+    var calculateDaysLeft = selectedSavingGoal.calculateDaysLeft();
+    debugPrint('calculateDaysLeft: $daysLeft');
 
     final amountToSave = useTextEditingController();
     final amountToWithdraw = useTextEditingController();
 
     return Scaffold(
       body: SingleChildScrollView(
+        // physics: const AlwaysScrollableScrollPhysics(),
         child: Column(
           children: [
             Padding(
@@ -85,12 +89,13 @@ class _SavingGoalOverviewViewState
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            calculateDaysLeft > 30 || calculateDaysLeft > 31
-                                ? '$months months $days days'
-                                : calculateDaysLeft > 365
-                                    ? '$years years $months months $days days'
-                                    : '$calculateDaysLeft days',
-                            // widget.debt.debtAmount.toStringAsFixed(2),
+                            // calculateDaysLeft.toString(),
+                            // calculateDaysLeft > 30 || calculateDaysLeft > 31
+                            //     ? '$months months $days days'
+                            //     : calculateDaysLeft > 365
+                            //         ? '$years years $months months $days days'
+                            //         : '$calculateDaysLeft days',
+                            daysLeft,
                             style: const TextStyle(
                               color: AppColors.mainColor2,
                               fontWeight: FontWeight.bold,
@@ -144,7 +149,7 @@ class _SavingGoalOverviewViewState
                           ),
                           const Spacer(),
                           Text(
-                            'MYR ${widget.savingGoal.savingGoalAmount.toStringAsFixed(2)}',
+                            'MYR ${selectedSavingGoal.savingGoalAmount.toStringAsFixed(2)}',
                             style: const TextStyle(
                               color: AppColors.mainColor1,
                               // fontWeight: FontWeight.bold,
@@ -167,7 +172,7 @@ class _SavingGoalOverviewViewState
                           const Spacer(),
                           Text(
                             DateFormat('d MMM yyyy')
-                                .format(widget.savingGoal.startDate),
+                                .format(selectedSavingGoal.startDate),
                             style: const TextStyle(
                               color: AppColors.mainColor1,
                               // fontWeight: FontWeight.bold,
@@ -190,7 +195,7 @@ class _SavingGoalOverviewViewState
                           const Spacer(),
                           Text(
                             DateFormat('d MMM yyyy')
-                                .format(widget.savingGoal.dueDate),
+                                .format(selectedSavingGoal.dueDate),
                             style: const TextStyle(
                               color: AppColors.mainColor1,
                               // fontWeight: FontWeight.bold,
@@ -242,7 +247,7 @@ class _SavingGoalOverviewViewState
                           ),
                           const Spacer(),
                           Text(
-                            'MYR ${widget.savingGoal.savingGoalSavedAmount.toStringAsFixed(2)}',
+                            'MYR ${selectedSavingGoal.savingGoalSavedAmount.toStringAsFixed(2)}',
                             style: const TextStyle(
                               color: AppColors.mainColor1,
                               // fontWeight: FontWeight.bold,
@@ -286,7 +291,9 @@ class _SavingGoalOverviewViewState
                           ),
                           const Spacer(),
                           Text(
-                            'MYR ${amountToSavePerWeek.toStringAsFixed(2)}/week',
+                            calculateDaysLeft > 7
+                                ? 'MYR ${amountToSavePerWeek.toStringAsFixed(2)}/week'
+                                : 'MYR 0.00/week',
                             // 'MYR ${(amountToSavePerDay * 7).toStringAsFixed(2)}/week',
                             style: const TextStyle(
                               color: AppColors.mainColor1,
@@ -309,7 +316,9 @@ class _SavingGoalOverviewViewState
                           ),
                           const Spacer(),
                           Text(
-                            'MYR ${amountToSavePerMonth.toStringAsFixed(2)}/month',
+                            calculateDaysLeft > 30 || calculateDaysLeft > 31
+                                ? 'MYR ${amountToSavePerMonth.toStringAsFixed(2)}/month'
+                                : 'MYR 0.00/month',
                             style: const TextStyle(
                               color: AppColors.mainColor1,
                               // fontWeight: FontWeight.bold,
@@ -367,7 +376,7 @@ class _SavingGoalOverviewViewState
                                   TextButton(
                                     onPressed: () {
                                       Navigator.of(context).pop();
-//
+                                      //
                                     },
                                     child: const Text('Cancel'),
                                   ),
@@ -375,7 +384,7 @@ class _SavingGoalOverviewViewState
                                     onPressed: () {
                                       addDeposit(
                                         amountToSave,
-                                        widget.savingGoal,
+                                        selectedSavingGoal,
                                         ref,
                                       );
                                     },
@@ -448,11 +457,11 @@ class _SavingGoalOverviewViewState
                                   TextButton(
                                     onPressed: () {
                                       double.parse(amountToWithdraw.text) <=
-                                              widget.savingGoal
+                                              selectedSavingGoal
                                                   .savingGoalSavedAmount
                                           ? withdrawal(
                                               amountToWithdraw,
-                                              widget.savingGoal,
+                                              selectedSavingGoal,
                                               ref,
                                             )
                                           : ScaffoldMessenger.of(context)
@@ -501,9 +510,12 @@ class _SavingGoalOverviewViewState
         await ref.read(savingGoalProvider.notifier).depositSavingGoalAmount(
               savingGoalId: savingGoal.savingGoalId,
               amount: double.parse(amountToDeposit.text),
+              userId: savingGoal.userId,
+              walletId: savingGoal.walletId,
             );
 
     if (isUpdated && mounted) {
+      Navigator.of(context).pop();
       Navigator.of(context).pop();
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -511,8 +523,8 @@ class _SavingGoalOverviewViewState
         ),
       );
     }
-    debugPrint('isUpdated: $isUpdated');
     if (!isUpdated && mounted) {
+      Navigator.of(context).pop();
       Navigator.of(context).pop();
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -531,9 +543,12 @@ class _SavingGoalOverviewViewState
         await ref.read(savingGoalProvider.notifier).withdrawSavingGoalAmount(
               savingGoalId: savingGoal.savingGoalId,
               amount: double.parse(amountToWithdraw.text),
+              userId: savingGoal.userId,
+              walletId: savingGoal.walletId,
             );
 
     if (isUpdated && mounted) {
+      Navigator.of(context).pop();
       Navigator.of(context).pop();
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -541,8 +556,8 @@ class _SavingGoalOverviewViewState
         ),
       );
     }
-    debugPrint('isUpdated: $isUpdated');
     if (!isUpdated && mounted) {
+      Navigator.of(context).pop();
       Navigator.of(context).pop();
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(

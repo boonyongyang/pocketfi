@@ -64,7 +64,8 @@ class _UpdateBudgetState extends ConsumerState<UpdateBudget> {
                     .read(budgetProvider.notifier)
                     .deleteBudget(budgetId: selectedBudget.budgetId);
                 if (mounted) {
-                  Navigator.of(context).maybePop();
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
                 }
               }
             },

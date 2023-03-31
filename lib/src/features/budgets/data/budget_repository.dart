@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/constants/firebase_names.dart';
 import 'package:pocketfi/src/constants/typedefs.dart';
@@ -11,155 +12,40 @@ import 'package:pocketfi/src/features/wallets/data/wallet_repository.dart';
 import 'package:pocketfi/src/utils/document_id_from_current_date.dart';
 
 // * get all budgets from all wallets
+
 final userBudgetsProvider = StreamProvider.autoDispose<Iterable<Budget>>((ref) {
-  final userId = ref.watch(userIdProvider);
-  final wallets = ref.watch(userWalletsProvider).value;
+  final wallets =
+      ref.watch(userWalletsProvider).value; // use empty list if wallets is null
   final controller = StreamController<Iterable<Budget>>();
 
-  final sub = FirebaseFirestore.instance
-      // .collectionGroup(FirebaseCollectionName.budgets)
-      .collection(FirebaseCollectionName.budgets)
-      .where(FirebaseFieldName.userId, isEqualTo: userId)
-      .snapshots()
-      .listen((snapshot) {
-    final document = snapshot.docs;
-    final budgets = document
-        .where(
-          (doc) => !doc.metadata.hasPendingWrites,
-        )
-        .map(
-          (doc) => Budget.fromJson(doc.data()),
-        );
+  final budgetsList = <Budget>[]; // accumulate all budgets in a list
 
-    //! need to fix
-    //! using iterable can solve the duplicate problem but it will only work
-    //! if there are shared wallets
-    //! if there are no shared wallets, then it will not work
-    //! another issue is once it is in the budgetlist, when left 2 budget, it
-    //! will not be removed from the view. but the database is updated
-    // if all wallets are not shared wallets, then use controller.sink.add(budgets)
-    // if all wallets are shared wallets, then use controller.sink.add(budgetsList)
-    // if some wallets are shared wallets, then use controller.sink.add(budgetsList)
+  // go through wallet and check which wallet the user is a collaborator
+  for (var wallet in wallets!) {
+    debugPrint('wallet: ${wallet.walletName}');
+    debugPrint('walletId: ${wallet.walletId}');
+    final sub = FirebaseFirestore.instance
+        .collection(FirebaseCollectionName.budgets)
+        .where(FirebaseFieldName.walletId, isEqualTo: wallet.walletId)
+        .snapshots()
+        .listen((snapshot) {
+      final document = snapshot.docs;
+      final budgets = document
+          .where(
+            (doc) => !doc.metadata.hasPendingWrites,
+          )
+          .map(
+            (doc) => Budget.fromJson(doc.data()),
+          );
 
-    // Check if any budgets have collaborators
-    // bool hasCollaborators = false;
-    // for (var budget in budgets) {
-    //   if (ref
-    //           .watch(getWalletFromWalletIdProvider(budget.walletId))
-    //           .value
-    //           ?.collaborators !=
-    //       null) {
-    //     hasCollaborators = true;
-    //     break;
-    //   }
-    // }
-
-    // If there are collaborators, add each unique budget to the list
-    // if (hasCollaborators) {
-    //   Iterable<Budget> budgetsList = [];
-
-    //   for (var budget in budgets) {
-    //     var isSame = false;
-    //     for (var budgetList in budgetsList) {
-    //       if (budget.budgetId == budgetList.budgetId) {
-    //         isSame = true;
-    //       }
-    //     }
-    //     if (!isSame) {
-    //       budgetsList = [...budgetsList, budget];
-    //     }
-    //   }
-
-    //   // if all wallets are shared wallets, then use controller.sink.add(budgetsList)
-    //   if (budgets.length == budgetsList.length) {
-    //     controller.sink.add(budgetsList);
-    //   }
-    //   // if some wallets are shared wallets, then use controller.sink.add(budgetsList)
-    //   else {
-    //     controller.sink.add(budgetsList);
-    //   }
-    // }
-    // // if all wallets are not shared wallets, then use controller.sink.add(budgets)
-    // else {
-    //   controller.sink.add(budgets);
-    // }
-    // });
-    // get wallet with wallet id
-    // var wallet;
-    // for (var budget in budgets) {
-    //   var wallet =
-    //       ref.watch(getWalletFromWalletIdProvider(budget.walletId)).value;
-    //   debugPrint('walletName: ${wallet!.walletName}');
-    //   debugPrint('walletId: ${wallet.walletId}');
-    //   if (wallet.collaborators == null) {
-    //     controller.sink.add(budgets);
-    //   } else {
-    //     // loop through all budgets, if budget id is the same then don't add it to the list
-    //     Iterable<Budget> budgetsList = [];
-
-    //     for (var budget in budgets) {
-    //       if (budgetsList.isEmpty) {
-    //         budgetsList = [budget];
-    //       } else {
-    //         var isSame = false;
-    //         for (var budgetList in budgetsList) {
-    //           if (budget.budgetId == budgetList.budgetId) {
-    //             isSame = true;
-    //           }
-    //         }
-    //         if (!isSame) {
-    //           budgetsList = [...budgetsList, budget];
-    //           controller.sink.add(budgetsList);
-    //         }
-    //       }
-    //     }
-    //   }
-    // }
-
-// how to determind the wallet is a shared wallet
-
-    // loop through all budgets, if budget id is the same then don't add it to the list
-    // Iterable<Budget> budgetsList = [];
-
-    // for (var budget in budgets) {
-    //   if (budgetsList.isEmpty) {
-    //     budgetsList = [budget];
-    //     debugPrint('budgetsList: ${budgetsList.length}');
-    //   } else {
-    //     var isSame = false;
-    //     for (var budgetList in budgetsList) {
-    //       if (budget.budgetId == budgetList.budgetId) {
-    //         isSame = true;
-    //         debugPrint('budgetsList: ${budgetsList.length}');
-    //       }
-    //     }
-    //     if (!isSame) {
-    //       budgetsList = [...budgetsList, budget];
-    //       debugPrint('budgetsList: ${budgetsList.length}');
-    //       controller.sink.add(budgetsList);
-    //     }
-    //   }
-    // }
-    controller.sink.add(budgets);
-  });
-
-  // final sub = FirebaseFirestore.instance
-  //     .collection(FirebaseCollectionName.users)
-  //     .doc(userId)
-  //     .collection(FirebaseCollectionName.wallets)
-  //     .doc(wallets!.first.walletId)
-  //     .collection(FirebaseCollectionName.budgets)
-  //     .snapshots()
-  //     .listen((snapshot) {
-  //   final document = snapshot.docs;
-  //   final budgets = document.map(
-  //     (doc) => Budget(doc.data()),
-  //   );
-
-  // });
+      budgetsList.addAll(budgets); // add budgets to the accumulated list
+      debugPrint('budgetsList: $budgetsList');
+      debugPrint('budgetsList length: ${budgetsList.length}');
+      controller.sink.add(budgetsList);
+    });
+  }
 
   ref.onDispose(() {
-    sub.cancel();
     controller.close();
   });
   return controller.stream;
@@ -167,66 +53,202 @@ final userBudgetsProvider = StreamProvider.autoDispose<Iterable<Budget>>((ref) {
 
 final totalAmountProvider = StreamProvider.autoDispose<double>((ref) {
   final userId = ref.watch(userIdProvider);
-  // !temporary only
-  // const walletId = '2023-03-01T12:02:23.282294';
+  final wallets = ref.watch(userWalletsProvider).value;
   final controller = StreamController<double>();
 
-  // final refs = FirebaseFirestore.instance
-  //     .collection(FirebaseCollectionName.users)
-  //     .doc(userId);
-  // .where(FirebaseFieldName.userId, isEqualTo: userId)
-  // .snapshots();
-  final sub = FirebaseFirestore.instance
-      // .collection(FirebaseCollectionName.users)
-      // .doc(userId)
-      // .collection(FirebaseCollectionName.wallets)
-      // .doc(walletId)
-      // .collection(FirebaseCollectionName.budgets)
-      // .collectionGroup(FirebaseCollectionName.budgets)
-      .collection(FirebaseCollectionName.budgets)
-      .where(FirebaseFieldName.userId, isEqualTo: userId)
-      .snapshots()
-      .listen((snapshot) {
-    final document = snapshot.docs;
-    final budgets = document.map(
-      (doc) => Budget.fromJson(doc.data()).budgetAmount,
-    );
-    //! need to fix
-    // get budgetAmount from all budgets code
-    // Iterable<Budget> budgetsList = [];
+  // final sub = FirebaseFirestore.instance
+  //     .collection(FirebaseCollectionName.budgets)
+  //     .where(FirebaseFieldName.userId, isEqualTo: userId)
+  //     .snapshots()
+  //     .listen((snapshot) {
+  //   final document = snapshot.docs;
+  //   final budgets = document.map(
+  //     (doc) => Budget.fromJson(doc.data()).budgetAmount,
+  //   );
+  //   var totalAmount =
+  //       budgets.fold(0.00, (previousValue, element) => previousValue + element);
+  //   controller.sink.add(totalAmount);
+  // });
+  final budgetsList = <double>[]; // accumulate all budgets in a list
+  for (var wallet in wallets!) {
+    debugPrint('wallet: ${wallet.walletName}');
+    debugPrint('walletId: ${wallet.walletId}');
+    final sub = FirebaseFirestore.instance
+        .collection(FirebaseCollectionName.budgets)
+        .where(FirebaseFieldName.walletId, isEqualTo: wallet.walletId)
+        .snapshots()
+        .listen((snapshot) {
+      final document = snapshot.docs;
+      final budgets = document
+          .where(
+            (doc) => !doc.metadata.hasPendingWrites,
+          )
+          .map(
+            (doc) => Budget.fromJson(doc.data()).budgetAmount,
+          );
+      budgetsList.addAll(budgets);
 
-    // for (var budget in budgets) {
-    //   if (budgetsList.isEmpty) {
-    //     budgetsList = [budget];
-    //   } else {
-    //     var isSame = false;
-    //     for (var budgetList in budgetsList) {
-    //       if (budget.budgetId == budgetList.budgetId) {
-    //         isSame = true;
-    //       }
-    //     }
-    //     if (!isSame) {
-    //       budgetsList = [...budgetsList, budget];
-    //       final totalBudgetAmount = budgetsList
-    //           .map((budget) => budget.budgetAmount)
-    //           .reduce((value, element) => value + element);
-
-    //       controller.sink.add(totalBudgetAmount);
-    //       // controller.sink.add(budgetsList);
-    //     }
-    //   }
-    // }
-    var totalAmount =
-        budgets.fold(0.00, (previousValue, element) => previousValue + element);
-    controller.sink.add(totalAmount);
-  });
+      var totalAmount = budgetsList.fold(
+          0.00, (previousValue, element) => previousValue + element);
+      debugPrint('totalAmount: $totalAmount');
+      controller.sink.add(totalAmount);
+    });
+  }
 
   ref.onDispose(() {
-    sub.cancel();
+    // sub.cancel();
     controller.close();
   });
   return controller.stream;
 });
+final usedAmountProvider = StreamProvider.autoDispose<double>((ref) {
+  final wallets = ref.watch(userWalletsProvider).value;
+  final controller = StreamController<double>();
+
+  final budgetsList = <double>[]; // accumulate all budgets in a list
+  for (var wallet in wallets!) {
+    debugPrint('wallet: ${wallet.walletName}');
+    debugPrint('walletId: ${wallet.walletId}');
+    final sub = FirebaseFirestore.instance
+        .collection(FirebaseCollectionName.budgets)
+        .where(FirebaseFieldName.walletId, isEqualTo: wallet.walletId)
+        .snapshots()
+        .listen((snapshot) {
+      final document = snapshot.docs;
+      final budgets = document
+          .where(
+            (doc) => !doc.metadata.hasPendingWrites,
+          )
+          .map(
+            (doc) => Budget.fromJson(doc.data()).usedAmount,
+          );
+      budgetsList.addAll(budgets);
+
+      var usedAmount = budgetsList.fold(
+          0.00, (previousValue, element) => previousValue + element);
+      debugPrint('usedAmount: $usedAmount');
+      controller.sink.add(usedAmount);
+    });
+  }
+
+  ref.onDispose(() {
+    // sub.cancel();
+    controller.close();
+  });
+  return controller.stream;
+});
+
+final remainingAmountProvider = StreamProvider.autoDispose<double>((ref) {
+  final wallets = ref.watch(userWalletsProvider).value;
+  final controller = StreamController<double>();
+
+  double totalBudgetAmount = 0;
+  double totalUsedAmount = 0;
+
+  for (var wallet in wallets!) {
+    debugPrint('wallet: ${wallet.walletName}');
+    debugPrint('walletId: ${wallet.walletId}');
+    final sub = FirebaseFirestore.instance
+        .collection(FirebaseCollectionName.budgets)
+        .where(FirebaseFieldName.walletId, isEqualTo: wallet.walletId)
+        .snapshots()
+        .listen((snapshot) {
+      final document = snapshot.docs;
+      final budgets = document
+          .where((doc) => !doc.metadata.hasPendingWrites)
+          .map((doc) => Budget.fromJson(doc.data()));
+
+      for (var budget in budgets) {
+        totalBudgetAmount += budget.budgetAmount;
+        totalUsedAmount += budget.usedAmount;
+      }
+
+      double remainingAmount = totalBudgetAmount - totalUsedAmount;
+      debugPrint('remainingAmount: $remainingAmount');
+      controller.sink.add(remainingAmount);
+    });
+  }
+
+  ref.onDispose(() {
+    // sub.cancel();
+    controller.close();
+  });
+  return controller.stream;
+});
+final amountPercentageProvider = StreamProvider.autoDispose<double>((ref) {
+  final wallets = ref.watch(userWalletsProvider).value;
+  final controller = StreamController<double>();
+
+  double totalBudgetAmount = 0;
+  double totalUsedAmount = 0;
+
+  for (var wallet in wallets!) {
+    debugPrint('wallet: ${wallet.walletName}');
+    debugPrint('walletId: ${wallet.walletId}');
+    final sub = FirebaseFirestore.instance
+        .collection(FirebaseCollectionName.budgets)
+        .where(FirebaseFieldName.walletId, isEqualTo: wallet.walletId)
+        .snapshots()
+        .listen((snapshot) {
+      final document = snapshot.docs;
+      final budgets = document
+          .where((doc) => !doc.metadata.hasPendingWrites)
+          .map((doc) => Budget.fromJson(doc.data()));
+
+      for (var budget in budgets) {
+        totalBudgetAmount += budget.budgetAmount;
+        totalUsedAmount += budget.usedAmount;
+      }
+
+      double amountPercentage = totalUsedAmount / totalBudgetAmount;
+      // debugPrint('remainingAmount: $remainingAmount');
+      controller.sink.add(amountPercentage);
+    });
+  }
+
+  ref.onDispose(() {
+    // sub.cancel();
+    controller.close();
+  });
+  return controller.stream;
+});
+
+// final remainingAmountProvider = StreamProvider.autoDispose<double>((ref) {
+//   final wallets = ref.watch(userWalletsProvider).value;
+//   final controller = StreamController<double>();
+
+//   final budgetsList = <double>[]; // accumulate all budgets in a list
+//   for (var wallet in wallets!) {
+//     debugPrint('wallet: ${wallet.walletName}');
+//     debugPrint('walletId: ${wallet.walletId}');
+//     final sub = FirebaseFirestore.instance
+//         .collection(FirebaseCollectionName.budgets)
+//         .where(FirebaseFieldName.walletId, isEqualTo: wallet.walletId)
+//         .snapshots()
+//         .listen((snapshot) {
+//       final document = snapshot.docs;
+//       final budgets = document
+//           .where(
+//             (doc) => !doc.metadata.hasPendingWrites,
+//           )
+//           .map(
+//             (doc) => Budget.fromJson(doc.data()).usedAmount,
+//           );
+//       budgetsList.addAll(budgets);
+
+//       var usedAmount = budgetsList.fold(
+//           0.00, (previousValue, element) => previousValue + element);
+//       debugPrint('usedAmount: $usedAmount');
+//       controller.sink.add(usedAmount);
+//     });
+//   }
+
+//   ref.onDispose(() {
+//     // sub.cancel();
+//     controller.close();
+//   });
+//   return controller.stream;
+// });
 
 class BudgetNotifier extends StateNotifier<IsLoading> {
   BudgetNotifier() : super(false);
@@ -311,6 +333,25 @@ class BudgetNotifier extends StateNotifier<IsLoading> {
     } finally {
       isLoading = false;
     }
+  }
+
+  Future<void> updateUsedAmount({
+    required String budgetId,
+    required double usedAmount,
+  }) async {
+    final query = FirebaseFirestore.instance
+        .collection(FirebaseCollectionName.budgets)
+        .where(FirebaseFieldName.budgetId, isEqualTo: budgetId)
+        .get();
+    await query.then((query) async {
+      for (final doc in query.docs) {
+        if (usedAmount != doc[FirebaseFieldName.usedAmount]) {
+          await doc.reference.update({
+            FirebaseFieldName.usedAmount: usedAmount,
+          });
+        }
+      }
+    });
   }
 
 // * delete budget

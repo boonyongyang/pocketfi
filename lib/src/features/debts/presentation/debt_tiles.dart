@@ -28,8 +28,10 @@ class DebtTiles extends ConsumerWidget {
     final debtPaymentsList = ref.watch(userDebtPaymentsProvider).value;
     if (debtPaymentsList != null) {
       for (var debtPayment in debtPaymentsList) {
-        totalAmountPaid +=
-            debtPayment.principleAmount + debtPayment.interestAmount;
+        if (debtPayment.debtId == debt.debtId) {
+          totalAmountPaid +=
+              debtPayment.principleAmount + debtPayment.interestAmount;
+        }
         // totalInterestPaid += debtPayment.interestAmount;
       }
     }
@@ -129,7 +131,29 @@ class DebtTiles extends ConsumerWidget {
                         ],
                       ),
                       SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.05,
+                        height: MediaQuery.of(context).size.height * 0.02,
+                      ),
+                      Row(
+                        children: [
+                          //progress indicator
+                          Expanded(
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10.0),
+                              child: LinearProgressIndicator(
+                                minHeight: 10,
+                                value: totalAmountPaid /
+                                    debt.calculateTotalPayment(),
+                                backgroundColor: Colors.grey[300],
+                                valueColor: const AlwaysStoppedAnimation<Color>(
+                                  AppColors.subColor1,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 10,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,

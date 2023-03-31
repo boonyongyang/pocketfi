@@ -164,50 +164,48 @@ class SavingGoalsTiles extends ConsumerWidget {
                           ),
                         ],
                       ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        children: [
+                          //progress indicator
+                          Expanded(
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10.0),
+                              child: LinearProgressIndicator(
+                                minHeight: 10,
+                                value: savingGoal.savingGoalSavedAmount /
+                                    savingGoal.savingGoalAmount,
+                                backgroundColor: Colors.grey[300],
+                                valueColor: const AlwaysStoppedAnimation<Color>(
+                                  AppColors.subColor1,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          const Padding(
-                            padding: EdgeInsets.only(
-                              right: 8.0,
-                              top: 8.0,
+                          Text(
+                            'MYR ${savingGoal.savingGoalSavedAmount.toStringAsFixed(2)}',
+                            style: const TextStyle(
+                              color: AppColors.mainColor1,
+                              fontSize: 15,
                             ),
-                            child: CircleAvatar(
-                                backgroundColor: Colors.transparent,
-                                child: SizedBox()),
                           ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Row(
-                                // mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  // Text(
-                                  //   'Saving Goals',
-                                  //   style: TextStyle(
-                                  //     fontWeight: FontWeight.bold,
-                                  //     fontSize: 15,
-                                  //     color: AppColors.mainColor1,
-                                  //   ),
-                                  // ),
-                                  Text(
-                                    'MYR ${savingGoal.savingGoalSavedAmount.toStringAsFixed(2)}',
-                                    style: const TextStyle(
-                                      color: AppColors.mainColor1,
-                                      fontSize: 15,
-                                    ),
-                                  ),
-                                  Text(
-                                    ' / MYR ${savingGoal.savingGoalAmount.toStringAsFixed(2)}',
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 15,
-                                      color: AppColors.mainColor2,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
+                          Text(
+                            ' / MYR ${savingGoal.savingGoalAmount.toStringAsFixed(2)}',
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15,
+                              color: AppColors.mainColor2,
+                            ),
                           ),
                         ],
                       ),

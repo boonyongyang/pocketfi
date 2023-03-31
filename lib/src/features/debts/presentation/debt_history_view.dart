@@ -23,8 +23,10 @@ class DebtHistoryView extends ConsumerWidget {
     final debtPaymentsList = ref.watch(userDebtPaymentsProvider).value;
     if (debtPaymentsList != null) {
       for (var debtPayment in debtPaymentsList) {
-        totalAmountPaid += debtPayment.principleAmount;
-        totalInterestPaid += debtPayment.interestAmount;
+        if (debtPayment.debtId == debt.debtId) {
+          totalAmountPaid += debtPayment.principleAmount;
+          totalInterestPaid += debtPayment.interestAmount;
+        }
       }
     }
 
@@ -123,118 +125,122 @@ class DebtHistoryView extends ConsumerWidget {
                   itemCount: debtPayments.length,
                   itemBuilder: (context, index) {
                     final debtPayment = debtPayments.elementAt(index);
-                    return Padding(
-                      padding: const EdgeInsets.only(
-                        left: 8.0,
-                        right: 8.0,
-                      ),
-                      child: Card(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
-                          child:
-                              // DebtPaymentTiles(
-                              //   debtPayment: debtPayment,
-                              // )
-                              GestureDetector(
-                            onTap: () {
-                              showModalBottomSheet(
-                                context: context,
-                                builder: (context) => PaidDebtSheet(
-                                  // rowData: rowData,
-                                  // previousRowData:
-                                  //     index > 0 ? tableData[index - 1] : null,
-                                  debtPayment: debtPayment,
-                                ),
-                                shape: const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.vertical(
-                                    top: Radius.circular(16.0),
-                                  ),
-                                ),
-                              );
-                            },
-                            child: ListTile(
-                              title: Text(
-                                debtPayment.paidMonth,
-                                style: TextStyle(
-                                  fontSize: 19,
-                                  fontWeight: FontWeight.bold,
-                                  color: AppColors.mainColor1,
-                                ),
+                    return debtPayment.debtId == debt.debtId
+                        ? Padding(
+                            padding: const EdgeInsets.only(
+                              left: 8.0,
+                              right: 8.0,
+                            ),
+                            child: Card(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20.0),
                               ),
-                              subtitle: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  // const SizedBox(
-                                  //   height: 5,
-                                  // ),
-                                  // Row(
-                                  //   mainAxisAlignment:
-                                  //       MainAxisAlignment.spaceBetween,
-                                  //   children: [
-                                  //     const Text('Principle Paid ',
-                                  //         style: TextStyle(
-                                  //           color: AppColors.mainColor1,
-                                  //         )),
-                                  //     Text(
-                                  //         'MYR ${debtPayment.principleAmount.toStringAsFixed(2)}',
-                                  //         style: const TextStyle(
-                                  //             color: AppColors.mainColor1,
-                                  //             fontWeight: FontWeight.w500)),
-                                  //   ],
-                                  // ),
-                                  // const SizedBox(
-                                  //   height: 5,
-                                  // ),
-                                  // Row(
-                                  //   mainAxisAlignment:
-                                  //       MainAxisAlignment.spaceBetween,
-                                  //   children: [
-                                  //     const Text('Interest Paid ',
-                                  //         style: TextStyle(
-                                  //           color: AppColors.mainColor1,
-                                  //         )),
-                                  //     Text(
-                                  //       'MYR ${debtPayment.interestAmount.toStringAsFixed(2)}',
-                                  //       style: const TextStyle(
-                                  //           color: AppColors.mainColor1,
-                                  //           fontWeight: FontWeight.w500),
-                                  //     ),
-                                  //   ],
-                                  // ),
-                                  const Divider(),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      const Text('Total Paid ',
-                                          style: TextStyle(
-                                            color: AppColors.mainColor1,
-                                          )),
-                                      Text(
-                                        'MYR ${(debtPayment.principleAmount + debtPayment.interestAmount).toStringAsFixed(2)}',
-                                        style: const TextStyle(
-                                            color: AppColors.mainColor1,
-                                            fontWeight: FontWeight.w500),
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    top: 8.0, bottom: 8.0),
+                                child:
+                                    // DebtPaymentTiles(
+                                    //   debtPayment: debtPayment,
+                                    // )
+                                    GestureDetector(
+                                  onTap: () {
+                                    showModalBottomSheet(
+                                      context: context,
+                                      builder: (context) => PaidDebtSheet(
+                                        // rowData: rowData,
+                                        // previousRowData:
+                                        //     index > 0 ? tableData[index - 1] : null,
+                                        debtPayment: debtPayment,
                                       ),
-                                    ],
+                                      shape: const RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.vertical(
+                                          top: Radius.circular(16.0),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  child: ListTile(
+                                    title: Text(
+                                      debtPayment.paidMonth,
+                                      style: const TextStyle(
+                                        fontSize: 19,
+                                        fontWeight: FontWeight.bold,
+                                        color: AppColors.mainColor1,
+                                      ),
+                                    ),
+                                    subtitle: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        // const SizedBox(
+                                        //   height: 5,
+                                        // ),
+                                        // Row(
+                                        //   mainAxisAlignment:
+                                        //       MainAxisAlignment.spaceBetween,
+                                        //   children: [
+                                        //     const Text('Principle Paid ',
+                                        //         style: TextStyle(
+                                        //           color: AppColors.mainColor1,
+                                        //         )),
+                                        //     Text(
+                                        //         'MYR ${debtPayment.principleAmount.toStringAsFixed(2)}',
+                                        //         style: const TextStyle(
+                                        //             color: AppColors.mainColor1,
+                                        //             fontWeight: FontWeight.w500)),
+                                        //   ],
+                                        // ),
+                                        // const SizedBox(
+                                        //   height: 5,
+                                        // ),
+                                        // Row(
+                                        //   mainAxisAlignment:
+                                        //       MainAxisAlignment.spaceBetween,
+                                        //   children: [
+                                        //     const Text('Interest Paid ',
+                                        //         style: TextStyle(
+                                        //           color: AppColors.mainColor1,
+                                        //         )),
+                                        //     Text(
+                                        //       'MYR ${debtPayment.interestAmount.toStringAsFixed(2)}',
+                                        //       style: const TextStyle(
+                                        //           color: AppColors.mainColor1,
+                                        //           fontWeight: FontWeight.w500),
+                                        //     ),
+                                        //   ],
+                                        // ),
+                                        const Divider(),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            const Text('Total Paid ',
+                                                style: TextStyle(
+                                                  color: AppColors.mainColor1,
+                                                )),
+                                            Text(
+                                              'MYR ${(debtPayment.principleAmount + debtPayment.interestAmount).toStringAsFixed(2)}',
+                                              style: const TextStyle(
+                                                  color: AppColors.mainColor1,
+                                                  fontWeight: FontWeight.w500),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                    trailing: const SizedBox(
+                                      height: double.infinity,
+                                      child: Icon(
+                                        Icons.check_circle_rounded,
+                                        color: AppColors.green,
+                                      ),
+                                    ),
                                   ),
-                                ],
-                              ),
-                              trailing: SizedBox(
-                                height: double.infinity,
-                                child: Icon(
-                                  Icons.check_circle_rounded,
-                                  color: AppColors.green,
                                 ),
                               ),
                             ),
-                          ),
-                        ),
-                      ),
-                    );
+                          )
+                        : Container();
                   },
                 );
               },

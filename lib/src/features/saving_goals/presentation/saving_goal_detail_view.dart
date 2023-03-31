@@ -1,32 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
+import 'package:pocketfi/src/features/saving_goals/application/saving_goal_services.dart';
 import 'package:pocketfi/src/features/saving_goals/domain/saving_goal.dart';
 import 'package:pocketfi/src/features/saving_goals/presentation/saving_goal_history_view.dart';
 import 'package:pocketfi/src/features/saving_goals/presentation/saving_goal_overview.dart';
 import 'package:pocketfi/src/features/saving_goals/presentation/update_saving_goal.dart';
 
 class SavingGoalDetailView extends ConsumerWidget {
-  SavingGoal savingGoal;
+  // SavingGoal selectedSavingGoal;
   SavingGoalDetailView({
     super.key,
-    required this.savingGoal,
+    // required this.selectedSavingGoal,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final selectedSavingGoal = ref.watch(selectedSavingGoalProvider);
+    if (selectedSavingGoal == null) {
+      return Container();
+    }
     return DefaultTabController(
         length: 2,
         child: Scaffold(
           appBar: AppBar(
-            title: const Text('Saving Goal'),
+            title: Text(selectedSavingGoal.savingGoalName),
             actions: [
               IconButton(
                 onPressed: () {
                   Navigator.of(context, rootNavigator: true).push(
                     MaterialPageRoute(
                       builder: (context) => UpdateSavingGoalView(
-                        savingGoal: savingGoal,
+                        savingGoal: selectedSavingGoal,
                       ),
                     ),
                   );
@@ -50,12 +55,12 @@ class SavingGoalDetailView extends ConsumerWidget {
           ),
           body: TabBarView(
             children: [
-              SavingGoalOverviewView(
-                savingGoal: savingGoal,
-              ),
+              const SavingGoalOverviewView(
+                  // savingGoal: selectedSavingGoal,
+                  ),
               SavingGoalHistoryView(
-                savingGoal: savingGoal,
-              ),
+                  // selectedSavingGoal: selectedSavingGoal,
+                  ),
             ],
           ),
         ));

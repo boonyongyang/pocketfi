@@ -6,6 +6,7 @@ import 'package:pocketfi/src/common_widgets/animations/loading_animation_view.da
 import 'package:pocketfi/src/common_widgets/buttons/full_width_button_with_text.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/constants/strings.dart';
+import 'package:pocketfi/src/features/saving_goals/application/saving_goal_services.dart';
 import 'package:pocketfi/src/features/saving_goals/data/saving_goal_repository.dart';
 import 'package:pocketfi/src/features/saving_goals/presentation/add_new_saving_goal.dart';
 import 'package:pocketfi/src/features/saving_goals/presentation/saving_goal_detail_view.dart';
@@ -50,7 +51,7 @@ class SavingGoalsPage extends ConsumerWidget {
                               style: TextStyle(
                                 color: AppColors.mainColor1,
                                 fontWeight: FontWeight.bold,
-                                fontSize: 20,
+                                fontSize: 15,
                               ),
                             ),
                             const Spacer(),
@@ -61,7 +62,30 @@ class SavingGoalsPage extends ConsumerWidget {
                               style: const TextStyle(
                                 color: AppColors.mainColor1,
                                 fontWeight: FontWeight.bold,
-                                fontSize: 20,
+                                fontSize: 15,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          children: [
+                            //progress indicator
+                            Expanded(
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(10.0),
+                                child: LinearProgressIndicator(
+                                  minHeight: 10,
+                                  value:
+                                      totalSavedAmount / totalSavingGoalsAmount,
+                                  backgroundColor: Colors.grey[300],
+                                  valueColor:
+                                      const AlwaysStoppedAnimation<Color>(
+                                    AppColors.subColor1,
+                                  ),
+                                ),
                               ),
                             ),
                           ],
@@ -73,12 +97,21 @@ class SavingGoalsPage extends ConsumerWidget {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             // Calculation part
+                            const Text(
+                              'Saved',
+                              style: TextStyle(
+                                color: AppColors.green,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 15,
+                              ),
+                            ),
+                            const Spacer(),
                             Text(
                               'MYR ${totalSavedAmount.toStringAsFixed(2)}',
                               style: const TextStyle(
                                 color: AppColors.green,
                                 fontWeight: FontWeight.bold,
-                                fontSize: 20,
+                                fontSize: 15,
                               ),
                             ),
                           ],
@@ -90,12 +123,21 @@ class SavingGoalsPage extends ConsumerWidget {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             // Calculation part
+                            const Text(
+                              'Left',
+                              style: TextStyle(
+                                color: AppColors.red,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 15,
+                              ),
+                            ),
+                            const Spacer(),
                             Text(
                               'MYR ${totalAmountLeft.toStringAsFixed(2)}',
                               style: const TextStyle(
                                 color: AppColors.red,
                                 fontWeight: FontWeight.bold,
-                                fontSize: 20,
+                                fontSize: 15,
                               ),
                             ),
                           ],
@@ -120,14 +162,17 @@ class SavingGoalsPage extends ConsumerWidget {
                           return SavingGoalsTiles(
                             savingGoal: savingGoal,
                             onTap: () {
+                              ref
+                                  .read(selectedSavingGoalProvider.notifier)
+                                  .setSelectedSavingGoal(savingGoal, ref);
                               Navigator.of(
                                 context,
                                 rootNavigator: true,
                               ).push(
                                 MaterialPageRoute(
                                   builder: (_) => SavingGoalDetailView(
-                                    savingGoal: savingGoal,
-                                  ),
+                                      // savingGoal: savingGoal,
+                                      ),
                                 ),
                               );
                             },
