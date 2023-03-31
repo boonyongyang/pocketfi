@@ -5,6 +5,7 @@ import 'package:flutter/material.dart' show Color;
 
 import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/constants/strings.dart';
+import 'package:pocketfi/src/features/receipts/domain/receipt.dart';
 import 'package:pocketfi/src/features/transactions/domain/transaction_image.dart';
 
 enum TransactionType {
@@ -50,6 +51,7 @@ class Transaction {
   // final String? thumbnailStorageId; // image
   // final String? originalFileStorageId; // image
   final TransactionImage? transactionImage;
+  // final Receipt? receipt;
   // final List<Tag> tags;
 
   const Transaction({
@@ -65,6 +67,7 @@ class Transaction {
     this.isBookmark = false,
     this.createdAt,
     this.transactionImage,
+    // this.receipt,
     // this.thumbnailUrl,
     // this.fileUrl,
     // this.fileName,
@@ -99,6 +102,12 @@ class Transaction {
                   json: json[TransactionKey.transactionImage],
                 )
               : null,
+          // receipt: json[TransactionKey.receipt] != null
+          //     ? Receipt.fromJson(
+          //         transactionId: transactionId,
+          //         json: json[TransactionKey.receipt],
+          //       )
+          //     : null,
           // thumbnailUrl: json[TransactionKey.thumbnailUrl],
           // fileUrl: json[TransactionKey.fileUrl],
           // fileName: json[TransactionKey.fileName],
@@ -126,6 +135,7 @@ class Transaction {
         // TransactionKey.originalFileStorageId: originalFileStorageId,
         if (transactionImage != null)
           TransactionKey.transactionImage: transactionImage!.toJson(),
+        // if (receipt != null) TransactionKey.receipt: receipt!.toJson(),
         // TransactionKey.tags: [
         //   for (final tag in tags)
         //     {
@@ -156,6 +166,7 @@ class Transaction {
     // String? thumbnailStorageId,
     // String? originalFileStorageId,
     TransactionImage? transactionImage,
+    // Receipt? receipt,
   }) =>
       Transaction(
         transactionId: transactionId ?? this.transactionId,
@@ -178,6 +189,7 @@ class Transaction {
         // originalFileStorageId:
         //     originalFileStorageId ?? this.originalFileStorageId,
         transactionImage: transactionImage ?? this.transactionImage,
+        // receipt: receipt ?? this.receipt,
       );
 }
 
@@ -199,6 +211,7 @@ class TransactionKey {
   static const thumbnailStorageId = 'thumbnail_storage_id';
   static const originalFileStorageId = 'original_file_storage_id';
   static const transactionImage = 'transaction_image';
+  // static const receipt = 'receipt';
   // TODO: add tags
   static const tags = 'tags';
   // static const shared = 'shared';

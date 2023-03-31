@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
@@ -10,8 +9,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/common_widgets/buttons/full_width_button_with_text.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/features/category/application/category_services.dart';
+import 'package:pocketfi/src/features/receipts/add_transaction_with_receipt.dart';
 import 'package:pocketfi/src/features/receipts/domain/receipt.dart';
-import 'package:pocketfi/src/features/receipts/receipt_text_rect.dart';
+import 'package:pocketfi/src/features/receipts/domain/receipt_text_rect.dart';
 import 'package:pocketfi/src/features/receipts/scanned_text_page.dart';
 import 'package:pocketfi/src/features/transactions/date_picker/application/transaction_date_services.dart';
 import 'package:pocketfi/src/features/transactions/date_picker/presentation/transaction_date_picker.dart';
@@ -37,6 +37,7 @@ class ReceiptHighlightImageState extends ConsumerState<ReceiptHighlightImage> {
   bool highlightMode = false;
 
   String? selectedPrice = '';
+  DateTime? selectedDate;
   // String? selectedMerchant = '', selectedNote = '';
   late TextEditingController priceController,
       merchantController,
@@ -58,9 +59,15 @@ class ReceiptHighlightImageState extends ConsumerState<ReceiptHighlightImage> {
         void listener() =>
             isSaveButtonEnabled.value = priceController.text.isNotEmpty;
         priceController.addListener(listener);
-        return () => priceController.removeListener(listener);
+        merchantController.addListener(listener);
+        noteController.addListener(listener);
+        return () {
+          priceController.removeListener(listener);
+          merchantController.removeListener(listener);
+          noteController.removeListener(listener);
+        };
       },
-      [priceController],
+      [priceController, merchantController, noteController],
     );
 
     return Padding(
@@ -212,6 +219,7 @@ class ReceiptHighlightImageState extends ConsumerState<ReceiptHighlightImage> {
             noteController: noteController,
             merchantController: merchantController,
             recognizedText: widget.recognizedText,
+            imagePath: widget.imagePath ?? '', extractedTextRects: [],
           ),
         ],
       ),
@@ -340,7 +348,9 @@ class ReceiptHighlightImageState extends ConsumerState<ReceiptHighlightImage> {
           ),
           PopupMenuItem(
             child: const Text('Date'),
-            onTap: () => {},
+            onTap: () {
+              extractAndSetDate(text);
+            },
           ),
           PopupMenuItem(
             child: const Text('Note'),
@@ -349,9 +359,7 @@ class ReceiptHighlightImageState extends ConsumerState<ReceiptHighlightImage> {
           PopupMenuItem(
             child: const Text('Total'),
             onTap: () {
-              setState(
-                () => selectedPrice = text,
-              );
+              setState(() => selectedPrice = text);
 
               // Extract numbers and at most one decimal point
               String extractedNumber = '';
@@ -437,6 +445,31 @@ class ReceiptHighlightImageState extends ConsumerState<ReceiptHighlightImage> {
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
+  void extractAndSetDate(String text) {
+    // Extract a date in format MM/dd/yyyy or dd/MM/yyyy from the string
+    final RegExp dateRegExp =
+        RegExp(r'(?:(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{2}(?:\d{2})?))');
+    final match = dateRegExp.firstMatch(text);
+
+    if (match != null) {
+      int day, month, year;
+
+      // You can switch the month and day groups based on your date format
+      day = int.parse(match.group(1)!);
+      month = int.parse(match.group(2)!);
+      year = int.parse(match.group(3)!);
+
+      // If the year is two digits, adjust it to a four-digit year
+      if (year < 100) {
+        year += (year < 50 ? 2000 : 1900);
+      }
+
+      setState(() {
+        selectedDate = DateTime(year, month, day);
+      });
+    }
+  }
+
   // void _showSnackBar(Rect rect, Size imageSize) {
   //   final extractedText =
   //       extractTextFromRect(rect, imageSize, widget.recognizedText);
@@ -508,15 +541,19 @@ class ProceedButton extends ConsumerWidget {
     required this.isSaveButtonEnabled,
     required this.priceController,
     required this.merchantController,
-    required this.recognizedText,
     required this.noteController,
+    required this.imagePath,
+    required this.recognizedText,
+    required this.extractedTextRects,
   });
 
   final ValueNotifier<bool> isSaveButtonEnabled;
   final TextEditingController priceController;
   final TextEditingController merchantController;
   final TextEditingController noteController;
+  final String imagePath;
   final RecognizedText recognizedText;
+  final List<ReceiptTextRect> extractedTextRects;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -531,21 +568,40 @@ class ProceedButton extends ConsumerWidget {
               final chosenCategory = ref.read(selectedCategoryProvider);
               // final image = ref.read(imageFileProvider);
               final merchant = merchantController.text;
+              final note = noteController.text;
               final scannedText = recognizedText.text;
 
+              // final receipt = Receipt(
+              //   transactionId: id,
+              //   amount: amount,
+              //   date: date,
+              //   // categoryName: chosenCategory.name,
+              //   // file: imagePath,
+              //   merchant: merchant,
+              //   note: note,
+              //   scannedText: scannedText,
+              //   // if success, navigate to AddTransactionWithReceiptPage?
+              //   // if fail, show snackbar?
+              // );
               final receipt = Receipt(
-                id: id,
+                transactionId: id,
                 amount: amount,
                 date: date,
-                categoryName: chosenCategory.name,
-                image: 'image path should be here',
+                // file: File(imagePath),
                 merchant: merchant,
-                scannedText: scannedText,
-                // if success, navigate to AddTransactionWithReceiptPage?
-                // if fail, show snackbar?
+                note: note,
+                scannedText: recognizedText.text,
+                extractedTextRects: extractedTextRects,
+                transactionImage: null,
               );
 
-              // AddTransactionWithReceipt(receipt);
+              // Navigate to AddTransactionWithReceipt
+              Navigator.of(context, rootNavigator: true).push(
+                MaterialPageRoute(
+                  builder: (context) =>
+                      AddTransactionWithReceipt(receipt: receipt),
+                ),
+              );
             }
           : null,
     );

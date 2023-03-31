@@ -10,15 +10,26 @@ import 'package:pocketfi/src/features/transactions/date_picker/application/trans
 import 'package:pocketfi/src/utils/haptic_feedback_service.dart';
 
 class TransactionDatePicker extends ConsumerStatefulWidget {
-  const TransactionDatePicker({super.key});
+  final DateTime? initialDate;
+
+  const TransactionDatePicker({
+    super.key,
+    this.initialDate,
+  });
 
   @override
-  AddTransactionDatePickerState createState() =>
-      AddTransactionDatePickerState();
+  TransactionDatePickerState createState() => TransactionDatePickerState();
 }
 
-class AddTransactionDatePickerState
-    extends ConsumerState<TransactionDatePicker> {
+class TransactionDatePickerState extends ConsumerState<TransactionDatePicker> {
+  DateTime? _selectedDate;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedDate = widget.initialDate;
+  }
+
   // * select date using date picker
   Future<void> _selectDate(BuildContext context, DateTime initialDate) async {
     if (Platform.isIOS) {

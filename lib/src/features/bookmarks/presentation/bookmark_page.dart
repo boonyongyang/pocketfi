@@ -38,7 +38,7 @@ class BookmarkPageState extends ConsumerState<BookmarkPage> {
           data: (trans) {
             if (trans.isEmpty) {
               return const EmptyContentsWithTextAnimationView(
-                text: Strings.youHaveNoPosts,
+                text: Strings.youHaveNoRecords,
               );
             } else {
               return Padding(

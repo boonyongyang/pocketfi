@@ -57,8 +57,12 @@ class TransactionCard extends StatelessWidget {
                             transaction.categoryName.isEmpty
                                 ? Strings.transfer
                                 : transaction.categoryName,
+                            style: const TextStyle(
+                              // fontWeight: FontWeight.w600,
+                              fontSize: 14.0,
+                            ),
                           ),
-                          const ShowTags(),
+                          // const ShowTags(),
                           Text(transaction.description ?? '',
                               style: TextStyle(
                                 fontSize: 12,

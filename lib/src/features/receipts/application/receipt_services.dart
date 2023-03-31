@@ -20,9 +20,9 @@ class ReceiptNotifier extends StateNotifier<Receipt?> {
     state = state?.copyWith(
       amount: receipt.amount,
       date: receipt.date,
-      categoryName: receipt.categoryName,
+      // categoryName: receipt.categoryName,
       merchant: receipt.merchant,
-      scannedText: receipt.scannedText,
+      // recognizedText: receipt.recognizedText,
     );
   }
 
@@ -34,21 +34,21 @@ class ReceiptNotifier extends StateNotifier<Receipt?> {
     state = state?.copyWith(date: date);
   }
 
-  void updateCategory(String categoryName) {
-    state = state?.copyWith(categoryName: categoryName);
-  }
+  // void updateCategory(String categoryName) {
+  //   state = state?.copyWith(categoryName: categoryName);
+  // }
 
   void updateMerchant(String merchant) {
     state = state?.copyWith(merchant: merchant);
   }
 
-  void updateScannedText(String scannedText) {
-    state = state?.copyWith(scannedText: scannedText);
-  }
+  // void updateScannedText(String scannedText) {
+  //   state = state?.copyWith(scannedText: scannedText);
+  // }
 
-  void updateImage(String image) {
-    state = state?.copyWith(image: image);
-  }
+  // void updateImage(String image) {
+  //   state = state?.copyWith(image: image);
+  // }
 
   // void updateReceiptFromJson(Map<String, dynamic> json) {
   //   state = Receipt.fromJson(id: state!.id, json: json);

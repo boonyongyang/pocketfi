@@ -231,30 +231,30 @@ class VerifyReceiptDetailsState extends ConsumerState<VerifyReceiptDetails> {
               ElevatedButton(
                 onPressed: isProceedButtonEnabled.value
                     ? () {
-                        final receipt = Receipt(
-                          id: const Uuid().v4(),
-                          amount: double.parse(amountController.text),
-                          date: dateController.text.isEmpty
-                              ? DateTime.now()
-                              : DateTime.parse(dateController.text),
-                          // categoryName: 'Uncategorized',
-                          categoryName: 'Food and Drinks',
-                          image: imageFile!.path,
-                          merchant: merchantController.text,
-                          scannedText: scannedText,
-                        );
-                        // TODO: need to pass in the price, merchant, date, etc
-                        // TODO: set selectedTransaction or receipt to be the new transaction?
-                        ref.read(receiptProvider.notifier).setReceipt(receipt);
-                        debugPrint('receipt: ${receipt.toString()}');
+                        // final receipt = Receipt(
+                        //   transactionId: const Uuid().v4(),
+                        //   amount: double.parse(amountController.text),
+                        //   date: dateController.text.isEmpty
+                        //       ? DateTime.now()
+                        //       : DateTime.parse(dateController.text),
+                        //   // categoryName: 'Uncategorized',
+                        //   // categoryName: 'Food and Drinks',
+                        //   file: imageFile!.path,
+                        //   merchant: merchantController.text,
+                        //   scannedText: scannedText,
+                        // );
+                        // // TODO: need to pass in the price, merchant, date, etc
+                        // // TODO: set selectedTransaction or receipt to be the new transaction?
+                        // ref.read(receiptProvider.notifier).setReceipt(receipt);
+                        // debugPrint('receipt: ${receipt.toString()}');
 
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                AddTransactionWithReceipt(receipt),
-                          ),
-                        );
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (context) =>
+                        //         AddTransactionWithReceipt(receipt: receipt),
+                        //   ),
+                        // );
                       }
                     : null,
                 child: const Text('Proceed'),
