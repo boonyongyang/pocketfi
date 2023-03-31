@@ -19,6 +19,7 @@ import 'package:pocketfi/src/features/shared/image_upload/extensions/get_image_d
 import 'package:pocketfi/src/features/shared/image_upload/image_constants.dart';
 import 'package:pocketfi/src/features/transactions/domain/transaction_image.dart';
 import 'package:pocketfi/src/features/wallets/application/wallet_services.dart';
+import 'package:pocketfi/src/features/wallets/data/wallet_repository.dart';
 import 'package:pocketfi/src/utils/document_id_from_current_date.dart';
 import 'package:image/image.dart' as img;
 import 'package:uuid/uuid.dart';
@@ -27,24 +28,22 @@ import 'package:uuid/uuid.dart';
 final userTransactionsProvider =
     StreamProvider.autoDispose<Iterable<Transaction>>(
   (ref) {
-    final userId = ref.watch(userIdProvider);
+    final wallets = ref.watch(userWalletsProvider).value;
     final controller = StreamController<Iterable<Transaction>>();
 
-    controller.onListen = () {
-      controller.sink.add([]);
-    };
+    final transactionList = <Transaction>[]; // accumulate all budgets in a list
 
-    debugPrint(userId);
-
-    final sub = FirebaseFirestore.instance
-        .collection(FirebaseCollectionName.transactions)
-        .where(TransactionKey.userId, isEqualTo: userId)
-        .orderBy(TransactionKey.date, descending: true)
-        .snapshots()
-        .listen(
-      (snapshot) {
-        final documents = snapshot.docs;
-        final transactions = documents
+    // go through wallet and check which wallet the user is a collaborator
+    for (var wallet in wallets!) {
+      debugPrint('wallet: ${wallet.walletName}');
+      debugPrint('walletId: ${wallet.walletId}');
+      final sub = FirebaseFirestore.instance
+          .collection(FirebaseCollectionName.budgets)
+          .where(FirebaseFieldName.walletId, isEqualTo: wallet.walletId)
+          .snapshots()
+          .listen((snapshot) {
+        final document = snapshot.docs;
+        final budgets = document
             .where(
               (doc) => !doc.metadata.hasPendingWrites,
             )
@@ -54,11 +53,16 @@ final userTransactionsProvider =
                 json: doc.data(),
               ),
             );
-        controller.sink.add(transactions);
-      },
-    );
+
+        transactionList.addAll(budgets); // add budgets to the accumulated list
+        debugPrint('transactionList: $transactionList');
+        debugPrint('transactionList length: ${transactionList.length}');
+        controller.sink.add(transactionList);
+      });
+    }
+
     ref.onDispose(() {
-      sub.cancel();
+      // sub.cancel();
       controller.close();
     });
     return controller.stream;
