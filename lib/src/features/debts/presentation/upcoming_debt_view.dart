@@ -24,7 +24,11 @@ class UpcomingDebtView extends ConsumerWidget {
       return Container();
     }
     for (var history in debtHistories) {
-      tableData.removeWhere((element) => element['month'] == history.paidMonth);
+      if (history.debtId == debt.debtId) {
+        tableData
+            .removeWhere((element) => element['month'] == history.paidMonth);
+      }
+      // tableData.removeWhere((element) => element['month'] == history.paidMonth);
     }
 
     return Scaffold(

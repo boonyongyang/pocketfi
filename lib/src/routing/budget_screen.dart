@@ -32,7 +32,11 @@ class _BudgetPageState extends ConsumerState<BudgetPage> {
   @override
   Widget build(BuildContext context) {
     final budgets = ref.watch(userBudgetsProvider);
-    final totalAmount = ref.watch(totalAmountProvider).value;
+    final totalAmount = ref.watch(totalAmountProvider);
+    final usedAmount = ref.watch(usedAmountProvider);
+    final remainingAmount = ref.watch(remainingAmountProvider);
+    final amountPercentage = ref.watch(amountPercentageProvider);
+    // calcualte remaining amount
 
     final currentUserId = ref.watch(userIdProvider);
     final walletRequests = ref.watch(getPendingRequestProvider).value;
@@ -118,20 +122,78 @@ class _BudgetPageState extends ConsumerState<BudgetPage> {
                               style: TextStyle(
                                 color: AppColors.mainColor1,
                                 fontWeight: FontWeight.bold,
-                                fontSize: 20,
+                                fontSize: 15,
                               ),
                             ),
                             const Spacer(),
                             // Calculation part
-                            Text(
-                              // 'RM XX.XX',
-                              'RM ${totalAmount?.toStringAsFixed(2)}',
-                              style: const TextStyle(
-                                color: AppColors.mainColor1,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
+                            totalAmount.when(
+                              data: (totalAmount) => Text(
+                                // 'RM XX.XX',
+                                'RM ${totalAmount.toStringAsFixed(2)}',
+                                style: const TextStyle(
+                                  color: AppColors.mainColor1,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15,
+                                ),
                               ),
+                              loading: () => const LoadingAnimationView(),
+                              error: (error, stack) =>
+                                  const ErrorAnimationView(),
                             ),
+                            // Text(
+                            //   // 'RM XX.XX',
+                            //   'RM ${totalAmount.toStringAsFixed(2)}',
+                            //   style: const TextStyle(
+                            //     color: AppColors.mainColor1,
+                            //     fontWeight: FontWeight.bold,
+                            //     fontSize: 20,
+                            //   ),
+                            // ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          children: [
+                            //progress indicator\
+                            amountPercentage.when(
+                              data: (amountPercentage) {
+                                debugPrint(
+                                    'amountPercentage: $amountPercentage');
+                                return Expanded(
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    child: LinearProgressIndicator(
+                                      minHeight: 10,
+                                      value: amountPercentage,
+                                      backgroundColor: Colors.grey[300],
+                                      valueColor:
+                                          const AlwaysStoppedAnimation<Color>(
+                                        AppColors.subColor1,
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                              loading: () => const LoadingAnimationView(),
+                              error: (error, stack) =>
+                                  const ErrorAnimationView(),
+                            ),
+                            // Expanded(
+                            //   child: ClipRRect(
+                            //     borderRadius: BorderRadius.circular(10.0),
+                            //     child: LinearProgressIndicator(
+                            //       minHeight: 10,
+                            //       value: totalAmount / usedAmount,
+                            //       backgroundColor: Colors.grey[300],
+                            //       valueColor: AlwaysStoppedAnimation<Color>(
+                            //         AppColors.mainColor1,
+                            //       ),
+                            //     ),
+                            //   ),
+                            // ),
                           ],
                         ),
                         const SizedBox(
@@ -139,18 +201,87 @@ class _BudgetPageState extends ConsumerState<BudgetPage> {
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
-                          children: const [
+                          children: [
                             // Calculation part
-                            Text(
-                              'RM XX.XX left',
+                            const Text(
+                              'Spent',
+                              style: TextStyle(
+                                color: AppColors.red,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 15,
+                              ),
+                            ),
+                            const Spacer(),
+                            usedAmount.when(data: (data) {
+                              return Text(
+                                'MYR ${data.toStringAsFixed(2)}',
+                                style: const TextStyle(
+                                  color: AppColors.red,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15,
+                                ),
+                              );
+                            }, loading: () {
+                              return const LoadingAnimationView();
+                            }, error: (error, stack) {
+                              return const ErrorAnimationView();
+                            }),
+                            // Text(
+                            //   'MYR ${usedAmount.toStringAsFixed(2)}',
+                            //   style: const TextStyle(
+                            //     color: AppColors.green,
+                            //     fontWeight: FontWeight.bold,
+                            //     fontSize: 15,
+                            //   ),
+                            // ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            // Calculation part
+                            const Text(
+                              'Left',
                               style: TextStyle(
                                 color: AppColors.mainColor2,
                                 fontWeight: FontWeight.bold,
-                                fontSize: 20,
+                                fontSize: 15,
                               ),
                             ),
+                            const Spacer(),
+                            remainingAmount.when(data: (data) {
+                              return Text(
+                                'MYR ${data.toStringAsFixed(2)}',
+                                style: const TextStyle(
+                                  color: AppColors.mainColor2,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15,
+                                ),
+                              );
+                            }, loading: () {
+                              return const LoadingAnimationView();
+                            }, error: (error, stack) {
+                              return const ErrorAnimationView();
+                            }),
                           ],
                         ),
+                        // Row(
+                        //   mainAxisAlignment: MainAxisAlignment.end,
+                        //   children: const [
+                        //     // Calculation part
+                        //     Text(
+                        //       'RM XX.XX left',
+                        //       style: TextStyle(
+                        //         color: AppColors.mainColor2,
+                        //         fontWeight: FontWeight.bold,
+                        //         fontSize: 20,
+                        //       ),
+                        //     ),
+                        //   ],
+                        // ),
                       ],
                     ),
                   ),

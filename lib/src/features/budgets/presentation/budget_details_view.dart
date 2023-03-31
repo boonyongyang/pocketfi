@@ -3,11 +3,19 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/common_widgets/animations/empty_contents_with_text_animation_view.dart';
 import 'package:pocketfi/src/common_widgets/animations/error_animation_view.dart';
 import 'package:pocketfi/src/common_widgets/animations/loading_animation_view.dart';
+import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/constants/strings.dart';
 import 'package:pocketfi/src/features/budgets/application/budget_services.dart';
 import 'package:pocketfi/src/features/budgets/presentation/update_budget.dart';
+import 'package:pocketfi/src/features/category/application/category_services.dart';
+import 'package:pocketfi/src/features/category/domain/category.dart';
+import 'package:pocketfi/src/features/overview/presentation/overview_month_selector.dart';
+import 'package:pocketfi/src/features/transactions/application/transaction_services.dart';
 import 'package:pocketfi/src/features/transactions/data/transaction_repository.dart';
+import 'package:pocketfi/src/features/transactions/date_picker/application/transaction_date_services.dart';
+import 'package:pocketfi/src/features/transactions/domain/transaction.dart';
 import 'package:pocketfi/src/features/transactions/presentation/transactions_list_view.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 class BudgetDetailsView extends ConsumerWidget {
   const BudgetDetailsView({super.key});
@@ -15,8 +23,47 @@ class BudgetDetailsView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedBudget = ref.watch(selectedBudgetProvider);
+    final transactionType = ref.watch(transactionTypeProvider);
     final transactions =
         ref.watch(userTransactionsInBudgetProvider(selectedBudget!.budgetId));
+    final userTransactions = ref.watch(userTransactionsProvider);
+    final month = ref.watch(overviewMonthProvider);
+
+    List<Category> categoriesList = ref.watch(expenseCategoriesProvider);
+    final currentMonthTransactions = userTransactions.when<List<Transaction>>(
+      data: (transactions) => transactions.where((tran) {
+        // if data is empty, then the where function will return an empty list
+        return tran.date.month == month.month &&
+            tran.date.year == month.year &&
+            tran.categoryName == selectedBudget.categoryName &&
+            tran.walletId == selectedBudget.walletId;
+      }).toList(),
+      loading: () => [],
+      error: (error, stackTrace) {
+        debugPrint(error.toString());
+        return [];
+      },
+    );
+    // A function to calculate the total amount for a category in the current month
+    double getCategoryTotalAmountForCurrentMonth(
+        String categoryName, List<Transaction> transactions) {
+      final categoryTransactions =
+          transactions.where((tran) => tran.categoryName == categoryName);
+      return getTotalAmount(categoryTransactions.toList());
+    }
+
+    final filteredCategories = categoriesList.where((category) {
+      return currentMonthTransactions.any((tran) {
+        return tran.categoryName == category.name;
+      });
+    }).toList()
+      ..sort((a, b) {
+        final aTotalAmount = getCategoryTotalAmountForCurrentMonth(
+            a.name, currentMonthTransactions);
+        final bTotalAmount = getCategoryTotalAmountForCurrentMonth(
+            b.name, currentMonthTransactions);
+        return bTotalAmount.compareTo(aTotalAmount);
+      });
 
     return Scaffold(
         appBar: AppBar(
@@ -40,6 +87,11 @@ class BudgetDetailsView extends ConsumerWidget {
         body: SingleChildScrollView(
           child: Column(
             children: [
+              OverviewMonthSelector(
+                onMonthChanged: (DateTime date) {
+                  ref.read(overviewMonthProvider.notifier).setMonth(date);
+                },
+              ),
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Container(
@@ -58,30 +110,110 @@ class BudgetDetailsView extends ConsumerWidget {
                       ),
                     ],
                   ),
-                  height: MediaQuery.of(context).size.height * 0.35,
+                  height: MediaQuery.of(context).size.height * 0.3,
+                  child: Center(
+                    child: filteredCategories.isEmpty
+                        ? const Text('No transactions found.')
+                        : SfCircularChart(
+                            title: ChartTitle(
+                                text:
+                                    'Transactions in ${selectedBudget.budgetName}'),
+                            legend: Legend(
+                              isVisible: true,
+                              position: LegendPosition.bottom,
+                              overflowMode: LegendItemOverflowMode.wrap,
+                              textStyle: const TextStyle(fontSize: 14),
+                            ),
+                            tooltipBehavior: TooltipBehavior(enable: true),
+                            series: <DoughnutSeries<Category, String>>[
+                              DoughnutSeries<Category, String>(
+                                dataSource: filteredCategories.toList(),
+                                xValueMapper: (Category category, _) =>
+                                    category.name,
+                                yValueMapper: (Category category, _) {
+                                  return getCategoryTotalAmountForCurrentMonth(
+                                    category.name,
+                                    currentMonthTransactions,
+                                  );
+                                },
+                                pointColorMapper: (Category category, _) =>
+                                    category.color,
+                                dataLabelSettings: const DataLabelSettings(
+                                  isVisible: true,
+                                  labelPosition: ChartDataLabelPosition.outside,
+                                  textStyle: TextStyle(
+                                    fontSize: 14.0,
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColors.mainColor1,
+                                    fontFamily: 'Roboto',
+                                  ),
+                                ),
+                                dataLabelMapper: (Category category, _) {
+                                  final totalAmount = (() {
+                                    switch (transactionType) {
+                                      case TransactionType.expense:
+                                      case TransactionType.income:
+                                      case TransactionType.transfer:
+                                        final type = transactionType;
+                                        final transactionsOfType =
+                                            currentMonthTransactions
+                                                .where(
+                                                    (tran) => tran.type == type)
+                                                .toList();
+                                        final totalAmountOfType =
+                                            getTotalAmount(transactionsOfType);
+                                        return totalAmountOfType;
+                                    }
+                                  })();
+                                  final categoryTotalAmount =
+                                      getCategoryTotalAmountForCurrentMonth(
+                                          category.name,
+                                          currentMonthTransactions);
+
+                                  return 'MYR ${categoryTotalAmount.toStringAsFixed(2)}';
+                                },
+                                pointRenderMode: PointRenderMode.segment,
+                                enableTooltip: true,
+                                emptyPointSettings: EmptyPointSettings(
+                                  mode: EmptyPointMode.gap,
+                                ),
+                              ),
+                            ],
+                          ),
+                  ),
                 ),
               ),
-              transactions.when(
-                data: (trans) {
-                  if (trans.isEmpty) {
-                    return const EmptyContentsWithTextAnimationView(
-                      text: Strings.youHaveNoPosts,
-                    );
-                  } else {
-                    return TransactionListView(
-                      transactions: trans,
-                    );
-                  }
-                },
-                error: (error, stackTrace) {
-                  return const ErrorAnimationView();
-                },
-                loading: () {
-                  return const LoadingAnimationView();
-                },
+              TransactionListView(
+                transactions: currentMonthTransactions,
               ),
+              // transactions.when(
+              //   data: (trans) {
+              //     if (trans.isEmpty) {
+              //       return const EmptyContentsWithTextAnimationView(
+              //         text: Strings.youHaveNoRecords,
+              //       );
+              //     } else {
+              //       return TransactionListView(
+              //         transactions: currentMonthTransactions,
+              //       );
+              //     }
+              //   },
+              //   error: (error, stackTrace) {
+              //     return const ErrorAnimationView();
+              //   },
+              //   loading: () {
+              //     return const LoadingAnimationView();
+              //   },
+              // ),
             ],
           ),
         ));
+  }
+
+  double getTotalAmount(List<Transaction> transactions) {
+    return transactions.fold<double>(
+      0,
+      (previousValue, element) => previousValue + element.amount,
+    );
   }
 }

@@ -5,9 +5,11 @@ import 'package:pocketfi/src/common_widgets/animations/error_animation_view.dart
 import 'package:pocketfi/src/common_widgets/animations/loading_animation_view.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/features/debts/data/debt_repository.dart';
+import 'package:pocketfi/src/features/debts/domain/debt.dart';
 import 'package:pocketfi/src/features/debts/presentation/add_new_debt.dart';
 import 'package:pocketfi/src/features/debts/presentation/debt_details_view.dart';
 import 'package:pocketfi/src/features/debts/presentation/debt_tiles.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 class DebtPage extends ConsumerWidget {
   const DebtPage({super.key});
@@ -27,23 +29,81 @@ class DebtPage extends ConsumerWidget {
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(20),
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        spreadRadius: 2,
-                        blurRadius: 7,
-                        offset:
-                            const Offset(3, 6), // changes position of shadow
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(20),
                       ),
-                    ],
-                  ),
-                  height: MediaQuery.of(context).size.height * 0.35,
-                ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 2,
+                          blurRadius: 7,
+                          offset:
+                              const Offset(3, 6), // changes position of shadow
+                        ),
+                      ],
+                    ),
+                    // height: MediaQuery.of(context).size.height * 0.35,
+                    // add circular progress indicator
+                    child: debts.when(
+                      data: (debts) {
+                        return SfCircularChart(
+                          title: ChartTitle(text: 'Debt Breakdown'),
+                          legend: Legend(
+                            isVisible: true,
+                            position: LegendPosition.bottom,
+                            overflowMode: LegendItemOverflowMode.wrap,
+                            textStyle: const TextStyle(fontSize: 14),
+                          ),
+                          tooltipBehavior: TooltipBehavior(enable: true),
+                          series: <DoughnutSeries<Debt, String>>[
+                            DoughnutSeries<Debt, String>(
+                              dataSource: debts.toList(),
+                              xValueMapper: (Debt debt, _) => debt.debtName,
+                              yValueMapper: (Debt debt, _) => debt.debtAmount,
+                              pointColorMapper: (Debt debt, _) =>
+                                  Colors.pink[100 * debt.debtAmount.toInt()],
+                              dataLabelSettings: const DataLabelSettings(
+                                isVisible: true,
+                                labelPosition: ChartDataLabelPosition.outside,
+                                textStyle: TextStyle(
+                                  fontSize: 14.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColors.mainColor1,
+                                  fontFamily: 'Roboto',
+                                ),
+                              ),
+                              dataLabelMapper: (Debt debt, _) {
+                                final totalAmount = (() {
+                                  if (debts.isEmpty) {
+                                    return 0.0;
+                                  } else {
+                                    return debts
+                                        .map((e) => e.debtAmount)
+                                        .reduce((value, element) =>
+                                            value + element);
+                                  }
+                                })();
+                                final debtTotalAmount = debt.debtAmount;
+                                final percentage = totalAmount > 0
+                                    ? (debtTotalAmount / totalAmount * 100)
+                                        .toStringAsFixed(1)
+                                    : '0.0';
+                                return '$percentage%';
+                              },
+                              pointRenderMode: PointRenderMode.segment,
+                              enableTooltip: true,
+                              emptyPointSettings: EmptyPointSettings(
+                                mode: EmptyPointMode.gap,
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                      loading: () => const LoadingAnimationView(),
+                      error: (error, stack) => const ErrorAnimationView(),
+                    )),
               ),
             ),
             // SliverToBoxAdapter(

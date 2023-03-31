@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
+import 'package:pocketfi/src/features/budgets/application/budget_services.dart';
 import 'package:pocketfi/src/features/budgets/domain/budget.dart';
 import 'package:pocketfi/src/features/category/application/category_services.dart';
+import 'package:pocketfi/src/features/transactions/data/transaction_repository.dart';
+import 'package:pocketfi/src/features/transactions/date_picker/application/transaction_date_services.dart';
+import 'package:pocketfi/src/features/transactions/domain/transaction.dart';
 import 'package:pocketfi/src/features/wallets/data/wallet_repository.dart';
 
 class BudgetTile extends ConsumerWidget {
@@ -27,7 +31,34 @@ class BudgetTile extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final userTransactions = ref.watch(userTransactionsProvider);
+
+    final currentMonthTransactions = userTransactions.when<List<Transaction>>(
+      data: (transactions) => transactions.where((tran) {
+        return tran.date.month == ref.watch(overviewMonthProvider).month &&
+            tran.date.year == ref.watch(overviewMonthProvider).year &&
+            tran.categoryName == budget.categoryName &&
+            tran.walletId == budget.walletId;
+      }).toList(),
+      loading: () => [],
+      error: (error, stackTrace) {
+        debugPrint(error.toString());
+        return [];
+      },
+    );
+    // get absolute value of total amount
+    final totalAmount = getCategoryTotalAmount(currentMonthTransactions).abs();
+    if (totalAmount != budget.usedAmount) {
+      debugPrint('budget used amount updated: $totalAmount');
+      debugPrint('budget used amount updated: ${budget.usedAmount}');
+      updateUsedAmount(
+        budget,
+        totalAmount,
+        ref,
+      );
+    }
     final category = getCategoryWithCategoryName(budget.categoryName);
+    final remainingAmount = budget.budgetAmount - totalAmount;
     final wallet =
         ref.watch(getWalletFromWalletIdProvider(budget.walletId)).value;
     if (wallet == null) {
@@ -121,6 +152,41 @@ class BudgetTile extends ConsumerWidget {
                         height: 10,
                       ),
                       Row(
+                        children: [
+                          //progress indicator
+                          Expanded(
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10.0),
+                              child: LinearProgressIndicator(
+                                minHeight: 10,
+                                value: totalAmount / budget.budgetAmount,
+                                backgroundColor: Colors.grey[300],
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                  category.color,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text(
+                            "used MYR ${totalAmount.toStringAsFixed(2)}",
+                            style: const TextStyle(
+                              color: AppColors.red,
+                              fontSize: 14,
+                              // fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
                         mainAxisSize: MainAxisSize.max,
                         // mainAxisAlignment: MainAxisAlignment.end,
                         children: [
@@ -136,10 +202,10 @@ class BudgetTile extends ConsumerWidget {
                           Text(budget.categoryName),
                           const Spacer(),
                           Text(
-                            "RM ${budget.usedAmount.toStringAsFixed(2)} left",
+                            "left MYR ${remainingAmount.toStringAsFixed(2)}",
                             style: const TextStyle(
                               color: AppColors.mainColor2,
-                              fontSize: 16,
+                              fontSize: 14,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -155,7 +221,34 @@ class BudgetTile extends ConsumerWidget {
       ),
     );
   }
+
+  Future<void> updateUsedAmount(
+    Budget budget,
+    double totalAmount,
+    WidgetRef ref,
+  ) async {
+    ref
+        .read(budgetProvider.notifier)
+        .updateUsedAmount(budgetId: budget.budgetId, usedAmount: totalAmount);
+  }
+
+  double getCategoryTotalAmount(List<Transaction> transactions) {
+    return transactions.fold<double>(
+      0.0,
+      (previousValue, transaction) {
+        if (transaction.type == TransactionType.expense) {
+          return previousValue - transaction.amount;
+        } else if (transaction.type == TransactionType.income) {
+          return previousValue + transaction.amount;
+        } else {
+          return previousValue;
+        }
+      },
+    );
+  }
 }
+  
+
 
 // Row
   // column
