@@ -63,7 +63,10 @@ class TransactionCard extends StatelessWidget {
                             ),
                           ),
                           // const ShowTags(),
+                          const SizedBox(height: 20.0),
                           Text(transaction.description ?? '',
+                              maxLines: 3,
+                              overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                 fontSize: 12,
                                 color: Colors.grey[700],
@@ -82,22 +85,24 @@ class TransactionCard extends StatelessWidget {
                           // Text(transaction.createdAt!.toIso8601String()),
                           Text(transaction.walletName),
                           // format date to dd/mm/yyyy
-                          Text(DateFormat('d MMM').format(transaction.date)),
+                          // Text(DateFormat('d MMM').format(transaction.date)),
                         ],
                       ),
                     ),
                   ],
                 ),
                 Text(
-                  '${transactionType == TransactionType.expense ? TransactionType.expense.symbol : transactionType == TransactionType.income ? TransactionType.income.symbol : TransactionType.transfer.symbol}MYR ${transaction.amount}',
+                  // '${transactionType == TransactionType.expense ? TransactionType.expense.symbol : transactionType == TransactionType.income ? TransactionType.income.symbol : TransactionType.transfer.symbol}MYR ${transaction.amount}',
+                  '${transactionType.symbol}MYR ${transaction.amount.toStringAsFixed(2)}',
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 16,
-                    color: transactionType == TransactionType.expense
-                        ? TransactionType.expense.color
-                        : transactionType == TransactionType.income
-                            ? TransactionType.income.color
-                            : TransactionType.transfer.color,
+                    color: transactionType.color,
+                    // color: transactionType == TransactionType.expense
+                    //     ? TransactionType.expense.color
+                    //     : transactionType == TransactionType.income
+                    //         ? TransactionType.income.color
+                    //         : TransactionType.transfer.color,
                   ),
                 ),
               ],

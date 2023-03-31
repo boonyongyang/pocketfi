@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:auto_size_text_field/auto_size_text_field.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -207,31 +208,69 @@ class AddTransactionWithBookmarkState
     ref.read(imageFileProvider.notifier).setImageFile(imageFile);
   }
 
+  // Widget showIfPhotoIsAdded() {
+  //   final transaction = ref.watch(selectedTransactionProvider);
+
+  //   return (transaction?.transactionImage?.fileUrl != null)
+  //       ? InkWell(
+  //           onTap: () {
+  //             Navigator.of(context).push(
+  //               MaterialPageRoute(
+  //                 builder: (context) => FullScreenImageDialog(
+  //                     imageFile: File(transaction.transactionImage!.fileUrl!)),
+  //                 fullscreenDialog: true,
+  //               ),
+  //             );
+  //           },
+  //           child: SizedBox(
+  //             width: double.infinity,
+  //             height: 150.0,
+  //             child: Image.network(
+  //               transaction!.transactionImage!.fileUrl!,
+  //               width: MediaQuery.of(context).size.width * 0.8,
+  //               fit: BoxFit.cover,
+  //             ),
+  //           ),
+  //         )
+  //       : const SizedBox();
+  // }
+
   Widget showIfPhotoIsAdded() {
     final transaction = ref.watch(selectedTransactionProvider);
+    final imageFile = ref.watch(imageFileProvider);
+    debugPrint('image path: ${imageFile?.path}');
 
-    return (transaction?.transactionImage?.fileUrl != null)
-        ? InkWell(
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => FullScreenImageDialog(
-                      imageFile: File(transaction.transactionImage!.fileUrl!)),
-                  fullscreenDialog: true,
-                ),
-              );
-            },
-            child: SizedBox(
-              width: double.infinity,
-              height: 150.0,
-              child: Image.network(
-                transaction!.transactionImage!.fileUrl!,
-                width: MediaQuery.of(context).size.width * 0.8,
-                fit: BoxFit.cover,
-              ),
-            ),
-          )
-        : const SizedBox();
+    if (imageFile != null) {
+      return InkWell(
+        onTap: () {
+          // Navigator.of(context).push(
+          //   MaterialPageRoute(
+          //     builder: (context) {
+          //       debugPrint('image file path: ${imageFile.path}');
+          //       return FullScreenImageDialog(imageFile: imageFile);
+          //     },
+          //     fullscreenDialog: true,
+          //   ),
+          // );
+        },
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20.0),
+          ),
+          child: CachedNetworkImage(
+            imageUrl: transaction?.transactionImage?.fileUrl ?? '',
+            width: double.infinity,
+            height: 150.0,
+            fit: BoxFit.cover,
+            progressIndicatorBuilder: (context, url, progress) =>
+                const Center(child: CircularProgressIndicator()),
+            errorWidget: (context, url, error) => const Icon(Icons.error),
+          ),
+        ),
+      );
+    } else {
+      return const SizedBox();
+    }
   }
 
   Row selectTags() {

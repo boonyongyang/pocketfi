@@ -106,9 +106,9 @@ class CategoryDetailPage extends ConsumerWidget {
               ),
               const SizedBox(height: 10),
               currentMonthTransactions.isEmpty
-                  ? Container(
-                      color: Colors.grey,
-                      child: const EmptyContentsWithTextAnimationView(
+                  ? const SizedBox(
+                      // color: Colors.grey,
+                      child: EmptyContentsWithTextAnimationView(
                         text: Strings.youHaveNoRecords,
                       ),
                     )

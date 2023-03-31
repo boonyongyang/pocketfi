@@ -267,7 +267,7 @@ class _AddNewCategoryPageState extends ConsumerState<EditCategorySheet> {
                       // ScaffoldMessenger.of(context).showSnackBar(
                       //     const SnackBar(content: Text('Category added')));
                       Fluttertoast.showToast(
-                        msg: "Category added!",
+                        msg: "Category edited!",
                         toastLength: Toast.LENGTH_SHORT,
                         gravity: ToastGravity.BOTTOM,
                         timeInSecForIosWeb: 2,

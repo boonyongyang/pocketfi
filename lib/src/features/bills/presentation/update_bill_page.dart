@@ -80,7 +80,7 @@ class UpdateBillFormState extends ConsumerState<UpdateBillForm> {
         shadowColor: Colors.transparent,
         centerTitle: true,
         title: const Text(
-          Strings.newBill,
+          'Edit Bill',
           style: TextStyle(
             color: AppColors.white,
             fontSize: 20,
@@ -626,7 +626,7 @@ class SaveButton extends ConsumerWidget {
                     .setDate(DateTime.now());
 
                 Fluttertoast.showToast(
-                  msg: "Bill added",
+                  msg: "Bill updated",
                   toastLength: Toast.LENGTH_SHORT,
                   gravity: ToastGravity.BOTTOM,
                   timeInSecForIosWeb: 2,
