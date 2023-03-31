@@ -12,6 +12,7 @@ import 'package:pocketfi/src/features/authentication/application/user_id_provide
 import 'package:pocketfi/src/features/budgets/application/budget_services.dart';
 import 'package:pocketfi/src/features/budgets/data/budget_repository.dart';
 import 'package:pocketfi/src/features/budgets/presentation/add_new_budget.dart';
+import 'package:pocketfi/src/features/budgets/presentation/budget_details_view.dart';
 import 'package:pocketfi/src/features/budgets/presentation/update_budget.dart';
 import 'package:pocketfi/src/features/budgets/presentation/budget_tile.dart';
 import 'package:pocketfi/src/features/wallets/data/check_request_service.dart';
@@ -96,7 +97,8 @@ class _BudgetPageState extends ConsumerState<BudgetPage> {
       body: RefreshIndicator(
         onRefresh: () async {
           ref.refresh(userBudgetsProvider);
-          return Future.delayed(const Duration(seconds: 1));
+          debugPrint('budgets: $budgets');
+          // return Future.delayed(const Duration(seconds: 1));
         },
         child: Flex(
           direction: Axis.vertical,
@@ -156,6 +158,7 @@ class _BudgetPageState extends ConsumerState<BudgetPage> {
                   Expanded(
                     flex: 4,
                     child: budgets.when(data: (budgets) {
+                      debugPrint('budgets: $budgets');
                       if (budgets.isEmpty) {
                         return const SingleChildScrollView(
                           physics: AlwaysScrollableScrollPhysics(),
@@ -176,7 +179,7 @@ class _BudgetPageState extends ConsumerState<BudgetPage> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (_) => const UpdateBudget(
+                                  builder: (_) => const BudgetDetailsView(
                                       // budget: budget,
                                       ),
                                 ),
