@@ -1,34 +1,25 @@
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:beamer/beamer.dart';
 import 'package:edge_detection/edge_detection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:path/path.dart' show join;
 import 'package:path_provider/path_provider.dart';
-import 'package:pocketfi/src/common_widgets/dialogs/alert_dialog_model.dart';
-import 'package:pocketfi/src/common_widgets/dialogs/selection_dialog.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
-import 'package:pocketfi/src/constants/strings.dart';
 import 'package:pocketfi/src/features/shared/image_upload/data/image_file_notifier.dart';
 import 'package:pocketfi/src/features/bills/presentation/bills_tab_view.dart';
 import 'package:pocketfi/src/features/bookmarks/presentation/bookmark_page.dart';
 import 'package:pocketfi/src/features/transactions/domain/transaction.dart';
 import 'package:pocketfi/src/features/overview/presentation/overview_tab_view.dart';
 import 'package:pocketfi/src/features/receipts/scan_receipt_page.dart';
-import 'package:pocketfi/src/features/receipts/scanning_test.dart';
-import 'package:pocketfi/src/features/shared/image_upload/helpers/image_picker_helper.dart';
 import 'package:pocketfi/src/features/transactions/application/transaction_services.dart';
 import 'package:pocketfi/src/features/transactions/data/transaction_repository.dart';
 import 'package:pocketfi/src/features/transactions/presentation/add_new_transactions/add_new_transaction.dart';
-import 'package:pocketfi/src/features/receipts/scan_receipt.dart';
 import 'package:pocketfi/src/features/transactions/presentation/transactions_tab_view.dart';
-import 'package:pocketfi/src/features/receipts/verify_receipt_details.dart';
 
 class TimelinePage extends ConsumerStatefulWidget {
   const TimelinePage({super.key});

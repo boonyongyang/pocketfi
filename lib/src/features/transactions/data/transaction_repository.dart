@@ -29,21 +29,54 @@ final userTransactionsProvider =
     StreamProvider.autoDispose<Iterable<Transaction>>(
   (ref) {
     final wallets = ref.watch(userWalletsProvider).value;
+    final userId = ref.watch(userIdProvider);
     final controller = StreamController<Iterable<Transaction>>();
 
-    final transactionList = <Transaction>[]; // accumulate all budgets in a list
+    // final transactionList = <Transaction>[]; // accumulate all budgets in a list
 
-    // go through wallet and check which wallet the user is a collaborator
-    for (var wallet in wallets!) {
-      debugPrint('wallet: ${wallet.walletName}');
-      debugPrint('walletId: ${wallet.walletId}');
-      final sub = FirebaseFirestore.instance
-          .collection(FirebaseCollectionName.budgets)
-          .where(FirebaseFieldName.walletId, isEqualTo: wallet.walletId)
-          .snapshots()
-          .listen((snapshot) {
-        final document = snapshot.docs;
-        final budgets = document
+    // // go through wallet and check which wallet the user is a collaborator
+    // for (var wallet in wallets!) {
+    //   debugPrint('wallet: ${wallet.walletName}');
+    //   debugPrint('walletId: ${wallet.walletId}');
+    //   final sub = FirebaseFirestore.instance
+    //       .collection(FirebaseCollectionName.budgets)
+    //       .where(FirebaseFieldName.walletId, isEqualTo: wallet.walletId)
+    //       .snapshots()
+    //       .listen((snapshot) {
+    //     final document = snapshot.docs;
+    //     final budgets = document
+    //         .where(
+    //           (doc) => !doc.metadata.hasPendingWrites,
+    //         )
+    //         .map(
+    //           (doc) => Transaction.fromJson(
+    //             transactionId: doc.id,
+    //             json: doc.data(),
+    //           ),
+    //         );
+
+    //     transactionList.addAll(budgets); // add budgets to the accumulated list
+    //     debugPrint('transactionList: $transactionList');
+    //     debugPrint('transactionList length: ${transactionList.length}');
+    //     controller.sink.add(transactionList);
+    //   });
+    // }
+
+    controller.onListen = () {
+      controller.sink.add([]);
+    };
+
+    debugPrint(userId);
+
+    final sub = FirebaseFirestore.instance
+        .collection(FirebaseCollectionName.transactions)
+        .where(TransactionKey.userId, isEqualTo: userId)
+        .orderBy(TransactionKey.date, descending: true)
+        .snapshots()
+        .listen(
+      (snapshot) {
+        final documents = snapshot.docs;
+        final transactions = documents
             .where(
               (doc) => !doc.metadata.hasPendingWrites,
             )
@@ -53,21 +86,18 @@ final userTransactionsProvider =
                 json: doc.data(),
               ),
             );
-
-        transactionList.addAll(budgets); // add budgets to the accumulated list
-        debugPrint('transactionList: $transactionList');
-        debugPrint('transactionList length: ${transactionList.length}');
-        controller.sink.add(transactionList);
-      });
-    }
+        controller.sink.add(transactions);
+      },
+    );
 
     ref.onDispose(() {
-      // sub.cancel();
+      sub.cancel();
       controller.close();
     });
     return controller.stream;
   },
 );
+
 final userTransactionsInWalletProvider =
     StreamProvider.autoDispose.family<Iterable<Transaction>, String>(
   (ref, String walletId) {
