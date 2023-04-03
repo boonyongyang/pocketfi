@@ -11,7 +11,10 @@ import 'package:pocketfi/src/features/bills/data/bill_repository.dart';
 import 'package:pocketfi/src/features/bills/domain/bill.dart';
 import 'package:pocketfi/src/features/bills/presentation/bill_list_view.dart';
 import 'package:pocketfi/src/features/bills/presentation/add_new_bill.dart';
+import 'package:pocketfi/src/features/overview/presentation/overview_month_selector.dart';
 import 'package:pocketfi/src/features/transactions/application/transaction_services.dart';
+import 'package:pocketfi/src/features/transactions/date_picker/application/transaction_date_services.dart';
+import 'package:pocketfi/src/features/transactions/presentation/add_new_transactions/select_transaction_type.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class BillsTabView extends ConsumerWidget {
@@ -40,6 +43,12 @@ class BillsTabView extends ConsumerWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+          const SizedBox(height: 20.0),
+          OverviewMonthSelector(
+            onMonthChanged: (DateTime date) {
+              ref.read(overviewMonthProvider.notifier).setMonth(date);
+            },
+          ),
           Padding(
             padding: const EdgeInsets.all(20.0),
             child: Container(
@@ -181,6 +190,7 @@ class BillsTabView extends ConsumerWidget {
             },
             child: const Text('Add Bill'),
           ),
+          const SelectTransactionType(noOfTabs: 2),
           RefreshIndicator(
             onRefresh: () {
               ref.refresh(userBillsProvider);

@@ -22,6 +22,7 @@ class TransactionListView extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     double? totalExpenseOnLastDisplayedDate;
     return ListView.builder(
+      physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       padding: const EdgeInsets.all(8.0),
       itemCount: transactions.length,

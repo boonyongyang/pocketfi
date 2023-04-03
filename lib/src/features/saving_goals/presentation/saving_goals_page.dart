@@ -73,21 +73,21 @@ class SavingGoalsPage extends ConsumerWidget {
                         Row(
                           children: [
                             //progress indicator
-                            Expanded(
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(10.0),
-                                child: LinearProgressIndicator(
-                                  minHeight: 10,
-                                  value:
-                                      totalSavedAmount / totalSavingGoalsAmount,
-                                  backgroundColor: Colors.grey[300],
-                                  valueColor:
-                                      const AlwaysStoppedAnimation<Color>(
-                                    AppColors.subColor1,
-                                  ),
-                                ),
-                              ),
-                            ),
+                            // Expanded(
+                            //   child: ClipRRect(
+                            //     borderRadius: BorderRadius.circular(10.0),
+                            //     child: LinearProgressIndicator(
+                            //       minHeight: 10,
+                            //       value:
+                            //           totalSavedAmount / totalSavingGoalsAmount,
+                            //       backgroundColor: Colors.grey[300],
+                            //       valueColor:
+                            //           const AlwaysStoppedAnimation<Color>(
+                            //         AppColors.subColor1,
+                            //       ),
+                            //     ),
+                            //   ),
+                            // ),
                           ],
                         ),
                         const SizedBox(

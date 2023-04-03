@@ -30,23 +30,24 @@ class TimelinePage extends ConsumerStatefulWidget {
 
 class _MainViewState extends ConsumerState<TimelinePage>
     with AutomaticKeepAliveClientMixin<TimelinePage> {
-  double getTotalAmount() {
-    final transactions = ref.watch(userTransactionsProvider).value;
-    double total = 0.0;
-    if (transactions != null) {
-      for (Transaction transaction in transactions) {
-        if (transaction.type == TransactionType.expense) {
-          total -= transaction.amount;
-        } else if (transaction.type == TransactionType.income) {
-          total += transaction.amount;
-        }
-      }
-    }
-    return total;
-  }
+  // double getTotalAmount() {
+  //   final transactions = ref.watch(userTransactionsProvider).value;
+  //   double total = 0.0;
+  //   if (transactions != null) {
+  //     for (Transaction transaction in transactions) {
+  //       if (transaction.type == TransactionType.expense) {
+  //         total -= transaction.amount;
+  //       } else if (transaction.type == TransactionType.income) {
+  //         total += transaction.amount;
+  //       }
+  //     }
+  //   }
+  //   return total;
+  // }
 
   String getNetAmountString() {
-    double netAmount = getTotalAmount();
+    double netAmount = 5000;
+    // double netAmount = getTotalAmount();
     String sign = netAmount < 0 ? '-' : '';
     String formattedAmount = NumberFormat.currency(
       symbol: 'MYR ',

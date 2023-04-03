@@ -18,10 +18,10 @@ class EditCategorySheet extends StatefulHookConsumerWidget {
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
-      _AddNewCategoryPageState();
+      _EditCategorySheetState();
 }
 
-class _AddNewCategoryPageState extends ConsumerState<EditCategorySheet> {
+class _EditCategorySheetState extends ConsumerState<EditCategorySheet> {
   @override
   Widget build(BuildContext context) {
     final colorList = ref.watch(categoryColorListProvider);
