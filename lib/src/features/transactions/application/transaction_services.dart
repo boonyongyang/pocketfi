@@ -199,3 +199,19 @@ class SelectedTransactionNotifier extends StateNotifier<Transaction?> {
     }
   }
 }
+
+final scheduledTransactionsProvider =
+    Provider.autoDispose<List<Transaction>>((ref) {
+  final transactionList = ref.watch(userTransactionsProvider);
+  if (transactionList.hasValue) {
+    final transactions = transactionList.value ?? [];
+    final tomorrow = DateTime(
+        DateTime.now().year, DateTime.now().month, DateTime.now().day + 1);
+    return transactions.where((transaction) {
+      final transactionDate = DateTime(
+          transaction.date.year, transaction.date.month, transaction.date.day);
+      return transactionDate.isAfter(tomorrow) || transactionDate == tomorrow;
+    }).toList();
+  }
+  return [];
+});

@@ -160,22 +160,32 @@ final userTransactionsByMonthByWalletProvider =
           snapshot.docs.where((doc) => !doc.metadata.hasPendingWrites);
       final transactions = documents
           .map(
-        (doc) => Transaction.fromJson(
-          transactionId: doc.id,
-          json: doc.data(),
-        ),
-      )
+            (doc) => Transaction.fromJson(
+              transactionId: doc.id,
+              json: doc.data(),
+            ),
+          )
           .where((transaction) {
-        // Get the walletId of the current transaction
-        final walletId = transaction.walletId;
-        // Find the corresponding wallet from walletVisibility
-        final wallet = wallets.firstWhere(
-          (wallet) => wallet.walletId == walletId,
-          // orElse: () => null,
-        );
-        // If the wallet is not found or its visibility is true, include the transaction
-        return walletVisibility[wallet] == true;
-      }).where((transaction) => transaction.date.month == month.month);
+            // Get the walletId of the current transaction
+            final walletId = transaction.walletId;
+            // Find the corresponding wallet from walletVisibility
+            final wallet = wallets.firstWhere(
+              (wallet) => wallet.walletId == walletId,
+              // orElse: () => null,
+            );
+            // If the wallet is not found or its visibility is true, include the transaction
+            return walletVisibility[wallet] == true;
+          })
+          .where((transaction) => transaction.date.month == month.month)
+          // exclude transactions that are after today's date
+          // .where((transaction) => transaction.date.isBefore(DateTime.now()));
+          .where((transaction) {
+            final today = DateTime(
+                DateTime.now().year, DateTime.now().month, DateTime.now().day);
+            final transactionDate = DateTime(transaction.date.year,
+                transaction.date.month, transaction.date.day);
+            return !transactionDate.isAfter(today);
+          }); // Exclude scheduled transactions
 
       // Create a new list for updated transactions
       final updatedTransactionList = [
@@ -196,196 +206,6 @@ final userTransactionsByMonthByWalletProvider =
     return controller.stream;
   },
 );
-
-// final userTransactionsByMonthByWalletProvider =
-//     StreamProvider.autoDispose<Iterable<Transaction>>(
-//   (ref) {
-//     final wallets = ref.watch(userWalletsProvider).value;
-//     final month = ref.watch(overviewMonthProvider);
-//     final walletVisibility = ref.watch(walletVisibilityProvider);
-//     final controller = StreamController<Iterable<Transaction>>();
-
-//     final transactionList =
-//         <Transaction>[]; // accumulate all transactions in a list
-//     final subscriptions = <StreamSubscription>[]; // store all subscriptions
-
-//     // get all transactions from all wallets
-//     final stream = FirebaseFirestore.instance
-//         .collection(FirebaseCollectionName.transactions)
-//         .where(
-//           FirebaseFieldName.walletId,
-//           whereIn: wallets!.map((wallet) => wallet.walletId).toList(),
-//         )
-//         .orderBy(FirebaseFieldName.date, descending: true)
-//         .snapshots();
-
-//     final sub = stream.listen((snapshot) {
-//       final documents =
-//           snapshot.docs.where((doc) => !doc.metadata.hasPendingWrites);
-//       final transactions = documents
-//           .map(
-//         (doc) => Transaction.fromJson(
-//           transactionId: doc.id,
-//           json: doc.data(),
-//         ),
-//       )
-//           .where((transaction) {
-//         // Get the walletId of the current transaction
-//         final walletId = transaction.walletId;
-//         // Find the corresponding wallet from walletVisibility
-//         final wallet = wallets.firstWhere(
-//           (wallet) => wallet.walletId == walletId,
-//           // orElse: () => null,
-//         );
-//         // If the wallet is not found or its visibility is true, include the transaction
-//         return walletVisibility[wallet] == true;
-//       }).where((transaction) => transaction.date.month == month.month);
-
-//       transactionList
-//           .addAll(transactions); // add transactions to the accumulated list
-//       controller.sink.add(transactionList);
-//     });
-//     subscriptions.add(sub); // add the subscription to the list
-
-//     ref.onDispose(() {
-//       for (var sub in subscriptions) {
-//         sub.cancel();
-//       }
-//       controller.close();
-//     });
-
-//     return controller.stream;
-//   },
-// );
-
-// final userTransactionsByMonthByWalletProvider =
-//     StreamProvider.autoDispose<Iterable<Transaction>>(
-//   (ref) {
-//     final wallets = ref.watch(userWalletsProvider).value;
-//     final month = ref.watch(overviewMonthProvider);
-//     final walletVisbilility = ref.watch(walletVisibilityProvider);
-//     final controller = StreamController<Iterable<Transaction>>();
-
-//     final transactionList =
-//         <Transaction>[]; // accumulate all transactions in a list
-//     final subscriptions = <StreamSubscription>[]; // store all subscriptions
-
-//     // go through wallet and check which wallet the user is a collaborator
-//     for (var wallet in wallets!) {
-//       debugPrint('wallet: ${wallet.walletName}');
-//       debugPrint('walletId: ${wallet.walletId}');
-//       final sub = FirebaseFirestore.instance
-//           .collection(FirebaseCollectionName.transactions)
-//           .where(FirebaseFieldName.walletId, isEqualTo: wallet.walletId)
-//           .snapshots()
-//           .listen((snapshot) {
-//         final document = snapshot.docs;
-//         final transactions = document
-//             .where(
-//               (doc) => !doc.metadata.hasPendingWrites,
-//             )
-//             .where(
-//               (doc) =>
-//                   doc.data()[TransactionKey.date].toDate().month == month.month,
-//             )
-//             .where(
-//           (doc) {
-//             // Get the walletId of the current transaction
-//             final walletId = doc.data()[TransactionKey.walletId];
-//             // Find the corresponding wallet from walletVisibility
-//             final wallet = walletVisbilility.keys.firstWhere(
-//               (wallet) => wallet.walletId == walletId,
-//               // orElse: () => null,
-//             );
-//             // If the wallet is not found or its visibility is true, include the transaction
-//             return walletVisbilility[wallet] == true;
-//           },
-//         ).map(
-//           (doc) => Transaction.fromJson(
-//             transactionId: doc.id,
-//             json: doc.data(),
-//           ),
-//         );
-
-//         transactionList
-//             .addAll(transactions); // add transactions to the accumulated list
-//         debugPrint('transactionList: $transactionList');
-//         debugPrint('transactionList length: ${transactionList.length}');
-//         controller.sink.add(transactionList);
-//       });
-//       subscriptions.add(sub); // add the subscription to the list
-//     }
-
-//     ref.onDispose(() {
-//       for (var sub in subscriptions) {
-//         sub.cancel();
-//       }
-//       controller.close();
-//     });
-
-//     return controller.stream;
-//   },
-// );
-
-// final userTransactionsByMonthByWalletProvider =
-//     StreamProvider<Iterable<Transaction>>(
-//   (ref) {
-//     final userId = ref.watch(userIdProvider);
-//     final month = ref.watch(overviewMonthProvider);
-//     final walletVisbilility = ref.watch(walletVisibilityProvider);
-//     final controller = StreamController<Iterable<Transaction>>();
-
-//     controller.onListen = () {
-//       controller.sink.add([]);
-//     };
-
-//     debugPrint(userId);
-
-//     final sub = FirebaseFirestore.instance
-//         .collection(FirebaseCollectionName.transactions)
-//         .where(TransactionKey.userId, isEqualTo: userId)
-//         .orderBy(TransactionKey.date, descending: true)
-//         .snapshots()
-//         .listen(
-//       (snapshot) {
-//         final documents = snapshot.docs;
-//         final transactions = documents
-//             .where(
-//               (doc) => !doc.metadata.hasPendingWrites,
-//             )
-//             .where(
-//               (doc) =>
-//                   doc.data()[TransactionKey.date].toDate().month == month.month,
-//             )
-//             .where(
-//           (doc) {
-//             // Get the walletId of the current transaction
-//             final walletId = doc.data()[TransactionKey.walletId];
-//             // Find the corresponding wallet from walletVisibility
-//             final wallet = walletVisbilility.keys.firstWhere(
-//               (wallet) => wallet.walletId == walletId,
-//               // orElse: () => null,
-//             );
-//             // If the wallet is not found or its visibility is true, include the transaction
-//             return walletVisbilility[wallet] == true;
-//           },
-//         ).map(
-//           (doc) => Transaction.fromJson(
-//             transactionId: doc.id,
-//             json: doc.data(),
-//           ),
-//         );
-//         controller.sink.add(transactions);
-//       },
-//     );
-
-//     ref.onDispose(() {
-//       sub.cancel();
-//       controller.close();
-//     });
-//     return controller.stream;
-//   },
-// );
 
 final userTransactionsInWalletProvider =
     StreamProvider.autoDispose.family<Iterable<Transaction>, String>(

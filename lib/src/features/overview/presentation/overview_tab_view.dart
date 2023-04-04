@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
-import 'package:pocketfi/src/features/category/application/category_services.dart';
 import 'package:pocketfi/src/features/category/domain/category.dart';
 import 'package:pocketfi/src/features/overview/application/overview_services.dart';
-import 'package:pocketfi/src/features/overview/presentation/category_detail_page.dart';
 import 'package:pocketfi/src/features/overview/presentation/category_list_tile.dart';
 import 'package:pocketfi/src/features/transactions/application/transaction_services.dart';
-import 'package:pocketfi/src/features/transactions/data/transaction_repository.dart';
 import 'package:pocketfi/src/features/transactions/date_picker/application/transaction_date_services.dart';
-import 'package:pocketfi/src/features/transactions/domain/transaction.dart';
 import 'package:pocketfi/src/features/transactions/presentation/add_new_transactions/select_transaction_type.dart';
 import 'package:pocketfi/src/features/overview/presentation/overview_month_selector.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -20,51 +16,12 @@ class OverviewTabView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final transactionType = ref.watch(transactionTypeProvider);
-    // final userTransactions = ref.watch(userTransactionsProvider);
     final screenHeight = MediaQuery.of(context).size.height;
-    // final month = ref.watch(overviewMonthProvider);
-
-    // List<Category> categoriesList = transactionType == TransactionType.expense
-    //     ? ref.watch(expenseCategoriesProvider)
-    //     : ref.watch(incomeCategoriesProvider);
 
     final currentMonthTransactions =
         ref.watch(currentMonthTransactionsProvider);
 
-    // final currentMonthTransactions = userTransactions.when<List<Transaction>>(
-    //   data: (transactions) => transactions.where((tran) {
-    //     // if data is empty, then the where function will return an empty list
-    //     return tran.date.month == month.month && tran.date.year == month.year;
-    //   }).toList(),
-    //   loading: () => [],
-    //   error: (error, stackTrace) {
-    //     debugPrint(error.toString());
-    //     return [];
-    //   },
-    // );
-
-    // A function to calculate the total amount for a category in the current month
-    // double getCategoryTotalAmountForCurrentMonth(
-    //     String categoryName, List<Transaction> transactions) {
-    //   final categoryTransactions =
-    //       transactions.where((tran) => tran.categoryName == categoryName);
-    //   return getTotalAmount(categoryTransactions.toList());
-    // }
-
     final filteredCategories = ref.watch(filteredCategoriesProvider);
-
-    // final filteredCategories = categoriesList.where((category) {
-    //   return currentMonthTransactions.any((tran) {
-    //     return tran.categoryName == category.name;
-    //   });
-    // }).toList()
-    //   ..sort((a, b) {
-    //     final aTotalAmount = getCategoryTotalAmountForCurrentMonth(
-    //         a.name, currentMonthTransactions);
-    //     final bTotalAmount = getCategoryTotalAmountForCurrentMonth(
-    //         b.name, currentMonthTransactions);
-    //     return bTotalAmount.compareTo(aTotalAmount);
-    //   });
 
     return RefreshIndicator(
       onRefresh: () {
@@ -80,6 +37,7 @@ class OverviewTabView extends ConsumerWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             const SelectTransactionType(noOfTabs: 2),
+            const SizedBox(height: 10.0),
             const OverviewMonthSelector(),
             Padding(
               padding: const EdgeInsets.all(20.0),
@@ -120,10 +78,6 @@ class OverviewTabView extends ConsumerWidget {
                                   xValueMapper: (Category category, _) =>
                                       category.name,
                                   yValueMapper: (Category category, _) {
-                                    // return getCategoryTotalAmountForCurrentMonth(
-                                    //   category.name,
-                                    //   currentMonthTransactions,
-                                    // );
                                     return ref.read(
                                       categoryTotalAmountForCurrentMonthProvider(
                                         category.name,
@@ -144,46 +98,10 @@ class OverviewTabView extends ConsumerWidget {
                                     ),
                                   ),
                                   dataLabelMapper: (Category category, _) {
-                                    // final totalTypeAmount = () {
-                                    //   final type = transactionType;
-                                    //   final transactionsOfType =
-                                    //       currentMonthTransactions
-                                    //           .where(
-                                    //               (tran) => tran.type == type)
-                                    //           .toList();
-                                    //   final totalAmountOfType =
-                                    //       getTotalAmount(transactionsOfType);
-                                    //   return totalAmountOfType;
-                                    // }();
-
                                     final totalTypeAmount =
                                         ref.watch(totalTypeAmountProvider);
 
-                                    // final totalTypeAmount =
-                                    // ref.watch(totalAmountOfTypeProvider);
-
-                                    // final totalTypeAmount = () {
-                                    //   switch (transactionType) {
-                                    //     case TransactionType.expense:
-                                    //     case TransactionType.income:
-                                    //     case TransactionType.transfer:
-                                    //       final type = transactionType;
-                                    //       final transactionsOfType =
-                                    //           currentMonthTransactions
-                                    //               .where((tran) =>
-                                    //                   tran.type == type)
-                                    //               .toList();
-                                    //       final totalAmountOfType =
-                                    //           getTotalAmount(
-                                    //               transactionsOfType);
-                                    //       return totalAmountOfType;
-                                    //   }
-                                    // }();
-                                    final categoryTotalAmount =
-                                        // getCategoryTotalAmountForCurrentMonth(
-                                        //     category.name,
-                                        //     currentMonthTransactions);
-                                        ref.read(
+                                    final categoryTotalAmount = ref.read(
                                       categoryTotalAmountForCurrentMonthProvider(
                                         category.name,
                                       ),
@@ -238,11 +156,4 @@ class OverviewTabView extends ConsumerWidget {
       ),
     );
   }
-
-  // double getTotalAmount(List<Transaction> transactions) {
-  //   return transactions.fold<double>(
-  //     0,
-  //     (previousValue, element) => previousValue + element.amount,
-  //   );
-  // }
 }
