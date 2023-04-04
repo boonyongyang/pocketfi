@@ -73,13 +73,20 @@ class SavingGoalsPage extends ConsumerWidget {
                         Row(
                           children: [
                             //progress indicator
+                            // if no saving goals, don't display
+                            // savingGoals.value == null
+                            //     ? const SizedBox()
+                            //     :
                             Expanded(
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(10.0),
                                 child: LinearProgressIndicator(
                                   minHeight: 10,
-                                  value:
-                                      totalSavedAmount / totalSavingGoalsAmount,
+                                  value: totalSavedAmount == 0 &&
+                                          totalSavingGoalsAmount == 0
+                                      ? 0
+                                      : totalSavedAmount /
+                                          totalSavingGoalsAmount,
                                   backgroundColor: Colors.grey[300],
                                   valueColor:
                                       const AlwaysStoppedAnimation<Color>(

@@ -44,24 +44,51 @@ class DebtPage extends ConsumerWidget {
                         ),
                       ],
                     ),
-                    // height: MediaQuery.of(context).size.height * 0.35,
+                    height: MediaQuery.of(context).size.height * 0.4,
                     // add circular progress indicator
                     child: debts.when(
                       data: (debts) {
+                        // return Padding(
+                        //   padding: const EdgeInsets.all(32.0),
+                        //   child: CircularProgressIndicator(
+                        //     valueColor: const AlwaysStoppedAnimation<Color>(
+                        //       AppColors.mainColor2,
+                        //     ),
+                        //     value: 0.4,
+                        //     backgroundColor: Colors.grey[300],
+                        //     strokeWidth: 50.0,
+                        //   ),
+                        // );
                         return SfCircularChart(
-                          title: ChartTitle(text: 'Debt Breakdown'),
+                          title: ChartTitle(text: 'Debt Summary'),
                           legend: Legend(
                             isVisible: true,
                             position: LegendPosition.bottom,
                             overflowMode: LegendItemOverflowMode.wrap,
                             textStyle: const TextStyle(fontSize: 14),
                           ),
+                          annotations: [
+                            CircularChartAnnotation(
+                              widget: Text(
+                                'MYR ${debts.isEmpty ? '0.00' : debts.map((e) => e.calculateTotalPayment()).reduce((value, element) => value + element).toStringAsFixed(2)}',
+                                style: const TextStyle(
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColors.mainColor1,
+                                  fontFamily: 'Roboto',
+                                ),
+                              ),
+                            ),
+                          ],
                           tooltipBehavior: TooltipBehavior(enable: true),
                           series: <DoughnutSeries<Debt, String>>[
                             DoughnutSeries<Debt, String>(
+                              radius: '100%',
+                              innerRadius: '65%',
                               dataSource: debts.toList(),
                               xValueMapper: (Debt debt, _) => debt.debtName,
-                              yValueMapper: (Debt debt, _) => debt.debtAmount,
+                              yValueMapper: (Debt debt, _) =>
+                                  debt.calculateTotalPayment(),
                               pointColorMapper: (Debt debt, _) =>
                                   Colors.pink[100 * debt.debtAmount.toInt()],
                               dataLabelSettings: const DataLabelSettings(
@@ -91,7 +118,9 @@ class DebtPage extends ConsumerWidget {
                                         .toStringAsFixed(1)
                                     : '0.0';
                                 return '$percentage%';
+                                // return 'MYR ${debt.calculateTotalPayment().toStringAsFixed(2)}';
                               },
+                              name: 'Test',
                               pointRenderMode: PointRenderMode.segment,
                               enableTooltip: true,
                               emptyPointSettings: EmptyPointSettings(

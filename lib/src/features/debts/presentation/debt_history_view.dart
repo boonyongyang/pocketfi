@@ -121,6 +121,7 @@ class DebtHistoryView extends ConsumerWidget {
             debtPayments.when(
               data: (debtPayments) {
                 return ListView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   itemCount: debtPayments.length,
                   itemBuilder: (context, index) {
