@@ -87,11 +87,7 @@ class BudgetDetailsView extends ConsumerWidget {
         body: SingleChildScrollView(
           child: Column(
             children: [
-              OverviewMonthSelector(
-                onMonthChanged: (DateTime date) {
-                  ref.read(overviewMonthProvider.notifier).setMonth(date);
-                },
-              ),
+              const OverviewMonthSelector(),
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Container(

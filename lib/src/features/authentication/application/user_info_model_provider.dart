@@ -51,3 +51,26 @@ final userInfoModelProvider =
 
   return controller.stream;
 });
+
+Future<UserInfo> getUserInfoWithUserId(String userId) {
+  final userInfo = FirebaseFirestore.instance
+      .collection(FirebaseCollectionName.users)
+      .where(
+        FirebaseFieldName.userId,
+        isEqualTo: userId,
+      )
+      .limit(1)
+      .snapshots()
+      .map(
+    (snapshot) {
+      final doc = snapshot.docs.first;
+      final json = doc.data();
+      final userInfo = UserInfo.fromJson(
+        userId: userId,
+        json,
+      );
+      return userInfo;
+    },
+  );
+  return userInfo.first;
+}

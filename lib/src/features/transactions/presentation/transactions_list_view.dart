@@ -22,6 +22,7 @@ class TransactionListView extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     double? totalExpenseOnLastDisplayedDate;
     return ListView.builder(
+      physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       padding: const EdgeInsets.all(8.0),
       itemCount: transactions.length,
@@ -35,6 +36,9 @@ class TransactionListView extends ConsumerWidget {
           totalExpenseOnLastDisplayedDate =
               _getNetAmountOnDate(transaction.date);
         }
+
+        // final scheduledTransactions = _getScheduledTransactions();
+        // final hasScheduledTransactions = scheduledTransactions.isNotEmpty;
 
         return Column(
           mainAxisSize: MainAxisSize.min,
@@ -87,6 +91,46 @@ class TransactionListView extends ConsumerWidget {
       },
     );
   }
+
+  // // Method to filter scheduled transactions
+  // List<Transaction> _getScheduledTransactions() {
+  //   return transactions
+  //       .where((transaction) => transaction.date
+  //           .isAfter(DateTime.now().add(const Duration(days: 1))))
+  //       .toList();
+  // }
+
+  // // Method to create the scheduled transactions widget
+  // Widget _buildScheduledTransactionsWidget(
+  //     List<Transaction> scheduledTransactions) {
+  //   return Container(
+  //     padding: const EdgeInsets.all(8.0),
+  //     decoration: BoxDecoration(
+  //       color: Colors.grey,
+  //       borderRadius: BorderRadius.circular(10.0),
+  //     ),
+  //     child: Column(
+  //       children: [
+  //         const Text(
+  //           "Scheduled Transactions",
+  //           style: TextStyle(
+  //             fontSize: 16,
+  //             fontWeight: FontWeight.bold,
+  //             color: Colors.white,
+  //           ),
+  //         ),
+  //         Text(
+  //           // make plural if more than one transaction
+  //           "${scheduledTransactions.length} ${scheduledTransactions.length == 1 ? 'transaction' : 'transactions'}",
+  //           style: const TextStyle(
+  //             fontSize: 14,
+  //             color: Colors.white,
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   bool _isLastTransactionForDate(int index, Transaction transaction) {
     // Check if the transaction is the last one for its date

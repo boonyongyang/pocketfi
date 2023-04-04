@@ -10,6 +10,7 @@ import 'package:intl/intl.dart';
 import 'package:path/path.dart' show join;
 import 'package:path_provider/path_provider.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
+import 'package:pocketfi/src/features/overview/application/overview_services.dart';
 import 'package:pocketfi/src/features/shared/image_upload/data/image_file_notifier.dart';
 import 'package:pocketfi/src/features/bills/presentation/bills_tab_view.dart';
 import 'package:pocketfi/src/features/bookmarks/presentation/bookmark_page.dart';
@@ -30,23 +31,25 @@ class TimelinePage extends ConsumerStatefulWidget {
 
 class _MainViewState extends ConsumerState<TimelinePage>
     with AutomaticKeepAliveClientMixin<TimelinePage> {
-  double getTotalAmount() {
-    final transactions = ref.watch(userTransactionsProvider).value;
-    double total = 0.0;
-    if (transactions != null) {
-      for (Transaction transaction in transactions) {
-        if (transaction.type == TransactionType.expense) {
-          total -= transaction.amount;
-        } else if (transaction.type == TransactionType.income) {
-          total += transaction.amount;
-        }
-      }
-    }
-    return total;
-  }
+  // double getTotalAmount() {
+  //   final transactions = ref.watch(userTransactionsProvider).value;
+  //   double total = 0.0;
+  //   if (transactions != null) {
+  //     for (Transaction transaction in transactions) {
+  //       if (transaction.type == TransactionType.expense) {
+  //         total -= transaction.amount;
+  //       } else if (transaction.type == TransactionType.income) {
+  //         total += transaction.amount;
+  //       }
+  //     }
+  //   }
+  //   return total;
+  // }
 
   String getNetAmountString() {
-    double netAmount = getTotalAmount();
+    // double netAmount = getTotalAmount();
+    // double netAmount = 5000;
+    double netAmount = ref.watch(totalAmountProvider);
     String sign = netAmount < 0 ? '-' : '';
     String formattedAmount = NumberFormat.currency(
       symbol: 'MYR ',

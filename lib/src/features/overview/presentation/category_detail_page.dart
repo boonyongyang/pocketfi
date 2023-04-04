@@ -99,11 +99,7 @@ class CategoryDetailPage extends ConsumerWidget {
                 ),
               ),
               const SizedBox(height: 8.0),
-              OverviewMonthSelector(
-                onMonthChanged: (DateTime date) {
-                  ref.read(overviewMonthProvider.notifier).setMonth(date);
-                },
-              ),
+              const OverviewMonthSelector(),
               const SizedBox(height: 10),
               currentMonthTransactions.isEmpty
                   ? const SizedBox(
