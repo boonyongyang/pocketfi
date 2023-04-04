@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:intl/intl.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/constants/strings.dart';
+import 'package:pocketfi/src/features/authentication/application/user_info_model_provider.dart';
+import 'package:pocketfi/src/features/authentication/domain/user_info.dart';
 import 'package:pocketfi/src/features/category/application/category_services.dart';
 import 'package:pocketfi/src/features/transactions/domain/transaction.dart';
 
@@ -19,6 +20,7 @@ class TransactionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final category = getCategoryWithCategoryName(transaction.categoryName);
     final transactionType = transaction.type;
+    final userInfo = getUserInfoWithUserId(transaction.userId);
 
     return GestureDetector(
       onTap: onTapped,
@@ -61,6 +63,31 @@ class TransactionCard extends StatelessWidget {
                               // fontWeight: FontWeight.w600,
                               fontSize: 14.0,
                             ),
+                          ),
+                          FutureBuilder<UserInfo>(
+                            future: getUserInfoWithUserId(transaction.userId),
+                            builder: (BuildContext context,
+                                AsyncSnapshot<UserInfo> snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return const Text('Loading...');
+                              } else if (snapshot.hasError) {
+                                return Text('Error: ${snapshot.error}');
+                              } else {
+                                final displayName = snapshot.data!.displayName;
+                                final shortenedName = displayName.length > 8
+                                    // ? '${displayName.substring(0, 8)}...'
+                                    ? displayName.substring(0, 8)
+                                    : displayName;
+                                return Text(
+                                  shortenedName.toLowerCase(),
+                                  style: const TextStyle(
+                                    // fontWeight: FontWeight.w600,
+                                    fontSize: 14.0,
+                                  ),
+                                );
+                              }
+                            },
                           ),
                           // const ShowTags(),
                           const SizedBox(height: 20.0),

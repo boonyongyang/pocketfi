@@ -425,61 +425,75 @@ class _SavingGoalOverviewViewState
                         ),
                       ),
                       onPressed: () {
-                        showDialog(
-                            context: context,
-                            builder: (context) {
-                              return AlertDialog(
-                                title: const Text('Withdraw'),
-                                shape: const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.vertical(
-                                    top: Radius.circular(16.0),
-                                    bottom: Radius.circular(16.0),
-                                  ),
-                                ),
-                                content: TextField(
-                                  controller: amountToWithdraw,
-                                  keyboardType: TextInputType.number,
-                                  decoration: const InputDecoration(
-                                    labelText: 'Enter amount',
-                                    icon: FaIcon(
-                                      FontAwesomeIcons.piggyBank,
-                                      color: AppColors.mainColor1,
+                        // if value still 0 show snack bar
+                        if (selectedSavingGoal.savingGoalSavedAmount == 0) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text(
+                                'You have no money to withdraw!',
+                                // textAlign: TextAlign.center,
+                              ),
+                            ),
+                          );
+                        } else {
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: const Text('Withdraw'),
+                                  shape: const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.vertical(
+                                      top: Radius.circular(16.0),
+                                      bottom: Radius.circular(16.0),
                                     ),
                                   ),
-                                ),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: const Text('Cancel'),
+                                  content: TextField(
+                                    controller: amountToWithdraw,
+                                    keyboardType: TextInputType.number,
+                                    decoration: const InputDecoration(
+                                      labelText: 'Enter amount',
+                                      icon: FaIcon(
+                                        FontAwesomeIcons.piggyBank,
+                                        color: AppColors.mainColor1,
+                                      ),
+                                    ),
                                   ),
-                                  TextButton(
-                                    onPressed: () {
-                                      double.parse(amountToWithdraw.text) <=
-                                              selectedSavingGoal
-                                                  .savingGoalSavedAmount
-                                          ? withdrawal(
-                                              amountToWithdraw,
-                                              selectedSavingGoal,
-                                              ref,
-                                            )
-                                          : ScaffoldMessenger.of(context)
-                                              .showSnackBar(
-                                              const SnackBar(
-                                                content: Text(
-                                                    'Insufficient Balance'),
-                                              ),
-                                            );
-                                    },
-                                    child: const Text('Confirm',
-                                        style: TextStyle(
-                                          color: AppColors.mainColor2,
-                                        )),
-                                  ),
-                                ],
-                              );
-                            });
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: const Text('Cancel'),
+                                    ),
+                                    TextButton(
+                                      onPressed: () {
+                                        double.parse(amountToWithdraw.text) <=
+                                                selectedSavingGoal
+                                                    .savingGoalSavedAmount
+                                            ? withdrawal(
+                                                amountToWithdraw,
+                                                selectedSavingGoal,
+                                                ref,
+                                              )
+                                            : ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                                const SnackBar(
+                                                  content: Text(
+                                                    'You do not have enough money to withdraw',
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                ),
+                                              );
+                                      },
+                                      child: const Text('Confirm',
+                                          style: TextStyle(
+                                            color: AppColors.mainColor2,
+                                          )),
+                                    ),
+                                  ],
+                                );
+                              });
+                        }
                       },
                       child: const SizedBox(
                         child: Text(

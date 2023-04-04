@@ -53,7 +53,7 @@ import 'package:pocketfi/src/features/wallets/domain/shared_and_user_wallet.dart
 //   return controller.stream;
 // });
 
-final userWalletsProvider = StreamProvider.autoDispose<Iterable<Wallet>>((ref) {
+final userWalletsProvider = StreamProvider<Iterable<Wallet>>((ref) {
   final userId = ref.watch(userIdProvider);
   final controller = StreamController<Iterable<Wallet>>();
 
@@ -199,8 +199,7 @@ final allWalletsProvider =
   return controller.stream;
 });
 
-final getWalletFromWalletIdProvider =
-    StreamProvider.family.autoDispose<Wallet, String>((
+final getWalletFromWalletIdProvider = StreamProvider.family<Wallet, String>((
   ref,
   String walletId,
 ) {

@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/features/bills/application/bill_services.dart';
 import 'package:pocketfi/src/features/bills/domain/bill.dart';
 import 'package:pocketfi/src/features/bills/presentation/bill_card_view.dart';
+import 'package:pocketfi/src/features/bills/presentation/bill_detail_sheet.dart';
 import 'package:pocketfi/src/features/bills/presentation/update_bill_page.dart';
 
 class BillListView extends ConsumerWidget {
@@ -31,12 +32,19 @@ class BillListView extends ConsumerWidget {
               onTapped: () {
                 ref.read(selectedBillProvider.notifier).setSelectedBill(bill);
 
-                Navigator.of(context, rootNavigator: true).push(
-                  MaterialPageRoute(
-                    builder: (context) => const UpdateBillPage(),
-                    fullscreenDialog: true,
-                  ),
+                // show bottom sheet
+                showModalBottomSheet(
+                  isScrollControlled: true,
+                  context: context,
+                  builder: (context) => (const BillDetailSheet()),
                 );
+
+                // Navigator.of(context, rootNavigator: true).push(
+                //   MaterialPageRoute(
+                //     builder: (context) => const UpdateBillPage(),
+                //     fullscreenDialog: true,
+                //   ),
+                // );
               },
             ),
           ],

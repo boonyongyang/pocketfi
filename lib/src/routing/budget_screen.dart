@@ -158,29 +158,29 @@ class _BudgetPageState extends ConsumerState<BudgetPage> {
                         Row(
                           children: [
                             //progress indicator\
-                            amountPercentage.when(
-                              data: (amountPercentage) {
-                                debugPrint(
-                                    'amountPercentage: $amountPercentage');
-                                return Expanded(
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                    child: LinearProgressIndicator(
-                                      minHeight: 10,
-                                      value: amountPercentage,
-                                      backgroundColor: Colors.grey[300],
-                                      valueColor:
-                                          const AlwaysStoppedAnimation<Color>(
-                                        AppColors.subColor1,
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              },
-                              loading: () => const LoadingAnimationView(),
-                              error: (error, stack) =>
-                                  const ErrorAnimationView(),
-                            ),
+                            // amountPercentage.when(
+                            //   data: (amountPercentage) {
+                            //     debugPrint(
+                            //         'amountPercentage: $amountPercentage');
+                            //     return Expanded(
+                            //       child: ClipRRect(
+                            //         borderRadius: BorderRadius.circular(10.0),
+                            //         child: LinearProgressIndicator(
+                            //           minHeight: 10,
+                            //           value: amountPercentage,
+                            //           backgroundColor: Colors.grey[300],
+                            //           valueColor:
+                            //               const AlwaysStoppedAnimation<Color>(
+                            //             AppColors.subColor1,
+                            //           ),
+                            //         ),
+                            //       ),
+                            //     );
+                            //   },
+                            //   loading: () => const LoadingAnimationView(),
+                            //   error: (error, stack) =>
+                            //       const ErrorAnimationView(),
+                            // ),
                             // Expanded(
                             //   child: ClipRRect(
                             //     borderRadius: BorderRadius.circular(10.0),

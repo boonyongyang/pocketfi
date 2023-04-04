@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
+import 'package:pocketfi/src/features/debts/data/debt_payment_repository.dart';
 import 'package:pocketfi/src/features/debts/domain/debt.dart';
 import 'package:pocketfi/src/features/debts/presentation/debt_data_table.dart';
+import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 // import 'update_debt_view.dart';
 
@@ -29,6 +31,22 @@ class DebtOverviewViewState extends ConsumerState<DebtOverviewView> {
     String monthsNYears =
         '$years years $months months'; // combine years and months into a string
 // print(result); // output: "2 years and 8 months"
+    var totalAmountPaid = 0.0;
+    // var totalInterestPaid = 0.0;
+
+    final debtPaymentsList = ref.watch(userDebtPaymentsProvider).value;
+    if (debtPaymentsList != null) {
+      for (var debtPayment in debtPaymentsList) {
+        if (debtPayment.debtId == widget.debt.debtId) {
+          totalAmountPaid +=
+              debtPayment.principleAmount + debtPayment.interestAmount;
+        }
+        // totalInterestPaid += debtPayment.interestAmount;
+      }
+    }
+
+    var percentagePaid =
+        totalAmountPaid / widget.debt.calculateTotalPayment() * 100;
 
     // final selectedDebt = ref.watch(selectedDebtProvider);
 
@@ -39,9 +57,9 @@ class DebtOverviewViewState extends ConsumerState<DebtOverviewView> {
             Padding(
               padding: const EdgeInsets.only(
                 top: 16.0,
-                bottom: 8.0,
-                left: 8.0,
-                right: 8.0,
+                // bottom: 8.0,
+                left: 16.0,
+                right: 16.0,
               ),
               child: Container(
                 decoration: BoxDecoration(
@@ -113,8 +131,81 @@ class DebtOverviewViewState extends ConsumerState<DebtOverviewView> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(
-                8.0,
+              padding: const EdgeInsets.only(
+                top: 16.0,
+                left: 16.0,
+                right: 16.0,
+              ),
+              child: Container(
+                height: MediaQuery.of(context).size.height * 0.4,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: const BorderRadius.all(
+                    Radius.circular(20),
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 2,
+                      blurRadius: 7,
+                      offset: const Offset(3, 6), // changes position of shadow
+                    ),
+                  ],
+                ),
+                child: SfRadialGauge(
+                  title: const GaugeTitle(
+                    text: 'Payoff Progress',
+                    textStyle: TextStyle(
+                      fontSize: 16,
+                      // fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  axes: <RadialAxis>[
+                    RadialAxis(
+                      // radiusFactor: 0.55,
+                      startAngle: 270,
+                      endAngle: 270,
+                      minimum: 0,
+                      maximum: 100,
+                      showLabels: false,
+                      showTicks: false,
+                      axisLineStyle: AxisLineStyle(
+                        thickness: 0.2,
+                        color: Colors.grey[300],
+                        thicknessUnit: GaugeSizeUnit.factor,
+                      ),
+                      pointers: [
+                        RangePointer(
+                          color: AppColors.mainColor2,
+                          value: percentagePaid,
+                          cornerStyle: CornerStyle.bothCurve,
+                          width: 0.2,
+                          sizeUnit: GaugeSizeUnit.factor,
+                        ),
+                      ],
+                      annotations: [
+                        GaugeAnnotation(
+                          widget: Text(
+                            '${percentagePaid.toStringAsFixed(2)}%',
+                            style: const TextStyle(
+                              fontSize: 25,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          angle: 90,
+                          positionFactor: 0.1,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(
+                top: 16.0,
+                left: 16.0,
+                right: 16.0,
               ),
               child: Container(
                 decoration: BoxDecoration(
@@ -236,87 +327,28 @@ class DebtOverviewViewState extends ConsumerState<DebtOverviewView> {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: const BorderRadius.all(
-                    Radius.circular(20),
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.5),
-                      spreadRadius: 2,
-                      blurRadius: 7,
-                      offset: const Offset(3, 6), // changes position of shadow
-                    ),
-                  ],
-                ),
-                child: const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Text('should show a graph here'),
-                ),
-                // SfCircularChart(
-                //     title: ChartTitle(text: 'Expenses by Category'),
-                //     legend: Legend(
-                //       isVisible: true,
-                //       position: LegendPosition.bottom,
-                //       overflowMode: LegendItemOverflowMode.wrap,
-                //       textStyle: const TextStyle(fontSize: 14),
-                //     ),
-                //     tooltipBehavior: TooltipBehavior(enable: true),
-                //     series: <CircularSeries>[
-                //               // Renders radial bar chart
-                //               RadialBarSeries<ChartData, String>(
-                //                   dataSource: <ChartData>[
-                //                       ChartData('Food', 35),
-                //                       ChartData('Travel', 15),
-                //                       ChartData('Shopping', 25),
-                //                       ChartData('Bills', 25),
-                //                   ],
-                //                   xValueMapper: (ChartData data, _) => data.x,
-                //                   yValueMapper: (ChartData data, _) => data.y
-                //               )
-                //     ]
-                // series: <CircularSeries<ExpenseData, String>>[
-                // series: <DoughnutSeries<ExpenseData, String>>[
-                //   DoughnutSeries<ExpenseData, String>(
-                //     dataSource: data,
-                //     xValueMapper: (ExpenseData sales, _) => sales.category,
-                //     yValueMapper: (ExpenseData sales, _) => sales.percentage,
-                //     dataLabelSettings: const DataLabelSettings(
-                //       isVisible: true,
-                //       labelPosition: ChartDataLabelPosition.inside,
-                //       textStyle: TextStyle(
-                //           fontSize: 14.0,
-                //           fontWeight: FontWeight.bold,
-                //           color: Colors.white,
-                //           fontFamily: 'Roboto'),
-                //     ),
-                //   )
-                // ],
-              ),
-            ),
 
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => DebtDataTable(
-                      debt: widget.debt,
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => DebtDataTable(
+                        debt: widget.debt,
+                      ),
                     ),
-                  ),
-                );
-              },
-              //   shape: const RoundedRectangleBorder(
-              //   borderRadius: BorderRadius.all(
-              //     Radius.circular(30),
-              //   ),
-              // ),
-              child: const SizedBox(
-                child: Text('View Overall Payment Table'),
+                  );
+                },
+                //   shape: const RoundedRectangleBorder(
+                //   borderRadius: BorderRadius.all(
+                //     Radius.circular(30),
+                //   ),
+                // ),
+                child: const SizedBox(
+                  child: Text('View Overall Payment Table'),
+                ),
               ),
             ),
             // ),
