@@ -9,11 +9,11 @@ import 'package:pocketfi/src/features/transactions/date_picker/application/trans
 import 'package:pocketfi/src/utils/haptic_feedback_service.dart';
 
 class OverviewMonthSelector extends ConsumerStatefulWidget {
-  final void Function(DateTime) onMonthChanged;
+  // final void Function(DateTime) onMonthChanged;
 
   const OverviewMonthSelector({
     Key? key,
-    required this.onMonthChanged,
+    // required this.onMonthChanged,
   }) : super(key: key);
 
   @override

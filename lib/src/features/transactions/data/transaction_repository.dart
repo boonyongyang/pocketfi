@@ -31,8 +31,8 @@ final userTransactionsProvider =
     final wallets = ref.watch(userWalletsProvider).value;
     final controller = StreamController<Iterable<Transaction>>();
 
-    final transactionList =
-        <Transaction>[]; // accumulate all transactions in a list
+    // final transactionList =
+    //     <Transaction>[]; // accumulate all transactions in a list
     final subscriptions = <StreamSubscription>[]; // store all subscriptions
 
     // get all transactions from all wallets
@@ -54,9 +54,15 @@ final userTransactionsProvider =
           json: doc.data(),
         ),
       );
-      transactionList
-          .addAll(transactions); // add transactions to the accumulated list
-      controller.sink.add(transactionList);
+      //   transactionList
+      //       .addAll(transactions); // add transactions to the accumulated list
+      //   controller.sink.add(transactionList);
+
+      // Create a new list for updated transactions
+      final updatedTransactionList = [
+        ...transactions,
+      ];
+      controller.sink.add(updatedTransactionList);
     });
     subscriptions.add(sub); // add the subscription to the list
 
@@ -79,8 +85,8 @@ final userTransactionsByMonthProvider =
     final month = ref.watch(overviewMonthProvider);
     final controller = StreamController<Iterable<Transaction>>();
 
-    final transactionList =
-        <Transaction>[]; // accumulate all transactions in a list
+    // final transactionList =
+    //     <Transaction>[]; // accumulate all transactions in a list
     final subscriptions = <StreamSubscription>[]; // store all subscriptions
 
     // get all transactions from all wallets
@@ -104,9 +110,16 @@ final userTransactionsByMonthProvider =
             ),
           )
           .where((transaction) => transaction.date.month == month.month);
-      transactionList
-          .addAll(transactions); // add transactions to the accumulated list
-      controller.sink.add(transactionList);
+
+      // transactionList
+      //     .addAll(transactions); // add transactions to the accumulated list
+      // controller.sink.add(transactionList);
+
+      // Create a new list for updated transactions
+      final updatedTransactionList = [
+        ...transactions,
+      ];
+      controller.sink.add(updatedTransactionList);
     });
     subscriptions.add(sub); // add the subscription to the list
 
@@ -130,8 +143,6 @@ final userTransactionsByMonthByWalletProvider =
     final walletVisibility = ref.watch(walletVisibilityProvider);
     final controller = StreamController<Iterable<Transaction>>();
 
-    final transactionList =
-        <Transaction>[]; // accumulate all transactions in a list
     final subscriptions = <StreamSubscription>[]; // store all subscriptions
 
     // get all transactions from all wallets
@@ -166,9 +177,12 @@ final userTransactionsByMonthByWalletProvider =
         return walletVisibility[wallet] == true;
       }).where((transaction) => transaction.date.month == month.month);
 
-      transactionList
-          .addAll(transactions); // add transactions to the accumulated list
-      controller.sink.add(transactionList);
+      // Create a new list for updated transactions
+      final updatedTransactionList = [
+        ...transactions,
+      ];
+
+      controller.sink.add(updatedTransactionList);
     });
     subscriptions.add(sub); // add the subscription to the list
 
@@ -182,6 +196,67 @@ final userTransactionsByMonthByWalletProvider =
     return controller.stream;
   },
 );
+
+// final userTransactionsByMonthByWalletProvider =
+//     StreamProvider.autoDispose<Iterable<Transaction>>(
+//   (ref) {
+//     final wallets = ref.watch(userWalletsProvider).value;
+//     final month = ref.watch(overviewMonthProvider);
+//     final walletVisibility = ref.watch(walletVisibilityProvider);
+//     final controller = StreamController<Iterable<Transaction>>();
+
+//     final transactionList =
+//         <Transaction>[]; // accumulate all transactions in a list
+//     final subscriptions = <StreamSubscription>[]; // store all subscriptions
+
+//     // get all transactions from all wallets
+//     final stream = FirebaseFirestore.instance
+//         .collection(FirebaseCollectionName.transactions)
+//         .where(
+//           FirebaseFieldName.walletId,
+//           whereIn: wallets!.map((wallet) => wallet.walletId).toList(),
+//         )
+//         .orderBy(FirebaseFieldName.date, descending: true)
+//         .snapshots();
+
+//     final sub = stream.listen((snapshot) {
+//       final documents =
+//           snapshot.docs.where((doc) => !doc.metadata.hasPendingWrites);
+//       final transactions = documents
+//           .map(
+//         (doc) => Transaction.fromJson(
+//           transactionId: doc.id,
+//           json: doc.data(),
+//         ),
+//       )
+//           .where((transaction) {
+//         // Get the walletId of the current transaction
+//         final walletId = transaction.walletId;
+//         // Find the corresponding wallet from walletVisibility
+//         final wallet = wallets.firstWhere(
+//           (wallet) => wallet.walletId == walletId,
+//           // orElse: () => null,
+//         );
+//         // If the wallet is not found or its visibility is true, include the transaction
+//         return walletVisibility[wallet] == true;
+//       }).where((transaction) => transaction.date.month == month.month);
+
+//       transactionList
+//           .addAll(transactions); // add transactions to the accumulated list
+//       controller.sink.add(transactionList);
+//     });
+//     subscriptions.add(sub); // add the subscription to the list
+
+//     ref.onDispose(() {
+//       for (var sub in subscriptions) {
+//         sub.cancel();
+//       }
+//       controller.close();
+//     });
+
+//     return controller.stream;
+//   },
+// );
 
 // final userTransactionsByMonthByWalletProvider =
 //     StreamProvider.autoDispose<Iterable<Transaction>>(
@@ -353,6 +428,7 @@ final userTransactionsInWalletProvider =
     return controller.stream;
   },
 );
+
 final userTransactionsInBudgetProvider =
     StreamProvider.autoDispose.family<Iterable<Transaction>, String>(
   (ref, String budgetId) {

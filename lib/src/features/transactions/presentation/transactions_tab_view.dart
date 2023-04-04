@@ -64,11 +64,7 @@ class TransactionsTabView extends ConsumerWidget {
               },
               child: const Text('Filter by Wallet'),
             ),
-            OverviewMonthSelector(
-              onMonthChanged: (DateTime date) {
-                ref.read(overviewMonthProvider.notifier).setMonth(date);
-              },
-            ),
+            const OverviewMonthSelector(),
             const SizedBox(height: 20.0),
             transactions.when(
               data: (trans) {

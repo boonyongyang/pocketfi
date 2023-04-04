@@ -10,6 +10,7 @@ import 'package:intl/intl.dart';
 import 'package:path/path.dart' show join;
 import 'package:path_provider/path_provider.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
+import 'package:pocketfi/src/features/overview/application/overview_services.dart';
 import 'package:pocketfi/src/features/shared/image_upload/data/image_file_notifier.dart';
 import 'package:pocketfi/src/features/bills/presentation/bills_tab_view.dart';
 import 'package:pocketfi/src/features/bookmarks/presentation/bookmark_page.dart';
@@ -46,8 +47,9 @@ class _MainViewState extends ConsumerState<TimelinePage>
   // }
 
   String getNetAmountString() {
-    double netAmount = 5000;
     // double netAmount = getTotalAmount();
+    // double netAmount = 5000;
+    double netAmount = ref.watch(totalAmountProvider);
     String sign = netAmount < 0 ? '-' : '';
     String formattedAmount = NumberFormat.currency(
       symbol: 'MYR ',

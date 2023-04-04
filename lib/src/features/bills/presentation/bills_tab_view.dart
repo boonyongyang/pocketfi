@@ -44,11 +44,7 @@ class BillsTabView extends ConsumerWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           const SizedBox(height: 20.0),
-          OverviewMonthSelector(
-            onMonthChanged: (DateTime date) {
-              ref.read(overviewMonthProvider.notifier).setMonth(date);
-            },
-          ),
+          const OverviewMonthSelector(),
           Padding(
             padding: const EdgeInsets.all(20.0),
             child: Container(
