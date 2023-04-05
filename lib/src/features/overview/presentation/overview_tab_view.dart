@@ -130,24 +130,20 @@ class OverviewTabView extends ConsumerWidget {
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: SizedBox(
-                height: screenHeight * 0.5,
-                child: ListView.builder(
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: filteredCategories.length,
-                  itemBuilder: (context, index) {
-                    final category = filteredCategories[index];
-                    return Expanded(
-                      child: CategoryListTile(
-                        categoryName: category.name,
-                        icon: category.icon,
-                        color: category.color,
-                        currentMonthTransactions: currentMonthTransactions,
-                        type: transactionType,
-                      ),
-                    );
-                  },
-                ),
+              child: ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: filteredCategories.length,
+                itemBuilder: (context, index) {
+                  final category = filteredCategories[index];
+                  return CategoryListTile(
+                    categoryName: category.name,
+                    icon: category.icon,
+                    color: category.color,
+                    currentMonthTransactions: currentMonthTransactions,
+                    type: transactionType,
+                  );
+                },
               ),
             ),
             // SizedBox(height: screenHeight * 0.3)

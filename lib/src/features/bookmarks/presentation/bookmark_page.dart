@@ -8,7 +8,7 @@ import 'package:pocketfi/src/constants/strings.dart';
 import 'package:pocketfi/src/features/bookmarks/data/bookmark_repository.dart';
 import 'package:pocketfi/src/features/bookmarks/presentation/bookmark_list_view.dart';
 import 'package:pocketfi/src/features/transactions/data/transaction_repository.dart';
-import 'package:pocketfi/src/features/transactions/domain/tag.dart';
+import 'package:pocketfi/src/features/tags/domain/taggie.dart';
 
 class BookmarkPage extends ConsumerStatefulWidget {
   const BookmarkPage({Key? key}) : super(key: key);

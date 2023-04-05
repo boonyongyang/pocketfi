@@ -12,6 +12,8 @@ import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/constants/app_icons.dart';
 import 'package:pocketfi/src/constants/strings.dart';
 import 'package:pocketfi/src/features/authentication/application/user_id_provider.dart';
+import 'package:pocketfi/src/features/tags/application/tag_services.dart';
+import 'package:pocketfi/src/features/tags/presentation/select_tag_widget.dart';
 import 'package:pocketfi/src/features/wallets/application/wallet_services.dart';
 import 'package:pocketfi/src/features/wallets/domain/wallet.dart';
 import 'package:pocketfi/src/features/wallets/presentation/select_wallet_dropdownlist.dart';
@@ -20,13 +22,12 @@ import 'package:pocketfi/src/features/category/domain/category.dart';
 import 'package:pocketfi/src/features/category/presentation/category_page.dart';
 import 'package:pocketfi/src/features/transactions/application/transaction_services.dart';
 import 'package:pocketfi/src/features/transactions/date_picker/presentation/transaction_date_picker.dart';
-import 'package:pocketfi/src/features/transactions/domain/tag.dart';
+import 'package:pocketfi/src/features/tags/domain/taggie.dart';
 import 'package:pocketfi/src/features/shared/image_upload/data/image_file_notifier.dart';
 import 'package:pocketfi/src/features/shared/image_upload/domain/file_type.dart';
 import 'package:pocketfi/src/features/shared/image_upload/domain/thumbnail_request.dart';
 import 'package:pocketfi/src/features/shared/image_upload/helpers/image_picker_helper.dart';
 import 'package:pocketfi/src/features/transactions/presentation/add_new_transactions/category_selector_view.dart';
-import 'package:pocketfi/src/features/shared/image_upload/presentation/full_screen_image_dialog.dart';
 import 'package:pocketfi/src/features/transactions/presentation/add_new_transactions/select_transaction_type.dart';
 
 class AddTransactionWithBookmark extends StatefulHookConsumerWidget {
@@ -140,7 +141,8 @@ class AddTransactionWithBookmarkState
                     selectPhoto(),
                     showIfPhotoIsAdded(),
                     const SizedBox(height: 8.0),
-                    selectTags(),
+                    // selectTags(),
+                    const SelectTagWidget(),
                     selectReccurence(),
                     SizedBox(
                       child: SaveButton(
@@ -273,46 +275,46 @@ class AddTransactionWithBookmarkState
     }
   }
 
-  Row selectTags() {
-    return Row(
-      children: [
-        const Icon(
-          Icons.label_important_rounded,
-          color: AppColors.mainColor1,
-        ),
-        const SizedBox(width: 14.0),
-        Expanded(
-          child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Wrap(
-              direction: Axis.horizontal,
-              spacing: 8.0,
-              children: [
-                for (final tag in tags)
-                  FilterChip(
-                    showCheckmark: false,
-                    selectedColor: AppColors.mainColor2,
-                    label: Text(tag.label),
-                    selected: selectedTags.contains(tag),
-                    onSelected: (selected) {
-                      setState(
-                        () {
-                          if (selected) {
-                            selectedTags.add(tag);
-                          } else {
-                            selectedTags.remove(tag);
-                          }
-                        },
-                      );
-                    },
-                  ),
-              ],
-            ),
-          ),
-        ),
-      ],
-    );
-  }
+  // Row selectTags() {
+  //   return Row(
+  //     children: [
+  //       const Icon(
+  //         Icons.label_important_rounded,
+  //         color: AppColors.mainColor1,
+  //       ),
+  //       const SizedBox(width: 14.0),
+  //       Expanded(
+  //         child: SingleChildScrollView(
+  //           scrollDirection: Axis.horizontal,
+  //           child: Wrap(
+  //             direction: Axis.horizontal,
+  //             spacing: 8.0,
+  //             children: [
+  //               for (final tag in tags)
+  //                 FilterChip(
+  //                   showCheckmark: false,
+  //                   selectedColor: AppColors.mainColor2,
+  //                   label: Text(tag.label),
+  //                   selected: selectedTags.contains(tag),
+  //                   onSelected: (selected) {
+  //                     setState(
+  //                       () {
+  //                         if (selected) {
+  //                           selectedTags.add(tag);
+  //                         } else {
+  //                           selectedTags.remove(tag);
+  //                         }
+  //                       },
+  //                     );
+  //                   },
+  //                 ),
+  //             ],
+  //           ),
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
 
   Row selectReccurence() {
     return Row(
@@ -602,6 +604,15 @@ class SaveButton extends ConsumerWidget {
               final transaction = ref.read(selectedTransactionProvider)!;
               // ? problem? need to ensure transaction is selected
 
+              // get selected tags from transaction
+              final tags = ref.watch(userTagsNotifier);
+              final List<String> selectedTagNames = tags.isNotEmpty
+                  ? tags
+                      .where((element) => element.isSelected)
+                      .map((e) => e.name)
+                      .toList()
+                  : [];
+
               final userId = ref.read(userIdProvider);
               final file = ref.read(imageFileProvider);
 
@@ -631,6 +642,7 @@ class SaveButton extends ConsumerWidget {
                     walletName: selectedWallet!.walletName,
                     date: transaction.date,
                     file: file,
+                    tags: selectedTagNames,
                   );
 
               debugPrint('isAdded is: $isAdded');

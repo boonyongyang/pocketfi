@@ -16,6 +16,7 @@ import 'package:pocketfi/src/features/shared/image_upload/exceptions/could_not_b
 import 'package:pocketfi/src/features/shared/image_upload/extensions/get_image_data_aspect_ratio.dart';
 import 'package:pocketfi/src/features/shared/image_upload/image_constants.dart';
 import 'package:pocketfi/src/features/bookmarks/application/bookmark_services.dart';
+import 'package:pocketfi/src/features/tags/application/tag_services.dart';
 import 'package:pocketfi/src/features/transactions/date_picker/application/transaction_date_services.dart';
 import 'package:pocketfi/src/features/transactions/domain/transaction.dart';
 import 'package:pocketfi/src/features/transactions/data/transaction_repository.dart';
@@ -55,6 +56,8 @@ void setNewTransactionState(WidgetRef ref) {
   ref.read(imageFileProvider.notifier).clearImageFile();
   // this is to reset bookmark icon
   ref.read(isBookmarkProvider.notifier).resetBookmarkState();
+  // this is to reset tags
+  ref.read(userTagsNotifier.notifier).resetTagsState(ref);
 }
 
 // * transactionProvider
