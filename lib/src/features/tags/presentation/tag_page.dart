@@ -4,7 +4,7 @@ import 'package:pocketfi/src/features/tags/application/tag_services.dart';
 import 'package:pocketfi/src/features/tags/data/tag_repository.dart';
 import 'package:pocketfi/src/features/tags/domain/tag.dart';
 import 'package:pocketfi/src/features/tags/presentation/add_new_tag.dart';
-import 'package:pocketfi/src/features/tags/presentation/edit_tag.dart';
+import 'package:pocketfi/src/features/tags/presentation/update_tag.dart';
 import 'package:pocketfi/src/features/transactions/data/transaction_repository.dart';
 
 class TagPage extends ConsumerWidget {
@@ -80,7 +80,7 @@ class TagPage extends ConsumerWidget {
                           isScrollControlled: true,
                           context: context,
                           builder: (context) {
-                            return const EditTag();
+                            return const UpdateTag();
                           },
                         );
                       },

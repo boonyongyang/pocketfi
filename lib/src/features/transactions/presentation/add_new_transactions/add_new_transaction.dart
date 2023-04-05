@@ -24,8 +24,8 @@ import 'package:pocketfi/src/features/category/domain/category.dart';
 import 'package:pocketfi/src/features/category/presentation/category_page.dart';
 import 'package:pocketfi/src/features/bookmarks/application/bookmark_services.dart';
 import 'package:pocketfi/src/features/transactions/application/transaction_services.dart';
-import 'package:pocketfi/src/features/transactions/date_picker/application/transaction_date_services.dart';
-import 'package:pocketfi/src/features/transactions/date_picker/presentation/transaction_date_picker.dart';
+import 'package:pocketfi/src/features/shared/date_picker/application/date_services.dart';
+import 'package:pocketfi/src/features/shared/date_picker/presentation/transaction_date_picker.dart';
 import 'package:pocketfi/src/features/shared/image_upload/data/image_file_notifier.dart';
 import 'package:pocketfi/src/features/shared/image_upload/domain/file_type.dart';
 import 'package:pocketfi/src/features/shared/image_upload/domain/thumbnail_request.dart';
@@ -540,7 +540,10 @@ class TransactionAmountField extends ConsumerWidget {
         // ),
         // textInputAction: TextInputAction.done,
         keyboardType: Platform.isIOS
-            ? const TextInputType.numberWithOptions(signed: true, decimal: true)
+            ? const TextInputType.numberWithOptions(
+                // signed: true,
+                decimal: true,
+              )
             : TextInputType.number,
 // This regex for only amount (price). you can create your own regex based on your requirement
         inputFormatters: [

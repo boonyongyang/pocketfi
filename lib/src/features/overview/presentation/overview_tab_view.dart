@@ -5,9 +5,9 @@ import 'package:pocketfi/src/features/category/domain/category.dart';
 import 'package:pocketfi/src/features/overview/application/overview_services.dart';
 import 'package:pocketfi/src/features/overview/presentation/category_list_tile.dart';
 import 'package:pocketfi/src/features/transactions/application/transaction_services.dart';
-import 'package:pocketfi/src/features/transactions/date_picker/application/transaction_date_services.dart';
+import 'package:pocketfi/src/features/shared/date_picker/application/date_services.dart';
 import 'package:pocketfi/src/features/transactions/presentation/add_new_transactions/select_transaction_type.dart';
-import 'package:pocketfi/src/features/overview/presentation/overview_month_selector.dart';
+import 'package:pocketfi/src/features/shared/date_picker/presentation/month_picker.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class OverviewTabView extends ConsumerWidget {
@@ -38,7 +38,7 @@ class OverviewTabView extends ConsumerWidget {
           children: [
             const SelectTransactionType(noOfTabs: 2),
             const SizedBox(height: 10.0),
-            const OverviewMonthSelector(),
+            const MonthPicker(),
             Padding(
               padding: const EdgeInsets.all(20.0),
               child: LayoutBuilder(

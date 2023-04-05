@@ -57,6 +57,7 @@ class _BudgetPageState extends ConsumerState<BudgetPage> {
 
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: const Text('Budget'),
         actions: [
           IconButton(

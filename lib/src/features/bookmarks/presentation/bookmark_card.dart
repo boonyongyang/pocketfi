@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/features/category/application/category_services.dart';
+import 'package:pocketfi/src/features/tags/application/tag_services.dart';
+import 'package:pocketfi/src/features/tags/data/tag_repository.dart';
 import 'package:pocketfi/src/features/transactions/application/transaction_services.dart';
-import 'package:pocketfi/src/features/transactions/data/transaction_repository.dart';
 import 'package:pocketfi/src/features/transactions/domain/transaction.dart';
+import 'package:pocketfi/src/features/transactions/presentation/transaction_card.dart';
 
 class BookmarkCard extends ConsumerWidget {
   const BookmarkCard({
@@ -23,6 +25,8 @@ class BookmarkCard extends ConsumerWidget {
 
     final t = ref.read(selectedTransactionProvider);
     debugPrint('T: ${t?.isBookmark}');
+    final allTags = ref.watch(userTagsProvider).value ?? [];
+    final selectedTags = transaction.tags;
 
     return Dismissible(
       key: ValueKey(transaction.transactionId),
@@ -115,6 +119,11 @@ class BookmarkCard extends ConsumerWidget {
                             Text(
                               transaction.categoryName,
                             ),
+                            if (selectedTags.isNotEmpty)
+                              ShowTags(
+                                tags:
+                                    getTagsWithTagNames(selectedTags, allTags),
+                              ),
                             Text(transaction.description ?? '',
                                 style: TextStyle(
                                   fontSize: 12,
@@ -143,11 +152,12 @@ class BookmarkCard extends ConsumerWidget {
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 16,
-                      color: transactionType == TransactionType.expense
-                          ? TransactionType.expense.color
-                          : transactionType == TransactionType.income
-                              ? TransactionType.income.color
-                              : TransactionType.transfer.color,
+                      color: transactionType.color,
+                      // color: transactionType == TransactionType.expense
+                      //     ? TransactionType.expense.color
+                      //     : transactionType == TransactionType.income
+                      //         ? TransactionType.income.color
+                      //         : TransactionType.transfer.color,
                     ),
                   ),
                 ],

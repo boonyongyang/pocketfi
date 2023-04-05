@@ -145,7 +145,9 @@ class VerifyReceiptDetailsState extends ConsumerState<VerifyReceiptDetails> {
                       child: TextField(
                         keyboardType: Platform.isIOS
                             ? const TextInputType.numberWithOptions(
-                                signed: true, decimal: true)
+                                // signed: true,
+                                decimal: true,
+                              )
                             : TextInputType.number,
                         // autofocus: true,
                         decoration: const InputDecoration(

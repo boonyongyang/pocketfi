@@ -5,10 +5,10 @@ import 'package:pocketfi/src/common_widgets/animations/error_animation_view.dart
 import 'package:pocketfi/src/common_widgets/animations/loading_animation_view.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/constants/strings.dart';
-import 'package:pocketfi/src/features/overview/presentation/overview_month_selector.dart';
+import 'package:pocketfi/src/features/shared/date_picker/presentation/month_picker.dart';
 import 'package:pocketfi/src/features/transactions/application/transaction_services.dart';
 import 'package:pocketfi/src/features/transactions/data/transaction_repository.dart';
-import 'package:pocketfi/src/features/transactions/date_picker/application/transaction_date_services.dart';
+import 'package:pocketfi/src/features/shared/date_picker/application/date_services.dart';
 import 'package:pocketfi/src/features/transactions/domain/transaction.dart';
 import 'package:pocketfi/src/features/transactions/presentation/scheduled_transactions_page.dart';
 import 'package:pocketfi/src/features/transactions/presentation/transactions_list_view.dart';
@@ -53,17 +53,14 @@ class TransactionsTabView extends ConsumerWidget {
                 showModalBottomSheet(
                   context: context,
                   builder: (context) {
-                    return const WalletVisibilitySheet(
-                        // wallets: wallets?.toList(),
-                        // selectedWallet: selectedWallet,
-                        );
+                    return const WalletVisibilitySheet();
                   },
                 );
               },
               child: const Text('Filter by Wallet'),
             ),
             const SizedBox(height: 10.0),
-            const OverviewMonthSelector(),
+            const MonthPicker(),
             const SizedBox(height: 10.0),
             transactions.when(
               data: (trans) {
@@ -176,92 +173,3 @@ class TransactionsTabView extends ConsumerWidget {
     );
   }
 }
-
-// class WalletVisibilitySheet extends ConsumerStatefulWidget {
-//   const WalletVisibilitySheet({
-//     Key? key,
-//     // required this.wallets,
-//     // required this.selectedWallet,
-//   }) : super(key: key);
-
-//   // final List<Wallet>? wallets;
-//   // final Wallet? selectedWallet;
-
-//   @override
-//   WalletVisibilitySheetState createState() => WalletVisibilitySheetState();
-// }
-
-// class WalletVisibilitySheetState extends ConsumerState<WalletVisibilitySheet> {
-//   @override
-//   Widget build(BuildContext context) {
-//     final wallets = ref.watch(userWalletsProvider).value;
-//     final walletVisibility = ref.watch(walletVisibilityProvider);
-
-//     return SizedBox(
-//       height: (wallets?.length ?? 1) * 100, // haha for fun only
-//       child: Column(
-//         children: [
-//           Padding(
-//             padding: const EdgeInsets.symmetric(
-//               vertical: 8.0,
-//               horizontal: 12.0,
-//             ),
-//             child: Row(
-//               mainAxisAlignment: MainAxisAlignment.spaceAround,
-//               children: [
-//                 Text('Available Wallets',
-//                     style: Theme.of(context).textTheme.titleMedium),
-//                 const Spacer(),
-//                 IconButton(
-//                   onPressed: () {
-//                     Navigator.pop(context);
-//                   },
-//                   icon: const Icon(
-//                     Icons.check_circle_outline,
-//                     size: 28.0,
-//                   ),
-//                 ),
-//               ],
-//             ),
-//           ),
-//           ListView.separated(
-//             padding: const EdgeInsets.symmetric(horizontal: 8.0),
-//             shrinkWrap: true,
-//             itemCount: wallets?.length ?? 0,
-//             itemBuilder: (context, index) {
-//               final wallet = wallets?.toList()[index];
-//               return ListTile(
-//                 leading: const Icon(Icons.wallet),
-//                 title: Text(wallet?.walletName ?? 'Null Wallet',
-//                     style: Theme.of(context).textTheme.titleMedium),
-//                 trailing: IconButton(
-//                     onPressed: () {
-//                       ref
-//                           .read(walletVisibilityProvider.notifier)
-//                           .toggleVisibility(wallet!);
-//                       for (var wallet
-//                           in ref.watch(walletVisibilityProvider).entries) {
-//                         debugPrint(
-//                             'walletVisibility: ${wallet.key.walletName} ${wallet.value}');
-//                       }
-//                     },
-//                     icon: Icon(
-//                       walletVisibility[wallet] == true
-//                           ? Icons.visibility
-//                           : Icons.visibility_off,
-//                       color: walletVisibility[wallet] == true
-//                           ? Colors.green
-//                           : Colors.grey,
-//                       size: 32.0,
-//                     )),
-//               );
-//             },
-//             separatorBuilder: (BuildContext context, int index) {
-//               return const Divider();
-//             },
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }

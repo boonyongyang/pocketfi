@@ -11,9 +11,9 @@ import 'package:pocketfi/src/features/bills/data/bill_repository.dart';
 import 'package:pocketfi/src/features/bills/domain/bill.dart';
 import 'package:pocketfi/src/features/bills/presentation/bill_list_view.dart';
 import 'package:pocketfi/src/features/bills/presentation/add_new_bill.dart';
-import 'package:pocketfi/src/features/overview/presentation/overview_month_selector.dart';
+import 'package:pocketfi/src/features/shared/date_picker/presentation/month_picker.dart';
 import 'package:pocketfi/src/features/transactions/application/transaction_services.dart';
-import 'package:pocketfi/src/features/transactions/date_picker/application/transaction_date_services.dart';
+import 'package:pocketfi/src/features/shared/date_picker/application/date_services.dart';
 import 'package:pocketfi/src/features/transactions/presentation/add_new_transactions/select_transaction_type.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
@@ -39,109 +39,131 @@ class BillsTabView extends ConsumerWidget {
       ),
     );
 
+    final isBillListEmpty = userBills.when(
+      data: (bills) => bills.isEmpty,
+      loading: () => false,
+      error: (error, stackTrace) {
+        debugPrint(error.toString());
+        return false;
+      },
+    );
+
     return SingleChildScrollView(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           const SizedBox(height: 20.0),
-          const OverviewMonthSelector(),
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Container(
-              height: screenHeight * 0.4,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: const BorderRadius.all(
-                  Radius.circular(20),
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 2,
-                    blurRadius: 7,
-                    offset: const Offset(2, 4),
-                  ),
-                ],
-              ),
-              child: Center(
-                child: SfCircularChart(
-                  title: ChartTitle(text: 'Bills by Category'),
-                  legend: Legend(
-                    isVisible: true,
-                    position: LegendPosition.bottom,
-                    overflowMode: LegendItemOverflowMode.wrap,
-                    textStyle: const TextStyle(fontSize: 14),
-                  ),
-                  tooltipBehavior: TooltipBehavior(enable: true),
-                  series: <DoughnutSeries<Category, String>>[
-                    DoughnutSeries<Category, String>(
-                      dataSource: filteredCategories.toList(),
-                      // dataSource: categoriesList,
-                      xValueMapper: (Category category, _) => category.name,
-                      yValueMapper: (Category category, _) {
-                        return userBills.when(
-                          data: (transactions) {
-                            final categoryTransactions = transactions.where(
-                                (tran) => tran.categoryName == category.name);
-                            final totalAmount =
-                                getTotalAmount(categoryTransactions.toList());
-                            return totalAmount;
-                          },
-                          loading: () => 0,
-                          error: (error, stackTrace) {
-                            debugPrint(error.toString());
-                            return 0;
-                          },
-                        );
-                      },
-                      pointColorMapper: (Category category, _) =>
-                          category.color,
-                      dataLabelSettings: const DataLabelSettings(
-                        isVisible: true,
-                        labelPosition: ChartDataLabelPosition.outside,
-                        textStyle: TextStyle(
-                          fontSize: 14.0,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.mainColor1,
-                          fontFamily: 'Roboto',
-                        ),
+          Visibility(
+            visible: !isBillListEmpty,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const MonthPicker(),
+                Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Container(
+                    height: screenHeight * 0.4,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(20),
                       ),
-                      dataLabelMapper: (Category category, _) {
-                        final totalAmount = userBills.when(
-                          data: (transactions) {
-                            final categoryTransactions = transactions.where(
-                                (tran) => tran.categoryName == category.name);
-                            if (categoryTransactions.isEmpty) {
-                              return null;
-                            }
-                            final categoryTotalAmount =
-                                getTotalAmount(categoryTransactions.toList());
-                            final totalAmount =
-                                getTotalAmount(transactions.toList());
-                            final percentage = totalAmount > 0
-                                ? (categoryTotalAmount / totalAmount * 100)
-                                    .toStringAsFixed(1)
-                                : '0.0';
-                            return '$percentage%';
-                            // return '${category.name}: $percentage%';
-                          },
-                          loading: () => null,
-                          error: (error, stackTrace) {
-                            debugPrint(error.toString());
-                            return null;
-                          },
-                        );
-                        return totalAmount;
-                      },
-                      pointRenderMode: PointRenderMode.segment,
-                      enableTooltip: true,
-                      emptyPointSettings: EmptyPointSettings(
-                        mode: EmptyPointMode.gap,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 2,
+                          blurRadius: 7,
+                          offset: const Offset(2, 4),
+                        ),
+                      ],
+                    ),
+                    child: Center(
+                      child: SfCircularChart(
+                        title: ChartTitle(text: 'Bills by Category'),
+                        legend: Legend(
+                          isVisible: true,
+                          position: LegendPosition.bottom,
+                          overflowMode: LegendItemOverflowMode.wrap,
+                          textStyle: const TextStyle(fontSize: 14),
+                        ),
+                        tooltipBehavior: TooltipBehavior(enable: true),
+                        series: <DoughnutSeries<Category, String>>[
+                          DoughnutSeries<Category, String>(
+                            dataSource: filteredCategories.toList(),
+                            // dataSource: categoriesList,
+                            xValueMapper: (Category category, _) =>
+                                category.name,
+                            yValueMapper: (Category category, _) {
+                              return userBills.when(
+                                data: (transactions) {
+                                  final categoryTransactions =
+                                      transactions.where((tran) =>
+                                          tran.categoryName == category.name);
+                                  final totalAmount = getTotalAmount(
+                                      categoryTransactions.toList());
+                                  return totalAmount;
+                                },
+                                loading: () => 0,
+                                error: (error, stackTrace) {
+                                  debugPrint(error.toString());
+                                  return 0;
+                                },
+                              );
+                            },
+                            pointColorMapper: (Category category, _) =>
+                                category.color,
+                            dataLabelSettings: const DataLabelSettings(
+                              isVisible: true,
+                              labelPosition: ChartDataLabelPosition.outside,
+                              textStyle: TextStyle(
+                                fontSize: 14.0,
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.mainColor1,
+                                fontFamily: 'Roboto',
+                              ),
+                            ),
+                            dataLabelMapper: (Category category, _) {
+                              final totalAmount = userBills.when(
+                                data: (transactions) {
+                                  final categoryTransactions =
+                                      transactions.where((tran) =>
+                                          tran.categoryName == category.name);
+                                  if (categoryTransactions.isEmpty) {
+                                    return null;
+                                  }
+                                  final categoryTotalAmount = getTotalAmount(
+                                      categoryTransactions.toList());
+                                  final totalAmount =
+                                      getTotalAmount(transactions.toList());
+                                  final percentage = totalAmount > 0
+                                      ? (categoryTotalAmount /
+                                              totalAmount *
+                                              100)
+                                          .toStringAsFixed(1)
+                                      : '0.0';
+                                  return '$percentage%';
+                                  // return '${category.name}: $percentage%';
+                                },
+                                loading: () => null,
+                                error: (error, stackTrace) {
+                                  debugPrint(error.toString());
+                                  return null;
+                                },
+                              );
+                              return totalAmount;
+                            },
+                            pointRenderMode: PointRenderMode.segment,
+                            enableTooltip: true,
+                            emptyPointSettings: EmptyPointSettings(
+                              mode: EmptyPointMode.gap,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ],
+                  ),
                 ),
-              ),
+              ],
             ),
           ),
           ElevatedButton(

@@ -85,7 +85,7 @@ class WalletPage extends ConsumerWidget {
                         onTap: () {
                           ref
                               .read(selectedUserWalletProvider.notifier)
-                              .setSelectedWallet(wallet, ref);
+                              .setSelectedWallet(wallet);
                           // specificWallet.when(data: (specificWallet) {
                           // final walletId = specificWallet.wallet.walletId;
                           Navigator.push(

@@ -30,7 +30,8 @@ final walletProvider = StateNotifierProvider<WalletNotifier, IsLoading>(
 // * selectedWalletNotifier
 final selectedWalletProvider =
     StateNotifierProvider<SelectedWalletNotifier, Wallet?>((ref) =>
-        SelectedWalletNotifier(ref.watch(userWalletsProvider).value?.first));
+        // SelectedWalletNotifier(ref.watch(userWalletsProvider).value?.first));
+        SelectedWalletNotifier(null));
 
 // * SelectedWalletNotifier
 class SelectedWalletNotifier extends StateNotifier<Wallet?> {
@@ -38,9 +39,15 @@ class SelectedWalletNotifier extends StateNotifier<Wallet?> {
 
   void setSelectedWallet(Wallet? wallet) => state = wallet;
 
-  void resetSelectedWalletState(ref) {
-    final Wallet? wallet = ref.watch(selectedWalletProvider).state;
-    state = wallet;
+  void resetSelectedWallet() => state = null;
+
+  void updateCollaboratorInfoList(
+      List<CollaboratorsInfo> newList, WidgetRef ref) {
+    Wallet? wallet = ref.watch(selectedUserWalletProvider);
+    if (wallet != null) {
+      wallet = wallet.copyWith(collaborators: newList);
+      state = wallet;
+    }
   }
 }
 
@@ -79,16 +86,14 @@ final selectedWalletForSavingGoalProvider = StateProvider.autoDispose<Wallet?>(
 );
 
 final selectedUserWalletProvider =
-    StateNotifierProvider<SelectedWalletNotifier, Wallet?>(
-  (_) => SelectedWalletNotifier(null),
+    StateNotifierProvider<SelectedUserWalletNotifier, Wallet?>(
+  (_) => SelectedUserWalletNotifier(null),
 );
 
-class SelectedWalletNotifier extends StateNotifier<Wallet?> {
-  SelectedWalletNotifier(Wallet? wallet) : super(wallet);
+class SelectedUserWalletNotifier extends StateNotifier<Wallet?> {
+  SelectedUserWalletNotifier(Wallet? wallet) : super(wallet);
 
-  void setSelectedWallet(Wallet wallet, WidgetRef ref) {
-    state = wallet;
-  }
+  void setSelectedWallet(Wallet? wallet) => state = wallet;
 
   void updateCollaboratorInfoList(
       List<CollaboratorsInfo> newList, WidgetRef ref) {

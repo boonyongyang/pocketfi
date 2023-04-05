@@ -9,10 +9,10 @@ import 'package:pocketfi/src/features/budgets/application/budget_services.dart';
 import 'package:pocketfi/src/features/budgets/presentation/update_budget.dart';
 import 'package:pocketfi/src/features/category/application/category_services.dart';
 import 'package:pocketfi/src/features/category/domain/category.dart';
-import 'package:pocketfi/src/features/overview/presentation/overview_month_selector.dart';
+import 'package:pocketfi/src/features/shared/date_picker/presentation/month_picker.dart';
 import 'package:pocketfi/src/features/transactions/application/transaction_services.dart';
 import 'package:pocketfi/src/features/transactions/data/transaction_repository.dart';
-import 'package:pocketfi/src/features/transactions/date_picker/application/transaction_date_services.dart';
+import 'package:pocketfi/src/features/shared/date_picker/application/date_services.dart';
 import 'package:pocketfi/src/features/transactions/domain/transaction.dart';
 import 'package:pocketfi/src/features/transactions/presentation/transactions_list_view.dart';
 // import 'package:syncfusion_flutter_charts/charts.dart';
@@ -98,7 +98,7 @@ class BudgetDetailsView extends ConsumerWidget {
           child: Column(
             children: [
               const SizedBox(height: 20),
-              const OverviewMonthSelector(),
+              const MonthPicker(),
               Padding(
                 padding: const EdgeInsets.only(top: 16.0),
                 child: Column(

@@ -19,8 +19,8 @@ import 'package:pocketfi/src/features/category/domain/category.dart';
 import 'package:pocketfi/src/features/category/presentation/category_page.dart';
 import 'package:pocketfi/src/features/bills/application/bill_services.dart';
 import 'package:pocketfi/src/features/bills/domain/bill.dart';
-import 'package:pocketfi/src/features/transactions/date_picker/application/transaction_date_services.dart';
-import 'package:pocketfi/src/features/transactions/date_picker/presentation/transaction_date_picker.dart';
+import 'package:pocketfi/src/features/shared/date_picker/application/date_services.dart';
+import 'package:pocketfi/src/features/shared/date_picker/presentation/transaction_date_picker.dart';
 import 'package:pocketfi/src/features/transactions/presentation/add_new_transactions/category_selector_view.dart';
 
 class AddNewBill extends StatelessWidget {
@@ -355,7 +355,10 @@ class BillAmountTextField extends ConsumerWidget {
         // ),
         // textInputAction: TextInputAction.done,
         keyboardType: Platform.isIOS
-            ? const TextInputType.numberWithOptions(signed: true, decimal: true)
+            ? const TextInputType.numberWithOptions(
+                // signed: true,
+                decimal: true,
+              )
             : TextInputType.number,
         inputFormatters: [
           FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,4}'))

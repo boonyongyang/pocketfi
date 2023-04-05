@@ -27,55 +27,7 @@ class SelectWalletDropdownList extends ConsumerWidget {
         builder: (context, ref, child) {
           return DropdownButton(
             value: selectedWallet,
-            items: walletList?.map((wallet) {
-              return DropdownMenuItem(
-                value: wallet,
-                child: Text(wallet.walletName),
-              );
-            }).toList(),
-            onChanged: (selectedWallet) {
-              debugPrint('wallet tapped: ${selectedWallet?.walletName}');
-              // ref.read(selectedWalletProvider.notifier).state = selectedWallet!;
-              ref
-                  .read(selectedWalletProvider.notifier)
-                  .setSelectedWallet(selectedWallet);
-              debugPrint(
-                  'selected wallet: ${ref.read(selectedWalletProvider)?.walletName}');
-            },
-          );
-        },
-      ),
-    );
-  }
-}
-
-class EditWalletDropdownList extends ConsumerWidget {
-  const EditWalletDropdownList({
-    super.key,
-    // required this.chosenWallet,
-  });
-
-  // final Wallet? chosenWallet;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final wallets = ref.watch(userWalletsProvider).value;
-    // final selectedwalletId = ref.watch(selectedTransactionProvider)!.walletId;
-    // final selectedWallet = getWalletById(selectedwalletId);
-    final selectedWallet = ref.watch(selectedWalletProvider);
-
-    // debugPrint('s wallet: ${selectedWallet?.walletName}');
-
-    final walletList = wallets?.toList();
-    // debugPrint('wallet list: ${walletList?.length}');
-    // debugPrint('wallet list: ${walletList?.toString()}');
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      child: Consumer(
-        builder: (context, ref, child) {
-          return DropdownButton(
-            value: selectedWallet,
+            // value: selectedWallet ?? walletList?.first,
             items: walletList?.map((wallet) {
               return DropdownMenuItem(
                 value: wallet,

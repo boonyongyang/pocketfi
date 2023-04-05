@@ -5,9 +5,9 @@ import 'package:pocketfi/src/common_widgets/animations/empty_contents_with_text_
 import 'package:pocketfi/src/constants/strings.dart';
 import 'package:pocketfi/src/features/category/application/category_services.dart';
 import 'package:pocketfi/src/features/transactions/data/transaction_repository.dart';
-import 'package:pocketfi/src/features/transactions/date_picker/application/transaction_date_services.dart';
+import 'package:pocketfi/src/features/shared/date_picker/application/date_services.dart';
 import 'package:pocketfi/src/features/transactions/domain/transaction.dart';
-import 'package:pocketfi/src/features/overview/presentation/overview_month_selector.dart';
+import 'package:pocketfi/src/features/shared/date_picker/presentation/month_picker.dart';
 import 'package:pocketfi/src/features/transactions/presentation/transactions_list_view.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
@@ -99,7 +99,7 @@ class CategoryDetailPage extends ConsumerWidget {
                 ),
               ),
               const SizedBox(height: 8.0),
-              const OverviewMonthSelector(),
+              const MonthPicker(),
               const SizedBox(height: 10),
               currentMonthTransactions.isEmpty
                   ? const SizedBox(

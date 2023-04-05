@@ -63,7 +63,7 @@ class _MainViewState extends ConsumerState<TimelinePage>
     String netAmount = getNetAmountString();
     super.build(context);
     return DefaultTabController(
-      length: 3,
+      length: 2,
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: AppColors.mainColor1,
@@ -188,14 +188,14 @@ class _MainViewState extends ConsumerState<TimelinePage>
                   Text('Overview'),
                 ],
               )),
-              Tab(
-                  child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  // Icon(Icons.receipt_long),
-                  Text('Bills'),
-                ],
-              )),
+              // Tab(
+              //     child: Row(
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   children: const [
+              //     // Icon(Icons.receipt_long),
+              //     Text('Bills'),
+              //   ],
+              // )),
             ],
           ),
         ),
@@ -203,7 +203,7 @@ class _MainViewState extends ConsumerState<TimelinePage>
           children: [
             TransactionsTabView(),
             OverviewTabView(),
-            BillsTabView(),
+            // BillsTabView(),
           ],
         ),
         floatingActionButton: Column(
