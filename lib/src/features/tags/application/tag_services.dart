@@ -4,7 +4,7 @@ import 'package:pocketfi/src/constants/typedefs.dart';
 import 'package:pocketfi/src/features/tags/data/tag_repository.dart';
 import 'package:pocketfi/src/features/tags/domain/tag.dart';
 
-final chosenTagsProvider = StateProvider.autoDispose<List<Tag>>((ref) => []);
+// final chosenTagsProvider = StateProvider.autoDispose<List<Tag>>((ref) => []);
 
 // * tagProvider
 final tagProvider =

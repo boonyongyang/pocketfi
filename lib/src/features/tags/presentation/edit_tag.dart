@@ -3,11 +3,14 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/common_widgets/buttons/full_width_button_with_text.dart';
+import 'package:pocketfi/src/common_widgets/dialogs/alert_dialog_model.dart';
+import 'package:pocketfi/src/common_widgets/dialogs/delete_dialog.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/constants/strings.dart';
 import 'package:pocketfi/src/features/authentication/application/user_id_provider.dart';
 import 'package:pocketfi/src/features/category/application/category_services.dart';
 import 'package:pocketfi/src/features/tags/application/tag_services.dart';
+import 'package:pocketfi/src/features/tags/data/tag_repository.dart';
 
 class EditTag extends StatefulHookConsumerWidget {
   const EditTag({super.key});
@@ -55,13 +58,36 @@ class _EditTagState extends ConsumerState<EditTag> {
                   icon: const Icon(Icons.close),
                 ),
                 const Text(
-                  'Create new Tag',
+                  'Edit Tag',
                   style: TextStyle(
                     fontWeight: FontWeight.w700,
                     fontSize: 18.0,
                   ),
                 ),
-                const SizedBox(width: 40.0),
+                // const SizedBox(width: 40.0),
+                IconButton(
+                  icon: const Icon(
+                    Icons.delete_rounded,
+                    color: AppColors.red,
+                  ),
+                  onPressed: () async {
+                    final isConfirmDelete = await const DeleteDialog(
+                      titleOfObjectToDelete: Strings.transaction,
+                    ).present(context);
+
+                    if (isConfirmDelete == null) return;
+
+                    if (isConfirmDelete) {
+                      await ref.read(tagProvider.notifier).deleteTag(
+                            name: selectedTag!.name,
+                            userId: ref.read(userIdProvider)!,
+                          );
+                      if (mounted) {
+                        Navigator.of(context).maybePop();
+                      }
+                    }
+                  },
+                ),
               ],
             ),
             Row(

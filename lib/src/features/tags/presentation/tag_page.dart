@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/features/tags/application/tag_services.dart';
 import 'package:pocketfi/src/features/tags/data/tag_repository.dart';
+import 'package:pocketfi/src/features/tags/domain/tag.dart';
 import 'package:pocketfi/src/features/tags/presentation/add_new_tag.dart';
 import 'package:pocketfi/src/features/tags/presentation/edit_tag.dart';
+import 'package:pocketfi/src/features/transactions/data/transaction_repository.dart';
 
 class TagPage extends ConsumerWidget {
   const TagPage({super.key});
@@ -13,6 +15,18 @@ class TagPage extends ConsumerWidget {
     final tags = ref.watch(userTagsProvider).value;
     final tagsList = tags?.toList() ?? [];
     debugPrint('tagsList: $tagsList');
+    final transactions = ref.watch(userTransactionsProvider).value;
+
+    // Create a map to store the number of times each tag has been used
+    final tagUsage = <Tag, int>{};
+
+    // Loop through the transactions and count the number of times each tag has been used
+    for (final transaction in transactions!) {
+      final tags = getTagsWithTagNames(transaction.tags, tagsList);
+      for (final tag in tags) {
+        tagUsage[tag] = (tagUsage[tag] ?? 0) + 1;
+      }
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -52,7 +66,9 @@ class TagPage extends ConsumerWidget {
                     return GestureDetector(
                       child: ListTile(
                         title: Text(tagsList[index].name),
-                        subtitle: const Text('23 transactions in 2 wallets'),
+                        subtitle: Text(
+                          '${tagUsage[tagsList[index]]} transaction${tagUsage[tagsList[index]] == 1 ? '' : 's'}',
+                        ),
                         trailing: const Icon(Icons.arrow_forward_ios_outlined),
                       ),
                       onTap: () {

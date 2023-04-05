@@ -50,7 +50,11 @@ class UpdateTransactionState extends ConsumerState<UpdateTransaction> {
     final categories = ref.watch(categoriesProvider);
     final selectedCategory = ref.watch(selectedCategoryProvider);
 
+    debugPrint('be4 wallet is ${selectedTransaction?.walletName}');
     final selectedWallet = ref.watch(selectedWalletProvider);
+    debugPrint('after wallet is ${selectedWallet?.walletName}');
+
+    // final chosenWallet = await selectedTransaction.walletId;
     final isBookmark = ref.watch(selectedTransactionProvider)?.isBookmark;
 
     final amountController =
@@ -165,7 +169,10 @@ class UpdateTransactionState extends ConsumerState<UpdateTransaction> {
                       const Spacer(),
                       const Icon(AppIcons.wallet, color: AppColors.mainColor1),
                       const SizedBox(width: 8.0),
-                      const SelectWalletDropdownList(),
+                      // const SelectWalletDropdownList(),
+                      EditWalletDropdownList(
+                          // chosenWallet: selectedWallet,
+                          ),
                       const SizedBox(width: 8.0),
                     ],
                   ),

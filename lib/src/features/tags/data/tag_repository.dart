@@ -78,8 +78,22 @@ class TagNotifier extends StateNotifier<IsLoading> {
   }
 
   // * deleteTag
-  Future<bool> deleteTag() async {
+  Future<bool> deleteTag({
+    required String name,
+    required String userId,
+  }) async {
     isLoading = true;
+    // * delete tag from firebase
+    final query = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(userId)
+        .collection('tags')
+        .where('uid', isEqualTo: userId)
+        .where('name', isEqualTo: name)
+        .get();
+
+    if (query.docs.isEmpty) return false;
+    await query.docs.first.reference.delete();
 
     return true;
   }

@@ -47,8 +47,8 @@ class BookmarkPageState extends ConsumerState<BookmarkPage> {
                   children: [
                     // const SelectTransactionType(noOfTabs: 2),
                     const SizedBox(height: 10.0),
-                    selectTags(),
-                    const SizedBox(height: 20.0),
+                    // selectTags(),
+                    // const SizedBox(height: 20.0),
                     Text(
                         'You have ${bookmarks.value?.length ?? 'No'} bookmarks'),
                     const Divider(),

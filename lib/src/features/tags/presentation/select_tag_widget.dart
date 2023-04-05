@@ -29,10 +29,11 @@ class SelectTagWidgetState extends ConsumerState<SelectTagWidget> {
         // ),
         Row(
           children: [
-            const Icon(
-              Icons.label_important_rounded,
-              color: AppColors.mainColor1,
-            ),
+            if (tags.isNotEmpty)
+              const Icon(
+                Icons.label_important_rounded,
+                color: AppColors.mainColor1,
+              ),
             const SizedBox(width: 14.0),
             Expanded(
               child: SingleChildScrollView(

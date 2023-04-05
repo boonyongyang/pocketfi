@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:auto_size_text_field/auto_size_text_field.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -503,35 +504,46 @@ class SelectCurrency extends StatelessWidget {
   }
 }
 
-class TransactionAmountField extends StatelessWidget {
+class TransactionAmountField extends ConsumerWidget {
   const TransactionAmountField({
-    super.key,
+    Key? key,
     required this.amountController,
-  });
+  }) : super(key: key);
 
   final TextEditingController amountController;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final type = ref.watch(transactionTypeProvider);
     return SizedBox(
       width: 250,
       child: AutoSizeTextField(
-        // autofocus: true,
+        autofocus: true,
         textAlign: TextAlign.center,
         enableInteractiveSelection: false,
         showCursor: false,
-        keyboardType: const TextInputType.numberWithOptions(
-          decimal: true,
-        ),
+        // keyboardType: const TextInputType.numberWithOptions(
+        //   decimal: true,
+        //   signed: true,
+        // ),
+        // textInputAction: TextInputAction.done,
+        keyboardType: Platform.isIOS
+            ? const TextInputType.numberWithOptions(signed: true, decimal: true)
+            : TextInputType.number,
+// This regex for only amount (price). you can create your own regex based on your requirement
+        inputFormatters: [
+          FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,4}'))
+        ],
         decoration: const InputDecoration(
           border: InputBorder.none,
           hintText: Strings.zeroAmount,
         ),
         controller: amountController,
-        style: const TextStyle(
+        style: TextStyle(
           fontSize: 28,
           fontWeight: FontWeight.bold,
-          color: AppColors.red,
+          // FIXME: not changing color as it refers to the initial value
+          color: type.color,
         ),
       ),
     );
