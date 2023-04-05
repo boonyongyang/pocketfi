@@ -186,7 +186,7 @@ class BillsTabView extends ConsumerWidget {
             },
             child: const Text('Add Bill'),
           ),
-          const SelectTransactionType(noOfTabs: 2),
+          // const SelectTransactionType(noOfTabs: 2),
           RefreshIndicator(
             onRefresh: () {
               ref.refresh(userBillsProvider);

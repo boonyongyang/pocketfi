@@ -28,7 +28,7 @@ final bookmarkTransactionsProvider =
 
     final sub = FirebaseFirestore.instance
         .collection(FirebaseCollectionName.transactions)
-        .where(TransactionKey.userId, isEqualTo: userId)
+        // .where(TransactionKey.userId, isEqualTo: userId)
         .where(TransactionKey.isBookmark, isEqualTo: true)
         .orderBy(FirebaseFieldName.date, descending: true)
         .snapshots()

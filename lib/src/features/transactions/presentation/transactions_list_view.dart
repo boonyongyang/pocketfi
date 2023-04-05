@@ -5,10 +5,14 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:pocketfi/src/constants/strings.dart';
 import 'package:pocketfi/src/features/shared/image_upload/data/image_file_notifier.dart';
+import 'package:pocketfi/src/features/tags/application/tag_services.dart';
+import 'package:pocketfi/src/features/tags/data/tag_repository.dart';
 import 'package:pocketfi/src/features/transactions/application/transaction_services.dart';
 import 'package:pocketfi/src/features/transactions/domain/transaction.dart';
 import 'package:pocketfi/src/features/transactions/presentation/transaction_card.dart';
 import 'package:pocketfi/src/features/transactions/presentation/update_transaction.dart';
+import 'package:pocketfi/src/features/wallets/application/wallet_services.dart';
+import 'package:pocketfi/src/features/wallets/data/wallet_repository.dart';
 
 class TransactionListView extends ConsumerWidget {
   final Iterable<Transaction> transactions;
@@ -50,7 +54,7 @@ class TransactionListView extends ConsumerWidget {
               ),
             TransactionCard(
               transaction: transaction,
-              onTapped: () {
+              onTapped: () async {
                 // setNewTransactionState(ref);
                 ref
                     .read(selectedTransactionProvider.notifier)
@@ -73,6 +77,38 @@ class TransactionListView extends ConsumerWidget {
                   debugPrint(
                       'imageFileProvider is ${ref.read(imageFileProvider)}');
                 }
+
+                final allTags = ref.watch(userTagsProvider).value?.toList();
+
+                // loop through allTags and set isSelected for each tag that is in the transaction
+                if (allTags != null && allTags.isNotEmpty) {
+                  ref.read(userTagsNotifier.notifier).resetTagsState(ref);
+                  for (final tag in allTags) {
+                    if (transaction.tags.contains(tag.name)) {
+                      ref.read(userTagsNotifier.notifier).setTagToSelected(
+                            getTagWithName(tag.name, allTags)!,
+                          );
+                    }
+                  }
+                }
+
+                final chosenWallet = await getWalletById(transaction.walletId);
+
+                // set wallet to selected transaction wallet
+                // ref.read(selectedWalletProvider.notifier).state =
+                //     selectedWallet;
+
+                ref
+                    .read(selectedWalletProvider.notifier)
+                    .setSelectedWallet(chosenWallet);
+                debugPrint(
+                    'selWallet is ${ref.read(selectedWalletProvider)?.walletName}');
+
+                // // set tags state from selectedTransaction
+                // ref.read(userTagsNotifier.notifier).setTags(getTagsWithTagNames(
+                //       transaction.tags,
+                //       allTags ?? [],
+                //     ));
 
                 // debugPrint(
                 // 'bool is ${ref.read(selectedTransactionProvider)?.isBookmark}');

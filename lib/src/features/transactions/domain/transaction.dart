@@ -5,7 +5,7 @@ import 'package:flutter/material.dart' show Color;
 
 import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/constants/strings.dart';
-import 'package:pocketfi/src/features/receipts/domain/receipt.dart';
+import 'package:pocketfi/src/features/tags/domain/tag.dart';
 import 'package:pocketfi/src/features/transactions/domain/transaction_image.dart';
 
 enum TransactionType {
@@ -52,7 +52,7 @@ class Transaction {
   // final String? originalFileStorageId; // image
   final TransactionImage? transactionImage;
   // final Receipt? receipt;
-  // final List<Tag> tags;
+  final List<String> tags;
 
   const Transaction({
     required this.transactionId,
@@ -67,6 +67,7 @@ class Transaction {
     this.isBookmark = false,
     this.createdAt,
     this.transactionImage,
+    this.tags = const [],
     // this.receipt,
     // this.thumbnailUrl,
     // this.fileUrl,
@@ -102,6 +103,17 @@ class Transaction {
                   json: json[TransactionKey.transactionImage],
                 )
               : null,
+          // tags: json[TransactionKey.tags] != null
+          //     ? (json[TransactionKey.tags] as List<dynamic>)
+          //         .map((tag) => Tag.fromJson(
+          //               name: tag[TagKey.name],
+          //               json: json[TransactionKey.tags],
+          //             ))
+          //         .toList()
+          //     : [],
+          tags: json[TransactionKey.tags] != null
+              ? (json[TransactionKey.tags] as List<dynamic>).cast<String>()
+              : [],
           // receipt: json[TransactionKey.receipt] != null
           //     ? Receipt.fromJson(
           //         transactionId: transactionId,
@@ -136,15 +148,9 @@ class Transaction {
         if (transactionImage != null)
           TransactionKey.transactionImage: transactionImage!.toJson(),
         // if (receipt != null) TransactionKey.receipt: receipt!.toJson(),
-        // TransactionKey.tags: [
-        //   for (final tag in tags)
-        //     {
-        //       'tagId': tag.tagId,
-        //       'tagName': tag.tagName,
-        //       'tagColor': tag.tagColor,
-        //       'tagIcon': tag.tagIcon,
-        //     },
-        // ],
+        if (tags.isNotEmpty)
+          // TransactionKey.tags: tags.map((tag) => tag.toJson()).toList(),
+          TransactionKey.tags: tags,
       };
 
   Transaction copyWith({
@@ -167,6 +173,7 @@ class Transaction {
     // String? originalFileStorageId,
     TransactionImage? transactionImage,
     // Receipt? receipt,
+    List<String>? tags,
   }) =>
       Transaction(
         transactionId: transactionId ?? this.transactionId,
@@ -190,6 +197,7 @@ class Transaction {
         //     originalFileStorageId ?? this.originalFileStorageId,
         transactionImage: transactionImage ?? this.transactionImage,
         // receipt: receipt ?? this.receipt,
+        tags: tags ?? this.tags,
       );
 }
 
@@ -212,7 +220,6 @@ class TransactionKey {
   static const originalFileStorageId = 'original_file_storage_id';
   static const transactionImage = 'transaction_image';
   // static const receipt = 'receipt';
-  // TODO: add tags
   static const tags = 'tags';
   // static const shared = 'shared';
 

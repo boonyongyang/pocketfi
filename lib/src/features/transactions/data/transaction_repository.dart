@@ -138,7 +138,7 @@ final userTransactionsByMonthProvider =
 final userTransactionsByMonthByWalletProvider =
     StreamProvider.autoDispose<Iterable<Transaction>>(
   (ref) {
-    final wallets = ref.watch(userWalletsProvider).value;
+    final wallets = ref.watch(userWalletsProvider).value!;
     final month = ref.watch(overviewMonthProvider);
     final walletVisibility = ref.watch(walletVisibilityProvider);
     final controller = StreamController<Iterable<Transaction>>();
@@ -150,7 +150,8 @@ final userTransactionsByMonthByWalletProvider =
         .collection(FirebaseCollectionName.transactions)
         .where(
           FirebaseFieldName.walletId,
-          whereIn: wallets!.map((wallet) => wallet.walletId).toList(),
+          // FIXME - this causes error: Null check operator used on a null value
+          whereIn: wallets.map((wallet) => wallet.walletId).toList(),
         )
         .orderBy(FirebaseFieldName.date, descending: true)
         .snapshots();
@@ -312,6 +313,7 @@ class TransactionNotifier extends StateNotifier<IsLoading> {
     String? merchant,
     String? note,
     bool isBookmark = false,
+    List<String>? tags,
   }) async {
     isLoading = true;
 
@@ -413,6 +415,7 @@ class TransactionNotifier extends StateNotifier<IsLoading> {
           thumbnailStorageId: thumbnailStorageId,
           originalFileStorageId: originalFileStorageId,
         ),
+        tags: tags ?? [],
       ).toJson();
 
       debugPrint('uploading new transaction..');
@@ -444,6 +447,7 @@ class TransactionNotifier extends StateNotifier<IsLoading> {
     required File? file,
     String? note,
     bool isBookmark = false,
+    List<String>? tags,
   }) async {
     isLoading = true;
 
@@ -466,6 +470,7 @@ class TransactionNotifier extends StateNotifier<IsLoading> {
           description: note,
           isBookmark: isBookmark,
           transactionImage: null,
+          tags: tags ?? [],
         ).toJson();
         debugPrint('no pic..');
       } else {
@@ -522,31 +527,33 @@ class TransactionNotifier extends StateNotifier<IsLoading> {
 
         // set the transaction in to payload  using toJson()
         payload = Transaction(
+          transactionId: transactionId,
+          userId: userId,
+          walletId: walletId,
+          walletName: walletName,
+          amount: amount,
+          date: date,
+          isBookmark: isBookmark,
+          type: type,
+          categoryName: categoryName,
+          description: note,
+          // thumbnailUrl: await thumbnailRef.getDownloadURL(),
+          // fileUrl: await originalFileRef.getDownloadURL(),
+          // fileName: fileName,
+          // aspectRatio: thumbnailAspectRatio,
+          // thumbnailStorageId: thumbnailStorageId,
+          // originalFileStorageId: originalFileStorageId,
+          transactionImage: TransactionImage(
             transactionId: transactionId,
-            userId: userId,
-            walletId: walletId,
-            walletName: walletName,
-            amount: amount,
-            date: date,
-            isBookmark: isBookmark,
-            type: type,
-            categoryName: categoryName,
-            description: note,
-            // thumbnailUrl: await thumbnailRef.getDownloadURL(),
-            // fileUrl: await originalFileRef.getDownloadURL(),
-            // fileName: fileName,
-            // aspectRatio: thumbnailAspectRatio,
-            // thumbnailStorageId: thumbnailStorageId,
-            // originalFileStorageId: originalFileStorageId,
-            transactionImage: TransactionImage(
-              transactionId: transactionId,
-              thumbnailUrl: await thumbnailRef.getDownloadURL(),
-              fileUrl: await originalFileRef.getDownloadURL(),
-              fileName: fileName,
-              aspectRatio: thumbnailAspectRatio,
-              thumbnailStorageId: thumbnailStorageId,
-              originalFileStorageId: originalFileStorageId,
-            )).toJson();
+            thumbnailUrl: await thumbnailRef.getDownloadURL(),
+            fileUrl: await originalFileRef.getDownloadURL(),
+            fileName: fileName,
+            aspectRatio: thumbnailAspectRatio,
+            thumbnailStorageId: thumbnailStorageId,
+            originalFileStorageId: originalFileStorageId,
+          ),
+          tags: tags ?? [],
+        ).toJson();
       }
 
       debugPrint('uploading new transaction..');
@@ -580,6 +587,7 @@ class TransactionNotifier extends StateNotifier<IsLoading> {
     required File? file,
     String? note,
     bool isBookmark = false,
+    List<String>? tags,
   }) async {
     try {
       isLoading = true;
@@ -719,6 +727,7 @@ class TransactionNotifier extends StateNotifier<IsLoading> {
         TransactionKey.categoryName: categoryName,
         TransactionKey.description: note,
         TransactionKey.isBookmark: isBookmark,
+        TransactionKey.tags: tags,
         // TransactionKey.transactionImage: file == null
         //     ? null
         //     : {

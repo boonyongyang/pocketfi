@@ -11,6 +11,7 @@ import 'package:pocketfi/src/features/authentication/application/user_id_provide
 import 'package:pocketfi/src/features/authentication/application/user_info_model_provider.dart';
 import 'package:pocketfi/src/features/category/presentation/category_page.dart';
 import 'package:pocketfi/src/features/shared/eg_tabs/eg_tabs_page.dart';
+import 'package:pocketfi/src/features/tags/presentation/tag_page.dart';
 
 // const AppColors.mainColor1 = Color(0xFFFF7643);
 // const kPrimaryLightColor = Color(0xFFFFECDF);
@@ -66,7 +67,17 @@ class AccountPageBody extends ConsumerWidget {
             ),
           ),
           AccountPageMenu(
-              text: "Tags", icon: Icons.label_important_outline, press: () {}),
+            text: "Tags",
+            icon: Icons.label_important_outline,
+            press: () {
+              Navigator.of(context, rootNavigator: true).push(
+                MaterialPageRoute(
+                  builder: (context) => const TagPage(),
+                  fullscreenDialog: true,
+                ),
+              );
+            },
+          ),
           // AccountPageMenu(
           // text: "Notifications", icon: Icons.notifications, press: () {}),
           AccountPageMenu(

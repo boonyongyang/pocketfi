@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/constants/strings.dart';
 import 'package:pocketfi/src/features/authentication/application/user_info_model_provider.dart';
 import 'package:pocketfi/src/features/authentication/domain/user_info.dart';
 import 'package:pocketfi/src/features/category/application/category_services.dart';
+import 'package:pocketfi/src/features/tags/application/tag_services.dart';
+import 'package:pocketfi/src/features/tags/data/tag_repository.dart';
+import 'package:pocketfi/src/features/tags/domain/tag.dart';
 import 'package:pocketfi/src/features/transactions/domain/transaction.dart';
 
-class TransactionCard extends StatelessWidget {
+class TransactionCard extends ConsumerWidget {
   final Transaction transaction;
   final VoidCallback onTapped;
   const TransactionCard({
@@ -17,10 +21,16 @@ class TransactionCard extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final category = getCategoryWithCategoryName(transaction.categoryName);
     final transactionType = transaction.type;
-    final userInfo = getUserInfoWithUserId(transaction.userId);
+    // final userInfo = getUserInfoWithUserId(transaction.userId);
+    final allTags = ref.watch(userTagsProvider).value ?? [];
+    // final selectedTags = getTagsWithTagNames(
+    //   transaction.tags,
+    //   allTags.toList(),
+    // );
+    final selectedTags = transaction.tags;
 
     return GestureDetector(
       onTap: onTapped,
@@ -89,8 +99,11 @@ class TransactionCard extends StatelessWidget {
                               }
                             },
                           ),
-                          // const ShowTags(),
-                          const SizedBox(height: 20.0),
+                          if (selectedTags.isNotEmpty)
+                            ShowTags(
+                              tags: getTagsWithTagNames(selectedTags, allTags),
+                            ),
+                          // const SizedBox(height: 20.0),
                           Text(transaction.description ?? '',
                               maxLines: 3,
                               overflow: TextOverflow.ellipsis,
@@ -143,34 +156,88 @@ class TransactionCard extends StatelessWidget {
 
 class ShowTags extends StatelessWidget {
   const ShowTags({
-    super.key,
-  });
+    Key? key,
+    required this.tags,
+  }) : super(key: key);
+
+  final List<Tag> tags;
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        ActionChip(
-          visualDensity: const VisualDensity(horizontal: -4.0, vertical: -4.0),
-          // materialTapTargetSize:
-          //     MaterialTapTargetSize.shrinkWrap,
-          label: const Text('Lunch'),
-          onPressed: () => Fluttertoast.showToast(
-            msg: "Lunch!",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 2,
-            backgroundColor: Colors.white,
-            textColor: AppColors.mainColor1,
-            fontSize: 16.0,
-          ),
+    final tagWidgets = tags
+        .map((tag) => ActionChip(
+              visualDensity:
+                  const VisualDensity(horizontal: -4.0, vertical: -4.0),
+              label: Text(tag.name,
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: AppColors.mainColor1,
+                  )),
+              onPressed: () => Fluttertoast.showToast(
+                msg: "This is ${tag.name} tag.",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                timeInSecForIosWeb: 1,
+                backgroundColor: Colors.white,
+                textColor: AppColors.mainColor1,
+                fontSize: 16.0,
+              ),
+            ))
+        .toList();
+
+    return Column(
+      // mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: List<Widget>.generate(
+        (tagWidgets.length / 3).ceil(),
+        (index) => Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: tagWidgets
+              .skip(index * 3)
+              .take(3)
+              .toList()
+              .map((widget) => Padding(
+                    padding: const EdgeInsets.only(right: 2),
+                    child: widget,
+                  ))
+              .toList(),
         ),
-        const SizedBox(width: 5),
-        const Chip(
-          visualDensity: VisualDensity(horizontal: -4.0, vertical: -4.0),
-          label: Text('Foodpanda'),
-        ),
-      ],
+      ),
     );
   }
 }
+
+
+// class ShowTags extends StatelessWidget {
+//   const ShowTags({
+//     super.key,
+//   });
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Row(
+//       children: [
+//         ActionChip(
+//           visualDensity: const VisualDensity(horizontal: -4.0, vertical: -4.0),
+//           // materialTapTargetSize:
+//           //     MaterialTapTargetSize.shrinkWrap,
+//           label: const Text('Lunch'),
+//           onPressed: () => Fluttertoast.showToast(
+//             msg: "Lunch!",
+//             toastLength: Toast.LENGTH_SHORT,
+//             gravity: ToastGravity.BOTTOM,
+//             timeInSecForIosWeb: 2,
+//             backgroundColor: Colors.white,
+//             textColor: AppColors.mainColor1,
+//             fontSize: 16.0,
+//           ),
+//         ),
+//         const SizedBox(width: 5),
+//         const Chip(
+//           visualDensity: VisualDensity(horizontal: -4.0, vertical: -4.0),
+//           label: Text('Foodpanda'),
+//         ),
+//       ],
+//     );
+//   }
+// }

@@ -10,11 +10,8 @@ import 'package:pocketfi/src/features/transactions/application/transaction_servi
 import 'package:pocketfi/src/features/transactions/data/transaction_repository.dart';
 import 'package:pocketfi/src/features/transactions/date_picker/application/transaction_date_services.dart';
 import 'package:pocketfi/src/features/transactions/domain/transaction.dart';
+import 'package:pocketfi/src/features/transactions/presentation/scheduled_transactions_page.dart';
 import 'package:pocketfi/src/features/transactions/presentation/transactions_list_view.dart';
-// import 'package:pocketfi/src/features/wallets/application/wallet_services.dart';
-// import 'package:pocketfi/src/features/wallets/application/wallet_visibility.dart';
-// import 'package:pocketfi/src/features/wallets/data/wallet_repository.dart';
-// import 'package:pocketfi/src/features/wallets/domain/wallet.dart';
 import 'package:pocketfi/src/features/wallets/presentation/wallet_visibility_sheet.dart';
 
 class TransactionsTabView extends ConsumerWidget {
@@ -22,13 +19,7 @@ class TransactionsTabView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // final transactions = ref.watch(userTransactionsProvider);
-    // final transactions = ref.watch(userTransactionsByMonthProvider);
     final transactions = ref.watch(userTransactionsByMonthByWalletProvider);
-    // final wallets = ref.watch(userWalletsProvider).value;
-    // final walletList = wallets?.toList();
-
-    // final scheduledTransactions = _getScheduledTransactions(transactions);
     final scheduledTransactions = ref.watch(scheduledTransactionsProvider);
     final hasScheduledTransactions = scheduledTransactions.isNotEmpty;
 
@@ -89,7 +80,7 @@ class TransactionsTabView extends ConsumerWidget {
                             () {
                           Navigator.of(context, rootNavigator: true).push(
                             MaterialPageRoute(
-                              builder: (context) => TransactionListView(
+                              builder: (context) => ScheduledTransactionsPage(
                                 transactions: scheduledTransactions,
                               ),
                             ),
@@ -139,16 +130,17 @@ class TransactionsTabView extends ConsumerWidget {
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: ClipRRect(
-          borderRadius: const BorderRadius.all(
-            Radius.circular(40.0),
-          ),
+          borderRadius: const BorderRadius.all(Radius.circular(40.0)),
           child: Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16.0,
+              vertical: 8.0,
+            ),
             color: Colors.grey[200],
             child: Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.all(5),
+                  padding: const EdgeInsets.all(5.0),
                   decoration: const BoxDecoration(
                       shape: BoxShape.circle, color: Colors.grey),
                   child: const Center(
