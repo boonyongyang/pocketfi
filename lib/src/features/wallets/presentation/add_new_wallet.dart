@@ -108,6 +108,7 @@ class _AddNewWalletState extends ConsumerState<AddNewWallet> {
       },
       child: Scaffold(
         appBar: AppBar(
+          centerTitle: true,
           title: const Text(Strings.createNewWallet),
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),

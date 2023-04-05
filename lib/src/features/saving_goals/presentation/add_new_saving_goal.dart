@@ -56,6 +56,7 @@ class _AddNewSavingGoalState extends ConsumerState<AddNewSavingGoal> {
 
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: const Text('Create New Saving Goal'),
       ),
       body: Flex(

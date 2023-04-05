@@ -27,6 +27,7 @@ class RequestsView extends ConsumerWidget {
     // isPending.then((value) => print('isPending: $value'));
     return Scaffold(
         appBar: AppBar(
+          centerTitle: true,
           title: const Text('Requests'),
         ),
         body: RefreshIndicator(

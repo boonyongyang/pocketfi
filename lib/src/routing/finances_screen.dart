@@ -22,7 +22,8 @@ class _FinancesPageState extends ConsumerState<FinancesPage>
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Finance'),
+          centerTitle: true,
+          title: const Text('Finances'),
           bottom: const TabBar(
             indicatorColor: AppColors.mainColor2,
             labelColor: AppColors.mainColor2,

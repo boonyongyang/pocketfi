@@ -120,7 +120,6 @@ class DebtPage extends ConsumerWidget {
                                 return '$percentage%';
                                 // return 'MYR ${debt.calculateTotalPayment().toStringAsFixed(2)}';
                               },
-                              name: 'Test',
                               pointRenderMode: PointRenderMode.segment,
                               enableTooltip: true,
                               emptyPointSettings: EmptyPointSettings(

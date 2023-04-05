@@ -57,6 +57,7 @@ class _AddNewBudgetState extends ConsumerState<AddNewBudget> {
 
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: const Text(Strings.createNewBudget),
         leading: IconButton(
           icon: const Icon(

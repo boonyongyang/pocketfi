@@ -18,11 +18,11 @@ import 'package:pocketfi/src/features/wallets/domain/wallet.dart';
 import 'package:pocketfi/src/features/wallets/presentation/share_wallet_sheet.dart';
 
 class UpdateWallet extends StatefulHookConsumerWidget {
-  final Wallet wallet;
+  // final Wallet selectedWallet;
 
   const UpdateWallet({
     super.key,
-    required this.wallet,
+    // required this.selectedWallet,
   });
 
   @override
@@ -32,13 +32,19 @@ class UpdateWallet extends StatefulHookConsumerWidget {
 class _UpdateWalletState extends ConsumerState<UpdateWallet> {
   @override
   Widget build(BuildContext context) {
+    final selectedWallet = ref.watch(selectedUserWalletProvider);
     final walletNameController = useTextEditingController(
-      text: widget.wallet.walletName,
+      text: selectedWallet?.walletName,
     );
 
     final wallets = ref.watch(userWalletsProvider);
-    final walletId =
-        widget.wallet.walletName == 'Personal' ? widget.wallet.walletId : null;
+    final walletId = selectedWallet?.walletName == 'Personal'
+        ? selectedWallet?.walletId
+        : null;
+    // final oriList = selectedWallet?.collaborators;
+    var newList = selectedWallet?.collaborators;
+    debugPrint('newList: $newList');
+    // debugPrint('oriList: $oriList');
 
     final currentUserId = ref.watch(userIdProvider);
     final users = ref.watch(usersListProvider).value?.toList();
@@ -88,14 +94,16 @@ class _UpdateWalletState extends ConsumerState<UpdateWallet> {
               ref.watch(tempDataProvider.notifier).deleteTempDataInFirebase(
                     currentUserId!,
                   );
+              debugPrint('newList: $newList');
+              // debugPrint('oriList: $oriList');
 
               Navigator.pop(context);
             },
           ),
           actions: [
             if (wallets.valueOrNull != null &&
-                widget.wallet.walletId != walletId &&
-                widget.wallet.ownerId == currentUserId)
+                selectedWallet?.walletId != walletId &&
+                selectedWallet?.ownerId == currentUserId)
               IconButton(
                 icon: const Icon(Icons.delete_rounded),
                 onPressed: () async {
@@ -107,7 +115,7 @@ class _UpdateWalletState extends ConsumerState<UpdateWallet> {
                   if (deletePost) {
                     await ref
                         .read(walletProvider.notifier)
-                        .deleteWallet(walletId: widget.wallet.walletId);
+                        .deleteWallet(walletId: selectedWallet!.walletId);
                     if (mounted) {
                       Navigator.of(context).maybePop();
                     }
@@ -143,10 +151,10 @@ class _UpdateWalletState extends ConsumerState<UpdateWallet> {
                         Expanded(
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: widget.wallet.walletName == 'Personal' ||
-                                    widget.wallet.ownerId != currentUserId
+                            child: selectedWallet?.walletName == 'Personal' ||
+                                    selectedWallet?.ownerId != currentUserId
                                 ? Text(
-                                    widget.wallet.walletName,
+                                    selectedWallet!.walletName,
                                     style: const TextStyle(
                                       fontSize: 16,
                                       color: AppColors.mainColor1,
@@ -164,94 +172,10 @@ class _UpdateWalletState extends ConsumerState<UpdateWallet> {
                         ),
                       ],
                     ),
-                    // Row(
-                    //   children: [
-                    //     const Padding(
-                    //       padding: EdgeInsets.only(left: 16.0, right: 32.0),
-                    //       child: SizedBox(
-                    //         width: 5,
-                    //         child: Icon(
-                    //           Icons.category_rounded,
-                    //           color: AppColors.mainColor1,
-                    //         ),
-                    //       ),
-                    //     ),
-                    //     Expanded(
-                    //       child: Padding(
-                    //         padding: const EdgeInsets.all(8.0),
-                    //         child: Row(
-                    //           children: const [
-                    //             Expanded(
-                    //               child: Text(
-                    //                 'Visible Categories',
-                    //                 style: TextStyle(
-                    //                   color: AppColors.mainColor1,
-                    //                   fontSize: 16,
-                    //                 ),
-                    //               ),
-                    //             ),
-                    //             Text(
-                    //               'XX',
-                    //               style: TextStyle(
-                    //                 color: AppColors.mainColor1,
-                    //                 fontSize: 16,
-                    //               ),
-                    //             ),
-                    //             Padding(
-                    //               padding: EdgeInsets.all(8.0),
-                    //               child: Icon(
-                    //                 Icons.arrow_forward_ios_rounded,
-                    //                 color: AppColors.mainColor1,
-                    //               ),
-                    //             ),
-                    //           ],
-                    //         ),
-                    //       ),
-                    //     ),
-                    //   ],
-                    // ),
-                    // Row(
-                    //   children: [
-                    //     const Padding(
-                    //       padding: EdgeInsets.only(left: 16.0, right: 32.0),
-                    //       child: SizedBox(
-                    //         width: 5,
-                    //         child: Icon(
-                    //           Icons.people_alt_rounded,
-                    //           color: AppColors.mainColor1,
-                    //         ),
-                    //       ),
-                    //     ),
-                    //     Expanded(
-                    //       child: Padding(
-                    //         padding: const EdgeInsets.all(8.0),
-                    //         child: Row(
-                    //           children: const [
-                    //             Expanded(
-                    //               child: Text(
-                    //                 'Share Wallet with Other People',
-                    //                 style: TextStyle(
-                    //                   color: AppColors.mainColor1,
-                    //                   fontSize: 16,
-                    //                 ),
-                    //               ),
-                    //             ),
-                    //             Padding(
-                    //               padding: EdgeInsets.all(8.0),
-                    //               child: Icon(
-                    //                 Icons.arrow_forward_ios_rounded,
-                    //                 color: AppColors.mainColor1,
-                    //               ),
-                    //             ),
-                    //           ],
-                    //         ),
-                    //       ),
-                    //     ),
-                    //   ],
-                    // ),
+
                     GestureDetector(
                       onTap: () {
-                        if (widget.wallet.ownerId == currentUserId) {
+                        if (selectedWallet?.ownerId == currentUserId) {
                           ref
                               .watch(tempDataProvider.notifier)
                               .addTempDataToFirebase(
@@ -299,7 +223,7 @@ class _UpdateWalletState extends ConsumerState<UpdateWallet> {
                                       ),
                                     ),
                                   ),
-                                  widget.wallet.ownerId == currentUserId
+                                  selectedWallet?.ownerId == currentUserId
                                       ? const Padding(
                                           padding: EdgeInsets.all(8.0),
                                           child: Icon(
@@ -325,20 +249,20 @@ class _UpdateWalletState extends ConsumerState<UpdateWallet> {
                           ),
                         ),
                         title: Text(
-                          widget.wallet.ownerName!,
+                          selectedWallet!.ownerName!,
                         ),
                         subtitle: Text(
-                          widget.wallet.ownerEmail!,
+                          selectedWallet.ownerEmail!,
                         ),
                         trailing: Chip(
-                          label: widget.wallet.ownerId != currentUserId
+                          label: selectedWallet.ownerId != currentUserId
                               ? const Text('Owner')
                               : const Text('You'),
                           backgroundColor: AppColors.subColor2,
                         )),
-                    widget.wallet.collaborators != null
+                    selectedWallet.collaborators != null
                         ? ListView.builder(
-                            itemCount: widget.wallet.collaborators!.length,
+                            itemCount: selectedWallet.collaborators!.length,
                             itemBuilder: (context, index) {
                               return ListTile(
                                 dense: true,
@@ -350,20 +274,20 @@ class _UpdateWalletState extends ConsumerState<UpdateWallet> {
                                   ),
                                 ),
                                 title: Text(
-                                  widget
-                                      .wallet.collaborators![index].displayName,
+                                  selectedWallet
+                                      .collaborators![index].displayName,
                                 ),
                                 subtitle: Text(
-                                  widget.wallet.collaborators![index].email!,
+                                  selectedWallet.collaborators![index].email!,
                                 ),
-                                trailing: widget.wallet.collaborators![index]
-                                            .status ==
+                                trailing: selectedWallet
+                                            .collaborators![index].status ==
                                         CollaborateRequestStatus.pending.name
                                     ? const Chip(
                                         label: Text('Pending'),
                                       )
-                                    : widget.wallet.collaborators![index]
-                                                .status ==
+                                    : selectedWallet
+                                                .collaborators![index].status ==
                                             CollaborateRequestStatus
                                                 .rejected.name
                                         ? const Chip(
@@ -373,7 +297,8 @@ class _UpdateWalletState extends ConsumerState<UpdateWallet> {
                                                   color: AppColors.red),
                                             ),
                                           )
-                                        : currentUserId == widget.wallet.ownerId
+                                        : currentUserId ==
+                                                selectedWallet.ownerId
                                             ? GestureDetector(
                                                 onTap: () async {
                                                   // on press remove the collaborator
@@ -386,42 +311,16 @@ class _UpdateWalletState extends ConsumerState<UpdateWallet> {
                                                       null) return;
 
                                                   if (deleteCollaborator) {
-                                                    await ref
+                                                    // new list with collaborator removed
+                                                    newList?.removeAt(index);
+                                                    ref
                                                         .read(
-                                                            checkRequestProvider
+                                                            selectedUserWalletProvider
                                                                 .notifier)
-                                                        .removeCollaborator(
-                                                          walletId: widget
-                                                              .wallet.walletId,
-                                                          currentUserId: widget
-                                                              .wallet.userId,
-                                                          collaboratorUserId:
-                                                              widget
-                                                                  .wallet
-                                                                  .collaborators![
-                                                                      index]
-                                                                  .userId,
-                                                          collaboratorUserName:
-                                                              widget
-                                                                  .wallet
-                                                                  .collaborators![
-                                                                      index]
-                                                                  .displayName,
-                                                          collaboratorUserEmail:
-                                                              widget
-                                                                  .wallet
-                                                                  .collaborators![
-                                                                      index]
-                                                                  .email!,
-                                                          inviteeId: widget
-                                                              .wallet.ownerId!,
-                                                          // status: widget
-                                                          //     .wallet
-                                                          //     .collaborators![
-                                                          //         index]
-                                                          //     .status,
-                                                        );
+                                                        .updateCollaboratorInfoList(
+                                                            newList!, ref);
                                                   }
+                                                  // setState(() {});
                                                 },
                                                 child: const Icon(Icons
                                                     .remove_circle_rounded),
@@ -472,7 +371,7 @@ class _UpdateWalletState extends ConsumerState<UpdateWallet> {
                     //   shrinkWrap: true,
                     // ),
 
-                    widget.wallet.ownerId == currentUserId
+                    selectedWallet.ownerId == currentUserId
                         ? Expanded(
                             flex: 1,
                             child: Align(
@@ -482,7 +381,9 @@ class _UpdateWalletState extends ConsumerState<UpdateWallet> {
                                 onPressed: () {
                                   _updateNewWalletController(
                                     walletNameController,
+                                    newList,
                                     collaboratorList,
+                                    selectedWallet,
                                     // initialBalanceController,
                                     ref,
                                   );
@@ -504,7 +405,9 @@ class _UpdateWalletState extends ConsumerState<UpdateWallet> {
 
   Future<void> _updateNewWalletController(
     TextEditingController nameController,
-    List<CollaboratorsInfo>? collaborators,
+    List<CollaboratorsInfo>? updatedCollaborators,
+    List<CollaboratorsInfo>? newCollaborators,
+    Wallet selectedWallet,
 
     // TextEditingController balanceController,
     WidgetRef ref,
@@ -515,7 +418,8 @@ class _UpdateWalletState extends ConsumerState<UpdateWallet> {
     }
     //! need to check collaborator status. If accepted no need change status, if new one then only change pending
     List<CollaboratorsInfo> collaboratorsInfo = [];
-    collaborators?.forEach((element) {
+    updatedCollaborators?.forEach((element) {
+      debugPrint('updatedCollaborators: ${element.userId}');
       collaboratorsInfo.add(
         CollaboratorsInfo(
           userId: element.userId,
@@ -525,9 +429,33 @@ class _UpdateWalletState extends ConsumerState<UpdateWallet> {
         ),
       );
     });
+
+    newCollaborators?.forEach((element) {
+      debugPrint('newCollaborators: ${element.userId}');
+      if (collaboratorsInfo
+          .any((collaborator) => collaborator.userId == element.userId)) return;
+      collaboratorsInfo.add(
+        CollaboratorsInfo(
+          userId: element.userId,
+          displayName: element.displayName,
+          email: element.email,
+          status: CollaborateRequestStatus.pending.name,
+        ),
+      );
+    });
+
+    // await ref.read(checkRequestProvider.notifier).removeCollaborator(
+    //       walletId: widget.wallet.walletId,
+    //       currentUserId: widget.wallet.userId,
+    //       collaboratorUserId: widget.wallet.collaborators![index].userId,
+    //       collaboratorUserName: widget.wallet.collaborators![index].displayName,
+    //       collaboratorUserEmail: widget.wallet.collaborators![index].email!,
+    //       inviteeId: widget.wallet.ownerId!,
+    //       status: widget.wallet.collaborators![index].status,
+    //     );
     final isUpdated = await ref.read(walletProvider.notifier).updateWallet(
           userId: userId,
-          walletId: widget.wallet.walletId,
+          walletId: selectedWallet.walletId,
           walletName: nameController.text,
           users: collaboratorsInfo,
           // walletBalance: double.parse(balanceController.text),

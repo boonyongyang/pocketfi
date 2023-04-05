@@ -26,6 +26,7 @@ class SavingGoalsPage extends ConsumerWidget {
       );
     }
     final totalAmountLeft = totalSavingGoalsAmount - totalSavedAmount;
+    final savedPercentage = totalSavedAmount / totalSavingGoalsAmount;
     return RefreshIndicator(
       onRefresh: () async {
         ref.refresh(userSavingGoalsProvider);
@@ -70,30 +71,38 @@ class SavingGoalsPage extends ConsumerWidget {
                         const SizedBox(
                           height: 10,
                         ),
-                        Row(
+                        Stack(
                           children: [
                             //progress indicator
-                            // if no saving goals, don't display
-                            // savingGoals.value == null
-                            //     ? const SizedBox()
-                            //     :
-                            Expanded(
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(10.0),
-                                child: LinearProgressIndicator(
-                                  minHeight: 10,
-                                  value: totalSavedAmount == 0 &&
-                                          totalSavingGoalsAmount == 0
-                                      ? 0
-                                      : totalSavedAmount /
-                                          totalSavingGoalsAmount,
-                                  backgroundColor: Colors.grey[300],
-                                  valueColor:
-                                      const AlwaysStoppedAnimation<Color>(
-                                    AppColors.subColor1,
-                                  ),
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(10.0),
+                              child: LinearProgressIndicator(
+                                minHeight: 25,
+                                value: totalSavedAmount == 0 &&
+                                        totalSavingGoalsAmount == 0
+                                    ? 0
+                                    : savedPercentage,
+                                backgroundColor: Colors.grey[300],
+                                valueColor: const AlwaysStoppedAnimation<Color>(
+                                  AppColors.subColor1,
                                 ),
                               ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                left: 8.0,
+                                top: 4.0,
+                                bottom: 4.0,
+                              ),
+                              child: Text(
+                                  '${(savedPercentage * 100).toStringAsFixed(2)}%',
+                                  style: TextStyle(
+                                    color: savedPercentage * 100 > 16
+                                        ? Colors.white
+                                        : Colors.black,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                  )),
                             ),
                           ],
                         ),

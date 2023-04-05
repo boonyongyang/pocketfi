@@ -47,7 +47,7 @@ class Wallet {
     String? walletId,
     String? walletName,
     // double? walletBalance,
-    DateTime? createdAt,
+    // DateTime? createdAt,
     UserId? userId,
     UserId? ownerId,
     String? ownerName,
@@ -58,7 +58,7 @@ class Wallet {
       FirebaseFieldName.walletId: walletId ?? this.walletId,
       FirebaseFieldName.walletName: walletName ?? this.walletName,
       // FirebaseFieldName.walletBalance: walletBalance ?? this.walletBalance,
-      FirebaseFieldName.createdAt: createdAt ?? this.createdAt,
+      // FirebaseFieldName.createdAt: createdAt ?? this.createdAt,
       FirebaseFieldName.userId: userId ?? this.userId,
       FirebaseFieldName.ownerId: ownerId ?? this.ownerId,
       FirebaseFieldName.ownerName: ownerName ?? this.ownerName,
@@ -67,30 +67,30 @@ class Wallet {
     });
   }
 
-  @override
-  bool operator ==(covariant Wallet other) =>
-      runtimeType == other.runtimeType &&
-      other.walletId == walletId &&
-      other.walletName == walletName &&
-      // other.walletBalance == walletBalance &&
-      other.createdAt == createdAt &&
-      // other.collaborators == collaborators &&
-      other.ownerId == ownerId &&
-      other.ownerName == ownerName &&
-      other.ownerEmail == ownerEmail &&
-      other.userId == userId;
+  // @override
+  // bool operator ==(covariant Wallet other) =>
+  //     runtimeType == other.runtimeType &&
+  //     other.walletId == walletId &&
+  //     other.walletName == walletName &&
+  //     // other.walletBalance == walletBalance &&
+  //     other.createdAt == createdAt &&
+  //     // other.collaborators == collaborators &&
+  //     other.ownerId == ownerId &&
+  //     other.ownerName == ownerName &&
+  //     other.ownerEmail == ownerEmail &&
+  //     other.userId == userId;
 
-  @override
-  int get hashCode => Object.hashAll(
-        [
-          walletId,
-          walletName,
-          // walletBalance,
-          ownerId,
-          ownerName,
-          ownerEmail,
-          createdAt,
-          userId,
-        ],
-      );
+  // @override
+  // int get hashCode => Object.hashAll(
+  //       [
+  //         walletId,
+  //         walletName,
+  //         // walletBalance,
+  //         ownerId,
+  //         ownerName,
+  //         ownerEmail,
+  //         createdAt,
+  //         userId,
+  //       ],
+  //     );
 }

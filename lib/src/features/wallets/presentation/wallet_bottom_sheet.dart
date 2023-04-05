@@ -4,6 +4,7 @@ import 'package:pocketfi/src/common_widgets/animations/error_animation_view.dart
 import 'package:pocketfi/src/common_widgets/animations/loading_animation_view.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/features/authentication/application/user_id_provider.dart';
+import 'package:pocketfi/src/features/wallets/application/wallet_services.dart';
 import 'package:pocketfi/src/features/wallets/data/temp_user_provider.dart';
 import 'package:pocketfi/src/features/wallets/data/wallet_repository.dart';
 import 'package:pocketfi/src/features/wallets/presentation/add_new_wallet.dart';
@@ -100,13 +101,16 @@ class WalletBottomSheet extends ConsumerWidget {
                       return WalletTiles(
                         wallet: wallet,
                         onTap: () {
+                          ref
+                              .read(selectedUserWalletProvider.notifier)
+                              .setSelectedWallet(wallet, ref);
                           // specificWallet.when(data: (specificWallet) {
                           // final walletId = specificWallet.wallet.walletId;
                           Navigator.of(context, rootNavigator: true).push(
                             MaterialPageRoute(
                               builder: (context) => WalletDetailsView(
-                                wallet: wallet,
-                              ),
+                                  // selectedWallet: wallet,
+                                  ),
                             ),
                           );
 

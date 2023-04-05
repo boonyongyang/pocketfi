@@ -93,6 +93,7 @@ class _DebtDataTableState extends State<DebtDataTable> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Text("All Payments"),
       ),
       body: SingleChildScrollView(

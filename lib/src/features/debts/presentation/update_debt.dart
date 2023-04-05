@@ -77,6 +77,7 @@ class _UpdateDebtViewState extends ConsumerState<UpdateDebt> {
 
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Text(widget.debt.debtName),
         actions: [
           IconButton(

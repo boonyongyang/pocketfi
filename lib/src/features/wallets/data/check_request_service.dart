@@ -166,7 +166,7 @@ class CheckRequestNotifier extends StateNotifier<bool> {
 
         debugPrint('test5');
 
-        walletDocRef.delete();
+        // walletDocRef.delete();
 
         await FirebaseFirestore.instance
             .collection(FirebaseCollectionName.wallets)
@@ -175,10 +175,10 @@ class CheckRequestNotifier extends StateNotifier<bool> {
 
         debugPrint('test6');
         // Remove the shared wallet from the collaborator
-        removeSharedWalletFromCollaborator(
-          collaboratorUserId: collaboratorUserId,
-          walletId: walletId,
-        );
+        // removeSharedWalletFromCollaborator(
+        //   collaboratorUserId: collaboratorUserId,
+        //   walletId: walletId,
+        // );
         debugPrint('test7');
 
         break; // Exit the loop after removing the collaborator
