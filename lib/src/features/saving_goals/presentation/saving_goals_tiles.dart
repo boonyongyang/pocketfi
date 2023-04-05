@@ -22,6 +22,8 @@ class SavingGoalsTiles extends ConsumerWidget {
     if (wallet == null) {
       return Container();
     }
+    final savedPercentage =
+        savingGoal.savingGoalSavedAmount / savingGoal.savingGoalAmount;
     return GestureDetector(
       onTap: onTap,
       child: Padding(
@@ -167,22 +169,35 @@ class SavingGoalsTiles extends ConsumerWidget {
                       const SizedBox(
                         height: 10,
                       ),
-                      Row(
+                      Stack(
                         children: [
                           //progress indicator
-                          Expanded(
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(10.0),
-                              child: LinearProgressIndicator(
-                                minHeight: 10,
-                                value: savingGoal.savingGoalSavedAmount /
-                                    savingGoal.savingGoalAmount,
-                                backgroundColor: Colors.grey[300],
-                                valueColor: const AlwaysStoppedAnimation<Color>(
-                                  AppColors.subColor1,
-                                ),
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(10.0),
+                            child: LinearProgressIndicator(
+                              minHeight: 25,
+                              value: savedPercentage,
+                              backgroundColor: Colors.grey[300],
+                              valueColor: const AlwaysStoppedAnimation<Color>(
+                                AppColors.subColor1,
                               ),
                             ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              left: 8.0,
+                              top: 4.0,
+                              bottom: 4.0,
+                            ),
+                            child: Text(
+                                '${(savedPercentage * 100).toStringAsFixed(2)}%',
+                                style: TextStyle(
+                                  color: savedPercentage * 100 > 16
+                                      ? Colors.white
+                                      : Colors.black,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                )),
                           ),
                         ],
                       ),

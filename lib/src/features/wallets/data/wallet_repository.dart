@@ -351,31 +351,6 @@ class WalletNotifier extends StateNotifier<IsLoading> {
     try {
       isLoading = true;
 
-      // final query = FirebaseFirestore.instance
-      //     .collection(FirebaseCollectionName.users)
-      //     .doc(FirebaseAuth.instance.currentUser!.uid)
-      //     .collection(FirebaseCollectionName.wallets)
-      //     .where(FieldPath.documentId, isEqualTo: walletId)
-      //     .limit(1)
-      //     .get();
-
-      // // addListener(() {
-      // await query.then(
-      //   (query) async {
-      //     for (final doc in query.docs) {
-      //       if (walletName != doc[FirebaseFieldName.walletName]
-      //           // || walletBalance != doc[FirebaseFieldName.walletBalance]
-      //           ) {
-      //         await doc.reference.update(
-      //           {
-      //             FirebaseFieldName.walletName: walletName,
-      //             // FirebaseFieldName.walletBalance: walletBalance,
-      //           },
-      //         );
-      //       }
-      //     }
-      //   },
-      // );
       // update wallet name in all users
       final query2 = FirebaseFirestore.instance
           // .collectionGroup(FirebaseCollectionName.wallets)
@@ -386,14 +361,10 @@ class WalletNotifier extends StateNotifier<IsLoading> {
       await query2.then(
         (query2) async {
           for (final doc in query2.docs) {
-            if (walletName != doc[FirebaseFieldName.walletName]
-                // || walletBalance != doc[FirebaseFieldName.walletBalance]
-                ) {
+            if (walletName != doc[FirebaseFieldName.walletName]) {
               await doc.reference.update(
                 {
                   FirebaseFieldName.walletName: walletName,
-                  // FirebaseFieldName.collaborators: users,
-                  // FirebaseFieldName.walletBalance: walletBalance,
                 },
               );
             }
@@ -403,8 +374,6 @@ class WalletNotifier extends StateNotifier<IsLoading> {
 
       //update collaborators in owner
       final query3 = FirebaseFirestore.instance
-          // .collection(FirebaseCollectionName.users)
-          // .doc(FirebaseAuth.instance.currentUser!.uid)
           .collection(FirebaseCollectionName.wallets)
           .doc(walletId);
 
@@ -429,11 +398,8 @@ class WalletNotifier extends StateNotifier<IsLoading> {
         );
         debugPrint(query3Snapshot.data()![FirebaseFieldName.ownerName]);
         debugPrint(query3Snapshot.data()![FirebaseFieldName.ownerEmail]);
-        query3.delete();
 
         await FirebaseFirestore.instance
-            .collection(FirebaseCollectionName.users)
-            .doc(userId)
             .collection(FirebaseCollectionName.wallets)
             .doc(walletId)
             .set(payload);

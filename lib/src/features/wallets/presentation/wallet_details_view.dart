@@ -14,21 +14,23 @@ import 'package:pocketfi/src/features/transactions/data/transaction_repository.d
 import 'package:pocketfi/src/features/transactions/date_picker/application/transaction_date_services.dart';
 import 'package:pocketfi/src/features/transactions/domain/transaction.dart';
 import 'package:pocketfi/src/features/transactions/presentation/transactions_list_view.dart';
+import 'package:pocketfi/src/features/wallets/application/wallet_services.dart';
 import 'package:pocketfi/src/features/wallets/domain/wallet.dart';
 import 'package:pocketfi/src/features/wallets/presentation/update_wallet.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class WalletDetailsView extends ConsumerWidget {
-  Wallet wallet;
+  // Wallet selectedWallet;
   WalletDetailsView({
     super.key,
-    required this.wallet,
+    // required this.selectedWallet,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final selectedWallet = ref.watch(selectedUserWalletProvider);
     final transactions =
-        ref.watch(userTransactionsInWalletProvider(wallet.walletId));
+        ref.watch(userTransactionsInWalletProvider(selectedWallet!.walletId));
     final transactionType = ref.watch(transactionTypeProvider);
     final userTransactions = ref.watch(userTransactionsProvider);
     final month = ref.watch(overviewMonthProvider);
@@ -39,7 +41,7 @@ class WalletDetailsView extends ConsumerWidget {
         // if data is empty, then the where function will return an empty list
         return tran.date.month == month.month &&
             tran.date.year == month.year &&
-            tran.walletId == wallet.walletId;
+            tran.walletId == selectedWallet.walletId;
       }).toList(),
       loading: () => [],
       error: (error, stackTrace) {
@@ -69,17 +71,21 @@ class WalletDetailsView extends ConsumerWidget {
       });
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Text(
-          wallet.walletName,
+          selectedWallet.walletName,
         ),
         actions: [
           IconButton(
             onPressed: () {
+              ref
+                  .read(selectedUserWalletProvider.notifier)
+                  .setSelectedWallet(selectedWallet, ref);
               Navigator.of(context, rootNavigator: true).push(
                 MaterialPageRoute(
                   builder: (context) => UpdateWallet(
-                    wallet: wallet,
-                  ),
+                      // selectedWallet: wallet,
+                      ),
                 ),
               );
             },
@@ -90,6 +96,7 @@ class WalletDetailsView extends ConsumerWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
+            const SizedBox(height: 20),
             const OverviewMonthSelector(),
             Padding(
               padding: const EdgeInsets.all(16.0),
@@ -114,7 +121,8 @@ class WalletDetailsView extends ConsumerWidget {
                       ? const Text('No transactions found.')
                       : SfCircularChart(
                           title: ChartTitle(
-                              text: 'Transactions in ${wallet.walletName}'),
+                              text:
+                                  'Transactions in ${selectedWallet.walletName}'),
                           legend: Legend(
                             isVisible: true,
                             position: LegendPosition.bottom,

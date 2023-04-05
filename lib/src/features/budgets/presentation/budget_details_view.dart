@@ -15,7 +15,8 @@ import 'package:pocketfi/src/features/transactions/data/transaction_repository.d
 import 'package:pocketfi/src/features/transactions/date_picker/application/transaction_date_services.dart';
 import 'package:pocketfi/src/features/transactions/domain/transaction.dart';
 import 'package:pocketfi/src/features/transactions/presentation/transactions_list_view.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
+// import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 class BudgetDetailsView extends ConsumerWidget {
   const BudgetDetailsView({super.key});
@@ -27,7 +28,8 @@ class BudgetDetailsView extends ConsumerWidget {
     final transactions =
         ref.watch(userTransactionsInBudgetProvider(selectedBudget!.budgetId));
     final userTransactions = ref.watch(userTransactionsProvider);
-    final month = ref.watch(overviewMonthProvider);
+    final month = ref.watch(
+        overviewMonthProvider); // ! make a separate one so won't affect by the other
 
     List<Category> categoriesList = ref.watch(expenseCategoriesProvider);
     final currentMonthTransactions = userTransactions.when<List<Transaction>>(
@@ -44,6 +46,13 @@ class BudgetDetailsView extends ConsumerWidget {
         return [];
       },
     );
+
+    final spentAmount = getCategoryTotalAmount(currentMonthTransactions).abs();
+    final spentPercentage = (spentAmount / selectedBudget.budgetAmount) * 100;
+    final remainingAmount = selectedBudget.budgetAmount - spentAmount;
+
+    final getCategory =
+        getCategoryWithCategoryName(selectedBudget.categoryName);
     // A function to calculate the total amount for a category in the current month
     double getCategoryTotalAmountForCurrentMonth(
         String categoryName, List<Transaction> transactions) {
@@ -67,6 +76,7 @@ class BudgetDetailsView extends ConsumerWidget {
 
     return Scaffold(
         appBar: AppBar(
+          centerTitle: true,
           title: Text(selectedBudget.budgetName),
           actions: [
             IconButton(
@@ -87,7 +97,96 @@ class BudgetDetailsView extends ConsumerWidget {
         body: SingleChildScrollView(
           child: Column(
             children: [
+              const SizedBox(height: 20),
               const OverviewMonthSelector(),
+              Padding(
+                padding: const EdgeInsets.only(top: 16.0),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Text('Amount left to spend',
+                            style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.normal,
+                              color: AppColors.mainColor1,
+                            )),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'MYR ${remainingAmount.toStringAsFixed(2)}',
+                          style: const TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.mainColor2,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              // Padding(
+              //   padding: const EdgeInsets.only(
+              //     left: 16.0,
+              //     right: 16.0,
+              //     top: 16.0,
+              //     bottom: 0.0,
+              //   ),
+              //   child: Container(
+              //     decoration: BoxDecoration(
+              //       color: Colors.white,
+              //       borderRadius: const BorderRadius.all(
+              //         Radius.circular(20),
+              //       ),
+              //       boxShadow: [
+              //         BoxShadow(
+              //           color: Colors.grey.withOpacity(0.5),
+              //           spreadRadius: 2,
+              //           blurRadius: 7,
+              //           offset:
+              //               const Offset(3, 6), // changes position of shadow
+              //         ),
+              //       ],
+              //     ),
+              //     // height: MediaQuery.of(context).size.height * 0.3,
+              //     child: Padding(
+              //       padding: const EdgeInsets.all(8.0),
+              //       child: Column(
+              //         children: [
+              //           Row(
+              //             mainAxisAlignment: MainAxisAlignment.center,
+              //             children: [
+              //               Text('Amount left to spend',
+              //                   style: TextStyle(
+              //                     fontSize: 12,
+              //                     fontWeight: FontWeight.normal,
+              //                     color: AppColors.mainColor1,
+              //                   )),
+              //             ],
+              //           ),
+              //           Row(
+              //             mainAxisAlignment: MainAxisAlignment.center,
+              //             children: [
+              //               Text(
+              //                 'MYR ${remainingAmount.toStringAsFixed(2)}',
+              //                 style: TextStyle(
+              //                   fontSize: 20,
+              //                   fontWeight: FontWeight.bold,
+              //                   color: AppColors.mainColor2,
+              //                 ),
+              //               ),
+              //             ],
+              //           ),
+              //         ],
+              //       ),
+              //     ),
+              //   ),
+              // ),
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Container(
@@ -110,75 +209,106 @@ class BudgetDetailsView extends ConsumerWidget {
                   child: Center(
                     child: filteredCategories.isEmpty
                         ? const Text('No transactions found.')
-                        : SfCircularChart(
-                            title: ChartTitle(
-                                text:
-                                    'Transactions in ${selectedBudget.budgetName}'),
-                            legend: Legend(
-                              isVisible: true,
-                              position: LegendPosition.bottom,
-                              overflowMode: LegendItemOverflowMode.wrap,
-                              textStyle: const TextStyle(fontSize: 14),
+                        : SfRadialGauge(
+                            title: const GaugeTitle(
+                              text: 'Budget Summary',
+                              textStyle: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.mainColor1,
+                                // fontWeight: FontWeight.bold,
+                              ),
                             ),
-                            tooltipBehavior: TooltipBehavior(enable: true),
-                            series: <DoughnutSeries<Category, String>>[
-                              DoughnutSeries<Category, String>(
-                                dataSource: filteredCategories.toList(),
-                                xValueMapper: (Category category, _) =>
-                                    category.name,
-                                yValueMapper: (Category category, _) {
-                                  return getCategoryTotalAmountForCurrentMonth(
-                                    category.name,
-                                    currentMonthTransactions,
-                                  );
-                                },
-                                pointColorMapper: (Category category, _) =>
-                                    category.color,
-                                dataLabelSettings: const DataLabelSettings(
-                                  isVisible: true,
-                                  labelPosition: ChartDataLabelPosition.outside,
-                                  textStyle: TextStyle(
-                                    fontSize: 14.0,
-                                    fontWeight: FontWeight.bold,
-                                    color: AppColors.mainColor1,
-                                    fontFamily: 'Roboto',
-                                  ),
-                                ),
-                                dataLabelMapper: (Category category, _) {
-                                  final totalAmount = (() {
-                                    switch (transactionType) {
-                                      case TransactionType.expense:
-                                      case TransactionType.income:
-                                      case TransactionType.transfer:
-                                        final type = transactionType;
-                                        final transactionsOfType =
-                                            currentMonthTransactions
-                                                .where(
-                                                    (tran) => tran.type == type)
-                                                .toList();
-                                        final totalAmountOfType =
-                                            getTotalAmount(transactionsOfType);
-                                        return totalAmountOfType;
-                                    }
-                                  })();
-                                  final categoryTotalAmount =
-                                      getCategoryTotalAmountForCurrentMonth(
-                                          category.name,
-                                          currentMonthTransactions);
+                            axes: <RadialAxis>[
+                              RadialAxis(
+                                // radiusFactor: 0.55,
+                                // startAngle: 270,
+                                // endAngle: 270,
 
-                                  return 'MYR ${categoryTotalAmount.toStringAsFixed(2)}';
-                                },
-                                pointRenderMode: PointRenderMode.segment,
-                                enableTooltip: true,
-                                emptyPointSettings: EmptyPointSettings(
-                                  mode: EmptyPointMode.gap,
+                                minimum: 0,
+                                maximum: 100,
+                                showLabels: false,
+                                showTicks: false,
+                                axisLineStyle: AxisLineStyle(
+                                  cornerStyle: CornerStyle.bothCurve,
+                                  thickness: 0.2,
+                                  color: Colors.grey[300],
+                                  thicknessUnit: GaugeSizeUnit.factor,
                                 ),
+                                pointers: [
+                                  RangePointer(
+                                    color: getCategory.color,
+                                    value: spentPercentage,
+                                    cornerStyle: CornerStyle.bothCurve,
+                                    width: 0.2,
+                                    sizeUnit: GaugeSizeUnit.factor,
+                                  ),
+                                ],
+                                annotations: [
+                                  GaugeAnnotation(
+                                    widget: Column(
+                                      children: [
+                                        Text(
+                                          'spent',
+                                          style: TextStyle(
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.normal,
+                                            color: getCategory.color,
+                                          ),
+                                        ),
+                                        Text(
+                                          'MYR ${spentAmount.toStringAsFixed(2)}',
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                            color: getCategory.color,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    angle: 90,
+                                    positionFactor: 1.7,
+                                  ),
+                                  GaugeAnnotation(
+                                    widget: Text(
+                                      '${spentPercentage.toStringAsFixed(2)}%',
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                        color: getCategory.color,
+                                      ),
+                                    ),
+                                    angle: 90,
+                                    positionFactor: 0.1,
+                                  ),
+                                ],
                               ),
                             ],
                           ),
+
+                    //     Text.rich(
+                    //   TextSpan(
+                    //     text: 'Left',
+                    //     style: TextStyle(
+                    //       fontSize: 16,
+                    //       fontWeight: FontWeight.normal,
+                    //       color: getCategory.color,
+                    //     ),
+                    //     children: [
+                    //       TextSpan(
+                    //         text: ' MYR ${remainingAmount.toStringAsFixed(2)}',
+                    //         style: TextStyle(
+                    //           fontSize: 16,
+                    //           fontWeight: FontWeight.bold,
+                    //           color: getCategory.color,
+                    //         ),
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
                   ),
                 ),
               ),
+
               TransactionListView(
                 transactions: currentMonthTransactions,
               ),
@@ -210,6 +340,21 @@ class BudgetDetailsView extends ConsumerWidget {
     return transactions.fold<double>(
       0,
       (previousValue, element) => previousValue + element.amount,
+    );
+  }
+
+  double getCategoryTotalAmount(List<Transaction> transactions) {
+    return transactions.fold<double>(
+      0.0,
+      (previousValue, transaction) {
+        if (transaction.type == TransactionType.expense) {
+          return previousValue - transaction.amount;
+        } else if (transaction.type == TransactionType.income) {
+          return previousValue + transaction.amount;
+        } else {
+          return previousValue;
+        }
+      },
     );
   }
 }

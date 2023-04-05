@@ -6,6 +6,7 @@ import 'package:pocketfi/src/common_widgets/animations/error_animation_view.dart
 import 'package:pocketfi/src/common_widgets/animations/loading_animation_view.dart';
 import 'package:pocketfi/src/common_widgets/buttons/full_width_button_with_text.dart';
 import 'package:pocketfi/src/constants/strings.dart';
+import 'package:pocketfi/src/features/wallets/application/wallet_services.dart';
 import 'package:pocketfi/src/features/wallets/data/wallet_repository.dart';
 import 'package:pocketfi/src/features/wallets/presentation/update_wallet.dart';
 import 'package:pocketfi/src/features/wallets/presentation/wallet_tiles.dart';
@@ -35,6 +36,7 @@ class WalletPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: const Text('Wallets'),
       ),
       body:
@@ -81,14 +83,17 @@ class WalletPage extends ConsumerWidget {
                       return WalletTiles(
                         wallet: wallet,
                         onTap: () {
+                          ref
+                              .read(selectedUserWalletProvider.notifier)
+                              .setSelectedWallet(wallet, ref);
                           // specificWallet.when(data: (specificWallet) {
                           // final walletId = specificWallet.wallet.walletId;
                           Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (_) => UpdateWallet(
-                                wallet: wallet,
-                              ),
+                                  // selectedWallet: wallet,
+                                  ),
                             ),
                           );
 

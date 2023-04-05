@@ -68,6 +68,7 @@ class _UpdateSavingGoalViewState extends ConsumerState<UpdateSavingGoalView> {
     ]);
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: const Text('Update Saving Goal'),
         actions: [
           IconButton(

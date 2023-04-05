@@ -49,6 +49,7 @@ class _UpdateBudgetState extends ConsumerState<UpdateBudget> {
 
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: const Text('Budget Details'),
         actions: [
           IconButton(

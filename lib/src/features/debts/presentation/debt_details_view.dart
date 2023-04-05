@@ -25,6 +25,7 @@ class DebtDetailsView extends ConsumerWidget {
       length: 3,
       child: Scaffold(
         appBar: AppBar(
+          centerTitle: true,
           title: Text(debt.debtName),
           actions: [
             IconButton(

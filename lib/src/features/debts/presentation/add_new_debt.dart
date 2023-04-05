@@ -74,6 +74,7 @@ class _AddDebtViewState extends ConsumerState<AddNewDebt> {
 
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: const Text('Add Debt'),
       ),
       body: Flex(

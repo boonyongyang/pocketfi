@@ -58,6 +58,45 @@ class CollaboratorsInfo {
 
   factory CollaboratorsInfo.fromJson(String source) =>
       CollaboratorsInfo.fromMap(json.decode(source) as Map<String, dynamic>);
+
+//copywith
+  CollaboratorsInfo copyWith({
+    UserId? userId,
+    String? displayName,
+    String? email,
+    String? status,
+  }) {
+    return CollaboratorsInfo(
+      userId: userId ?? this.userId,
+      displayName: displayName ?? this.displayName,
+      email: email ?? this.email,
+      status: status ?? this.status,
+    );
+  }
+
+  @override
+  String toString() {
+    return 'CollaboratorsInfo(userId: $userId, displayName: $displayName, email: $email, status: $status)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is CollaboratorsInfo &&
+        other.userId == userId &&
+        other.displayName == displayName &&
+        other.email == email &&
+        other.status == status;
+  }
+
+  @override
+  int get hashCode {
+    return userId.hashCode ^
+        displayName.hashCode ^
+        email.hashCode ^
+        status.hashCode;
+  }
 }
 
 // enum CollaborateRequestStatus {

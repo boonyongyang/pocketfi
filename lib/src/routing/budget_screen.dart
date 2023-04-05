@@ -1,6 +1,7 @@
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:pocketfi/src/common_widgets/animations/empty_contents_with_text_animation_view.dart';
 import 'package:pocketfi/src/common_widgets/animations/error_animation_view.dart';
 import 'package:pocketfi/src/common_widgets/animations/loading_animation_view.dart';
@@ -32,10 +33,18 @@ class _BudgetPageState extends ConsumerState<BudgetPage> {
   @override
   Widget build(BuildContext context) {
     final budgets = ref.watch(userBudgetsProvider);
-    final totalAmount = ref.watch(totalAmountProvider);
-    final usedAmount = ref.watch(usedAmountProvider);
-    final remainingAmount = ref.watch(remainingAmountProvider);
-    final amountPercentage = ref.watch(amountPercentageProvider);
+    // final totalAmountAsync = ref.watch(totalAmountProvider);
+    // final totalAmount = totalAmountAsync.value ?? 0;
+    // final usedAmountAsync = ref.watch(usedAmountProvider);
+    // final usedAmount = usedAmountAsync.value ?? 0;
+    // final remainingAmount = totalAmount - usedAmount;
+    // final amountPercentage = usedAmount / totalAmount;
+    // final remainingAmount = ref.watch(remainingAmountProvider);
+    // debugPrint('remainingAmount: $remainingAmount');
+    // final amountPercentage =
+    //     ref.watch(amountPercentageProvider); // here is the problem
+
+    // debugPrint('amountPercentage: $amountPercentage');
     // calcualte remaining amount
 
     final currentUserId = ref.watch(userIdProvider);
@@ -108,14 +117,32 @@ class _BudgetPageState extends ConsumerState<BudgetPage> {
           direction: Axis.vertical,
           children: [
             Expanded(
+              // incorrect use of parangedatawidget
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisSize: MainAxisSize.min,
+
+                // crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(20.0),
                     child: Column(
                       children: [
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              DateFormat('MMMM yyyy').format(DateTime.now()),
+                              style: const TextStyle(
+                                color: AppColors.mainColor1,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 23,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 15),
+                        Row(
+                          // mainAxisSize: MainAxisSize.min,
                           children: [
                             const Text(
                               'Total',
@@ -127,74 +154,75 @@ class _BudgetPageState extends ConsumerState<BudgetPage> {
                             ),
                             const Spacer(),
                             // Calculation part
-                            totalAmount.when(
-                              data: (totalAmount) => Text(
-                                // 'RM XX.XX',
-                                'RM ${totalAmount.toStringAsFixed(2)}',
-                                style: const TextStyle(
-                                  color: AppColors.mainColor1,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 15,
-                                ),
-                              ),
-                              loading: () => const LoadingAnimationView(),
-                              error: (error, stack) =>
-                                  const ErrorAnimationView(),
+                            FutureBuilder(
+                              future: totalAmount(),
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<double> snapshot) {
+                                if (snapshot.hasData) {
+                                  return Text(
+                                    'MYR ${snapshot.data!.toStringAsFixed(2)}',
+                                    style: const TextStyle(
+                                      color: AppColors.mainColor1,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 15,
+                                    ),
+                                  );
+                                } else {
+                                  return const LoadingAnimationView();
+                                }
+                              },
                             ),
-                            // Text(
-                            //   // 'RM XX.XX',
-                            //   'RM ${totalAmount.toStringAsFixed(2)}',
-                            //   style: const TextStyle(
-                            //     color: AppColors.mainColor1,
-                            //     fontWeight: FontWeight.bold,
-                            //     fontSize: 20,
-                            //   ),
-                            // ),
                           ],
                         ),
                         const SizedBox(
                           height: 10,
                         ),
-                        Row(
-                          children: [
-                            //progress indicator\
-                            // amountPercentage.when(
-                            //   data: (amountPercentage) {
-                            //     debugPrint(
-                            //         'amountPercentage: $amountPercentage');
-                            //     return Expanded(
-                            //       child: ClipRRect(
-                            //         borderRadius: BorderRadius.circular(10.0),
-                            //         child: LinearProgressIndicator(
-                            //           minHeight: 10,
-                            //           value: amountPercentage,
-                            //           backgroundColor: Colors.grey[300],
-                            //           valueColor:
-                            //               const AlwaysStoppedAnimation<Color>(
-                            //             AppColors.subColor1,
-                            //           ),
-                            //         ),
-                            //       ),
-                            //     );
-                            //   },
-                            //   loading: () => const LoadingAnimationView(),
-                            //   error: (error, stack) =>
-                            //       const ErrorAnimationView(),
-                            // ),
-                            // Expanded(
-                            //   child: ClipRRect(
-                            //     borderRadius: BorderRadius.circular(10.0),
-                            //     child: LinearProgressIndicator(
-                            //       minHeight: 10,
-                            //       value: totalAmount / usedAmount,
-                            //       backgroundColor: Colors.grey[300],
-                            //       valueColor: AlwaysStoppedAnimation<Color>(
-                            //         AppColors.mainColor1,
-                            //       ),
-                            //     ),
-                            //   ),
-                            // ),
-                          ],
+                        FutureBuilder(
+                          future: spentPercentage(),
+                          builder: (BuildContext context,
+                              AsyncSnapshot<double> snapshot) {
+                            if (snapshot.hasData) {
+                              final percentage = snapshot.data! * 100;
+                              return
+                                  // Text(percentage.toStringAsFixed(2));
+                                  Stack(
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    child: LinearProgressIndicator(
+                                      minHeight: 25,
+                                      value: snapshot.data == 0
+                                          ? 0
+                                          : snapshot.data,
+                                      backgroundColor: Colors.grey[300],
+                                      valueColor:
+                                          const AlwaysStoppedAnimation<Color>(
+                                        AppColors.subColor1,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                      left: 8.0,
+                                      top: 4.0,
+                                      bottom: 4.0,
+                                    ),
+                                    child: Text(
+                                        '${percentage.toStringAsFixed(2)}%',
+                                        style: TextStyle(
+                                          color: snapshot.data! * 100 > 16
+                                              ? Colors.white
+                                              : Colors.black,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold,
+                                        )),
+                                  ),
+                                ],
+                              );
+                            } else {
+                              return const LoadingAnimationView();
+                            }
+                          },
                         ),
                         const SizedBox(
                           height: 10,
@@ -212,28 +240,24 @@ class _BudgetPageState extends ConsumerState<BudgetPage> {
                               ),
                             ),
                             const Spacer(),
-                            usedAmount.when(data: (data) {
-                              return Text(
-                                'MYR ${data.toStringAsFixed(2)}',
-                                style: const TextStyle(
-                                  color: AppColors.red,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 15,
-                                ),
-                              );
-                            }, loading: () {
-                              return const LoadingAnimationView();
-                            }, error: (error, stack) {
-                              return const ErrorAnimationView();
-                            }),
-                            // Text(
-                            //   'MYR ${usedAmount.toStringAsFixed(2)}',
-                            //   style: const TextStyle(
-                            //     color: AppColors.green,
-                            //     fontWeight: FontWeight.bold,
-                            //     fontSize: 15,
-                            //   ),
-                            // ),
+                            FutureBuilder(
+                              future: usedAmount(),
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<double> snapshot) {
+                                if (snapshot.hasData) {
+                                  return Text(
+                                    'MYR ${snapshot.data!.toStringAsFixed(2)}',
+                                    style: const TextStyle(
+                                      color: AppColors.mainColor1,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 15,
+                                    ),
+                                  );
+                                } else {
+                                  return const LoadingAnimationView();
+                                }
+                              },
+                            ),
                           ],
                         ),
                         const SizedBox(
@@ -252,36 +276,26 @@ class _BudgetPageState extends ConsumerState<BudgetPage> {
                               ),
                             ),
                             const Spacer(),
-                            remainingAmount.when(data: (data) {
-                              return Text(
-                                'MYR ${data.toStringAsFixed(2)}',
-                                style: const TextStyle(
-                                  color: AppColors.mainColor2,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 15,
-                                ),
-                              );
-                            }, loading: () {
-                              return const LoadingAnimationView();
-                            }, error: (error, stack) {
-                              return const ErrorAnimationView();
-                            }),
+                            FutureBuilder(
+                              future: remainingAmount(),
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<double> snapshot) {
+                                if (snapshot.hasData) {
+                                  return Text(
+                                    'MYR ${snapshot.data!.toStringAsFixed(2)}',
+                                    style: const TextStyle(
+                                      color: AppColors.mainColor1,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 15,
+                                    ),
+                                  );
+                                } else {
+                                  return const LoadingAnimationView();
+                                }
+                              },
+                            ),
                           ],
                         ),
-                        // Row(
-                        //   mainAxisAlignment: MainAxisAlignment.end,
-                        //   children: const [
-                        //     // Calculation part
-                        //     Text(
-                        //       'RM XX.XX left',
-                        //       style: TextStyle(
-                        //         color: AppColors.mainColor2,
-                        //         fontWeight: FontWeight.bold,
-                        //         fontSize: 20,
-                        //       ),
-                        //     ),
-                        //   ],
-                        // ),
                       ],
                     ),
                   ),

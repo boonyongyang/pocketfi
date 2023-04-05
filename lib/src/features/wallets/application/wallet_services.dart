@@ -1,4 +1,5 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:pocketfi/src/features/authentication/domain/collaborators_info.dart';
 import 'package:pocketfi/src/features/wallets/data/wallet_repository.dart';
 import 'package:pocketfi/src/constants/typedefs.dart';
 import 'package:flutter/foundation.dart';
@@ -76,3 +77,25 @@ final selectedWalletForSavingGoalProvider = StateProvider.autoDispose<Wallet?>(
     return wallets.first;
   },
 );
+
+final selectedUserWalletProvider =
+    StateNotifierProvider<SelectedWalletNotifier, Wallet?>(
+  (_) => SelectedWalletNotifier(null),
+);
+
+class SelectedWalletNotifier extends StateNotifier<Wallet?> {
+  SelectedWalletNotifier(Wallet? wallet) : super(wallet);
+
+  void setSelectedWallet(Wallet wallet, WidgetRef ref) {
+    state = wallet;
+  }
+
+  void updateCollaboratorInfoList(
+      List<CollaboratorsInfo> newList, WidgetRef ref) {
+    Wallet? wallet = ref.watch(selectedUserWalletProvider);
+    if (wallet != null) {
+      wallet = wallet.copyWith(collaborators: newList);
+      state = wallet;
+    }
+  }
+}

@@ -35,8 +35,8 @@ class BudgetTile extends ConsumerWidget {
 
     final currentMonthTransactions = userTransactions.when<List<Transaction>>(
       data: (transactions) => transactions.where((tran) {
-        return tran.date.month == ref.watch(overviewMonthProvider).month &&
-            tran.date.year == ref.watch(overviewMonthProvider).year &&
+        return tran.date.month == DateTime.now().month &&
+            tran.date.year == DateTime.now().year &&
             tran.categoryName == budget.categoryName &&
             tran.walletId == budget.walletId;
       }).toList(),
@@ -47,20 +47,20 @@ class BudgetTile extends ConsumerWidget {
       },
     );
     // get absolute value of total amount
-    final totalAmount = getCategoryTotalAmount(currentMonthTransactions).abs();
-    if (totalAmount != budget.usedAmount) {
-      debugPrint('budget used amount updated: $totalAmount');
+    final spentAmount = getCategoryTotalAmount(currentMonthTransactions).abs();
+    if (spentAmount != budget.usedAmount) {
+      debugPrint('budget used amount updated: $spentAmount');
       debugPrint('budget used amount updated: ${budget.usedAmount}');
       updateUsedAmount(
         budget,
-        totalAmount,
+        spentAmount,
         ref,
       );
     }
+    final spentPercentage = spentAmount / budget.budgetAmount;
     final category = getCategoryWithCategoryName(budget.categoryName);
-    final remainingAmount = budget.budgetAmount - totalAmount;
-    final wallet =
-        ref.watch(getWalletFromWalletIdProvider(budget.walletId)).value;
+    final remainingAmount = budget.budgetAmount - spentAmount;
+    final wallet = ref.watch(getWalletWithWalletId(budget.walletId)).value;
     if (wallet == null) {
       return Container();
     }
@@ -93,17 +93,6 @@ class BudgetTile extends ConsumerWidget {
             child: Row(
               // mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                // Column(
-                //   children: [
-                //     CircleAvatar(
-                //       backgroundColor: categoryColor,
-                //       child: categoryIcon,
-                //     ),
-                //   ],
-                // ),
-                // const SizedBox(
-                //   width: 20,
-                // ),
                 Expanded(
                   child: Column(
                     children: [
@@ -121,7 +110,7 @@ class BudgetTile extends ConsumerWidget {
                           ),
                           const Spacer(),
                           Text(
-                            'RM ${budget.budgetAmount.toStringAsFixed(2)}',
+                            'MYR ${budget.budgetAmount.toStringAsFixed(2)}',
                             style: const TextStyle(
                               color: AppColors.mainColor1,
                               fontSize: 14,
@@ -151,21 +140,37 @@ class BudgetTile extends ConsumerWidget {
                       const SizedBox(
                         height: 10,
                       ),
-                      Row(
+                      Stack(
                         children: [
-                          //progress indicator
-                          Expanded(
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(10.0),
-                              child: LinearProgressIndicator(
-                                minHeight: 10,
-                                value: totalAmount / budget.budgetAmount,
-                                backgroundColor: Colors.grey[300],
-                                valueColor: AlwaysStoppedAnimation<Color>(
-                                  category.color,
-                                ),
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(10.0),
+                            child: LinearProgressIndicator(
+                              minHeight: 25,
+                              value: spentPercentage,
+                              backgroundColor: Colors.grey[300],
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                // spentPercentage > 0.8
+                                //     ? AppColors.red
+                                //     : category.color,
+                                category.color,
                               ),
                             ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              left: 8.0,
+                              top: 4.0,
+                              bottom: 4.0,
+                            ),
+                            child: Text(
+                                '${(spentPercentage * 100).toStringAsFixed(2)}%',
+                                style: TextStyle(
+                                  color: spentPercentage * 100 > 16
+                                      ? Colors.white
+                                      : Colors.black,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                )),
                           ),
                         ],
                       ),
@@ -176,12 +181,24 @@ class BudgetTile extends ConsumerWidget {
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Text(
-                            "used MYR ${totalAmount.toStringAsFixed(2)}",
-                            style: const TextStyle(
-                              color: AppColors.red,
-                              fontSize: 14,
-                              // fontWeight: FontWeight.bold,
+                          Text.rich(
+                            TextSpan(
+                              text: 'used ',
+                              style: const TextStyle(
+                                color: Colors.grey,
+                                fontSize: 14,
+                                // fontWeight: FontWeight.bold,
+                              ),
+                              children: [
+                                TextSpan(
+                                  text: 'MYR ${spentAmount.toStringAsFixed(2)}',
+                                  style: const TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ],
@@ -201,12 +218,29 @@ class BudgetTile extends ConsumerWidget {
                           ),
                           Text(budget.categoryName),
                           const Spacer(),
-                          Text(
-                            "left MYR ${remainingAmount.toStringAsFixed(2)}",
-                            style: const TextStyle(
-                              color: AppColors.mainColor2,
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold,
+                          Text.rich(
+                            TextSpan(
+                              text: 'left ',
+                              style: TextStyle(
+                                color: remainingAmount < 0
+                                    ? AppColors.red
+                                    : Colors.grey,
+                                fontSize: 14,
+                                // fontWeight: FontWeight.bold,
+                              ),
+                              children: [
+                                TextSpan(
+                                  text:
+                                      'MYR ${remainingAmount.toStringAsFixed(2)}',
+                                  style: TextStyle(
+                                    color: remainingAmount < 0
+                                        ? AppColors.red
+                                        : Colors.grey,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ],

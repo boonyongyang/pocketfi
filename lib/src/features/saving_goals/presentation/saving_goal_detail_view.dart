@@ -24,6 +24,7 @@ class SavingGoalDetailView extends ConsumerWidget {
         length: 2,
         child: Scaffold(
           appBar: AppBar(
+            centerTitle: true,
             title: Text(selectedSavingGoal.savingGoalName),
             actions: [
               IconButton(
