@@ -114,256 +114,262 @@ class _BudgetPageState extends ConsumerState<BudgetPage> {
           debugPrint('budgets: $budgets');
           // return Future.delayed(const Duration(seconds: 1));
         },
-        child: Flex(
-          direction: Axis.vertical,
-          children: [
-            Expanded(
-              // incorrect use of parangedatawidget
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-
-                // crossAxisAlignment: CrossAxisAlignment.stretch,
+        child: budgets.value?.isNotEmpty ?? false
+            ? Flex(
+                direction: Axis.vertical,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(20.0),
+                  Expanded(
+                    // incorrect use of parangedatawidget
                     child: Column(
+                      mainAxisSize: MainAxisSize.min,
+
+                      // crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              DateFormat('MMMM yyyy').format(DateTime.now()),
-                              style: const TextStyle(
-                                color: AppColors.mainColor1,
-                                fontWeight: FontWeight.w700,
-                                fontSize: 23,
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 15),
-                        Row(
-                          // mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const Text(
-                              'Total',
-                              style: TextStyle(
-                                color: AppColors.mainColor1,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 15,
-                              ),
-                            ),
-                            const Spacer(),
-                            // Calculation part
-                            FutureBuilder(
-                              future: totalAmount(),
-                              builder: (BuildContext context,
-                                  AsyncSnapshot<double> snapshot) {
-                                if (snapshot.hasData) {
-                                  return Text(
-                                    'MYR ${snapshot.data!.toStringAsFixed(2)}',
+                        Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    DateFormat('MMMM yyyy')
+                                        .format(DateTime.now()),
                                     style: const TextStyle(
                                       color: AppColors.mainColor1,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 15,
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 23,
                                     ),
-                                  );
-                                } else {
-                                  return const LoadingAnimationView();
-                                }
-                              },
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        FutureBuilder(
-                          future: spentPercentage(),
-                          builder: (BuildContext context,
-                              AsyncSnapshot<double> snapshot) {
-                            if (snapshot.hasData) {
-                              final percentage = snapshot.data! * 100;
-                              return
-                                  // Text(percentage.toStringAsFixed(2));
-                                  Stack(
-                                children: [
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                    child: LinearProgressIndicator(
-                                      minHeight: 25,
-                                      value: snapshot.data == 0
-                                          ? 0
-                                          : snapshot.data,
-                                      backgroundColor: Colors.grey[300],
-                                      valueColor:
-                                          const AlwaysStoppedAnimation<Color>(
-                                        AppColors.subColor1,
-                                      ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                      left: 8.0,
-                                      top: 4.0,
-                                      bottom: 4.0,
-                                    ),
-                                    child: Text(
-                                        '${percentage.toStringAsFixed(2)}%',
-                                        style: TextStyle(
-                                          color: snapshot.data! * 100 > 16
-                                              ? Colors.white
-                                              : Colors.black,
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.bold,
-                                        )),
                                   ),
                                 ],
+                              ),
+                              const SizedBox(height: 15),
+                              Row(
+                                // mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  const Text(
+                                    'Total',
+                                    style: TextStyle(
+                                      color: AppColors.mainColor1,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 15,
+                                    ),
+                                  ),
+                                  const Spacer(),
+                                  // Calculation part
+                                  FutureBuilder(
+                                    future: totalAmount(),
+                                    builder: (BuildContext context,
+                                        AsyncSnapshot<double> snapshot) {
+                                      if (snapshot.hasData) {
+                                        return Text(
+                                          'MYR ${snapshot.data!.toStringAsFixed(2)}',
+                                          style: const TextStyle(
+                                            color: AppColors.mainColor1,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 15,
+                                          ),
+                                        );
+                                      } else {
+                                        return const LoadingAnimationView();
+                                      }
+                                    },
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              FutureBuilder(
+                                future: spentPercentage(),
+                                builder: (BuildContext context,
+                                    AsyncSnapshot<double> snapshot) {
+                                  if (snapshot.hasData) {
+                                    final percentage = snapshot.data! * 100;
+                                    return
+                                        // Text(percentage.toStringAsFixed(2));
+                                        Stack(
+                                      children: [
+                                        ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                          child: LinearProgressIndicator(
+                                            minHeight: 25,
+                                            value: snapshot.data == 0
+                                                ? 0
+                                                : snapshot.data,
+                                            backgroundColor: Colors.grey[300],
+                                            valueColor:
+                                                const AlwaysStoppedAnimation<
+                                                    Color>(
+                                              AppColors.subColor1,
+                                            ),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                            left: 8.0,
+                                            top: 4.0,
+                                            bottom: 4.0,
+                                          ),
+                                          child: Text(
+                                              '${percentage.toStringAsFixed(2)}%',
+                                              style: TextStyle(
+                                                color: snapshot.data! * 100 > 16
+                                                    ? Colors.white
+                                                    : Colors.black,
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.bold,
+                                              )),
+                                        ),
+                                      ],
+                                    );
+                                  } else {
+                                    return const LoadingAnimationView();
+                                  }
+                                },
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  // Calculation part
+                                  const Text(
+                                    'Spent',
+                                    style: TextStyle(
+                                      color: AppColors.red,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 15,
+                                    ),
+                                  ),
+                                  const Spacer(),
+                                  FutureBuilder(
+                                    future: usedAmount(),
+                                    builder: (BuildContext context,
+                                        AsyncSnapshot<double> snapshot) {
+                                      if (snapshot.hasData) {
+                                        return Text(
+                                          'MYR ${snapshot.data!.toStringAsFixed(2)}',
+                                          style: const TextStyle(
+                                            color: AppColors.mainColor1,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 15,
+                                          ),
+                                        );
+                                      } else {
+                                        return const LoadingAnimationView();
+                                      }
+                                    },
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  // Calculation part
+                                  const Text(
+                                    'Left',
+                                    style: TextStyle(
+                                      color: AppColors.mainColor2,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 15,
+                                    ),
+                                  ),
+                                  const Spacer(),
+                                  FutureBuilder(
+                                    future: remainingAmount(),
+                                    builder: (BuildContext context,
+                                        AsyncSnapshot<double> snapshot) {
+                                      if (snapshot.hasData) {
+                                        return Text(
+                                          'MYR ${snapshot.data!.toStringAsFixed(2)}',
+                                          style: const TextStyle(
+                                            color: AppColors.mainColor1,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 15,
+                                          ),
+                                        );
+                                      } else {
+                                        return const LoadingAnimationView();
+                                      }
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        const Divider(),
+                        Expanded(
+                          flex: 4,
+                          child: budgets.when(data: (budgets) {
+                            debugPrint('budgets: $budgets');
+                            if (budgets.isEmpty) {
+                              return const SingleChildScrollView(
+                                physics: AlwaysScrollableScrollPhysics(),
+                                child: EmptyContentsWithTextAnimationView(
+                                    text: Strings.noBudgetsYet),
                               );
-                            } else {
-                              return const LoadingAnimationView();
                             }
-                          },
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            // Calculation part
-                            const Text(
-                              'Spent',
-                              style: TextStyle(
-                                color: AppColors.red,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 15,
-                              ),
-                            ),
-                            const Spacer(),
-                            FutureBuilder(
-                              future: usedAmount(),
-                              builder: (BuildContext context,
-                                  AsyncSnapshot<double> snapshot) {
-                                if (snapshot.hasData) {
-                                  return Text(
-                                    'MYR ${snapshot.data!.toStringAsFixed(2)}',
-                                    style: const TextStyle(
-                                      color: AppColors.mainColor1,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 15,
-                                    ),
-                                  );
-                                } else {
-                                  return const LoadingAnimationView();
-                                }
+                            return ListView.builder(
+                              itemCount: budgets.length,
+                              itemBuilder: (context, index) {
+                                final budget = budgets.elementAt(index);
+                                return BudgetTile(
+                                  budget: budget,
+                                  onTap: () {
+                                    ref
+                                        .read(selectedBudgetProvider.notifier)
+                                        .setSelectedBudget(budget, ref);
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) => const BudgetDetailsView(
+                                            // budget: budget,
+                                            ),
+                                      ),
+                                    );
+                                  },
+                                );
                               },
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            // Calculation part
-                            const Text(
-                              'Left',
-                              style: TextStyle(
-                                color: AppColors.mainColor2,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 15,
-                              ),
-                            ),
-                            const Spacer(),
-                            FutureBuilder(
-                              future: remainingAmount(),
-                              builder: (BuildContext context,
-                                  AsyncSnapshot<double> snapshot) {
-                                if (snapshot.hasData) {
-                                  return Text(
-                                    'MYR ${snapshot.data!.toStringAsFixed(2)}',
-                                    style: const TextStyle(
-                                      color: AppColors.mainColor1,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 15,
-                                    ),
-                                  );
-                                } else {
-                                  return const LoadingAnimationView();
-                                }
-                              },
-                            ),
-                          ],
+                            );
+                          }, error: ((error, stackTrace) {
+                            return const ErrorAnimationView();
+                          }), loading: () {
+                            return const LoadingAnimationView();
+                          }),
                         ),
                       ],
                     ),
                   ),
-                  const Divider(),
                   Expanded(
-                    flex: 4,
-                    child: budgets.when(data: (budgets) {
-                      debugPrint('budgets: $budgets');
-                      if (budgets.isEmpty) {
-                        return const SingleChildScrollView(
-                          physics: AlwaysScrollableScrollPhysics(),
-                          child: EmptyContentsWithTextAnimationView(
-                              text: Strings.noBudgetsYet),
-                        );
-                      }
-                      return ListView.builder(
-                        itemCount: budgets.length,
-                        itemBuilder: (context, index) {
-                          final budget = budgets.elementAt(index);
-                          return BudgetTile(
-                            budget: budget,
-                            onTap: () {
-                              ref
-                                  .read(selectedBudgetProvider.notifier)
-                                  .setSelectedBudget(budget, ref);
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (_) => const BudgetDetailsView(
-                                      // budget: budget,
-                                      ),
-                                ),
-                              );
-                            },
+                    flex: 0,
+                    child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: FullWidthButtonWithText(
+                        text: Strings.createNewBudget,
+                        onPressed: () {
+                          Navigator.of(context, rootNavigator: true).push(
+                            MaterialPageRoute(
+                              builder: (context) => const AddNewBudget(),
+                            ),
                           );
+                          // context.beamToNamed("createNewBudget");
+                          debugPrint('totalAmount: $totalAmount');
                         },
-                      );
-                    }, error: ((error, stackTrace) {
-                      return const ErrorAnimationView();
-                    }), loading: () {
-                      return const LoadingAnimationView();
-                    }),
+                        // },
+                      ),
+                    ),
                   ),
                 ],
-              ),
-            ),
-            Expanded(
-              flex: 0,
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: FullWidthButtonWithText(
-                  text: Strings.createNewBudget,
-                  onPressed: () {
-                    Navigator.of(context, rootNavigator: true).push(
-                      MaterialPageRoute(
-                        builder: (context) => const AddNewBudget(),
-                      ),
-                    );
-                    // context.beamToNamed("createNewBudget");
-                    debugPrint('totalAmount: $totalAmount');
-                  },
-                  // },
-                ),
-              ),
-            ),
-          ],
-        ),
+              )
+            : const EmptyContentsWithTextAnimationView(
+                text: 'No Budgets Yet, Create One!'),
       ),
     );
   }

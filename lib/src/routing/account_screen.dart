@@ -5,6 +5,7 @@ import 'package:pocketfi/src/common_widgets/dialogs/logout_dialog.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/constants/app_icons.dart';
 import 'package:pocketfi/src/features/account/presentation/edit_icon_sheet.dart';
+import 'package:pocketfi/src/features/account/presentation/help_centet_form.dart';
 import 'package:pocketfi/src/features/account/presentation/settings_page.dart';
 import 'package:pocketfi/src/features/authentication/application/auth_state_provider.dart';
 import 'package:pocketfi/src/features/authentication/application/user_id_provider.dart';
@@ -31,7 +32,29 @@ class AccountPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: const Text("Account"),
+        leading: IconButton(
+          style: ButtonStyle(
+            overlayColor: MaterialStateProperty.all(Colors.transparent),
+            foregroundColor: MaterialStateProperty.all(Colors.transparent),
+            backgroundColor: MaterialStateProperty.all(Colors.transparent),
+            padding: MaterialStateProperty.all(EdgeInsets.zero),
+            shape: MaterialStateProperty.all(const StadiumBorder()),
+          ),
+          splashColor: AppColors.transparent,
+          splashRadius: 1,
+          icon: const Icon(
+            Icons.do_not_touch,
+            color: AppColors.transparent,
+          ),
+          onPressed: () => Navigator.of(context, rootNavigator: true).push(
+            MaterialPageRoute(
+              builder: (context) => const EgTabsPage(),
+              fullscreenDialog: true,
+            ),
+          ),
+        ),
       ),
       body: const AccountPageBody(),
     );
@@ -96,7 +119,7 @@ class AccountPageBody extends ConsumerWidget {
             icon: Icons.help,
             press: () => Navigator.of(context, rootNavigator: true).push(
               MaterialPageRoute(
-                builder: (context) => const EgTabsPage(),
+                builder: (context) => const HelpCenterForm(),
                 fullscreenDialog: true,
               ),
             ),
@@ -174,9 +197,7 @@ class AccountPageMenu extends StatelessWidget {
 }
 
 class AccountPagePicture extends StatelessWidget {
-  const AccountPagePicture({
-    Key? key,
-  }) : super(key: key);
+  const AccountPagePicture({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

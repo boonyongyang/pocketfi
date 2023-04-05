@@ -12,6 +12,7 @@ import 'package:pocketfi/src/constants/app_icons.dart';
 import 'package:pocketfi/src/constants/strings.dart';
 import 'package:pocketfi/src/features/authentication/application/user_id_provider.dart';
 import 'package:pocketfi/src/features/wallets/application/wallet_services.dart';
+import 'package:pocketfi/src/features/wallets/data/wallet_repository.dart';
 import 'package:pocketfi/src/features/wallets/domain/wallet.dart';
 import 'package:pocketfi/src/features/wallets/presentation/select_wallet_dropdownlist.dart';
 import 'package:pocketfi/src/features/category/application/category_services.dart';
@@ -47,6 +48,7 @@ class AddNewBillFormState extends ConsumerState<AddNewBillForm> {
     final categories = ref.watch(expenseCategoriesProvider);
     final selectedCategory = ref.watch(selectedCategoryProvider);
     final selectedWallet = ref.watch(selectedWalletProvider);
+    final walletList = ref.watch(userWalletsProvider).value?.toList() ?? [];
 
     final amountController = useTextEditingController();
     final noteController = useTextEditingController();
@@ -140,7 +142,7 @@ class AddNewBillFormState extends ConsumerState<AddNewBillForm> {
                           amountController: amountController,
                           categoryName: selectedCategory,
                           mounted: mounted,
-                          selectedWallet: selectedWallet,
+                          selectedWallet: selectedWallet ?? walletList.first,
                         ),
                       ),
                     ],
@@ -354,12 +356,13 @@ class BillAmountTextField extends ConsumerWidget {
         //   signed: true,
         // ),
         // textInputAction: TextInputAction.done,
-        keyboardType: Platform.isIOS
-            ? const TextInputType.numberWithOptions(
-                // signed: true,
-                decimal: true,
-              )
-            : TextInputType.number,
+        // keyboardType: Platform\.isIOS
+        //     \? const //TextInputType\.numberWithOptions\(
+        //        // signed: true,
+        //         decimal: true,
+        //       \)
+        //     : TextInputType\.number,
+        keyboardType: TextInputType.number,
         inputFormatters: [
           FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,4}'))
         ],
@@ -430,7 +433,7 @@ class SaveButton extends ConsumerWidget {
   final TextEditingController noteController;
   final TextEditingController amountController;
   final Category? categoryName;
-  final Wallet? selectedWallet;
+  final Wallet selectedWallet;
   final bool mounted;
   // final BillStatus billStatus;
   final RecurringPeriod recurringPeriod;
@@ -457,7 +460,7 @@ class SaveButton extends ConsumerWidget {
               debugPrint('note is: $note');
               debugPrint('amount is: $amount');
 
-              debugPrint('walletName is: ${selectedWallet!.walletId}');
+              debugPrint('walletName is: ${selectedWallet.walletId}');
 
               final isCreated =
                   await ref.read(billProvider.notifier).createNewBill(

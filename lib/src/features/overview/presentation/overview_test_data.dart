@@ -12,8 +12,8 @@ class ExpenseData {
   final double percentage;
 }
 
-class OverviewTabView extends ConsumerWidget {
-  const OverviewTabView({Key? key}) : super(key: key);
+class OverviewTestData extends ConsumerWidget {
+  const OverviewTestData({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

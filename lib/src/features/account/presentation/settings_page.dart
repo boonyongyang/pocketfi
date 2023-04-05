@@ -15,15 +15,17 @@ class SettingsPageState extends State<SettingsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        elevation: 1,
+        title: const Text('Settings'),
+        centerTitle: true,
+        // backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        // elevation: 1,
         leading: IconButton(
           onPressed: () {
             Navigator.of(context).pop();
           },
           icon: const Icon(
             Icons.arrow_back,
-            color: Color.fromARGB(255, 71, 86, 71),
+            // color: Color.fromARGB(255, 71, 86, 71),
           ),
         ),
       ),
@@ -31,11 +33,11 @@ class SettingsPageState extends State<SettingsPage> {
         padding: const EdgeInsets.only(left: 16, top: 25, right: 16),
         child: ListView(
           children: [
-            const Text(
-              "Settings",
-              style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500),
-            ),
-            const SizedBox(height: 40),
+            // const Text(
+            //   "Settings",
+            //   style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500),
+            // ),
+            // const SizedBox(height: 40),
             Row(
               children: const [
                 Icon(
@@ -90,7 +92,7 @@ class SettingsPageState extends State<SettingsPage> {
               isActive: true,
             ),
             const SwitchOption(
-              title: "Budget progress",
+              title: "Budget Progress",
               isActive: true,
             ),
             const SwitchOption(

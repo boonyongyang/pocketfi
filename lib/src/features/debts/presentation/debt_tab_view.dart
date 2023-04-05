@@ -244,7 +244,9 @@ class DebtTabView extends ConsumerWidget {
                 } else {
                   return const SliverToBoxAdapter(
                     child: EmptyContentsWithTextAnimationView(
-                      text: 'No debts added yet',
+                      text:
+                          '\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t No debts yet. \n Click the button to add a debt.',
+                      // 'No debts yet.\nClick the button to add a debt.',
                     ),
                   );
                 }

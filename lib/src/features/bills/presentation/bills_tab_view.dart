@@ -166,52 +166,105 @@ class BillsTabView extends ConsumerWidget {
               ],
             ),
           ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              foregroundColor: AppColors.white,
-              backgroundColor: AppColors.mainColor1,
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(30),
+          // ElevatedButton(
+          //   style: ElevatedButton.styleFrom(
+          //     foregroundColor: AppColors.white,
+          //     backgroundColor: AppColors.mainColor1,
+          //     shape: const RoundedRectangleBorder(
+          //       borderRadius: BorderRadius.all(
+          //         Radius.circular(30),
+          //       ),
+          //     ),
+          //     padding: const EdgeInsets.symmetric(
+          //       horizontal: 20,
+          //       vertical: 15,
+          //     ),
+          //   ),
+          //   onPressed: () {
+          //     setNewTransactionState(ref);
+          //     setBillCategory(ref);
+          //     Navigator.of(context, rootNavigator: true).push(
+          //       PageRouteBuilder(
+          //         pageBuilder: (context, animation, secondaryAnimation) =>
+          //             const AddNewBill(),
+          //         transitionDuration: const Duration(milliseconds: 200),
+          //         transitionsBuilder:
+          //             (context, animation, secondaryAnimation, child) {
+          //           final curvedAnimation = CurvedAnimation(
+          //             parent: animation,
+          //             curve: Curves.easeIn,
+          //             reverseCurve: Curves.easeIn,
+          //           );
+          //           return SlideTransition(
+          //             position: Tween<Offset>(
+          //               begin: const Offset(0, 1),
+          //               end: Offset.zero,
+          //             ).animate(curvedAnimation),
+          //             child: child,
+          //           );
+          //         },
+          //       ),
+          //     );
+          //   },
+          //   child: const Text('Add Bill'),
+          // ),
+          SizedBox(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  fixedSize: Size(MediaQuery.of(context).size.width * 0.35, 55),
+                  backgroundColor: AppColors.mainColor2,
+                  foregroundColor: Colors.white,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(30),
+                    ),
+                  ),
                 ),
-              ),
-              padding: const EdgeInsets.symmetric(
-                horizontal: 20,
-                vertical: 15,
+                onPressed: () {
+                  setNewTransactionState(ref);
+                  setBillCategory(ref);
+                  Navigator.of(context, rootNavigator: true).push(
+                    PageRouteBuilder(
+                      pageBuilder: (context, animation, secondaryAnimation) =>
+                          const AddNewBill(),
+                      transitionDuration: const Duration(milliseconds: 200),
+                      transitionsBuilder:
+                          (context, animation, secondaryAnimation, child) {
+                        final curvedAnimation = CurvedAnimation(
+                          parent: animation,
+                          curve: Curves.easeIn,
+                          reverseCurve: Curves.easeIn,
+                        );
+                        return SlideTransition(
+                          position: Tween<Offset>(
+                            begin: const Offset(0, 1),
+                            end: Offset.zero,
+                          ).animate(curvedAnimation),
+                          child: child,
+                        );
+                      },
+                    ),
+                  );
+                },
+                child: const SizedBox(
+                  child: Text(
+                    'Add Bill',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 17,
+                    ),
+                  ),
+                ),
               ),
             ),
-            onPressed: () {
-              setNewTransactionState(ref);
-              setBillCategory(ref);
-              Navigator.of(context, rootNavigator: true).push(
-                PageRouteBuilder(
-                  pageBuilder: (context, animation, secondaryAnimation) =>
-                      const AddNewBill(),
-                  transitionDuration: const Duration(milliseconds: 200),
-                  transitionsBuilder:
-                      (context, animation, secondaryAnimation, child) {
-                    final curvedAnimation = CurvedAnimation(
-                      parent: animation,
-                      curve: Curves.easeIn,
-                      reverseCurve: Curves.easeIn,
-                    );
-                    return SlideTransition(
-                      position: Tween<Offset>(
-                        begin: const Offset(0, 1),
-                        end: Offset.zero,
-                      ).animate(curvedAnimation),
-                      child: child,
-                    );
-                  },
-                ),
-              );
-            },
-            child: const Text('Add Bill'),
           ),
           // const SelectTransactionType(noOfTabs: 2),
           RefreshIndicator(
             onRefresh: () {
               ref.refresh(userBillsProvider);
+              ref.refresh(overviewMonthProvider.notifier).resetMonth();
               debugPrint('refresh bills');
               return Future.delayed(
                 const Duration(
@@ -223,7 +276,9 @@ class BillsTabView extends ConsumerWidget {
               data: (bills) {
                 if (bills.isEmpty) {
                   return const EmptyContentsWithTextAnimationView(
-                    text: Strings.youHaveNoRecords,
+                    text:
+                        '\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t No bills yet. \n Click the button to add a bill.',
+                    // 'No bills yet.\nClick the button to add a bill.',
                   );
                 } else {
                   return BillListView(

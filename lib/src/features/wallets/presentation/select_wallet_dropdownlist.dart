@@ -26,8 +26,8 @@ class SelectWalletDropdownList extends ConsumerWidget {
       child: Consumer(
         builder: (context, ref, child) {
           return DropdownButton(
-            value: selectedWallet,
-            // value: selectedWallet ?? walletList?.first,
+            // value: selectedWallet,
+            value: selectedWallet ?? walletList?.first,
             items: walletList?.map((wallet) {
               return DropdownMenuItem(
                 value: wallet,
