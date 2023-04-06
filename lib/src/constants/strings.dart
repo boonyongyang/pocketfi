@@ -4,9 +4,9 @@ import 'package:flutter/foundation.dart' show immutable;
 class Strings {
   static const appName = 'PocketFi!';
   static const welcomeToAppName = 'Welcome to ${Strings.appName}';
-  static const youHaveNoRecords =
-      // 'You have not made a record yet. ' 'Why don\'t you take the first step?';
-      "No made any records yet. Take the first step and upload your first record!";
+  static const youHaveNoRecords = 'You have not made a record yet. \n'
+      'Why don\'t you take the first step?';
+  // "No made any records yet. Take the first step and upload your first record!";
   static const youHaveNoRecordsFound =
       "No records found. Try searching for something else.";
   static const noRecordsAvailable =

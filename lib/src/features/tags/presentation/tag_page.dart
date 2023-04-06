@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:pocketfi/src/common_widgets/animations/empty_contents_with_text_animation_view.dart';
 import 'package:pocketfi/src/features/tags/application/tag_services.dart';
 import 'package:pocketfi/src/features/tags/data/tag_repository.dart';
 import 'package:pocketfi/src/features/tags/domain/tag.dart';
 import 'package:pocketfi/src/features/tags/presentation/add_new_tag.dart';
-import 'package:pocketfi/src/features/tags/presentation/edit_tag.dart';
+import 'package:pocketfi/src/features/tags/presentation/update_tag.dart';
 import 'package:pocketfi/src/features/transactions/data/transaction_repository.dart';
 
 class TagPage extends ConsumerWidget {
@@ -56,43 +57,52 @@ class TagPage extends ConsumerWidget {
       body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 4.0),
-          child: Column(
-            children: [
-              SizedBox(
-                height: MediaQuery.of(context).size.height,
-                child: ListView.separated(
-                  itemCount: tagsList.length,
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                      child: ListTile(
-                        title: Text(tagsList[index].name),
-                        subtitle: Text(
-                          '${tagUsage[tagsList[index]]} transaction${tagUsage[tagsList[index]] == 1 ? '' : 's'}',
-                        ),
-                        trailing: const Icon(Icons.arrow_forward_ios_outlined),
-                      ),
-                      onTap: () {
-                        ref
-                            .read(selectedTagProvider.notifier)
-                            .setSelectedTag(tagsList[index]);
+          child: tagsList.isEmpty
+              ? const Center(
+                  child: EmptyContentsWithTextAnimationView(
+                      text:
+                          'No tags yet. Add a new tag by tapping the + icon above.'),
+                )
+              : Column(
+                  children: [
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height,
+                      child: ListView.separated(
+                        itemCount: tagsList.length,
+                        itemBuilder: (context, index) {
+                          return GestureDetector(
+                            child: ListTile(
+                              title: Text(tagsList[index].name),
+                              subtitle: Text(
+                                  '${tagUsage[tagsList[index]] ?? 0} transaction(s)'),
+                              //  subtitle: Text(
+                              //   '${tagUsage[tagsList[index]]} transaction${tagUsage[tagsList[index]] == 1 ? '' : 's'}',
+                              // ),
+                              trailing:
+                                  const Icon(Icons.arrow_forward_ios_outlined),
+                            ),
+                            onTap: () {
+                              ref
+                                  .read(selectedTagProvider.notifier)
+                                  .setSelectedTag(tagsList[index]);
 
-                        showModalBottomSheet(
-                          isScrollControlled: true,
-                          context: context,
-                          builder: (context) {
-                            return const EditTag();
-                          },
-                        );
-                      },
-                    );
-                  },
-                  separatorBuilder: (BuildContext context, int index) {
-                    return const Divider();
-                  },
+                              showModalBottomSheet(
+                                isScrollControlled: true,
+                                context: context,
+                                builder: (context) {
+                                  return const UpdateTag();
+                                },
+                              );
+                            },
+                          );
+                        },
+                        separatorBuilder: (BuildContext context, int index) {
+                          return const Divider();
+                        },
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ],
-          ),
         ),
       ),
     );

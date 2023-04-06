@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:auto_size_text_field/auto_size_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -12,6 +10,7 @@ import 'package:pocketfi/src/constants/app_icons.dart';
 import 'package:pocketfi/src/constants/strings.dart';
 import 'package:pocketfi/src/features/authentication/application/user_id_provider.dart';
 import 'package:pocketfi/src/features/wallets/application/wallet_services.dart';
+import 'package:pocketfi/src/features/wallets/data/wallet_repository.dart';
 import 'package:pocketfi/src/features/wallets/domain/wallet.dart';
 import 'package:pocketfi/src/features/wallets/presentation/select_wallet_dropdownlist.dart';
 import 'package:pocketfi/src/features/category/application/category_services.dart';
@@ -19,8 +18,8 @@ import 'package:pocketfi/src/features/category/domain/category.dart';
 import 'package:pocketfi/src/features/category/presentation/category_page.dart';
 import 'package:pocketfi/src/features/bills/application/bill_services.dart';
 import 'package:pocketfi/src/features/bills/domain/bill.dart';
-import 'package:pocketfi/src/features/transactions/date_picker/application/transaction_date_services.dart';
-import 'package:pocketfi/src/features/transactions/date_picker/presentation/transaction_date_picker.dart';
+import 'package:pocketfi/src/features/shared/date_picker/application/date_services.dart';
+import 'package:pocketfi/src/features/shared/date_picker/presentation/transaction_date_picker.dart';
 import 'package:pocketfi/src/features/transactions/presentation/add_new_transactions/category_selector_view.dart';
 
 class AddNewBill extends StatelessWidget {
@@ -47,6 +46,7 @@ class AddNewBillFormState extends ConsumerState<AddNewBillForm> {
     final categories = ref.watch(expenseCategoriesProvider);
     final selectedCategory = ref.watch(selectedCategoryProvider);
     final selectedWallet = ref.watch(selectedWalletProvider);
+    final walletList = ref.watch(userWalletsProvider).value?.toList() ?? [];
 
     final amountController = useTextEditingController();
     final noteController = useTextEditingController();
@@ -140,7 +140,7 @@ class AddNewBillFormState extends ConsumerState<AddNewBillForm> {
                           amountController: amountController,
                           categoryName: selectedCategory,
                           mounted: mounted,
-                          selectedWallet: selectedWallet,
+                          selectedWallet: selectedWallet ?? walletList.first,
                         ),
                       ),
                     ],
@@ -354,9 +354,13 @@ class BillAmountTextField extends ConsumerWidget {
         //   signed: true,
         // ),
         // textInputAction: TextInputAction.done,
-        keyboardType: Platform.isIOS
-            ? const TextInputType.numberWithOptions(signed: true, decimal: true)
-            : TextInputType.number,
+        // keyboardType: Platform\.isIOS
+        //     \? const //TextInputType\.numberWithOptions\(
+        //        // signed: true,
+        //         decimal: true,
+        //       \)
+        //     : TextInputType\.number,
+        keyboardType: TextInputType.number,
         inputFormatters: [
           FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,4}'))
         ],
@@ -427,7 +431,7 @@ class SaveButton extends ConsumerWidget {
   final TextEditingController noteController;
   final TextEditingController amountController;
   final Category? categoryName;
-  final Wallet? selectedWallet;
+  final Wallet selectedWallet;
   final bool mounted;
   // final BillStatus billStatus;
   final RecurringPeriod recurringPeriod;
@@ -454,13 +458,15 @@ class SaveButton extends ConsumerWidget {
               debugPrint('note is: $note');
               debugPrint('amount is: $amount');
 
-              debugPrint('walletName is: ${selectedWallet!.walletId}');
+              debugPrint('walletName is: ${selectedWallet.walletId}');
 
               final isCreated =
                   await ref.read(billProvider.notifier).createNewBill(
                         userId: userId,
-                        walletId: selectedWallet!.walletId, // ? sure?
-                        walletName: selectedWallet!.walletName, // ? sure?
+                        walletId: selectedWallet.walletId, // ? sure?
+                        walletName: selectedWallet.walletName, // ? sure?
+                        // walletId: selectedWallet!.walletId, // ? sure?
+                        // walletName: selectedWallet!.walletName, // ? sure?
                         billAmount: double.parse(amount),
                         billDueDate: dueDate,
                         categoryName: categoryName!.name,

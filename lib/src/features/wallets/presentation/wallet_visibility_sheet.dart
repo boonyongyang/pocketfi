@@ -19,7 +19,7 @@ class WalletVisibilitySheetState extends ConsumerState<WalletVisibilitySheet> {
     final walletVisibility = ref.watch(walletVisibilityProvider);
 
     return SizedBox(
-      height: (wallets?.length ?? 1) * 110, // haha for fun only
+      height: (wallets?.length ?? 1) * 125, // haha for fun only
       child: Column(
         children: [
           Padding(

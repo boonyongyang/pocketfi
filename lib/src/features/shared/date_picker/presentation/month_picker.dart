@@ -5,22 +5,17 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
-import 'package:pocketfi/src/features/transactions/date_picker/application/transaction_date_services.dart';
+import 'package:pocketfi/src/features/shared/date_picker/application/date_services.dart';
 import 'package:pocketfi/src/utils/haptic_feedback_service.dart';
 
-class OverviewMonthSelector extends ConsumerStatefulWidget {
-  // final void Function(DateTime) onMonthChanged;
-
-  const OverviewMonthSelector({
-    Key? key,
-    // required this.onMonthChanged,
-  }) : super(key: key);
+class MonthPicker extends ConsumerStatefulWidget {
+  const MonthPicker({Key? key}) : super(key: key);
 
   @override
   MonthSelectorState createState() => MonthSelectorState();
 }
 
-class MonthSelectorState extends ConsumerState<OverviewMonthSelector> {
+class MonthSelectorState extends ConsumerState<MonthPicker> {
   @override
   Widget build(BuildContext context) {
     final currentMonth = ref.watch(overviewMonthProvider);

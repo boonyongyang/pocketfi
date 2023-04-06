@@ -30,7 +30,8 @@ final walletProvider = StateNotifierProvider<WalletNotifier, IsLoading>(
 // * selectedWalletNotifier
 final selectedWalletProvider =
     StateNotifierProvider<SelectedWalletNotifier, Wallet?>((ref) =>
-        SelectedWalletNotifier(ref.watch(userWalletsProvider).value?.first));
+        // SelectedWalletNotifier(ref.watch(userWalletsProvider).value?.first));
+        SelectedWalletNotifier(null));
 
 // * SelectedWalletNotifier
 class SelectedWalletNotifier extends StateNotifier<Wallet?> {
@@ -38,64 +39,68 @@ class SelectedWalletNotifier extends StateNotifier<Wallet?> {
 
   void setSelectedWallet(Wallet? wallet) => state = wallet;
 
-  void resetSelectedWalletState(ref) {
-    final Wallet? wallet = ref.watch(selectedWalletProvider).state;
-    state = wallet;
-  }
-}
-
-final selectedWalletForBudgetProvider = StateProvider.autoDispose<Wallet?>(
-  (ref) {
-    final wallets = ref.watch(userWalletsProvider).value;
-    if (wallets == null) {
-      debugPrint('wallets is null');
-      return null;
-    }
-    debugPrint('wallets is ${wallets.last.walletName}');
-    return wallets.first;
-  },
-);
-final selectedWalletForDebtProvider = StateProvider.autoDispose<Wallet?>(
-  (ref) {
-    final wallets = ref.watch(userWalletsProvider).value;
-    if (wallets == null) {
-      debugPrint('wallets is null');
-      return null;
-    }
-    debugPrint('wallets is ${wallets.last.walletName}');
-    return wallets.first;
-  },
-);
-final selectedWalletForSavingGoalProvider = StateProvider.autoDispose<Wallet?>(
-  (ref) {
-    final wallets = ref.watch(userWalletsProvider).value;
-    if (wallets == null) {
-      debugPrint('wallets is null');
-      return null;
-    }
-    debugPrint('wallets is ${wallets.last.walletName}');
-    return wallets.first;
-  },
-);
-
-final selectedUserWalletProvider =
-    StateNotifierProvider<SelectedWalletNotifier, Wallet?>(
-  (_) => SelectedWalletNotifier(null),
-);
-
-class SelectedWalletNotifier extends StateNotifier<Wallet?> {
-  SelectedWalletNotifier(Wallet? wallet) : super(wallet);
-
-  void setSelectedWallet(Wallet wallet, WidgetRef ref) {
-    state = wallet;
-  }
+  void resetSelectedWallet() => state = null;
 
   void updateCollaboratorInfoList(
       List<CollaboratorsInfo> newList, WidgetRef ref) {
-    Wallet? wallet = ref.watch(selectedUserWalletProvider);
+    Wallet? wallet = ref.watch(selectedWalletProvider);
     if (wallet != null) {
       wallet = wallet.copyWith(collaborators: newList);
       state = wallet;
     }
   }
 }
+
+// final selectedWalletForBudgetProvider = StateProvider.autoDispose<Wallet?>(
+//   (ref) {
+//     final wallets = ref.watch(userWalletsProvider).value;
+//     if (wallets == null) {
+//       debugPrint('wallets is null');
+//       return null;
+//     }
+//     debugPrint('wallets is ${wallets.last.walletName}');
+//     return wallets.first;
+//   },
+// );
+// final selectedWalletForDebtProvider = StateProvider.autoDispose<Wallet?>(
+//   (ref) {
+//     final wallets = ref.watch(userWalletsProvider).value;
+//     if (wallets == null) {
+//       debugPrint('wallets is null');
+//       return null;
+//     }
+//     debugPrint('wallets is ${wallets.last.walletName}');
+//     return wallets.first;
+//   },
+// );
+// final selectedWalletForSavingGoalProvider = StateProvider.autoDispose<Wallet?>(
+//   (ref) {
+//     final wallets = ref.watch(userWalletsProvider).value;
+//     if (wallets == null) {
+//       debugPrint('wallets is null');
+//       return null;
+//     }
+//     debugPrint('wallets is ${wallets.last.walletName}');
+//     return wallets.first;
+//   },
+// );
+
+// final selectedWalletProvider =
+//     StateNotifierProvider<SelectedUserWalletNotifier, Wallet?>(
+//   (_) => SelectedUserWalletNotifier(null),
+// );
+
+// class SelectedUserWalletNotifier extends StateNotifier<Wallet?> {
+//   SelectedUserWalletNotifier(Wallet? wallet) : super(wallet);
+
+//   void setSelectedWallet(Wallet? wallet) => state = wallet;
+
+//   void updateCollaboratorInfoList(
+//       List<CollaboratorsInfo> newList, WidgetRef ref) {
+//     Wallet? wallet = ref.watch(selectedWalletProvider);
+//     if (wallet != null) {
+//       wallet = wallet.copyWith(collaborators: newList);
+//       state = wallet;
+//     }
+//   }
+// }

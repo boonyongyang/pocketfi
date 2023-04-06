@@ -11,8 +11,8 @@ import 'package:pocketfi/src/features/debts/presentation/debt_details_view.dart'
 import 'package:pocketfi/src/features/debts/presentation/debt_tiles.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-class DebtPage extends ConsumerWidget {
-  const DebtPage({super.key});
+class DebtTabView extends ConsumerWidget {
+  const DebtTabView({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -28,110 +28,113 @@ class DebtPage extends ConsumerWidget {
             SliverToBoxAdapter(
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: const BorderRadius.all(
-                        Radius.circular(20),
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
-                          spreadRadius: 2,
-                          blurRadius: 7,
-                          offset:
-                              const Offset(3, 6), // changes position of shadow
+                child: Visibility(
+                  visible: debts.value?.isNotEmpty ?? false,
+                  child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(20),
                         ),
-                      ],
-                    ),
-                    height: MediaQuery.of(context).size.height * 0.4,
-                    // add circular progress indicator
-                    child: debts.when(
-                      data: (debts) {
-                        // return Padding(
-                        //   padding: const EdgeInsets.all(32.0),
-                        //   child: CircularProgressIndicator(
-                        //     valueColor: const AlwaysStoppedAnimation<Color>(
-                        //       AppColors.mainColor2,
-                        //     ),
-                        //     value: 0.4,
-                        //     backgroundColor: Colors.grey[300],
-                        //     strokeWidth: 50.0,
-                        //   ),
-                        // );
-                        return SfCircularChart(
-                          title: ChartTitle(text: 'Debt Summary'),
-                          legend: Legend(
-                            isVisible: true,
-                            position: LegendPosition.bottom,
-                            overflowMode: LegendItemOverflowMode.wrap,
-                            textStyle: const TextStyle(fontSize: 14),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 2,
+                            blurRadius: 7,
+                            offset: const Offset(
+                                3, 6), // changes position of shadow
                           ),
-                          annotations: [
-                            CircularChartAnnotation(
-                              widget: Text(
-                                'MYR ${debts.isEmpty ? '0.00' : debts.map((e) => e.calculateTotalPayment()).reduce((value, element) => value + element).toStringAsFixed(2)}',
-                                style: const TextStyle(
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.bold,
-                                  color: AppColors.mainColor1,
-                                  fontFamily: 'Roboto',
+                        ],
+                      ),
+                      height: MediaQuery.of(context).size.height * 0.4,
+                      // add circular progress indicator
+                      child: debts.when(
+                        data: (debts) {
+                          // return Padding(
+                          //   padding: const EdgeInsets.all(32.0),
+                          //   child: CircularProgressIndicator(
+                          //     valueColor: const AlwaysStoppedAnimation<Color>(
+                          //       AppColors.mainColor2,
+                          //     ),
+                          //     value: 0.4,
+                          //     backgroundColor: Colors.grey[300],
+                          //     strokeWidth: 50.0,
+                          //   ),
+                          // );
+                          return SfCircularChart(
+                            title: ChartTitle(text: 'Debt Summary'),
+                            legend: Legend(
+                              isVisible: true,
+                              position: LegendPosition.bottom,
+                              overflowMode: LegendItemOverflowMode.wrap,
+                              textStyle: const TextStyle(fontSize: 14),
+                            ),
+                            annotations: [
+                              CircularChartAnnotation(
+                                widget: Text(
+                                  'MYR ${debts.isEmpty ? '0.00' : debts.map((e) => e.calculateTotalPayment()).reduce((value, element) => value + element).toStringAsFixed(2)}',
+                                  style: const TextStyle(
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColors.mainColor1,
+                                    fontFamily: 'Roboto',
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
-                          tooltipBehavior: TooltipBehavior(enable: true),
-                          series: <DoughnutSeries<Debt, String>>[
-                            DoughnutSeries<Debt, String>(
-                              radius: '100%',
-                              innerRadius: '65%',
-                              dataSource: debts.toList(),
-                              xValueMapper: (Debt debt, _) => debt.debtName,
-                              yValueMapper: (Debt debt, _) =>
-                                  debt.calculateTotalPayment(),
-                              pointColorMapper: (Debt debt, _) =>
-                                  Colors.pink[100 * debt.debtAmount.toInt()],
-                              dataLabelSettings: const DataLabelSettings(
-                                isVisible: true,
-                                labelPosition: ChartDataLabelPosition.outside,
-                                textStyle: TextStyle(
-                                  fontSize: 14.0,
-                                  fontWeight: FontWeight.bold,
-                                  color: AppColors.mainColor1,
-                                  fontFamily: 'Roboto',
+                            ],
+                            tooltipBehavior: TooltipBehavior(enable: true),
+                            series: <DoughnutSeries<Debt, String>>[
+                              DoughnutSeries<Debt, String>(
+                                radius: '100%',
+                                innerRadius: '65%',
+                                dataSource: debts.toList(),
+                                xValueMapper: (Debt debt, _) => debt.debtName,
+                                yValueMapper: (Debt debt, _) =>
+                                    debt.calculateTotalPayment(),
+                                pointColorMapper: (Debt debt, _) =>
+                                    Colors.pink[100 * debt.debtAmount.toInt()],
+                                dataLabelSettings: const DataLabelSettings(
+                                  isVisible: true,
+                                  labelPosition: ChartDataLabelPosition.outside,
+                                  textStyle: TextStyle(
+                                    fontSize: 14.0,
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColors.mainColor1,
+                                    fontFamily: 'Roboto',
+                                  ),
+                                ),
+                                dataLabelMapper: (Debt debt, _) {
+                                  final totalAmount = (() {
+                                    if (debts.isEmpty) {
+                                      return 0.0;
+                                    } else {
+                                      return debts
+                                          .map((e) => e.debtAmount)
+                                          .reduce((value, element) =>
+                                              value + element);
+                                    }
+                                  })();
+                                  final debtTotalAmount = debt.debtAmount;
+                                  final percentage = totalAmount > 0
+                                      ? (debtTotalAmount / totalAmount * 100)
+                                          .toStringAsFixed(1)
+                                      : '0.0';
+                                  return '$percentage%';
+                                  // return 'MYR ${debt.calculateTotalPayment().toStringAsFixed(2)}';
+                                },
+                                pointRenderMode: PointRenderMode.segment,
+                                enableTooltip: true,
+                                emptyPointSettings: EmptyPointSettings(
+                                  mode: EmptyPointMode.gap,
                                 ),
                               ),
-                              dataLabelMapper: (Debt debt, _) {
-                                final totalAmount = (() {
-                                  if (debts.isEmpty) {
-                                    return 0.0;
-                                  } else {
-                                    return debts
-                                        .map((e) => e.debtAmount)
-                                        .reduce((value, element) =>
-                                            value + element);
-                                  }
-                                })();
-                                final debtTotalAmount = debt.debtAmount;
-                                final percentage = totalAmount > 0
-                                    ? (debtTotalAmount / totalAmount * 100)
-                                        .toStringAsFixed(1)
-                                    : '0.0';
-                                return '$percentage%';
-                                // return 'MYR ${debt.calculateTotalPayment().toStringAsFixed(2)}';
-                              },
-                              pointRenderMode: PointRenderMode.segment,
-                              enableTooltip: true,
-                              emptyPointSettings: EmptyPointSettings(
-                                mode: EmptyPointMode.gap,
-                              ),
-                            ),
-                          ],
-                        );
-                      },
-                      loading: () => const LoadingAnimationView(),
-                      error: (error, stack) => const ErrorAnimationView(),
-                    )),
+                            ],
+                          );
+                        },
+                        loading: () => const LoadingAnimationView(),
+                        error: (error, stack) => const ErrorAnimationView(),
+                      )),
+                ),
               ),
             ),
             // SliverToBoxAdapter(
@@ -241,7 +244,9 @@ class DebtPage extends ConsumerWidget {
                 } else {
                   return const SliverToBoxAdapter(
                     child: EmptyContentsWithTextAnimationView(
-                      text: 'No debts added yet',
+                      text:
+                          '\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t No debts yet. \n Click the button to add a debt.',
+                      // 'No debts yet.\nClick the button to add a debt.',
                     ),
                   );
                 }

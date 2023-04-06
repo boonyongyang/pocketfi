@@ -12,8 +12,8 @@ import 'package:pocketfi/src/features/saving_goals/presentation/add_new_saving_g
 import 'package:pocketfi/src/features/saving_goals/presentation/saving_goal_detail_view.dart';
 import 'package:pocketfi/src/features/saving_goals/presentation/saving_goals_tiles.dart';
 
-class SavingGoalsPage extends ConsumerWidget {
-  const SavingGoalsPage({super.key});
+class SavingGoalsTabView extends ConsumerWidget {
+  const SavingGoalsTabView({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

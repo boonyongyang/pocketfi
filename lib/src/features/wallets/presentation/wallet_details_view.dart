@@ -8,10 +8,10 @@ import 'package:pocketfi/src/constants/strings.dart';
 import 'package:pocketfi/src/features/budgets/application/budget_services.dart';
 import 'package:pocketfi/src/features/category/application/category_services.dart';
 import 'package:pocketfi/src/features/category/domain/category.dart';
-import 'package:pocketfi/src/features/overview/presentation/overview_month_selector.dart';
+import 'package:pocketfi/src/features/shared/date_picker/presentation/month_picker.dart';
 import 'package:pocketfi/src/features/transactions/application/transaction_services.dart';
 import 'package:pocketfi/src/features/transactions/data/transaction_repository.dart';
-import 'package:pocketfi/src/features/transactions/date_picker/application/transaction_date_services.dart';
+import 'package:pocketfi/src/features/shared/date_picker/application/date_services.dart';
 import 'package:pocketfi/src/features/transactions/domain/transaction.dart';
 import 'package:pocketfi/src/features/transactions/presentation/transactions_list_view.dart';
 import 'package:pocketfi/src/features/wallets/application/wallet_services.dart';
@@ -28,7 +28,7 @@ class WalletDetailsView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final selectedWallet = ref.watch(selectedUserWalletProvider);
+    final selectedWallet = ref.watch(selectedWalletProvider);
     final transactions =
         ref.watch(userTransactionsInWalletProvider(selectedWallet!.walletId));
     final transactionType = ref.watch(transactionTypeProvider);
@@ -79,8 +79,8 @@ class WalletDetailsView extends ConsumerWidget {
           IconButton(
             onPressed: () {
               ref
-                  .read(selectedUserWalletProvider.notifier)
-                  .setSelectedWallet(selectedWallet, ref);
+                  .read(selectedWalletProvider.notifier)
+                  .setSelectedWallet(selectedWallet);
               Navigator.of(context, rootNavigator: true).push(
                 MaterialPageRoute(
                   builder: (context) => UpdateWallet(
@@ -97,7 +97,7 @@ class WalletDetailsView extends ConsumerWidget {
         child: Column(
           children: [
             const SizedBox(height: 20),
-            const OverviewMonthSelector(),
+            const MonthPicker(),
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Container(

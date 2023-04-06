@@ -25,7 +25,7 @@ import 'package:pocketfi/src/features/category/application/category_services.dar
 import 'package:pocketfi/src/features/category/domain/category.dart';
 import 'package:pocketfi/src/features/category/presentation/category_page.dart';
 import 'package:pocketfi/src/features/transactions/application/transaction_services.dart';
-import 'package:pocketfi/src/features/transactions/date_picker/presentation/transaction_date_picker.dart';
+import 'package:pocketfi/src/features/shared/date_picker/presentation/transaction_date_picker.dart';
 import 'package:pocketfi/src/features/shared/image_upload/data/image_file_notifier.dart';
 import 'package:pocketfi/src/features/shared/image_upload/domain/file_type.dart';
 import 'package:pocketfi/src/features/shared/image_upload/domain/thumbnail_request.dart';
@@ -169,10 +169,7 @@ class UpdateTransactionState extends ConsumerState<UpdateTransaction> {
                       const Spacer(),
                       const Icon(AppIcons.wallet, color: AppColors.mainColor1),
                       const SizedBox(width: 8.0),
-                      // const SelectWalletDropdownList(),
-                      EditWalletDropdownList(
-                          // chosenWallet: selectedWallet,
-                          ),
+                      const SelectWalletDropdownList(),
                       const SizedBox(width: 8.0),
                     ],
                   ),

@@ -10,16 +10,15 @@ import 'package:pocketfi/src/constants/strings.dart';
 import 'package:pocketfi/src/features/authentication/application/user_id_provider.dart';
 import 'package:pocketfi/src/features/category/application/category_services.dart';
 import 'package:pocketfi/src/features/tags/application/tag_services.dart';
-import 'package:pocketfi/src/features/tags/data/tag_repository.dart';
 
-class EditTag extends StatefulHookConsumerWidget {
-  const EditTag({super.key});
+class UpdateTag extends StatefulHookConsumerWidget {
+  const UpdateTag({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _EditTagState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _UpdateTagState();
 }
 
-class _EditTagState extends ConsumerState<EditTag> {
+class _UpdateTagState extends ConsumerState<UpdateTag> {
   @override
   Widget build(BuildContext context) {
     final selectedTag = ref.watch(selectedTagProvider);

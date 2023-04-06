@@ -26,7 +26,8 @@ class SelectWalletDropdownList extends ConsumerWidget {
       child: Consumer(
         builder: (context, ref, child) {
           return DropdownButton(
-            value: selectedWallet,
+            // value: selectedWallet,
+            value: selectedWallet ?? walletList?.first,
             items: walletList?.map((wallet) {
               return DropdownMenuItem(
                 value: wallet,
@@ -49,195 +50,146 @@ class SelectWalletDropdownList extends ConsumerWidget {
   }
 }
 
-class EditWalletDropdownList extends ConsumerWidget {
-  const EditWalletDropdownList({
-    super.key,
-    // required this.chosenWallet,
-  });
+// class SelectWalletForBudgetDropdownList extends ConsumerWidget {
+//   String? walletId;
+//   SelectWalletForBudgetDropdownList({
+//     super.key,
+//     this.walletId,
+//   });
 
-  // final Wallet? chosenWallet;
+//   @override
+//   Widget build(BuildContext context, WidgetRef ref) {
+//     final wallets = ref.watch(userWalletsProvider).value;
+//     final selectedWallet = ref.watch(selectedWalletForBudgetProvider);
 
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final wallets = ref.watch(userWalletsProvider).value;
-    // final selectedwalletId = ref.watch(selectedTransactionProvider)!.walletId;
-    // final selectedWallet = getWalletById(selectedwalletId);
-    final selectedWallet = ref.watch(selectedWalletProvider);
+//     debugPrint('first wallets: ${selectedWallet?.walletName}');
+//     final walletList = wallets?.toList();
+//     debugPrint('wallet list: ${walletList?.length}');
+//     debugPrint('wallet list: ${walletList?.toString()}');
 
-    // debugPrint('s wallet: ${selectedWallet?.walletName}');
+//     return Consumer(
+//       builder: (context, ref, child) {
+//         return DropdownButton(
+//           value: selectedWallet,
+//           items: walletList?.map((wallet) {
+//             return DropdownMenuItem(
+//               value: wallet,
+//               child: Text(wallet.walletName),
+//             );
+//           }).toList(),
+//           onChanged: (selectedWallet) {
+//             debugPrint('wallet tapped: ${selectedWallet?.walletName}');
+//             if (walletId == null) {
+//               ref.read(selectedWalletForBudgetProvider.notifier).state =
+//                   selectedWallet!;
+//             }
+//             //! need to fix this -> need to get wallet with wallet id
+//             // else {
+//             //   ref.read(selectedWalletForBudgetProvider.notifier).state =
+//             // ;
+//             // }
+//             debugPrint(
+//                 'selected wallet: ${ref.read(selectedWalletForBudgetProvider)?.walletName}');
+//           },
+//         );
+//       },
+//     );
+//   }
+// }
 
-    final walletList = wallets?.toList();
-    // debugPrint('wallet list: ${walletList?.length}');
-    // debugPrint('wallet list: ${walletList?.toString()}');
+// class SelectWalletForDebtDropdownList extends ConsumerWidget {
+//   String? walletId;
+//   SelectWalletForDebtDropdownList({
+//     super.key,
+//     this.walletId,
+//   });
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      child: Consumer(
-        builder: (context, ref, child) {
-          return DropdownButton(
-            value: selectedWallet,
-            items: walletList?.map((wallet) {
-              return DropdownMenuItem(
-                value: wallet,
-                child: Text(wallet.walletName),
-              );
-            }).toList(),
-            onChanged: (selectedWallet) {
-              debugPrint('wallet tapped: ${selectedWallet?.walletName}');
-              // ref.read(selectedWalletProvider.notifier).state = selectedWallet!;
-              ref
-                  .read(selectedWalletProvider.notifier)
-                  .setSelectedWallet(selectedWallet);
-              debugPrint(
-                  'selected wallet: ${ref.read(selectedWalletProvider)?.walletName}');
-            },
-          );
-        },
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context, WidgetRef ref) {
+//     final wallets = ref.watch(userWalletsProvider).value;
+//     final selectedWallet = ref.watch(selectedWalletForDebtProvider);
 
-class SelectWalletForBudgetDropdownList extends ConsumerWidget {
-  String? walletId;
-  SelectWalletForBudgetDropdownList({
-    super.key,
-    this.walletId,
-  });
+//     debugPrint('first wallets: ${selectedWallet?.walletName}');
+//     final walletList = wallets?.toList();
+//     debugPrint('wallet list: ${walletList?.length}');
+//     debugPrint('wallet list: ${walletList?.toString()}');
 
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final wallets = ref.watch(userWalletsProvider).value;
-    final selectedWallet = ref.watch(selectedWalletForBudgetProvider);
+//     return Consumer(
+//       builder: (context, ref, child) {
+//         return DropdownButton(
+//           value: selectedWallet,
+//           items: walletList?.map((wallet) {
+//             return DropdownMenuItem(
+//               value: wallet,
+//               child: Text(wallet.walletName),
+//             );
+//           }).toList(),
+//           onChanged: (selectedWallet) {
+//             debugPrint('wallet tapped: ${selectedWallet?.walletName}');
+//             if (walletId == null) {
+//               ref.read(selectedWalletForDebtProvider.notifier).state =
+//                   selectedWallet!;
+//             }
+//             //! need to fix this -> need to get wallet with wallet id
+//             // else {
+//             //   ref.read(selectedWalletForBudgetProvider.notifier).state =
+//             // ;
+//             // }
+//             debugPrint(
+//                 'selected wallet: ${ref.read(selectedWalletForDebtProvider)?.walletName}');
+//           },
+//         );
+//       },
+//     );
+//   }
+// }
 
-    debugPrint('first wallets: ${selectedWallet?.walletName}');
-    final walletList = wallets?.toList();
-    debugPrint('wallet list: ${walletList?.length}');
-    debugPrint('wallet list: ${walletList?.toString()}');
+// class SelectWalletForSavingGoalDropdownList extends ConsumerWidget {
+//   String? walletId;
+//   SelectWalletForSavingGoalDropdownList({
+//     super.key,
+//     this.walletId,
+//   });
 
-    return Consumer(
-      builder: (context, ref, child) {
-        return DropdownButton(
-          value: selectedWallet,
-          items: walletList?.map((wallet) {
-            return DropdownMenuItem(
-              value: wallet,
-              child: Text(wallet.walletName),
-            );
-          }).toList(),
-          onChanged: (selectedWallet) {
-            debugPrint('wallet tapped: ${selectedWallet?.walletName}');
-            if (walletId == null) {
-              ref.read(selectedWalletForBudgetProvider.notifier).state =
-                  selectedWallet!;
-            }
-            //! need to fix this -> need to get wallet with wallet id
-            // else {
-            //   ref.read(selectedWalletForBudgetProvider.notifier).state =
-            // ;
-            // }
-            debugPrint(
-                'selected wallet: ${ref.read(selectedWalletForBudgetProvider)?.walletName}');
-          },
-        );
-      },
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context, WidgetRef ref) {
+//     final wallets = ref.watch(userWalletsProvider).value;
+//     final selectedWallet = ref.watch(selectedWalletForSavingGoalProvider);
 
-class SelectWalletForDebtDropdownList extends ConsumerWidget {
-  String? walletId;
-  SelectWalletForDebtDropdownList({
-    super.key,
-    this.walletId,
-  });
+//     debugPrint('first wallets: ${selectedWallet?.walletName}');
+//     final walletList = wallets?.toList();
+//     debugPrint('wallet list: ${walletList?.length}');
+//     debugPrint('wallet list: ${walletList?.toString()}');
 
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final wallets = ref.watch(userWalletsProvider).value;
-    final selectedWallet = ref.watch(selectedWalletForDebtProvider);
-
-    debugPrint('first wallets: ${selectedWallet?.walletName}');
-    final walletList = wallets?.toList();
-    debugPrint('wallet list: ${walletList?.length}');
-    debugPrint('wallet list: ${walletList?.toString()}');
-
-    return Consumer(
-      builder: (context, ref, child) {
-        return DropdownButton(
-          value: selectedWallet,
-          items: walletList?.map((wallet) {
-            return DropdownMenuItem(
-              value: wallet,
-              child: Text(wallet.walletName),
-            );
-          }).toList(),
-          onChanged: (selectedWallet) {
-            debugPrint('wallet tapped: ${selectedWallet?.walletName}');
-            if (walletId == null) {
-              ref.read(selectedWalletForDebtProvider.notifier).state =
-                  selectedWallet!;
-            }
-            //! need to fix this -> need to get wallet with wallet id
-            // else {
-            //   ref.read(selectedWalletForBudgetProvider.notifier).state =
-            // ;
-            // }
-            debugPrint(
-                'selected wallet: ${ref.read(selectedWalletForDebtProvider)?.walletName}');
-          },
-        );
-      },
-    );
-  }
-}
-
-class SelectWalletForSavingGoalDropdownList extends ConsumerWidget {
-  String? walletId;
-  SelectWalletForSavingGoalDropdownList({
-    super.key,
-    this.walletId,
-  });
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final wallets = ref.watch(userWalletsProvider).value;
-    final selectedWallet = ref.watch(selectedWalletForSavingGoalProvider);
-
-    debugPrint('first wallets: ${selectedWallet?.walletName}');
-    final walletList = wallets?.toList();
-    debugPrint('wallet list: ${walletList?.length}');
-    debugPrint('wallet list: ${walletList?.toString()}');
-
-    return Consumer(
-      builder: (context, ref, child) {
-        return DropdownButton(
-          value: selectedWallet,
-          items: walletList?.map((wallet) {
-            return DropdownMenuItem(
-              value: wallet,
-              child: Text(wallet.walletName),
-            );
-          }).toList(),
-          onChanged: (selectedWallet) {
-            debugPrint('wallet tapped: ${selectedWallet?.walletName}');
-            if (walletId == null) {
-              ref.read(selectedWalletForSavingGoalProvider.notifier).state =
-                  selectedWallet!;
-            }
-            //! need to fix this -> need to get wallet with wallet id
-            // else {
-            //   ref.read(selectedWalletForBudgetProvider.notifier).state =
-            // ;
-            // }
-            debugPrint(
-                'selected wallet: ${ref.read(selectedWalletForSavingGoalProvider)?.walletName}');
-          },
-        );
-      },
-    );
-  }
-}
+//     return Consumer(
+//       builder: (context, ref, child) {
+//         return DropdownButton(
+//           value: selectedWallet,
+//           items: walletList?.map((wallet) {
+//             return DropdownMenuItem(
+//               value: wallet,
+//               child: Text(wallet.walletName),
+//             );
+//           }).toList(),
+//           onChanged: (selectedWallet) {
+//             debugPrint('wallet tapped: ${selectedWallet?.walletName}');
+//             if (walletId == null) {
+//               ref.read(selectedWalletForSavingGoalProvider.notifier).state =
+//                   selectedWallet!;
+//             }
+//             //! need to fix this -> need to get wallet with wallet id
+//             // else {
+//             //   ref.read(selectedWalletForBudgetProvider.notifier).state =
+//             // ;
+//             // }
+//             debugPrint(
+//                 'selected wallet: ${ref.read(selectedWalletForSavingGoalProvider)?.walletName}');
+//           },
+//         );
+//       },
+//     );
+//   }
+// }
 // return Center(
 //   child: wallets.when(
 //     data: (Iterable<Wallet> data) {

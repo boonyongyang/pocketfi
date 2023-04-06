@@ -102,8 +102,8 @@ class WalletBottomSheet extends ConsumerWidget {
                         wallet: wallet,
                         onTap: () {
                           ref
-                              .read(selectedUserWalletProvider.notifier)
-                              .setSelectedWallet(wallet, ref);
+                              .read(selectedWalletProvider.notifier)
+                              .setSelectedWallet(wallet);
                           // specificWallet.when(data: (specificWallet) {
                           // final walletId = specificWallet.wallet.walletId;
                           Navigator.of(context, rootNavigator: true).push(

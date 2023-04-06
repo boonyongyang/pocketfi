@@ -85,7 +85,9 @@ class _DepositSheetState extends ConsumerState<DepositSheet> {
                 // textInputAction: TextInputAction.done,
                 keyboardType: Platform.isIOS
                     ? const TextInputType.numberWithOptions(
-                        signed: true, decimal: true)
+                        // signed: true,
+                        decimal: true,
+                      )
                     : TextInputType.number,
                 // This regex for only amount (price). you can create your own regex based on your requirement
                 inputFormatters: [

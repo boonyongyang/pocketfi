@@ -32,7 +32,7 @@ class UpdateWallet extends StatefulHookConsumerWidget {
 class _UpdateWalletState extends ConsumerState<UpdateWallet> {
   @override
   Widget build(BuildContext context) {
-    final selectedWallet = ref.watch(selectedUserWalletProvider);
+    final selectedWallet = ref.watch(selectedWalletProvider);
     final walletNameController = useTextEditingController(
       text: selectedWallet?.walletName,
     );
@@ -315,7 +315,7 @@ class _UpdateWalletState extends ConsumerState<UpdateWallet> {
                                                     newList?.removeAt(index);
                                                     ref
                                                         .read(
-                                                            selectedUserWalletProvider
+                                                            selectedWalletProvider
                                                                 .notifier)
                                                         .updateCollaboratorInfoList(
                                                             newList!, ref);
