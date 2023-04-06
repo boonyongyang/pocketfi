@@ -9,10 +9,8 @@ import 'package:pocketfi/src/features/overview/application/overview_services.dar
 import 'package:pocketfi/src/features/overview/presentation/category_list_tile.dart';
 import 'package:pocketfi/src/features/overview/presentation/tag_list_tile.dart';
 import 'package:pocketfi/src/features/tags/application/tag_services.dart';
-import 'package:pocketfi/src/features/transactions/application/transaction_services.dart';
 import 'package:pocketfi/src/features/shared/date_picker/application/date_services.dart';
 import 'package:pocketfi/src/features/transactions/data/transaction_repository.dart';
-import 'package:pocketfi/src/features/transactions/domain/transaction.dart';
 import 'package:pocketfi/src/features/transactions/presentation/add_new_transactions/select_transaction_type.dart';
 import 'package:pocketfi/src/features/shared/date_picker/presentation/month_picker.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -39,9 +37,7 @@ class OverviewTabView extends ConsumerWidget {
         ref.refresh(filteredCategoriesProvider);
         ref.refresh(filteredTagsProvider);
         return Future.delayed(
-          const Duration(
-            milliseconds: 500,
-          ),
+          const Duration(milliseconds: 500),
         );
       },
       child: SingleChildScrollView(

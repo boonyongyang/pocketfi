@@ -12,13 +12,10 @@ import 'package:path_provider/path_provider.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/features/overview/application/overview_services.dart';
 import 'package:pocketfi/src/features/shared/image_upload/data/image_file_notifier.dart';
-import 'package:pocketfi/src/features/bills/presentation/bills_tab_view.dart';
 import 'package:pocketfi/src/features/bookmarks/presentation/bookmark_page.dart';
-import 'package:pocketfi/src/features/transactions/domain/transaction.dart';
 import 'package:pocketfi/src/features/overview/presentation/overview_tab_view.dart';
 import 'package:pocketfi/src/features/receipts/scan_receipt_page.dart';
 import 'package:pocketfi/src/features/transactions/application/transaction_services.dart';
-import 'package:pocketfi/src/features/transactions/data/transaction_repository.dart';
 import 'package:pocketfi/src/features/transactions/presentation/add_new_transactions/add_new_transaction.dart';
 import 'package:pocketfi/src/features/transactions/presentation/transactions_tab_view.dart';
 
@@ -47,7 +44,6 @@ class _MainViewState extends ConsumerState<TimelinePage>
   // }
 
   String getNetAmountString() {
-    // double netAmount = getTotalAmount();
     // double netAmount = 5000;
     double netAmount = ref.watch(totalAmountProvider);
     String sign = netAmount < 0 ? '-' : '';
@@ -63,8 +59,8 @@ class _MainViewState extends ConsumerState<TimelinePage>
     String netAmount = getNetAmountString();
     super.build(context);
     return DefaultTabController(
-      // length: 2,
-      length: 3,
+      length: 2,
+      // length: 3,
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: AppColors.mainColor1,
@@ -189,14 +185,14 @@ class _MainViewState extends ConsumerState<TimelinePage>
                   Text('Overview'),
                 ],
               )),
-              Tab(
-                  child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  // Icon(Icons.receipt_long),
-                  Text('Bills'),
-                ],
-              )),
+              // Tab(
+              //     child: Row(
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   children: const [
+              //     // Icon(Icons.receipt_long),
+              //     Text('Bills'),
+              //   ],
+              // )),
             ],
           ),
         ),
@@ -204,7 +200,7 @@ class _MainViewState extends ConsumerState<TimelinePage>
           children: [
             TransactionsTabView(),
             OverviewTabView(),
-            BillsTabView(),
+            // BillsTabView(),
           ],
         ),
         floatingActionButton: Column(

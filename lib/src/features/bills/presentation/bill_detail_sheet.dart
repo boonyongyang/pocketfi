@@ -4,11 +4,14 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:pocketfi/src/common_widgets/buttons/full_width_button_with_text.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
-import 'package:pocketfi/src/constants/strings.dart';
+import 'package:pocketfi/src/features/authentication/application/user_id_provider.dart';
 import 'package:pocketfi/src/features/bills/application/bill_services.dart';
 import 'package:pocketfi/src/features/bills/domain/bill.dart';
 import 'package:pocketfi/src/features/bills/presentation/update_bill_page.dart';
 import 'package:pocketfi/src/features/category/application/category_services.dart';
+import 'package:pocketfi/src/features/category/data/category_repository.dart';
+import 'package:pocketfi/src/features/shared/date_picker/application/date_services.dart';
+import 'package:pocketfi/src/features/transactions/application/transaction_services.dart';
 import 'package:pocketfi/src/features/transactions/domain/transaction.dart';
 
 class BillDetailSheet extends ConsumerWidget {
@@ -115,25 +118,61 @@ class BillDetailSheet extends ConsumerWidget {
                 ),
               ],
             ),
-            FullWidthButtonWithText(
-              onPressed: () {
-                Fluttertoast.showToast(
-                  msg: "Bill marked as paid.",
-                  toastLength: Toast.LENGTH_SHORT,
-                  gravity: ToastGravity.BOTTOM,
-                  timeInSecForIosWeb: 2,
-                  backgroundColor: Colors.white,
-                  textColor: AppColors.mainColor1,
-                  fontSize: 16.0,
-                );
-                ref.read(selectedBillProvider.notifier).updateBillStatus(
-                      BillStatus.paid,
-                      ref,
+            Visibility(
+              visible: selectedBill.status != BillStatus.paid,
+              child: FullWidthButtonWithText(
+                onPressed: () async {
+                  Fluttertoast.showToast(
+                    msg: "Bill marked as paid.",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.BOTTOM,
+                    timeInSecForIosWeb: 2,
+                    backgroundColor: Colors.white,
+                    textColor: AppColors.mainColor1,
+                    fontSize: 16.0,
+                  );
+                  ref
+                      .read(selectedBillProvider.notifier)
+                      .updateBillStatus(BillStatus.paid, ref);
+
+                  final userId = ref.read(userIdProvider)!;
+
+                  final isMarkedAsPaid =
+                      await ref.read(billProvider.notifier).markBillAsPaid(
+                            billId: selectedBill.billId,
+                            userId: userId,
+                            walletId: selectedBill.walletId,
+                          );
+
+                  if (isMarkedAsPaid) {
+                    final type = ref.read(transactionTypeProvider);
+                    final date = ref.read(transactionDateProvider);
+
+                    // final file = ref.read(imageFileProvider);
+                    // final tags = ref.watch(userTagsNotifier);
+
+                    ref.read(transactionProvider.notifier).addNewTransaction(
+                      userId: userId,
+                      walletId: selectedBill.walletId,
+                      walletName: selectedBill.walletName,
+                      amount: selectedBill.amount,
+                      type: type,
+                      note: selectedBill.description,
+                      // categoryName: ExpenseCategory.billsAndFees.name,
+                      categoryName: selectedBill.categoryName,
+                      // date: date, // ? today's date or bill's date?
+                      date: selectedBill.createdAt!,
+                      file: null,
+                      isBookmark: false,
+                      tags: [],
                     );
-                Navigator.of(context).pop();
-              },
-              text: "Mark as Paid",
-              backgroundColor: AppColors.mainColor2,
+                  }
+
+                  Navigator.of(context).pop();
+                },
+                text: "Mark as Paid",
+                backgroundColor: AppColors.mainColor2,
+              ),
             ),
           ],
         ),

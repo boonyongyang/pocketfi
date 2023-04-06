@@ -17,17 +17,31 @@ class BillListView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // debugPrint('bills length is ${bills.length}');
-    return ListView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      padding: const EdgeInsets.all(8.0),
-      itemCount: bills.length,
-      itemBuilder: (context, index) {
-        final bill = bills.elementAt(index);
-        return Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            BillCard(
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20.0),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 1,
+              blurRadius: 5,
+              offset: const Offset(0, 3),
+            ),
+          ],
+          color: Colors.white,
+        ),
+        child: ListView.separated(
+          separatorBuilder: (context, index) => const Divider(),
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          // physics: const BouncingScrollPhysics(),
+          padding: const EdgeInsets.all(8.0),
+          itemCount: bills.length,
+          itemBuilder: (context, index) {
+            final bill = bills.elementAt(index);
+            return BillCard(
               bill: bill,
               onTapped: () {
                 ref.read(selectedBillProvider.notifier).setSelectedBill(bill);
@@ -46,10 +60,10 @@ class BillListView extends ConsumerWidget {
                 //   ),
                 // );
               },
-            ),
-          ],
-        );
-      },
+            );
+          },
+        ),
+      ),
     );
   }
 }
