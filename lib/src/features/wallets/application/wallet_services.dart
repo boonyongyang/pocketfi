@@ -30,8 +30,8 @@ final walletProvider = StateNotifierProvider<WalletNotifier, IsLoading>(
 // * selectedWalletNotifier
 final selectedWalletProvider =
     StateNotifierProvider<SelectedWalletNotifier, Wallet?>((ref) =>
-        // SelectedWalletNotifier(ref.watch(userWalletsProvider).value?.first));
-        SelectedWalletNotifier(null));
+        SelectedWalletNotifier(ref.watch(userWalletsProvider).value?.first));
+// SelectedWalletNotifier(null));
 
 // * SelectedWalletNotifier
 class SelectedWalletNotifier extends StateNotifier<Wallet?> {

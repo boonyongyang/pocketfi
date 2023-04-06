@@ -26,6 +26,27 @@ const List<Color> colorList = [
   Colors.black,
 ];
 
+const List<Color> colorAccentList = [
+  Colors.orangeAccent,
+  Colors.limeAccent,
+  Colors.indigoAccent,
+  Colors.lightBlueAccent,
+  Colors.tealAccent,
+  Colors.cyanAccent,
+  Colors.yellowAccent,
+  Colors.lightGreenAccent,
+  Colors.pinkAccent,
+  Colors.redAccent,
+  Colors.purpleAccent,
+  // Colors.brown,
+  Colors.amberAccent,
+  Colors.deepOrangeAccent,
+  Colors.deepPurpleAccent,
+  Colors.lightBlueAccent,
+  Colors.lightGreenAccent,
+  // Colors.black,
+];
+
 // list of icons
 const List<IconData> iconList = [
   Icons.attach_money,

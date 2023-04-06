@@ -127,17 +127,17 @@ Future<double> totalAmount() async {
         );
     updatedDebtList = [...budgetsAmount, ...updatedDebtList];
     for (var i in updatedDebtList) {
-      debugPrint('updatedDebtList: $i');
+      // debugPrint('updatedDebtList: $i');
     }
-    debugPrint('updatedDebtList length: ${updatedDebtList.length}');
+    // debugPrint('updatedDebtList length: ${updatedDebtList.length}');
   }
 
   var totalAmount = updatedDebtList.fold(0.00, (previousValue, element) {
-    debugPrint('previousValue: $previousValue');
-    debugPrint('element: $element');
+    // debugPrint('previousValue: $previousValue');
+    // debugPrint('element: $element');
     return previousValue + element;
   });
-  debugPrint('totalAmount: $totalAmount');
+  // debugPrint('totalAmount: $totalAmount');
   return totalAmount;
 }
 

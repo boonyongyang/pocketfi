@@ -35,6 +35,7 @@ class SelectTransactionTypeState extends ConsumerState<SelectTransactionType>
       // * update the category list
       final tabIndex = ref.watch(selectedTransactionProvider)?.type ??
           ref.watch(transactionTypeProvider);
+
       ref.read(categoriesProvider.notifier).updateCategoriesList(tabIndex!);
 
       // ! newly added

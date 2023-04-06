@@ -196,7 +196,7 @@ class UpdateTransactionState extends ConsumerState<UpdateTransaction> {
                             IconButton(
                               splashRadius: 22,
                               icon: Icon(
-                                isBookmark!
+                                isBookmark ?? false
                                     ? Icons.bookmark
                                     : Icons.bookmark_outline,
                                 color: AppColors.mainColor2,
@@ -218,7 +218,7 @@ class UpdateTransactionState extends ConsumerState<UpdateTransaction> {
                                 mounted: mounted,
                                 selectedWallet: selectedWallet,
                                 date: selectedTransaction?.date,
-                                isBookmark: isBookmark,
+                                isBookmark: isBookmark ?? false,
                               ),
                             ),
                           ],
@@ -833,6 +833,9 @@ class SaveButton extends ConsumerWidget {
                   textColor: AppColors.mainColor1,
                   fontSize: 16.0,
                 );
+                ref
+                    .read(selectedTransactionProvider.notifier)
+                    .resetSelectedTransactionState();
               }
             }
           : null,
