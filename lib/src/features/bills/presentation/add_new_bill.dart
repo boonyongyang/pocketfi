@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:auto_size_text_field/auto_size_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -465,8 +463,10 @@ class SaveButton extends ConsumerWidget {
               final isCreated =
                   await ref.read(billProvider.notifier).createNewBill(
                         userId: userId,
-                        walletId: selectedWallet!.walletId, // ? sure?
-                        walletName: selectedWallet!.walletName, // ? sure?
+                        walletId: selectedWallet.walletId, // ? sure?
+                        walletName: selectedWallet.walletName, // ? sure?
+                        // walletId: selectedWallet!.walletId, // ? sure?
+                        // walletName: selectedWallet!.walletName, // ? sure?
                         billAmount: double.parse(amount),
                         billDueDate: dueDate,
                         categoryName: categoryName!.name,

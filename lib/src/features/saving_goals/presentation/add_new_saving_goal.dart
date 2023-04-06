@@ -204,8 +204,8 @@ class _AddNewSavingGoalState extends ConsumerState<AddNewSavingGoal> {
 
                 // wallet
                 Row(
-                  children: [
-                    const Padding(
+                  children: const [
+                    Padding(
                       padding: EdgeInsets.only(left: 16.0, right: 32.0),
                       child: SizedBox(
                         width: 5,
@@ -229,13 +229,14 @@ class _AddNewSavingGoalState extends ConsumerState<AddNewSavingGoal> {
                     //   ),
                     // ),
                     Padding(
-                        padding: const EdgeInsets.only(
+                        padding: EdgeInsets.only(
                           left: 8.0,
                           right: 16.0,
                           // top: 16.0,
                           bottom: 8.0,
                         ),
-                        child: SelectWalletForSavingGoalDropdownList()),
+                        // child: SelectWalletForSavingGoalDropdownList()),
+                        child: SelectWalletDropdownList()),
                   ],
                 ),
               ],

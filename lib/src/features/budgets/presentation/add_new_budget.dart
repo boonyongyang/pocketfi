@@ -228,8 +228,8 @@ class _AddNewBudgetState extends ConsumerState<AddNewBudget> {
                   ],
                 ),
                 Row(
-                  children: [
-                    const Padding(
+                  children: const [
+                    Padding(
                       padding: EdgeInsets.only(left: 16.0, right: 32.0),
                       child: SizedBox(
                         width: 5,
@@ -239,7 +239,7 @@ class _AddNewBudgetState extends ConsumerState<AddNewBudget> {
                         ),
                       ),
                     ),
-                    const Expanded(
+                    Expanded(
                       child: Padding(
                         padding: EdgeInsets.all(16.0),
                         child: Text(
@@ -253,13 +253,14 @@ class _AddNewBudgetState extends ConsumerState<AddNewBudget> {
                       ),
                     ),
                     Padding(
-                        padding: const EdgeInsets.only(
+                        padding: EdgeInsets.only(
                           left: 8.0,
                           right: 16.0,
                           // top: 16.0,
                           bottom: 8.0,
                         ),
-                        child: SelectWalletForBudgetDropdownList()),
+                        // child: SelectWalletForBudgetDropdownList()),
+                        child: SelectWalletDropdownList()),
                   ],
                 ),
               ],
