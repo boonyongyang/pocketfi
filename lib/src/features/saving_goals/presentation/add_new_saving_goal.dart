@@ -34,7 +34,8 @@ class _AddNewSavingGoalState extends ConsumerState<AddNewSavingGoal> {
 
     final isCreateButtonEnabled = useState(false);
 
-    final selectedWallet = ref.watch(selectedWalletForSavingGoalProvider);
+    // final selectedWallet = ref.watch(selectedWalletForSavingGoalProvider);
+    final selectedWallet = ref.watch(selectedWalletProvider);
 
     useEffect(() {
       void listener() {

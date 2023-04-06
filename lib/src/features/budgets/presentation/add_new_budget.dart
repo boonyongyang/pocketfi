@@ -27,7 +27,8 @@ class _AddNewBudgetState extends ConsumerState<AddNewBudget> {
   Widget build(BuildContext context) {
     final budgetNameController = useTextEditingController();
     final amountController = useTextEditingController();
-    final selectedWallet = ref.watch(selectedWalletForBudgetProvider);
+    // final selectedWallet = ref.watch(selectedWalletForBudgetProvider);
+    final selectedWallet = ref.watch(selectedWalletProvider);
 
     final expenseCategories = ref.watch(expenseCategoriesProvider);
     final selectedCategory = ref.watch(selectedCategoryProvider);

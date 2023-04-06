@@ -28,7 +28,7 @@ class WalletDetailsView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final selectedWallet = ref.watch(selectedUserWalletProvider);
+    final selectedWallet = ref.watch(selectedWalletProvider);
     final transactions =
         ref.watch(userTransactionsInWalletProvider(selectedWallet!.walletId));
     final transactionType = ref.watch(transactionTypeProvider);
@@ -79,7 +79,7 @@ class WalletDetailsView extends ConsumerWidget {
           IconButton(
             onPressed: () {
               ref
-                  .read(selectedUserWalletProvider.notifier)
+                  .read(selectedWalletProvider.notifier)
                   .setSelectedWallet(selectedWallet);
               Navigator.of(context, rootNavigator: true).push(
                 MaterialPageRoute(

@@ -32,7 +32,8 @@ class _AddDebtViewState extends ConsumerState<AddNewDebt> {
 
     final isCreateButtonEnabled = useState(false);
 
-    final selectedWallet = ref.watch(selectedWalletForDebtProvider);
+    // final selectedWallet = ref.watch(selectedWalletForDebtProvider);
+    final selectedWallet = ref.watch(selectedWalletProvider);
 
     // double? totalDebtAmount = double.tryParse(totalDebtAmountController.text);
     // double? minPaymentPerMonth = double.tryParse(minimumPaymentController.text);

@@ -43,7 +43,7 @@ class SelectedWalletNotifier extends StateNotifier<Wallet?> {
 
   void updateCollaboratorInfoList(
       List<CollaboratorsInfo> newList, WidgetRef ref) {
-    Wallet? wallet = ref.watch(selectedUserWalletProvider);
+    Wallet? wallet = ref.watch(selectedWalletProvider);
     if (wallet != null) {
       wallet = wallet.copyWith(collaborators: newList);
       state = wallet;
@@ -51,56 +51,56 @@ class SelectedWalletNotifier extends StateNotifier<Wallet?> {
   }
 }
 
-final selectedWalletForBudgetProvider = StateProvider.autoDispose<Wallet?>(
-  (ref) {
-    final wallets = ref.watch(userWalletsProvider).value;
-    if (wallets == null) {
-      debugPrint('wallets is null');
-      return null;
-    }
-    debugPrint('wallets is ${wallets.last.walletName}');
-    return wallets.first;
-  },
-);
-final selectedWalletForDebtProvider = StateProvider.autoDispose<Wallet?>(
-  (ref) {
-    final wallets = ref.watch(userWalletsProvider).value;
-    if (wallets == null) {
-      debugPrint('wallets is null');
-      return null;
-    }
-    debugPrint('wallets is ${wallets.last.walletName}');
-    return wallets.first;
-  },
-);
-final selectedWalletForSavingGoalProvider = StateProvider.autoDispose<Wallet?>(
-  (ref) {
-    final wallets = ref.watch(userWalletsProvider).value;
-    if (wallets == null) {
-      debugPrint('wallets is null');
-      return null;
-    }
-    debugPrint('wallets is ${wallets.last.walletName}');
-    return wallets.first;
-  },
-);
+// final selectedWalletForBudgetProvider = StateProvider.autoDispose<Wallet?>(
+//   (ref) {
+//     final wallets = ref.watch(userWalletsProvider).value;
+//     if (wallets == null) {
+//       debugPrint('wallets is null');
+//       return null;
+//     }
+//     debugPrint('wallets is ${wallets.last.walletName}');
+//     return wallets.first;
+//   },
+// );
+// final selectedWalletForDebtProvider = StateProvider.autoDispose<Wallet?>(
+//   (ref) {
+//     final wallets = ref.watch(userWalletsProvider).value;
+//     if (wallets == null) {
+//       debugPrint('wallets is null');
+//       return null;
+//     }
+//     debugPrint('wallets is ${wallets.last.walletName}');
+//     return wallets.first;
+//   },
+// );
+// final selectedWalletForSavingGoalProvider = StateProvider.autoDispose<Wallet?>(
+//   (ref) {
+//     final wallets = ref.watch(userWalletsProvider).value;
+//     if (wallets == null) {
+//       debugPrint('wallets is null');
+//       return null;
+//     }
+//     debugPrint('wallets is ${wallets.last.walletName}');
+//     return wallets.first;
+//   },
+// );
 
-final selectedUserWalletProvider =
-    StateNotifierProvider<SelectedUserWalletNotifier, Wallet?>(
-  (_) => SelectedUserWalletNotifier(null),
-);
+// final selectedWalletProvider =
+//     StateNotifierProvider<SelectedUserWalletNotifier, Wallet?>(
+//   (_) => SelectedUserWalletNotifier(null),
+// );
 
-class SelectedUserWalletNotifier extends StateNotifier<Wallet?> {
-  SelectedUserWalletNotifier(Wallet? wallet) : super(wallet);
+// class SelectedUserWalletNotifier extends StateNotifier<Wallet?> {
+//   SelectedUserWalletNotifier(Wallet? wallet) : super(wallet);
 
-  void setSelectedWallet(Wallet? wallet) => state = wallet;
+//   void setSelectedWallet(Wallet? wallet) => state = wallet;
 
-  void updateCollaboratorInfoList(
-      List<CollaboratorsInfo> newList, WidgetRef ref) {
-    Wallet? wallet = ref.watch(selectedUserWalletProvider);
-    if (wallet != null) {
-      wallet = wallet.copyWith(collaborators: newList);
-      state = wallet;
-    }
-  }
-}
+//   void updateCollaboratorInfoList(
+//       List<CollaboratorsInfo> newList, WidgetRef ref) {
+//     Wallet? wallet = ref.watch(selectedWalletProvider);
+//     if (wallet != null) {
+//       wallet = wallet.copyWith(collaborators: newList);
+//       state = wallet;
+//     }
+//   }
+// }
