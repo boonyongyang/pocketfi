@@ -254,6 +254,32 @@ class BillNotifier extends StateNotifier<IsLoading> {
     isLoading = false;
 
     try {
+// check if the billDueDate is before today and the bill status is unpaid then change the status to overdue else change the status to unpaid
+      // final bill = await FirebaseFirestore.instance
+      //     .collection(FirebaseCollectionName.bills)
+      //     .doc(billId)
+      //     .get();
+
+      // final billStatus = bill.data()![BillKey.status];
+
+      // if (billDueDate.isBefore(DateTime.now()) &&
+      //     billStatus == BillStatus.unpaid) {
+      //   await FirebaseFirestore.instance
+      //       .collection(FirebaseCollectionName.bills)
+      //       .doc(billId)
+      //       .update({
+      //     BillKey.status: BillStatus.overdue,
+      //   });
+      // } else if (billDueDate.isAfter(DateTime.now()) &&
+      //     billStatus == BillStatus.overdue) {
+      //   await FirebaseFirestore.instance
+      //       .collection(FirebaseCollectionName.bills)
+      //       .doc(billId)
+      //       .update({
+      //     BillKey.status: BillStatus.unpaid,
+      //   });
+      // }
+
       await FirebaseFirestore.instance
           .collection(FirebaseCollectionName.bills)
           .doc(billId)

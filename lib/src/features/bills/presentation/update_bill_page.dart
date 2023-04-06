@@ -25,6 +25,7 @@ import 'package:pocketfi/src/features/bills/application/bill_services.dart';
 import 'package:pocketfi/src/features/bills/domain/bill.dart';
 import 'package:pocketfi/src/features/shared/date_picker/application/date_services.dart';
 import 'package:pocketfi/src/features/transactions/presentation/add_new_transactions/category_selector_view.dart';
+import 'package:pocketfi/src/features/wallets/presentation/select_wallet_dropdownlist.dart';
 import 'package:pocketfi/src/utils/haptic_feedback_service.dart';
 
 class UpdateBillPage extends StatelessWidget {
@@ -153,8 +154,8 @@ class UpdateBillFormState extends ConsumerState<UpdateBillForm> {
                       const Icon(AppIcons.wallet, color: AppColors.mainColor1),
                       // ! also need to change the selected
                       SelectWalletDropdownList(
-                        selectedWallet: selectedWallet,
-                      ),
+                          // selectedWallet: selectedWallet,
+                          ),
                     ],
                   ),
                 ),
@@ -410,53 +411,53 @@ class SelectCategory extends ConsumerWidget {
   }
 }
 
-class SelectWalletDropdownList extends ConsumerWidget {
-  const SelectWalletDropdownList({
-    super.key,
-    required this.selectedWallet,
-  });
+// class SelectWalletDropdownList extends ConsumerWidget {
+//   const SelectWalletDropdownList({
+//     super.key,
+//     required this.selectedWallet,
+//   });
 
-  final Wallet? selectedWallet;
+//   final Wallet? selectedWallet;
 
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final wallets = ref.watch(userWalletsProvider).value;
-    // final selectedWallet = ref.watch(selectedWalletProvider);
+//   @override
+//   Widget build(BuildContext context, WidgetRef ref) {
+//     final wallets = ref.watch(userWalletsProvider).value;
+//     // final selectedWallet = ref.watch(selectedWalletProvider);
 
-    debugPrint('first wallets: ${selectedWallet?.walletName}');
-    final walletList = wallets?.toList();
-    debugPrint('wallet list: ${walletList?.length}');
-    debugPrint('wallet list: ${walletList?.toString()}');
+//     debugPrint('first wallets: ${selectedWallet?.walletName}');
+//     final walletList = wallets?.toList();
+//     debugPrint('wallet list: ${walletList?.length}');
+//     debugPrint('wallet list: ${walletList?.toString()}');
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      child: Consumer(
-        builder: (context, ref, child) {
-          return DropdownButton(
-            value: selectedWallet,
-            items: walletList?.map((wallet) {
-              return DropdownMenuItem(
-                value: wallet,
-                child: Text(wallet.walletName),
-              );
-            }).toList(),
-            onChanged: (selectedWallet) {
-              debugPrint('wallet tapped: ${selectedWallet?.walletName}');
-              // ! THIS ALSO?????????
-              // ref.read(selectedWalletProvider.notifier).state = selectedWallet!;
-              ref
-                  .read(selectedBillProvider.notifier)
-                  .updateBillWallet(selectedWallet!, ref);
+//     return Padding(
+//       padding: const EdgeInsets.symmetric(horizontal: 8.0),
+//       child: Consumer(
+//         builder: (context, ref, child) {
+//           return DropdownButton(
+//             value: selectedWallet,
+//             items: walletList?.map((wallet) {
+//               return DropdownMenuItem(
+//                 value: wallet,
+//                 child: Text(wallet.walletName),
+//               );
+//             }).toList(),
+//             onChanged: (selectedWallet) {
+//               debugPrint('wallet tapped: ${selectedWallet?.walletName}');
+//               // ! THIS ALSO?????????
+//               // ref.read(selectedWalletProvider.notifier).state = selectedWallet!;
+//               ref
+//                   .read(selectedBillProvider.notifier)
+//                   .updateBillWallet(selectedWallet!, ref);
 
-              debugPrint(
-                  'selected wallet: ${ref.read(selectedWalletProvider)?.walletName}');
-            },
-          );
-        },
-      ),
-    );
-  }
-}
+//               debugPrint(
+//                   'selected wallet: ${ref.read(selectedWalletProvider)?.walletName}');
+//             },
+//           );
+//         },
+//       ),
+//     );
+//   }
+// }
 
 class SelectCurrency extends StatelessWidget {
   const SelectCurrency({

@@ -58,7 +58,7 @@ class BillsTabView extends ConsumerWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const SizedBox(height: 20.0),
+            // const SizedBox(height: 20.0),
             Column(
               children: [
                 Visibility(
@@ -66,7 +66,7 @@ class BillsTabView extends ConsumerWidget {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const MonthPicker(),
+                      // const MonthPicker(),
                       Padding(
                         padding: const EdgeInsets.all(20.0),
                         child: Container(
