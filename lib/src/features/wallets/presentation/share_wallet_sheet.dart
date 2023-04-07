@@ -44,7 +44,7 @@ class _ShareWalletSheetState extends ConsumerState<ShareWalletSheet> {
     //     walletId: widget);
 
     return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.4,
+      height: MediaQuery.of(context).size.height * 0.6,
       child: Column(
         children: [
           Row(

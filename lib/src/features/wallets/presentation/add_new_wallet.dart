@@ -238,6 +238,7 @@ class _AddNewWalletState extends ConsumerState<AddNewWallet> {
                           );
                       showModalBottomSheet(
                         context: context,
+                        isScrollControlled: true,
                         builder: (context) => ShareWalletSheet(),
                       );
                     },

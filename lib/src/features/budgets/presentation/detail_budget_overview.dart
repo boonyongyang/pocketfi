@@ -20,7 +20,8 @@ class DetailBudgetOverview extends ConsumerWidget {
     final allTransaction = userTransactions.when<List<Transaction>>(
       data: (transactions) => transactions.where((tran) {
         return tran.date.year == DateTime.now().year &&
-            tran.categoryName == selectedBudget!.categoryName;
+            tran.categoryName == selectedBudget!.categoryName &&
+            tran.walletId == selectedBudget.walletId;
       }).toList(),
       loading: () => [],
       error: (error, stackTrace) {

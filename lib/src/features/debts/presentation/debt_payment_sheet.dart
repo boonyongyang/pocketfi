@@ -30,7 +30,7 @@ class _DebtPaymentSheetState extends ConsumerState<DebtPaymentSheet> {
     double debtAmount = double.parse(widget.rowData['principle']) +
         double.parse(widget.rowData['endBalance']);
     return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.45,
+      height: MediaQuery.of(context).size.height * 0.55,
       child: Column(
         children: [
           Row(

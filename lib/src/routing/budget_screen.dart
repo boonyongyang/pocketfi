@@ -70,6 +70,7 @@ class _BudgetPageState extends ConsumerState<BudgetPage> {
             onPressed: () {
               showModalBottomSheet(
                 context: context,
+                isScrollControlled: true,
                 builder: (context) => const WalletBottomSheet(),
                 shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.vertical(
@@ -293,7 +294,6 @@ class _BudgetPageState extends ConsumerState<BudgetPage> {
                             ],
                           ),
                           ElevatedButton(
-                            child: const Text('Budget Overview'),
                             style: ElevatedButton.styleFrom(
                               // fixedSize: Size(80, 30),
                               backgroundColor: Colors.white,
@@ -311,6 +311,7 @@ class _BudgetPageState extends ConsumerState<BudgetPage> {
                                 ),
                               );
                             },
+                            child: const Text('Budget Overview'),
                           ),
                         ],
                       ),

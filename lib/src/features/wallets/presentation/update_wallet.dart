@@ -199,12 +199,13 @@ class _UpdateWalletState extends ConsumerState<UpdateWallet> {
                         // ref
                         //     .watch(tempDataProvider.notifier)
                         //     .addTempDataToFirebaseForDetailView(
-                        //       users,
+                        //       users,π
                         //       currentUserId!,
                         //     );
 
                         showModalBottomSheet(
                           context: context,
+                          isScrollControlled: true,
                           builder: (context) => const ShareWalletSheet(
                               // wallet: widget.wallet,
                               ),

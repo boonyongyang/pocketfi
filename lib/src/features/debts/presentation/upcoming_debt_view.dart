@@ -43,6 +43,7 @@ class UpcomingDebtView extends ConsumerWidget {
               onTap: () {
                 showModalBottomSheet(
                   context: context,
+                  isScrollControlled: true,
                   builder: (context) => DebtPaymentSheet(
                     rowData: rowData,
                     previousRowData: index > 0 ? tableData[index - 1] : null,

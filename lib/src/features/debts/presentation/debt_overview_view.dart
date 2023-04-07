@@ -335,6 +335,16 @@ class DebtOverviewViewState extends ConsumerState<DebtOverviewView> {
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  // fixedSize: Size(80, 30),
+                  backgroundColor: AppColors.mainColor1,
+                  foregroundColor: Colors.white,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(30),
+                    ),
+                  ),
+                ),
                 onPressed: () {
                   Navigator.push(
                     context,
@@ -345,11 +355,6 @@ class DebtOverviewViewState extends ConsumerState<DebtOverviewView> {
                     ),
                   );
                 },
-                //   shape: const RoundedRectangleBorder(
-                //   borderRadius: BorderRadius.all(
-                //     Radius.circular(30),
-                //   ),
-                // ),
                 child: const SizedBox(
                   child: Text('View Overall Payment Table'),
                 ),

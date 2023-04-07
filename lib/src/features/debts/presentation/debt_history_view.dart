@@ -147,6 +147,7 @@ class DebtHistoryView extends ConsumerWidget {
                                   onTap: () {
                                     showModalBottomSheet(
                                       context: context,
+                                      isScrollControlled: true,
                                       builder: (context) => PaidDebtSheet(
                                         // rowData: rowData,
                                         // previousRowData:

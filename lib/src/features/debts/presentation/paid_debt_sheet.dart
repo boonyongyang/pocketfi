@@ -23,7 +23,7 @@ class _PaidDebtSheetState extends ConsumerState<PaidDebtSheet> {
     var totalAmountPaid =
         widget.debtPayment.interestAmount + widget.debtPayment.principleAmount;
     return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.45,
+      height: MediaQuery.of(context).size.height * 0.55,
       child: Column(
         children: [
           Row(

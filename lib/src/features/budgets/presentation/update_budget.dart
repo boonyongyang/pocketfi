@@ -314,7 +314,8 @@ class _UpdateBudgetState extends ConsumerState<UpdateBudget> {
         );
     if (isUpdated && mounted) {
       nameController.clear();
-      Navigator.of(context).maybePop();
+      Navigator.of(context).pop();
+      Navigator.of(context).pop();
     }
   }
 }

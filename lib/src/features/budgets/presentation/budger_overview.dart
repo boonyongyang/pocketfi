@@ -26,9 +26,12 @@ class BudgetOverview extends ConsumerWidget {
         // Get the category names from the budgets list
         final budgetCategoryNames =
             budgets.value!.map((budget) => budget.categoryName).toList();
+        final budgetWalletId =
+            budgets.value!.map((budget) => budget.walletId).toList();
         // Filter the transactions by category name
         final filteredTransactions = transactions.where((tran) {
-          return budgetCategoryNames.contains(tran.categoryName);
+          return budgetCategoryNames.contains(tran.categoryName) &&
+              budgetWalletId.contains(tran.walletId);
         }).toList();
 
         return filteredTransactions;

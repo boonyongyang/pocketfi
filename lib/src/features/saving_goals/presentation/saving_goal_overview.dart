@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -427,13 +428,14 @@ class _SavingGoalOverviewViewState
                       onPressed: () {
                         // if value still 0 show snack bar
                         if (selectedSavingGoal.savingGoalSavedAmount == 0) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text(
-                                'You have no money to withdraw!',
-                                // textAlign: TextAlign.center,
-                              ),
-                            ),
+                          Fluttertoast.showToast(
+                            msg: 'You have no money to withdraw!',
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.BOTTOM,
+                            timeInSecForIosWeb: 2,
+                            backgroundColor: Colors.white,
+                            textColor: AppColors.mainColor1,
+                            fontSize: 16.0,
                           );
                         } else {
                           showDialog(
@@ -475,15 +477,25 @@ class _SavingGoalOverviewViewState
                                                 selectedSavingGoal,
                                                 ref,
                                               )
-                                            : ScaffoldMessenger.of(context)
-                                                .showSnackBar(
-                                                const SnackBar(
-                                                  content: Text(
+                                            : Fluttertoast.showToast(
+                                                msg:
                                                     'You do not have enough money to withdraw',
-                                                    textAlign: TextAlign.center,
-                                                  ),
-                                                ),
+                                                toastLength: Toast.LENGTH_SHORT,
+                                                gravity: ToastGravity.BOTTOM,
+                                                timeInSecForIosWeb: 2,
+                                                backgroundColor: Colors.white,
+                                                textColor: AppColors.mainColor1,
+                                                fontSize: 16.0,
                                               );
+                                        // ScaffoldMessenger.of(context)
+                                        //     .showSnackBar(
+                                        //     const SnackBar(
+                                        //       content: Text(
+                                        //         'You do not have enough money to withdraw',
+                                        //         textAlign: TextAlign.center,
+                                        //       ),
+                                        //     ),
+                                        //   );
                                       },
                                       child: const Text('Confirm',
                                           style: TextStyle(
@@ -531,20 +543,38 @@ class _SavingGoalOverviewViewState
     if (isUpdated && mounted) {
       Navigator.of(context).pop();
       Navigator.of(context).pop();
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Deposit successful!'),
-        ),
+      Fluttertoast.showToast(
+        msg: 'Deposit successful!',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 2,
+        backgroundColor: Colors.white,
+        textColor: AppColors.mainColor1,
+        fontSize: 16.0,
       );
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   const SnackBar(
+      //     content: Text('Deposit successful!'),
+      //   ),
+      // );
     }
     if (!isUpdated && mounted) {
       Navigator.of(context).pop();
       Navigator.of(context).pop();
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Deposit failed!'),
-        ),
+      Fluttertoast.showToast(
+        msg: 'Deposit failed!',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 2,
+        backgroundColor: Colors.white,
+        textColor: AppColors.mainColor1,
+        fontSize: 16.0,
       );
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   const SnackBar(
+      //     content: Text('Deposit failed!'),
+      //   ),
+      // );
     }
   }
 
@@ -564,20 +594,38 @@ class _SavingGoalOverviewViewState
     if (isUpdated && mounted) {
       Navigator.of(context).pop();
       Navigator.of(context).pop();
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Withdraw successful!'),
-        ),
+      Fluttertoast.showToast(
+        msg: 'Withdraw successful!',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 2,
+        backgroundColor: Colors.white,
+        textColor: AppColors.mainColor1,
+        fontSize: 16.0,
       );
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   const SnackBar(
+      //     content: Text('Withdraw successful!'),
+      //   ),
+      // );
     }
     if (!isUpdated && mounted) {
       Navigator.of(context).pop();
       Navigator.of(context).pop();
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Withdraw failed!'),
-        ),
+      Fluttertoast.showToast(
+        msg: 'Withdraw failed!',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 2,
+        backgroundColor: Colors.white,
+        textColor: AppColors.mainColor1,
+        fontSize: 16.0,
       );
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   const SnackBar(
+      //     content: Text('Withdraw failed!'),
+      //   ),
+      // );
     }
   }
 }
