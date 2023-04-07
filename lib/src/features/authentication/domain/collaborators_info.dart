@@ -13,6 +13,7 @@ class CollaboratorsInfo {
   final String displayName;
   final String? email;
   final String? status;
+  final bool isCollaborator;
   // final CollaborateRequestStatus? status;
 
   const CollaboratorsInfo({
@@ -20,44 +21,63 @@ class CollaboratorsInfo {
     required this.displayName,
     this.email,
     this.status,
+    this.isCollaborator = true,
   });
 
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      FirebaseFieldName.userId: userId,
-      FirebaseFieldName.displayName: displayName,
-      FirebaseFieldName.email: email,
-      FirebaseFieldName.status: status,
-    };
-  }
+  CollaboratorsInfo.fromJson(Map<String, dynamic> json)
+      : userId = json[FirebaseFieldName.userId],
+        displayName = json[FirebaseFieldName.displayName],
+        email = json[FirebaseFieldName.email],
+        status = json[FirebaseFieldName.status],
+        isCollaborator = json[FirebaseFieldName.isCollaborator];
 
-  factory CollaboratorsInfo.fromMap(Map<String, dynamic> map) {
-    return CollaboratorsInfo(
-      userId: map[FirebaseFieldName.userId] as String,
-      displayName: map[FirebaseFieldName.displayName] as String,
-      email: map[FirebaseFieldName.email] != null
-          ? map[FirebaseFieldName.email] as String
-          : null,
-      status: map[FirebaseFieldName.status] != null
-          ? map[FirebaseFieldName.status] as String
-          : null,
-      // status: map[FirebaseFieldName.status] != null
-      //     ? CollaborateRequestStatus.values.firstWhere(
-      //         (status) => status.name == map[FirebaseFieldName.status],
-      //         orElse: () => CollaborateRequestStatus.pending,
-      //       )
-      //     : null
-      // status: CollaborateRequestStatus.values.firstWhere(
-      //   (status) => status.name == map[FirebaseFieldName.status],
-      //   orElse: () => CollaborateRequestStatus.pending,
-      // ));
-    );
-  }
+  Map<String, dynamic> toJson() => {
+        FirebaseFieldName.userId: userId,
+        FirebaseFieldName.displayName: displayName,
+        FirebaseFieldName.email: email,
+        FirebaseFieldName.status: status,
+        FirebaseFieldName.isCollaborator: isCollaborator,
+      };
 
-  String toJson() => json.encode(toMap());
+  // Map<String, dynamic> toMap() {
+  //   return <String, dynamic>{
+  //     FirebaseFieldName.userId: userId,
+  //     FirebaseFieldName.displayName: displayName,
+  //     FirebaseFieldName.email: email,
+  //     FirebaseFieldName.status: status,
+  //     FirebaseFieldName.isCollaborator: isCollaborator,
+  //   };
+  // }
 
-  factory CollaboratorsInfo.fromJson(String source) =>
-      CollaboratorsInfo.fromMap(json.decode(source) as Map<String, dynamic>);
+  // factory CollaboratorsInfo.fromMap(Map<String, dynamic> map) {
+  //   return CollaboratorsInfo(
+  //     userId: map[FirebaseFieldName.userId] as String,
+  //     displayName: map[FirebaseFieldName.displayName] as String,
+  //     email: map[FirebaseFieldName.email] != null
+  //         ? map[FirebaseFieldName.email] as String
+  //         : null,
+  //     status: map[FirebaseFieldName.status] != null
+  //         ? map[FirebaseFieldName.status] as String
+  //         : null,
+  //     isCollaborator: map[FirebaseFieldName.isCollaborator] != null
+  //         ? map[FirebaseFieldName.isCollaborator] as bool
+  //         : true,
+  // status: map[FirebaseFieldName.status] != null
+  //     ? CollaborateRequestStatus.values.firstWhere(
+  //         (status) => status.name == map[FirebaseFieldName.status],
+  //         orElse: () => CollaborateRequestStatus.pending,
+  //       )
+  //     : null
+  // status: CollaborateRequestStatus.values.firstWhere(
+  //   (status) => status.name == map[FirebaseFieldName.status],
+  //   orElse: () => CollaborateRequestStatus.pending,
+  // ));
+  // );
+
+  // String toJson() => json.encode(toMap());
+
+  // factory CollaboratorsInfo.fromJson(String source) =>
+  //     CollaboratorsInfo.fromMap(json.decode(source) as Map<String, dynamic>);
 
 //copywith
   CollaboratorsInfo copyWith({
@@ -65,12 +85,14 @@ class CollaboratorsInfo {
     String? displayName,
     String? email,
     String? status,
+    bool? isCollaborator,
   }) {
     return CollaboratorsInfo(
       userId: userId ?? this.userId,
       displayName: displayName ?? this.displayName,
       email: email ?? this.email,
       status: status ?? this.status,
+      isCollaborator: isCollaborator ?? this.isCollaborator,
     );
   }
 
@@ -87,6 +109,7 @@ class CollaboratorsInfo {
         other.userId == userId &&
         other.displayName == displayName &&
         other.email == email &&
+        other.isCollaborator == isCollaborator &&
         other.status == status;
   }
 
@@ -95,6 +118,7 @@ class CollaboratorsInfo {
     return userId.hashCode ^
         displayName.hashCode ^
         email.hashCode ^
+        isCollaborator.hashCode ^
         status.hashCode;
   }
 }

@@ -20,7 +20,19 @@ class Wallet {
   final List<CollaboratorsInfo>? collaborators;
   // TODO add final Category category;`
 
-  Wallet(Map<String, dynamic> json)
+  const Wallet({
+    required this.walletId,
+    required this.walletName,
+    // required this.walletBalance,
+    this.createdAt,
+    required this.userId,
+    this.ownerId,
+    this.ownerName,
+    this.ownerEmail,
+    this.collaborators,
+  });
+
+  Wallet.fromJson(Map<String, dynamic> json)
       : walletId = json[FirebaseFieldName.walletId],
         walletName = json[FirebaseFieldName.walletName],
         // walletBalance = json[FirebaseFieldName.walletBalance],
@@ -33,10 +45,22 @@ class Wallet {
             ? List<CollaboratorsInfo>.from(
                 (json[FirebaseFieldName.collaborators] as List<dynamic>)
                     .map<CollaboratorsInfo?>(
-                  (x) => CollaboratorsInfo.fromMap(x as Map<String, dynamic>),
+                  (x) => CollaboratorsInfo.fromJson(x as Map<String, dynamic>),
                 ),
               )
             : null;
+
+  Map<String, dynamic> toJson() => {
+        FirebaseFieldName.walletId: walletId,
+        FirebaseFieldName.walletName: walletName,
+        // FirebaseFieldName.walletBalance: walletBalance,
+        FirebaseFieldName.createdAt: FieldValue.serverTimestamp(),
+        FirebaseFieldName.userId: userId,
+        FirebaseFieldName.ownerId: ownerId,
+        FirebaseFieldName.ownerName: ownerName,
+        FirebaseFieldName.ownerEmail: ownerEmail,
+        FirebaseFieldName.collaborators: collaborators,
+      };
   // Wallet(Map<String, dynamic> json, {required this.walletId})
   //     : walletName = json[FirebaseFieldName.walletName],
   //       walletBalance = json[FirebaseFieldName.walletBalance],
@@ -54,17 +78,16 @@ class Wallet {
     String? ownerEmail,
     List<CollaboratorsInfo>? collaborators,
   }) {
-    return Wallet({
-      FirebaseFieldName.walletId: walletId ?? this.walletId,
-      FirebaseFieldName.walletName: walletName ?? this.walletName,
-      // FirebaseFieldName.walletBalance: walletBalance ?? this.walletBalance,
-      FirebaseFieldName.createdAt: createdAt ?? this.createdAt,
-      FirebaseFieldName.userId: userId ?? this.userId,
-      FirebaseFieldName.ownerId: ownerId ?? this.ownerId,
-      FirebaseFieldName.ownerName: ownerName ?? this.ownerName,
-      FirebaseFieldName.ownerEmail: ownerEmail ?? this.ownerEmail,
-      FirebaseFieldName.collaborators: collaborators ?? this.collaborators,
-    });
+    return Wallet(
+      walletId: walletId ?? this.walletId,
+      walletName: walletName ?? this.walletName,
+      createdAt: createdAt ?? this.createdAt,
+      userId: userId ?? this.userId,
+      ownerId: ownerId ?? this.ownerId,
+      ownerName: ownerName ?? this.ownerName,
+      ownerEmail: ownerEmail ?? this.ownerEmail,
+      collaborators: collaborators ?? this.collaborators,
+    );
   }
 
 // * DO NOT REMOVE. This is used in WalletDropDownList to compare two wallets

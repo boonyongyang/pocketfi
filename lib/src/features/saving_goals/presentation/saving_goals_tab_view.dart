@@ -26,7 +26,13 @@ class SavingGoalsTabView extends ConsumerWidget {
       );
     }
     final totalAmountLeft = totalSavingGoalsAmount - totalSavedAmount;
-    final savedPercentage = totalSavedAmount / totalSavingGoalsAmount;
+    double savedPercentage;
+    if (totalSavingGoalsAmount == 0) {
+      savedPercentage = 0.0;
+    } else {
+      savedPercentage = (totalSavedAmount / totalSavingGoalsAmount);
+    }
+    debugPrint('savedPercentage: $savedPercentage');
     return RefreshIndicator(
       onRefresh: () async {
         ref.refresh(userSavingGoalsProvider);

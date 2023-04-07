@@ -1,11 +1,14 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/constants/firebase_names.dart';
 import 'package:pocketfi/src/features/authentication/application/user_id_provider.dart';
+import 'package:pocketfi/src/features/authentication/domain/collaborators_info.dart';
 import 'package:pocketfi/src/features/authentication/domain/temp_users.dart';
 import 'package:pocketfi/src/features/authentication/domain/user_info.dart';
+import 'package:pocketfi/src/features/wallets/domain/wallet.dart';
 
 class TempDataNotifier extends StateNotifier<bool> {
   TempDataNotifier(bool state) : super(false);
@@ -15,11 +18,10 @@ class TempDataNotifier extends StateNotifier<bool> {
     String currentUserId,
   ) async {
     if (users == null) return;
+
     for (var user in users) {
       if (user.userId != currentUserId) {
         await FirebaseFirestore.instance
-            // .collection(FirebaseCollectionName.users)
-            // .doc(currentUserId)
             .collection('tempData')
             .doc(user.userId)
             .set({
@@ -29,6 +31,83 @@ class TempDataNotifier extends StateNotifier<bool> {
           'isChecked': false,
         });
       }
+    }
+  }
+
+  Future<void> addTempDataDetailToFirebase(
+    Wallet wallet,
+    List<UserInfo>? users,
+    String currentUserId,
+  ) async {
+    List<TempUsers> tempUsers = [];
+    final wallets = await FirebaseFirestore.instance
+        .collection(FirebaseCollectionName.wallets)
+        .where(FirebaseFieldName.walletId, isEqualTo: wallet.walletId)
+        .get();
+
+    if (users == null) return;
+    //retrieve the collaborators in the wallet
+
+    for (var user in users) {
+      if (user.userId != currentUserId) {
+        final collaborators =
+            wallets.docs[0].data()[FirebaseFieldName.collaborators] as List;
+        for (var collaborator in collaborators) {
+          debugPrint('test2');
+          // print('collaborator: $collaborator');
+          if (collaborator[FirebaseFieldName.userId] == user.userId &&
+              collaborator[FirebaseFieldName.isCollaborator] == true) {
+            tempUsers.add(TempUsers(
+              userId: user.userId,
+              displayName: user.displayName,
+              email: user.email,
+              isChecked: true,
+            ));
+            // await FirebaseFirestore.instance
+            //     .collection('tempData')
+            //     .doc(user.userId)
+            //     .set({
+            //   'userId': user.userId,
+            //   'display_name': user.displayName,
+            //   'email': user.email,
+            //   'isChecked': true,
+            // });
+          } else {
+            await FirebaseFirestore.instance
+                .collection('tempData')
+                .doc(user.userId)
+                .set({
+              'userId': user.userId,
+              'display_name': user.displayName,
+              'email': user.email,
+              'isChecked': false,
+            });
+          }
+        }
+        // await FirebaseFirestore.instance
+        //     // .collection(FirebaseCollectionName.users)
+        //     // .doc(currentUserId)
+        //     .collection('tempData')
+        //     .doc(user.userId)
+        //     .set({
+        //   'userId': user.userId,
+        //   'display_name': user.displayName,
+        //   'email': user.email,
+        //   'isChecked': false,
+        // });
+      }
+    }
+    // add list of tempdata into firebase
+    for (var tempUser in tempUsers) {
+      await FirebaseFirestore.instance
+          .collection('tempData')
+          .doc(tempUser.userId)
+          .set({
+        'userId': tempUser.userId,
+        'display_name': tempUser.displayName,
+        'email': tempUser.email,
+        'isChecked': tempUser.isChecked,
+      });
     }
   }
 
@@ -78,6 +157,8 @@ class TempDataNotifier extends StateNotifier<bool> {
     List<UserInfo>? users,
     String currentUserId,
   ) async {
+    //check if the tempUser already exists in the wallet
+
     final tempDataSnapshot = await FirebaseFirestore.instance
         // .collection(FirebaseCollectionName.users)
         // .doc(currentUserId)
@@ -299,13 +380,8 @@ final getTempDataProvider =
   final userId = ref.watch(userIdProvider);
 
   // create a subscription to the user collection
-  final sub = FirebaseFirestore.instance
-      // .collection(FirebaseCollectionName.users)
-      // .doc(userId)
-      // get the users collection
-      .collection('tempData')
-      .snapshots()
-      .listen(
+  final sub =
+      FirebaseFirestore.instance.collection('tempData').snapshots().listen(
     (snapshot) {
       // get the first document
       final docs = snapshot.docs;
@@ -328,42 +404,3 @@ final getTempDataProvider =
 
   return controller.stream;
 });
-
-// final getTempDataFromEachWalletProvider = StreamProvider.autoDispose
-//     .family<Iterable<TempUsers>, String>((ref, String walletId) {
-//   // create a stream controller
-//   final controller = StreamController<Iterable<TempUsers>>();
-//   final userId = ref.watch(userIdProvider);
-
-//   // create a subscription to the user collection
-//   final sub = FirebaseFirestore.instance
-//       .collection(FirebaseCollectionName.users)
-//       .doc(userId)
-//       .collection(FirebaseCollectionName.wallets)
-//       .doc(walletId)
-//       // get the users collection
-//       .collection('tempData')
-//       .snapshots()
-//       .listen(
-//     (snapshot) {
-//       // get the first document
-//       final docs = snapshot.docs;
-//       // get the json data of the document (Map)
-//       // deserialize the json to a UserInfoModel
-//       final tempUser = docs.map((doc) => TempUsers.fromJson(
-//             doc.data(),
-//             userId: doc.id,
-//           ));
-//       controller.add(tempUser);
-//       // controller.sink.add(userInfoModel); // this works too
-//     },
-//   );
-
-//   // dispose the subscription when the provider is disposed.
-//   ref.onDispose(() {
-//     sub.cancel();
-//     controller.close();
-//   });
-
-//   return controller.stream;
-// });

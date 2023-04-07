@@ -240,6 +240,7 @@ class SavingGoalHistoryView extends ConsumerWidget {
     return date1.year == date2.year &&
         date1.month == date2.month &&
         date1.day == date2.day;
+    // return date2.isAtSameMomentAs(date1);
   }
 }
 

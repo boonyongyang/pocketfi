@@ -13,6 +13,7 @@ import 'package:pocketfi/src/features/authentication/application/user_info_model
 import 'package:pocketfi/src/features/category/presentation/category_page.dart';
 import 'package:pocketfi/src/features/shared/eg_tabs/eg_tabs_page.dart';
 import 'package:pocketfi/src/features/tags/presentation/tag_page.dart';
+import 'package:pocketfi/src/features/wallets/presentation/wallet_page.dart';
 
 // const AppColors.mainColor1 = Color(0xFFFF7643);
 // const kPrimaryLightColor = Color(0xFFFFECDF);
@@ -78,7 +79,16 @@ class AccountPageBody extends ConsumerWidget {
           //   icon: const Icon(Icons.person),
           //   press: () => {},
           // ),
-          AccountPageMenu(text: "Wallets", icon: AppIcons.wallet, press: () {}),
+          AccountPageMenu(
+            text: "Wallets",
+            icon: AppIcons.wallet,
+            press: () => Navigator.of(context, rootNavigator: true).push(
+              MaterialPageRoute(
+                builder: (context) => const WalletPage(),
+                // fullscreenDialog: true,
+              ),
+            ),
+          ),
           AccountPageMenu(
             text: "Categories",
             icon: Icons.category,

@@ -71,6 +71,7 @@ class _AddNewWalletState extends ConsumerState<AddNewWallet> {
           displayName: user.displayName,
           email: user.email,
           status: CollaborateRequestStatus.pending.name,
+          isCollaborator: true,
         ));
       }
     }

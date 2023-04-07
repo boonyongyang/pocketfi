@@ -13,46 +13,6 @@ import 'package:pocketfi/src/utils/document_id_from_current_date.dart';
 import 'package:pocketfi/src/features/authentication/application/user_id_provider.dart';
 import 'package:pocketfi/src/features/wallets/domain/shared_and_user_wallet.dart';
 
-// final userWalletsProvider = StreamProvider.autoDispose<Iterable<Wallet>>((ref) {
-//   final userId = ref.watch(userIdProvider);
-//   final controller = StreamController<Iterable<Wallet>>();
-
-//   final sub = FirebaseFirestore.instance
-//       .collection(FirebaseCollectionName.wallets)
-//       .where(FirebaseFieldName.userId, isEqualTo: userId)
-//       .orderBy(FirebaseFieldName.createdAt, descending: false)
-//       .snapshots()
-//       .listen((snapshot) {
-//     final document = snapshot.docs;
-//     final personalWallets = document
-//         .where(
-//           (doc) => !doc.metadata.hasPendingWrites,
-//         )
-//         .map(
-//           (doc) => Wallet(doc.data()),
-//         );
-//     final sharedWallets = snapshot.docs
-//         .where((doc) {
-//           final collaborators = doc.data()[FirebaseFieldName.collaborators];
-//           return collaborators != null &&
-//               (collaborators as List).any((collaborator) =>
-//                   collaborator[FirebaseFieldName.userId] == userId);
-//         })
-//         .where(
-//           (doc) => !doc.metadata.hasPendingWrites,
-//         )
-//         .map((doc) => Wallet(doc.data()));
-//     final wallets = [...personalWallets, ...sharedWallets];
-//     controller.sink.add(wallets);
-//   });
-
-//   ref.onDispose(() {
-//     sub.cancel();
-//     controller.close();
-//   });
-//   return controller.stream;
-// });
-
 final userWalletsProvider = StreamProvider<Iterable<Wallet>>((ref) {
   final userId = ref.watch(userIdProvider);
   final controller = StreamController<Iterable<Wallet>>();
@@ -69,7 +29,7 @@ final userWalletsProvider = StreamProvider<Iterable<Wallet>>((ref) {
               !doc.metadata.hasPendingWrites,
         )
         .map(
-          (doc) => Wallet(doc.data()),
+          (doc) => Wallet.fromJson(doc.data()),
         );
     final sharedWallets = document.where((doc) {
       final collaborators = doc.data()[FirebaseFieldName.collaborators];
@@ -77,7 +37,7 @@ final userWalletsProvider = StreamProvider<Iterable<Wallet>>((ref) {
           (collaborators as List).any((collaborator) =>
               collaborator[FirebaseFieldName.userId] == userId &&
               collaborator[FirebaseFieldName.status] == 'accepted');
-    }).map((doc) => Wallet(doc.data()));
+    }).map((doc) => Wallet.fromJson(doc.data()));
     final wallets = [...personalWallets, ...sharedWallets];
     controller.sink.add(wallets);
   });
@@ -149,7 +109,7 @@ final allWalletsProvider =
       .listen((snapshot) {
     final document = snapshot.docs;
     wallets = document.map(
-      (doc) => Wallet(
+      (doc) => Wallet.fromJson(
         doc.data(),
       ),
     );
@@ -221,7 +181,7 @@ final getWalletFromWalletIdProvider = StreamProvider.family<Wallet, String>((
     (snapshot) {
       final doc = snapshot.docs.first;
       final json = doc.data();
-      final wallet = Wallet(
+      final wallet = Wallet.fromJson(
         json,
       );
       controller.add(wallet);
@@ -246,7 +206,7 @@ final getWalletWithWalletId =
       .get();
 
   final document = snapshot.docs;
-  final wallet = document.map((doc) => Wallet(doc.data())).first;
+  final wallet = document.map((doc) => Wallet.fromJson(doc.data())).first;
 
   return wallet;
 });
@@ -258,7 +218,7 @@ Future<Wallet?> getWalletById(String walletId) async {
         .doc(walletId)
         .get();
     if (walletDoc.exists) {
-      return Wallet(
+      return Wallet.fromJson(
         // walletId: walletDoc.id,
         walletDoc.data()!,
       );
@@ -285,7 +245,6 @@ class WalletNotifier extends StateNotifier<IsLoading> {
   }) async {
     isLoading = true;
 
-    debugPrint('users in statenotifier: $users');
     final walletId = documentIdFromCurrentDate();
 
     final payload = WalletPayload(
@@ -350,10 +309,10 @@ class WalletNotifier extends StateNotifier<IsLoading> {
   }) async {
     try {
       isLoading = true;
+      debugPrint('users: $users');
 
       // update wallet name in all users
       final query2 = FirebaseFirestore.instance
-          // .collectionGroup(FirebaseCollectionName.wallets)
           .collection(FirebaseCollectionName.wallets)
           .where(FirebaseFieldName.walletId, isEqualTo: walletId)
           .get();
@@ -385,24 +344,33 @@ class WalletNotifier extends StateNotifier<IsLoading> {
       // for (var i = 0; i < collaborators.length; i++) {
       // if (collaborators == []) {
       if (users != query3Snapshot.data()![FirebaseFieldName.collaborators]) {
-        final payload = WalletPayload(
-          walletId: walletId,
-          walletName: walletName,
-          userId: query3Snapshot.data()![FirebaseFieldName.userId],
-          ownerId: query3Snapshot.data()![FirebaseFieldName.ownerId],
-          ownerEmail: query3Snapshot.data()![FirebaseFieldName.ownerEmail],
-          ownerName: query3Snapshot.data()![FirebaseFieldName.ownerName],
-          createdAt:
-              query3Snapshot.data()![FirebaseFieldName.createdAt].toDate(),
-          collaborators: users,
-        );
-        debugPrint(query3Snapshot.data()![FirebaseFieldName.ownerName]);
-        debugPrint(query3Snapshot.data()![FirebaseFieldName.ownerEmail]);
+        await query3.update({
+          FirebaseFieldName.collaborators: FieldValue.arrayRemove(
+              query3Snapshot.data()![FirebaseFieldName.collaborators]),
+        });
 
-        await FirebaseFirestore.instance
-            .collection(FirebaseCollectionName.wallets)
-            .doc(walletId)
-            .set(payload);
+        await query3.update({
+          FirebaseFieldName.collaborators:
+              users?.map((e) => e.toJson()).toList(),
+        });
+        // final payload = Wallet(
+        //   walletId: walletId,
+        //   walletName: walletName,
+        //   userId: query3Snapshot.data()![FirebaseFieldName.userId],
+        //   ownerId: query3Snapshot.data()![FirebaseFieldName.ownerId],
+        //   ownerEmail: query3Snapshot.data()![FirebaseFieldName.ownerEmail],
+        //   ownerName: query3Snapshot.data()![FirebaseFieldName.ownerName],
+        //   // createdAt: query3Snapshot.data()![FirebaseFieldName.createdAt],
+        //   collaborators:
+        //       users?.map((e) => CollaboratorsInfo.fromJson(e)).toList(),
+        // ).toJson();
+        // debugPrint(query3Snapshot.data()![FirebaseFieldName.ownerName]);
+        // debugPrint(query3Snapshot.data()![FirebaseFieldName.ownerEmail]);
+
+        // await FirebaseFirestore.instance
+        //     .collection(FirebaseCollectionName.wallets)
+        //     .doc(walletId)
+        //     .set(payload);
         // }else{
 
         // }

@@ -6,6 +6,7 @@ import 'package:pocketfi/src/common_widgets/animations/loading_animation_view.da
 import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/constants/strings.dart';
 import 'package:pocketfi/src/features/budgets/application/budget_services.dart';
+import 'package:pocketfi/src/features/budgets/presentation/detail_budget_overview.dart';
 import 'package:pocketfi/src/features/budgets/presentation/update_budget.dart';
 import 'package:pocketfi/src/features/category/application/category_services.dart';
 import 'package:pocketfi/src/features/category/domain/category.dart';
@@ -94,244 +95,274 @@ class BudgetDetailsView extends ConsumerWidget {
             ),
           ],
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              const SizedBox(height: 20),
-              const MonthPicker(),
-              Padding(
-                padding: const EdgeInsets.only(top: 16.0),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Text('Amount left to spend',
-                            style: TextStyle(
-                              fontSize: 13,
-                              fontWeight: FontWeight.normal,
-                              color: AppColors.mainColor1,
-                            )),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'MYR ${remainingAmount.toStringAsFixed(2)}',
-                          style: const TextStyle(
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.mainColor2,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+        body: RefreshIndicator(
+          onRefresh: () {
+            ref.refresh(userTransactionsProvider);
+            ref.refresh(overviewMonthProvider.notifier).resetMonth();
+            return Future.delayed(
+              const Duration(
+                milliseconds: 500,
               ),
-              // Padding(
-              //   padding: const EdgeInsets.only(
-              //     left: 16.0,
-              //     right: 16.0,
-              //     top: 16.0,
-              //     bottom: 0.0,
-              //   ),
-              //   child: Container(
-              //     decoration: BoxDecoration(
-              //       color: Colors.white,
-              //       borderRadius: const BorderRadius.all(
-              //         Radius.circular(20),
-              //       ),
-              //       boxShadow: [
-              //         BoxShadow(
-              //           color: Colors.grey.withOpacity(0.5),
-              //           spreadRadius: 2,
-              //           blurRadius: 7,
-              //           offset:
-              //               const Offset(3, 6), // changes position of shadow
-              //         ),
-              //       ],
-              //     ),
-              //     // height: MediaQuery.of(context).size.height * 0.3,
-              //     child: Padding(
-              //       padding: const EdgeInsets.all(8.0),
-              //       child: Column(
-              //         children: [
-              //           Row(
-              //             mainAxisAlignment: MainAxisAlignment.center,
-              //             children: [
-              //               Text('Amount left to spend',
-              //                   style: TextStyle(
-              //                     fontSize: 12,
-              //                     fontWeight: FontWeight.normal,
-              //                     color: AppColors.mainColor1,
-              //                   )),
-              //             ],
-              //           ),
-              //           Row(
-              //             mainAxisAlignment: MainAxisAlignment.center,
-              //             children: [
-              //               Text(
-              //                 'MYR ${remainingAmount.toStringAsFixed(2)}',
-              //                 style: TextStyle(
-              //                   fontSize: 20,
-              //                   fontWeight: FontWeight.bold,
-              //                   color: AppColors.mainColor2,
-              //                 ),
-              //               ),
-              //             ],
-              //           ),
-              //         ],
-              //       ),
-              //     ),
-              //   ),
-              // ),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(20),
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        spreadRadius: 2,
-                        blurRadius: 7,
-                        offset:
-                            const Offset(3, 6), // changes position of shadow
+            );
+          },
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                const SizedBox(height: 20),
+                const MonthPicker(),
+                Padding(
+                  padding: const EdgeInsets.only(top: 16.0),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          Text('Amount left to spend',
+                              style: TextStyle(
+                                fontSize: 13,
+                                fontWeight: FontWeight.normal,
+                                color: AppColors.mainColor1,
+                              )),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'MYR ${remainingAmount.toStringAsFixed(2)}',
+                            style: const TextStyle(
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.mainColor2,
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
-                  height: MediaQuery.of(context).size.height * 0.3,
-                  child: Center(
-                    child: filteredCategories.isEmpty
-                        ? const Text('No transactions found.')
-                        : SfRadialGauge(
-                            title: const GaugeTitle(
-                              text: 'Budget Summary',
-                              textStyle: TextStyle(
-                                fontSize: 16,
-                                color: AppColors.mainColor1,
-                                // fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            axes: <RadialAxis>[
-                              RadialAxis(
-                                // radiusFactor: 0.55,
-                                // startAngle: 270,
-                                // endAngle: 270,
-
-                                minimum: 0,
-                                maximum: 100,
-                                showLabels: false,
-                                showTicks: false,
-                                axisLineStyle: AxisLineStyle(
-                                  cornerStyle: CornerStyle.bothCurve,
-                                  thickness: 0.2,
-                                  color: Colors.grey[300],
-                                  thicknessUnit: GaugeSizeUnit.factor,
+                ),
+                // Padding(
+                //   padding: const EdgeInsets.only(
+                //     left: 16.0,
+                //     right: 16.0,
+                //     top: 16.0,
+                //     bottom: 0.0,
+                //   ),
+                //   child: Container(
+                //     decoration: BoxDecoration(
+                //       color: Colors.white,
+                //       borderRadius: const BorderRadius.all(
+                //         Radius.circular(20),
+                //       ),
+                //       boxShadow: [
+                //         BoxShadow(
+                //           color: Colors.grey.withOpacity(0.5),
+                //           spreadRadius: 2,
+                //           blurRadius: 7,
+                //           offset:
+                //               const Offset(3, 6), // changes position of shadow
+                //         ),
+                //       ],
+                //     ),
+                //     // height: MediaQuery.of(context).size.height * 0.3,
+                //     child: Padding(
+                //       padding: const EdgeInsets.all(8.0),
+                //       child: Column(
+                //         children: [
+                //           Row(
+                //             mainAxisAlignment: MainAxisAlignment.center,
+                //             children: [
+                //               Text('Amount left to spend',
+                //                   style: TextStyle(
+                //                     fontSize: 12,
+                //                     fontWeight: FontWeight.normal,
+                //                     color: AppColors.mainColor1,
+                //                   )),
+                //             ],
+                //           ),
+                //           Row(
+                //             mainAxisAlignment: MainAxisAlignment.center,
+                //             children: [
+                //               Text(
+                //                 'MYR ${remainingAmount.toStringAsFixed(2)}',
+                //                 style: TextStyle(
+                //                   fontSize: 20,
+                //                   fontWeight: FontWeight.bold,
+                //                   color: AppColors.mainColor2,
+                //                 ),
+                //               ),
+                //             ],
+                //           ),
+                //         ],
+                //       ),
+                //     ),
+                //   ),
+                // ),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(20),
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 2,
+                          blurRadius: 7,
+                          offset:
+                              const Offset(3, 6), // changes position of shadow
+                        ),
+                      ],
+                    ),
+                    height: MediaQuery.of(context).size.height * 0.3,
+                    child: Center(
+                      child: filteredCategories.isEmpty
+                          ? const Text('No transactions found.')
+                          : SfRadialGauge(
+                              title: const GaugeTitle(
+                                text: 'Budget Summary',
+                                textStyle: TextStyle(
+                                  fontSize: 16,
+                                  color: AppColors.mainColor1,
+                                  // fontWeight: FontWeight.bold,
                                 ),
-                                pointers: [
-                                  RangePointer(
-                                    color: getCategory.color,
-                                    value: spentPercentage,
-                                    cornerStyle: CornerStyle.bothCurve,
-                                    width: 0.2,
-                                    sizeUnit: GaugeSizeUnit.factor,
-                                  ),
-                                ],
-                                annotations: [
-                                  GaugeAnnotation(
-                                    widget: Column(
-                                      children: [
-                                        Text(
-                                          'spent',
-                                          style: TextStyle(
-                                            fontSize: 10,
-                                            fontWeight: FontWeight.normal,
-                                            color: getCategory.color,
-                                          ),
-                                        ),
-                                        Text(
-                                          'MYR ${spentAmount.toStringAsFixed(2)}',
-                                          style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold,
-                                            color: getCategory.color,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    angle: 90,
-                                    positionFactor: 1.7,
-                                  ),
-                                  GaugeAnnotation(
-                                    widget: Text(
-                                      '${spentPercentage.toStringAsFixed(2)}%',
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                        color: getCategory.color,
-                                      ),
-                                    ),
-                                    angle: 90,
-                                    positionFactor: 0.1,
-                                  ),
-                                ],
                               ),
-                            ],
-                          ),
+                              axes: <RadialAxis>[
+                                RadialAxis(
+                                  // radiusFactor: 0.55,
+                                  // startAngle: 270,
+                                  // endAngle: 270,
 
-                    //     Text.rich(
-                    //   TextSpan(
-                    //     text: 'Left',
-                    //     style: TextStyle(
-                    //       fontSize: 16,
-                    //       fontWeight: FontWeight.normal,
-                    //       color: getCategory.color,
-                    //     ),
-                    //     children: [
-                    //       TextSpan(
-                    //         text: ' MYR ${remainingAmount.toStringAsFixed(2)}',
-                    //         style: TextStyle(
-                    //           fontSize: 16,
-                    //           fontWeight: FontWeight.bold,
-                    //           color: getCategory.color,
-                    //         ),
-                    //       ),
-                    //     ],
-                    //   ),
-                    // ),
+                                  minimum: 0,
+                                  maximum: 100,
+                                  showLabels: false,
+                                  showTicks: false,
+                                  axisLineStyle: AxisLineStyle(
+                                    cornerStyle: CornerStyle.bothCurve,
+                                    thickness: 0.2,
+                                    color: Colors.grey[300],
+                                    thicknessUnit: GaugeSizeUnit.factor,
+                                  ),
+                                  pointers: [
+                                    RangePointer(
+                                      color: getCategory.color,
+                                      value: spentPercentage,
+                                      cornerStyle: CornerStyle.bothCurve,
+                                      width: 0.2,
+                                      sizeUnit: GaugeSizeUnit.factor,
+                                    ),
+                                  ],
+                                  annotations: [
+                                    GaugeAnnotation(
+                                      widget: Column(
+                                        children: [
+                                          Text(
+                                            'spent',
+                                            style: TextStyle(
+                                              fontSize: 10,
+                                              fontWeight: FontWeight.normal,
+                                              color: getCategory.color,
+                                            ),
+                                          ),
+                                          Text(
+                                            'MYR ${spentAmount.toStringAsFixed(2)}',
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                              color: getCategory.color,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      angle: 90,
+                                      positionFactor: 1.7,
+                                    ),
+                                    GaugeAnnotation(
+                                      widget: Text(
+                                        '${spentPercentage.toStringAsFixed(2)}%',
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                          color: getCategory.color,
+                                        ),
+                                      ),
+                                      angle: 90,
+                                      positionFactor: 0.1,
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+
+                      //     Text.rich(
+                      //   TextSpan(
+                      //     text: 'Left',
+                      //     style: TextStyle(
+                      //       fontSize: 16,
+                      //       fontWeight: FontWeight.normal,
+                      //       color: getCategory.color,
+                      //     ),
+                      //     children: [
+                      //       TextSpan(
+                      //         text: ' MYR ${remainingAmount.toStringAsFixed(2)}',
+                      //         style: TextStyle(
+                      //           fontSize: 16,
+                      //           fontWeight: FontWeight.bold,
+                      //           color: getCategory.color,
+                      //         ),
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ),
+                    ),
                   ),
                 ),
-              ),
-
-              TransactionListView(
-                transactions: currentMonthTransactions,
-              ),
-              // transactions.when(
-              //   data: (trans) {
-              //     if (trans.isEmpty) {
-              //       return const EmptyContentsWithTextAnimationView(
-              //         text: Strings.youHaveNoRecords,
-              //       );
-              //     } else {
-              //       return TransactionListView(
-              //         transactions: currentMonthTransactions,
-              //       );
-              //     }
-              //   },
-              //   error: (error, stackTrace) {
-              //     return const ErrorAnimationView();
-              //   },
-              //   loading: () {
-              //     return const LoadingAnimationView();
-              //   },
-              // ),
-            ],
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    // fixedSize: Size(80, 30),
+                    backgroundColor: Colors.white,
+                    foregroundColor: AppColors.mainColor1,
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(30),
+                      ),
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context, rootNavigator: true).push(
+                      MaterialPageRoute(
+                        builder: (context) => const DetailBudgetOverview(),
+                      ),
+                    );
+                  },
+                  child: Text('${selectedBudget.budgetName}Overview'),
+                ),
+                TransactionListView(
+                  transactions: currentMonthTransactions,
+                ),
+                // transactions.when(
+                //   data: (trans) {
+                //     if (trans.isEmpty) {
+                //       return const EmptyContentsWithTextAnimationView(
+                //         text: Strings.youHaveNoRecords,
+                //       );
+                //     } else {
+                //       return TransactionListView(
+                //         transactions: currentMonthTransactions,
+                //       );
+                //     }
+                //   },
+                //   error: (error, stackTrace) {
+                //     return const ErrorAnimationView();
+                //   },
+                //   loading: () {
+                //     return const LoadingAnimationView();
+                //   },
+                // ),
+              ],
+            ),
           ),
         ));
   }

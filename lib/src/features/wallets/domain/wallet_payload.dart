@@ -25,7 +25,7 @@ class WalletPayload extends MapView<String, dynamic> {
           FirebaseFieldName.createdAt: FieldValue.serverTimestamp(),
           FirebaseFieldName.userId: userId,
           FirebaseCollectionName.collaborators:
-              collaborators!.map((e) => e.toMap()).toList(),
+              collaborators!.map((e) => e.toJson()).toList(),
           FirebaseFieldName.ownerId: ownerId,
           FirebaseFieldName.ownerName: ownerName,
           FirebaseFieldName.ownerEmail: ownerEmail,

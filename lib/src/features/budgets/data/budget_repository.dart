@@ -126,9 +126,10 @@ Future<double> totalAmount() async {
           (doc) => Budget.fromJson(doc.data()).budgetAmount,
         );
     updatedDebtList = [...budgetsAmount, ...updatedDebtList];
-    for (var i in updatedDebtList) {
-      // debugPrint('updatedDebtList: $i');
-    }
+    // for (var i in updatedDebtList) {
+    //   debugPrint('updatedDebtList: $i');
+    // }
+
     // debugPrint('updatedDebtList length: ${updatedDebtList.length}');
   }
 
@@ -168,7 +169,7 @@ Future<double> usedAmount() async {
 
   var usedAmount = updatedDebtList.fold(
       0.00, (previousValue, element) => previousValue + element);
-  debugPrint('usedAmount: $usedAmount');
+  // debugPrint('usedAmount: $usedAmount');
   return usedAmount;
 }
 
@@ -178,9 +179,14 @@ Future<double> remainingAmount() async {
 
 Future<double> spentPercentage() async {
   //* spent percentage
-  var spentPercentage = (await usedAmount() / await totalAmount());
-  debugPrint('spentPercentage: $spentPercentage');
-  return spentPercentage;
+  if (await totalAmount() == 0.00) {
+    // debugPrint('if');
+
+    return 0.00;
+  } else {
+    // debugPrint('else');
+    return await usedAmount() / await totalAmount();
+  }
 }
 
 final usedAmountProvider = StreamProvider.autoDispose<double>((ref) {
@@ -214,7 +220,7 @@ final usedAmountProvider = StreamProvider.autoDispose<double>((ref) {
 
     var usedAmount = budgetsList.fold(
         0.00, (previousValue, element) => previousValue + element);
-    debugPrint('usedAmount: $usedAmount');
+    // debugPrint('usedAmount: $usedAmount');
     controller.sink.add(usedAmount);
   });
   // }

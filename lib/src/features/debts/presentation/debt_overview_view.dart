@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
+import 'package:pocketfi/src/features/category/data/category_repository.dart';
 import 'package:pocketfi/src/features/debts/data/debt_payment_repository.dart';
 import 'package:pocketfi/src/features/debts/domain/debt.dart';
 import 'package:pocketfi/src/features/debts/presentation/debt_data_table.dart';
@@ -176,7 +177,8 @@ class DebtOverviewViewState extends ConsumerState<DebtOverviewView> {
                       ),
                       pointers: [
                         RangePointer(
-                          color: AppColors.mainColor2,
+                          color: colorList[widget.debt.debtAmount.toInt() %
+                              colorList.length],
                           value: percentagePaid,
                           cornerStyle: CornerStyle.bothCurve,
                           width: 0.2,
@@ -187,9 +189,11 @@ class DebtOverviewViewState extends ConsumerState<DebtOverviewView> {
                         GaugeAnnotation(
                           widget: Text(
                             '${percentagePaid.toStringAsFixed(2)}%',
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 25,
                               fontWeight: FontWeight.bold,
+                              color: colorList[widget.debt.debtAmount.toInt() %
+                                  colorList.length],
                             ),
                           ),
                           angle: 90,

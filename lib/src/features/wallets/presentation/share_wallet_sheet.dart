@@ -96,7 +96,7 @@ class _ShareWalletSheetState extends ConsumerState<ShareWalletSheet> {
               child: Column(
                 children: List.generate(userList.length, (index) {
                   final eachUser = userList[index];
-                  debugPrint('userMap start: $userList');
+                  // debugPrint('userMap start: $userList');
                   return Consumer(
                     builder: (context, ref, child) {
                       return CheckboxListTile(
@@ -108,8 +108,8 @@ class _ShareWalletSheetState extends ConsumerState<ShareWalletSheet> {
                         subtitle: Text(eachUser.email ?? ""),
                         // subtitle: Text(eachUser.isChecked.toString()),
                         onChanged: (bool? newValue) {
-                          debugPrint('value: $newValue');
-                          debugPrint('userMap before: $userMap');
+                          // debugPrint('value: $newValue');
+                          // debugPrint('userMap before: $userMap');
 
                           newValue ??= false;
 
@@ -119,8 +119,8 @@ class _ShareWalletSheetState extends ConsumerState<ShareWalletSheet> {
                                 currentUserId!,
                               );
 
-                          debugPrint('userMap after: $userMap');
-                          debugPrint('value after: $newValue');
+                          // debugPrint('userMap after: $userMap');
+                          // debugPrint('value after: $newValue');
                         },
                         value: eachUser.isChecked,
                       );
