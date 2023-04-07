@@ -18,8 +18,7 @@ class Strings {
   // static const facebookSignupUrl = 'https://www.facebook.com/signup';
   static const google = 'Google';
   static const googleSignupUrl = 'https://accounts.google.com/signup';
-  static const logIntoYourAccount =
-      'Log into your account using one of the options below.';
+  static const logIntoYourAccount = 'Log into your account gmail.';
   static const comments = 'Comments';
   static const writeYourCommentHere = 'Write your comment here...';
   static const checkOutThisPost = 'Check out this post!';

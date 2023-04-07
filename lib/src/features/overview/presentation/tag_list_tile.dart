@@ -10,17 +10,9 @@ class TagListTile extends ConsumerWidget {
   const TagListTile({
     Key? key,
     required this.tagName,
-    // required this.icon,
-    // required this.color,
-    // required this.currentMonthTransactions,
-    // required this.type,
   }) : super(key: key);
 
   final String tagName;
-  // final Icon icon;
-  // final Color color;
-  // final List<Transaction> currentMonthTransactions;
-  // final TransactionType type;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -33,12 +25,6 @@ class TagListTile extends ConsumerWidget {
 
     final totalAmountOfType = getTotalAmount(transactionsOfType);
     debugPrint('Total amount of type: $totalAmountOfType');
-
-    // final tagTransactions = transactionsOfType
-    //     // .where((tran) => tran.categoryName == tagName)
-    //     // contains tag
-    //     .where((tran) => tran.tags.contains(tagName))
-    //     .toList();
 
     final tagTransactions = transactionsOfType
         .where((tran) => tran.tags.contains(tagName) && tran.type == type)
@@ -61,10 +47,9 @@ class TagListTile extends ConsumerWidget {
     if (tagTransactions.isNotEmpty) {
       return GestureDetector(
         onTap: () {
-          // navigate to category details
+          // navigate to tag details
           Navigator.of(context).push(
             MaterialPageRoute(
-              // builder: (context) => CategoryDetailPage(categoryName: tagName),
               builder: (context) => TagDetailPage(tagName: tagName),
             ),
           );
@@ -77,7 +62,7 @@ class TagListTile extends ConsumerWidget {
                 backgroundColor: Colors.grey[300],
                 child: const Icon(
                   Icons.label_outline_sharp,
-                  color: AppColors.mainColor2,
+                  color: AppColors.mainColor1,
                 ),
               ),
               const SizedBox(width: 12.0),

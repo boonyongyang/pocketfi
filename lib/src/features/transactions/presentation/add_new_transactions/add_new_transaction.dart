@@ -682,30 +682,6 @@ class SaveButton extends ConsumerWidget {
               debugPrint('isCreated is: $isCreated');
 
               if (isCreated && mounted) {
-                // if (isBookmark) {
-                //   ref.read(bookmarkTransactionListProvider.notifier).addBookmark(
-                //         Transaction(
-                //           transactionId: ,
-                //           userId: userId,
-                //           walletId: selectedWallet!.walletId,
-                //           amount: double.parse(amount),
-                //           type: type,
-                //           description: note,
-                //           categoryName: categoryName!.name,
-                //           date: date,
-                //           file: file,
-                //         ),
-                //         // userId: userId,
-                //         // walletId: selectedWallet!.walletId,
-                //         // amount: double.parse(amount),
-                //         // type: type,
-                //         // note: note,
-                //         // categoryName: categoryName!.name,
-                //         // date: date,
-                //         // file: file,
-                //       );
-                // }
-
                 noteController.clear();
                 amountController.clear();
                 Navigator.of(context).pop();

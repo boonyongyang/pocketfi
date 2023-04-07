@@ -211,6 +211,28 @@ final getWalletWithWalletId =
   return wallet;
 });
 
+// get personal wallet by user id
+Future<Wallet?> getPersonalWalletByUserId(String userId) async {
+  try {
+    final walletDoc = await FirebaseFirestore.instance
+        .collection('wallets')
+        .where('userId', isEqualTo: userId)
+        .where('ownerId', isEqualTo: userId)
+        .where('walletName', isEqualTo: 'Personal')
+        .get();
+    if (walletDoc.docs.isNotEmpty) {
+      return Wallet.fromJson(
+        // walletId: walletDoc.id,
+        walletDoc.docs.first.data(),
+      );
+    }
+    return null;
+  } catch (e) {
+    debugPrint('Error getting wallet by user ID: $e');
+    return null;
+  }
+}
+
 Future<Wallet?> getWalletById(String walletId) async {
   try {
     final walletDoc = await FirebaseFirestore.instance
