@@ -197,29 +197,34 @@ class BillsTabView extends ConsumerWidget {
                         setNewTransactionState(ref);
                         setBillCategory(ref);
                         Navigator.of(context, rootNavigator: true).push(
-                          PageRouteBuilder(
-                            pageBuilder:
-                                (context, animation, secondaryAnimation) =>
-                                    const AddNewBill(),
-                            transitionDuration:
-                                const Duration(milliseconds: 200),
-                            transitionsBuilder: (context, animation,
-                                secondaryAnimation, child) {
-                              final curvedAnimation = CurvedAnimation(
-                                parent: animation,
-                                curve: Curves.easeIn,
-                                reverseCurve: Curves.easeIn,
-                              );
-                              return SlideTransition(
-                                position: Tween<Offset>(
-                                  begin: const Offset(0, 1),
-                                  end: Offset.zero,
-                                ).animate(curvedAnimation),
-                                child: child,
-                              );
-                            },
+                          MaterialPageRoute(
+                            builder: (context) => const AddNewBill(),
                           ),
                         );
+                        // Navigator.of(context, rootNavigator: true).push(
+                        //   PageRouteBuilder(
+                        //     pageBuilder:
+                        //         (context, animation, secondaryAnimation) =>
+                        //             const AddNewBill(),
+                        //     transitionDuration:
+                        //         const Duration(milliseconds: 200),
+                        //     transitionsBuilder: (context, animation,
+                        //         secondaryAnimation, child) {
+                        //       final curvedAnimation = CurvedAnimation(
+                        //         parent: animation,
+                        //         curve: Curves.easeIn,
+                        //         reverseCurve: Curves.easeIn,
+                        //       );
+                        //       return SlideTransition(
+                        //         position: Tween<Offset>(
+                        //           begin: const Offset(0, 1),
+                        //           end: Offset.zero,
+                        //         ).animate(curvedAnimation),
+                        //         child: child,
+                        //       );
+                        //     },
+                        //   ),
+                        // );
                       },
                       child: const SizedBox(
                         child: Text(

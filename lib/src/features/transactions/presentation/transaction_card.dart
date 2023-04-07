@@ -10,6 +10,7 @@ import 'package:pocketfi/src/features/tags/application/tag_services.dart';
 import 'package:pocketfi/src/features/tags/data/tag_repository.dart';
 import 'package:pocketfi/src/features/tags/domain/tag.dart';
 import 'package:pocketfi/src/features/transactions/domain/transaction.dart';
+import 'package:pocketfi/src/features/wallets/data/wallet_repository.dart';
 
 class TransactionCard extends ConsumerWidget {
   final Transaction transaction;
@@ -77,30 +78,43 @@ class TransactionCard extends ConsumerWidget {
                               fontSize: 14.0,
                             ),
                           ),
-                          FutureBuilder<UserInfo>(
-                            future: getUserInfoWithUserId(transaction.userId),
-                            builder: (BuildContext context,
-                                AsyncSnapshot<UserInfo> snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return const Text('Loading...');
-                              } else if (snapshot.hasError) {
-                                return Text('Error: ${snapshot.error}');
-                              } else {
-                                final displayName = snapshot.data!.displayName;
-                                final shortenedName = displayName.length > 8
-                                    // ? '${displayName.substring(0, 8)}...'
-                                    ? displayName.substring(0, 8)
-                                    : displayName;
-                                return Text(
-                                  shortenedName.toLowerCase(),
-                                  style: const TextStyle(
-                                    // fontWeight: FontWeight.w600,
-                                    fontSize: 14.0,
-                                  ),
-                                );
-                              }
-                            },
+                          Visibility(
+                            visible: transaction.walletName != 'Personal',
+                            child: FutureBuilder<UserInfo>(
+                              future: getUserInfoWithUserId(transaction.userId),
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<UserInfo> snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return const Text('Loading...');
+                                } else if (snapshot.hasError) {
+                                  return Text('Error: ${snapshot.error}');
+                                } else {
+                                  final displayName =
+                                      snapshot.data!.displayName;
+                                  final shortenedName = displayName.length > 8
+                                      // ? '${displayName.substring(0, 8)}...'
+                                      ? displayName.substring(0, 9)
+                                      : displayName;
+                                  return Row(
+                                    children: [
+                                      Icon(
+                                        Icons.person,
+                                        color: Colors.grey[600],
+                                        size: 14,
+                                      ),
+                                      Text(
+                                        shortenedName.toLowerCase(),
+                                        style: const TextStyle(
+                                          // fontWeight: FontWeight.w600,
+                                          fontSize: 14.0,
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                }
+                              },
+                            ),
                           ),
                           if (selectedTags.isNotEmpty)
                             ShowTags(
@@ -131,7 +145,23 @@ class TransactionCard extends ConsumerWidget {
                           else
                             const SizedBox(),
                           // Text(transaction.createdAt!.toIso8601String()),
-                          Text(transaction.walletName),
+                          // Text(transaction.walletName),
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.wallet,
+                                color: Colors.grey[600],
+                                size: 14,
+                              ),
+                              Text(
+                                transaction.walletName,
+                                style: TextStyle(
+                                  color: Colors.grey[600],
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ],
+                          ),
                           // format date to dd/mm/yyyy
                           // Text(DateFormat('d MMM').format(transaction.date)),
                         ],
