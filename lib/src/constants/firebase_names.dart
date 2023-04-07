@@ -21,6 +21,7 @@ class FirebaseFieldName {
   static const walletBalance = 'wallet_balance';
   static const collaborators = 'collaborators';
   static const status = 'request_status';
+  static const isCollaborator = 'is_collaborator';
 
   static const ownerId = 'owner_id';
   static const ownerName = 'owner_name';
@@ -61,7 +62,7 @@ class FirebaseFieldName {
 
   static const savingGoalHistoryId = 'saving_goal_history_id';
   static const savingGoalSavedAmount = 'saving_goal_saved_amount';
-  static const savingGoalSavedDate = 'saving_goal_saved_date';
+  static const savingGoalEnterDate = 'saving_goal_saved_date';
   static const savingGoalStatus = 'saving_goal_status';
 
   const FirebaseFieldName._(); // private constructor

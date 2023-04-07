@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
+import 'package:pocketfi/src/features/category/data/category_repository.dart';
 import 'package:pocketfi/src/features/debts/data/debt_payment_repository.dart';
 import 'package:pocketfi/src/features/debts/domain/debt.dart';
 import 'package:pocketfi/src/features/wallets/data/wallet_repository.dart';
@@ -9,10 +10,12 @@ import 'package:pocketfi/src/features/wallets/data/wallet_repository.dart';
 class DebtTiles extends ConsumerWidget {
   final Debt debt;
   final VoidCallback onTap;
+  final Color? circleAvatarColor;
   const DebtTiles({
     super.key,
     required this.debt,
     required this.onTap,
+    required this.circleAvatarColor,
   });
 
   @override
@@ -35,6 +38,7 @@ class DebtTiles extends ConsumerWidget {
         // totalInterestPaid += debtPayment.interestAmount;
       }
     }
+    final totalDebtPercentage = totalAmountPaid / debt.calculateTotalPayment();
 
     return GestureDetector(
       onTap: onTap,
@@ -58,15 +62,15 @@ class DebtTiles extends ConsumerWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Padding(
-                padding: EdgeInsets.only(
+              Padding(
+                padding: const EdgeInsets.only(
                   top: 16.0,
                   left: 16.0,
                   right: 8.0,
                 ),
                 child: CircleAvatar(
-                  backgroundColor: AppColors.subColor2,
-                  child: FaIcon(
+                  backgroundColor: circleAvatarColor,
+                  child: const FaIcon(
                     FontAwesomeIcons.moneyCheckDollar,
                     color: Colors.white,
                   ),
@@ -133,22 +137,36 @@ class DebtTiles extends ConsumerWidget {
                       SizedBox(
                         height: MediaQuery.of(context).size.height * 0.02,
                       ),
-                      Row(
+                      Stack(
                         children: [
                           //progress indicator
-                          Expanded(
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(10.0),
-                              child: LinearProgressIndicator(
-                                minHeight: 10,
-                                value: totalAmountPaid /
-                                    debt.calculateTotalPayment(),
-                                backgroundColor: Colors.grey[300],
-                                valueColor: const AlwaysStoppedAnimation<Color>(
-                                  AppColors.subColor1,
-                                ),
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(10.0),
+                            child: LinearProgressIndicator(
+                              minHeight: 25,
+                              value: totalDebtPercentage,
+                              backgroundColor: Colors.grey[300],
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                colorList[
+                                    debt.debtAmount.toInt() % colorList.length],
                               ),
                             ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              left: 8.0,
+                              top: 4.0,
+                              bottom: 4.0,
+                            ),
+                            child: Text(
+                                '${(totalDebtPercentage * 100).toStringAsFixed(2)}%',
+                                style: TextStyle(
+                                  color: totalDebtPercentage * 100 > 16
+                                      ? Colors.white
+                                      : Colors.black,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                )),
                           ),
                         ],
                       ),

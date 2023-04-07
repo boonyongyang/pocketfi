@@ -33,7 +33,7 @@ class SavingGoalHistory {
         userId = json[FirebaseFieldName.userId] as UserId,
         walletId = json[FirebaseFieldName.walletId],
         savingGoalEnterDate =
-            (json[FirebaseFieldName.savingGoalSavedDate] as Timestamp).toDate(),
+            (json[FirebaseFieldName.savingGoalEnterDate] as Timestamp).toDate(),
         createdAt = (json[FirebaseFieldName.createdAt] as Timestamp).toDate();
 
   Map<String, dynamic> toJson() => {
@@ -43,7 +43,7 @@ class SavingGoalHistory {
         FirebaseFieldName.savingGoalStatus: savingGoalStatus,
         FirebaseFieldName.walletId: walletId,
         FirebaseFieldName.userId: userId,
-        FirebaseFieldName.savingGoalSavedDate: FieldValue.serverTimestamp(),
+        FirebaseFieldName.savingGoalEnterDate: FieldValue.serverTimestamp(),
         FirebaseFieldName.createdAt: FieldValue.serverTimestamp(),
       };
 }

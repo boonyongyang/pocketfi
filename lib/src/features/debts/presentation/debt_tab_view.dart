@@ -1,9 +1,12 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/common_widgets/animations/empty_contents_with_text_animation_view.dart';
 import 'package:pocketfi/src/common_widgets/animations/error_animation_view.dart';
 import 'package:pocketfi/src/common_widgets/animations/loading_animation_view.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
+import 'package:pocketfi/src/features/category/data/category_repository.dart';
 import 'package:pocketfi/src/features/debts/data/debt_repository.dart';
 import 'package:pocketfi/src/features/debts/domain/debt.dart';
 import 'package:pocketfi/src/features/debts/presentation/add_new_debt.dart';
@@ -17,6 +20,7 @@ class DebtTabView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final debts = ref.watch(userDebtsProvider);
+    // Color randomColor = colorList[Random().nextInt(colorList.length)];
 
     return Scaffold(
       body: RefreshIndicator(
@@ -31,6 +35,7 @@ class DebtTabView extends ConsumerWidget {
                 child: Visibility(
                   visible: debts.value?.isNotEmpty ?? false,
                   child: Container(
+                      padding: const EdgeInsets.all(10.0),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: const BorderRadius.all(
@@ -92,7 +97,12 @@ class DebtTabView extends ConsumerWidget {
                                 yValueMapper: (Debt debt, _) =>
                                     debt.calculateTotalPayment(),
                                 pointColorMapper: (Debt debt, _) =>
-                                    Colors.pink[100 * debt.debtAmount.toInt()],
+                                    // Colors.pink[100 * debt.debtAmount.toInt()],
+                                    colorList[debt.debtAmount.toInt() %
+                                        colorList.length],
+                                // colorList[
+                                //     Random().nextInt(colorList.length)],
+                                // randomColor,
                                 dataLabelSettings: const DataLabelSettings(
                                   isVisible: true,
                                   labelPosition: ChartDataLabelPosition.outside,
@@ -226,6 +236,14 @@ class DebtTabView extends ConsumerWidget {
                           ),
                           child: DebtTiles(
                             debt: debt,
+                            circleAvatarColor:
+                                // Colors.pink[500 * debt.debtAmount.toInt()],
+                                // Colors.primaries[debt.debtAmount.toInt() %
+                                //     Colors.primaries.length],
+
+                                colorList[
+                                    debt.debtAmount.toInt() % colorList.length],
+                            // colorList[Random().nextInt(colorList.length)],
                             onTap: () {
                               Navigator.of(context, rootNavigator: true).push(
                                 MaterialPageRoute(

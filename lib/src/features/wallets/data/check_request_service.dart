@@ -161,7 +161,7 @@ class CheckRequestNotifier extends StateNotifier<bool> {
           createdAt:
               walletDocSnapshot.data()![FirebaseFieldName.createdAt].toDate(),
           collaborators:
-              collaborators.map((e) => CollaboratorsInfo.fromMap(e)).toList(),
+              collaborators.map((e) => CollaboratorsInfo.fromJson(e)).toList(),
         ); // .toJson();
 
         debugPrint('test5');
@@ -224,7 +224,7 @@ final getPendingRequestProvider = StreamProvider.autoDispose<Iterable>((ref) {
           (collaborators as List).any((collaborator) =>
               collaborator[FirebaseFieldName.userId] == currentUserId &&
               collaborator[FirebaseFieldName.status] == 'pending');
-    }).map((doc) => Wallet(
+    }).map((doc) => Wallet.fromJson(
           doc.data(),
         ));
 

@@ -38,6 +38,18 @@ class WalletPage extends ConsumerWidget {
       appBar: AppBar(
         centerTitle: true,
         title: const Text('Wallets'),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.of(context, rootNavigator: true).push(
+                MaterialPageRoute(
+                  builder: (context) => const AddNewWallet(),
+                ),
+              );
+            },
+            icon: const Icon(Icons.add),
+          ),
+        ],
       ),
       body:
           // SafeArea(
@@ -116,29 +128,29 @@ class WalletPage extends ConsumerWidget {
                 return const LoadingAnimationView();
               }),
             ),
-            Expanded(
-              flex: 0,
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: FullWidthButtonWithText(
-                  text: Strings.createNewWallet,
-                  onPressed: () {
-                    Navigator.of(context, rootNavigator: true).push(
-                      MaterialPageRoute(
-                        builder: (context) => const AddNewWallet(),
-                      ),
-                    );
-                  },
-                ),
-                // Padding(
-                //   padding: EdgeInsets.all(8.0),
-                //   child: SizedBox(
-                //     width: double.infinity,
-                //     child: CreateNewWalletButtonWidget(),
-                //   ),
-                // ),
-              ),
-            ),
+            // Expanded(
+            //   flex: 0,
+            //   child: Align(
+            //     alignment: Alignment.bottomCenter,
+            //     child: FullWidthButtonWithText(
+            //       text: Strings.createNewWallet,
+            //       onPressed: () {
+            //         Navigator.of(context, rootNavigator: true).push(
+            //           MaterialPageRoute(
+            //             builder: (context) => const AddNewWallet(),
+            //           ),
+            //         );
+            //       },
+            //     ),
+            //     // Padding(
+            //     //   padding: EdgeInsets.all(8.0),
+            //     //   child: SizedBox(
+            //     //     width: double.infinity,
+            //     //     child: CreateNewWalletButtonWidget(),
+            //     //   ),
+            //     // ),
+            //   ),
+            // ),
           ],
         ),
       ),

@@ -43,7 +43,7 @@ class _UpdateWalletState extends ConsumerState<UpdateWallet> {
         : null;
     // final oriList = selectedWallet?.collaborators;
     var newList = selectedWallet?.collaborators;
-    debugPrint('newList: $newList');
+    // debugPrint('newList: $newList');
     // debugPrint('oriList: $oriList');
 
     final currentUserId = ref.watch(userIdProvider);
@@ -94,9 +94,10 @@ class _UpdateWalletState extends ConsumerState<UpdateWallet> {
               ref.watch(tempDataProvider.notifier).deleteTempDataInFirebase(
                     currentUserId!,
                   );
-              debugPrint('newList: $newList');
+              // debugPrint('newList: $newList');
               // debugPrint('oriList: $oriList');
 
+              Navigator.pop(context);
               Navigator.pop(context);
             },
           ),
@@ -175,27 +176,40 @@ class _UpdateWalletState extends ConsumerState<UpdateWallet> {
 
                     GestureDetector(
                       onTap: () {
-                        if (selectedWallet?.ownerId == currentUserId) {
+                        if (selectedWallet?.ownerId == currentUserId &&
+                            selectedWallet?.walletName != 'Personal') {
+                          // if (getTempData == null) {
+                          if (selectedWallet?.collaborators != null) {
+                            ref
+                                .watch(tempDataProvider.notifier)
+                                .addTempDataToFirebase(
+                                  users,
+                                  currentUserId!,
+                                );
+                          }
                           ref
                               .watch(tempDataProvider.notifier)
-                              .addTempDataToFirebase(
+                              .addTempDataDetailToFirebase(
+                                selectedWallet!,
                                 users,
                                 currentUserId!,
                               );
-                          // ref
-                          //     .watch(tempDataProvider.notifier)
-                          //     .addTempDataToFirebaseForDetailView(
-                          //       users,
-                          //       currentUserId!,
-                          //     );
-
-                          showModalBottomSheet(
-                            context: context,
-                            builder: (context) => const ShareWalletSheet(
-                                // wallet: widget.wallet,
-                                ),
-                          );
                         }
+
+                        // ref
+                        //     .watch(tempDataProvider.notifier)
+                        //     .addTempDataToFirebaseForDetailView(
+                        //       users,
+                        //       currentUserId!,
+                        //     );
+
+                        showModalBottomSheet(
+                          context: context,
+                          builder: (context) => const ShareWalletSheet(
+                              // wallet: widget.wallet,
+                              ),
+                        );
+                        // }
                       },
                       child: Row(
                         children: [
@@ -371,7 +385,8 @@ class _UpdateWalletState extends ConsumerState<UpdateWallet> {
                     //   shrinkWrap: true,
                     // ),
 
-                    selectedWallet.ownerId == currentUserId
+                    selectedWallet.ownerId == currentUserId &&
+                            selectedWallet.walletName != 'Personal'
                         ? Expanded(
                             flex: 1,
                             child: Align(
@@ -379,6 +394,9 @@ class _UpdateWalletState extends ConsumerState<UpdateWallet> {
                               child: FullWidthButtonWithText(
                                 text: Strings.saveChanges,
                                 onPressed: () {
+                                  debugPrint('newList: $newList');
+                                  debugPrint(
+                                      'collaboratorList: $collaboratorList');
                                   _updateNewWalletController(
                                     walletNameController,
                                     newList,
@@ -416,22 +434,22 @@ class _UpdateWalletState extends ConsumerState<UpdateWallet> {
     if (userId == null) {
       return;
     }
+
     //! need to check collaborator status. If accepted no need change status, if new one then only change pending
     List<CollaboratorsInfo> collaboratorsInfo = [];
-    updatedCollaborators?.forEach((element) {
-      debugPrint('updatedCollaborators: ${element.userId}');
-      collaboratorsInfo.add(
-        CollaboratorsInfo(
-          userId: element.userId,
-          displayName: element.displayName,
-          email: element.email,
-          status: element.status,
-        ),
-      );
-    });
+    // updatedCollaborators?.forEach((element) {
+    //   collaboratorsInfo.add(
+    //     CollaboratorsInfo(
+    //       userId: element.userId,
+    //       displayName: element.displayName,
+    //       email: element.email,
+    //       status: element.status,
+    //     ),
+    //   );
+    // });
 
     newCollaborators?.forEach((element) {
-      debugPrint('newCollaborators: ${element.userId}');
+      // debugPrint('newCollaborators: ${element.userId}');
       if (collaboratorsInfo
           .any((collaborator) => collaborator.userId == element.userId)) return;
       collaboratorsInfo.add(
@@ -443,6 +461,8 @@ class _UpdateWalletState extends ConsumerState<UpdateWallet> {
         ),
       );
     });
+
+    debugPrint('collaboratorsInfo: $collaboratorsInfo');
 
     // await ref.read(checkRequestProvider.notifier).removeCollaborator(
     //       walletId: widget.wallet.walletId,
@@ -462,7 +482,9 @@ class _UpdateWalletState extends ConsumerState<UpdateWallet> {
         );
     if (isUpdated && mounted) {
       nameController.clear();
-      Navigator.of(context).maybePop();
+      Navigator.pop(context);
+      Navigator.pop(context);
+
       ref.watch(tempDataProvider.notifier).deleteTempDataInFirebase(userId);
     }
   }

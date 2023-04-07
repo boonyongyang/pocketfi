@@ -42,6 +42,7 @@ final userSavingGoalsHistoryProvider = StreamProvider.autoDispose
       .collection(FirebaseCollectionName.savingGoalsHistory)
       .where(FirebaseFieldName.userId, isEqualTo: userId)
       .where(FirebaseFieldName.savingGoalId, isEqualTo: savingGoalId)
+      .orderBy(FirebaseFieldName.savingGoalEnterDate, descending: true)
       .snapshots()
       .listen((snapshot) {
     final document = snapshot.docs;
