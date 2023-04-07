@@ -23,53 +23,48 @@ class TransactionsTabView extends ConsumerWidget {
     final scheduledTransactions = ref.watch(scheduledTransactionsProvider);
     final hasScheduledTransactions = scheduledTransactions.isNotEmpty;
 
-    final isTransactionEmpty = transactions.valueOrNull?.isEmpty ?? true;
+    // final isTransactionEmpty = transactions.valueOrNull?.isEmpty ?? true;
 
     return RefreshIndicator(
       onRefresh: () {
         ref.refresh(userTransactionsProvider);
         ref.refresh(overviewMonthProvider.notifier).resetMonth();
         return Future.delayed(
-          const Duration(
-            milliseconds: 500,
-          ),
+          const Duration(milliseconds: 500),
         );
       },
       child: SingleChildScrollView(
         child: Column(
           children: [
-            Visibility(
-              visible: !isTransactionEmpty,
-              child: Column(
-                children: [
-                  const SizedBox(height: 10.0),
-                  ElevatedButton(
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(
-                        AppColors.mainColor1,
-                      ),
-                      shape: MaterialStateProperty.all(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30.0),
-                        ),
+            Column(
+              children: [
+                const SizedBox(height: 10.0),
+                ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(
+                      AppColors.mainColor1,
+                    ),
+                    shape: MaterialStateProperty.all(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.0),
                       ),
                     ),
-                    onPressed: () {
-                      // final selectedWallet = ref.read(selectedWalletProvider);
-                      showModalBottomSheet(
-                        context: context,
-                        builder: (context) {
-                          return const WalletVisibilitySheet();
-                        },
-                      );
-                    },
-                    child: const Text('Filter by Wallet'),
                   ),
-                  const SizedBox(height: 10.0),
-                  const MonthPicker(),
-                  const SizedBox(height: 10.0),
-                ],
-              ),
+                  onPressed: () {
+                    // final selectedWallet = ref.read(selectedWalletProvider);
+                    showModalBottomSheet(
+                      context: context,
+                      builder: (context) {
+                        return const WalletVisibilitySheet();
+                      },
+                    );
+                  },
+                  child: const Text('Filter by Wallet'),
+                ),
+                const SizedBox(height: 10.0),
+                const MonthPicker(),
+                const SizedBox(height: 10.0),
+              ],
             ),
             transactions.when(
               data: (trans) {

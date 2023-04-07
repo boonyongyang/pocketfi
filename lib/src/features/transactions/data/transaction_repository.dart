@@ -25,8 +25,7 @@ import 'package:image/image.dart' as img;
 import 'package:uuid/uuid.dart';
 
 // * get all transactions from all wallets
-final userTransactionsProvider =
-    StreamProvider.autoDispose<Iterable<Transaction>>(
+final userTransactionsProvider = StreamProvider<Iterable<Transaction>>(
   (ref) {
     final wallets = ref.watch(userWalletsProvider).value;
     final controller = StreamController<Iterable<Transaction>>();
@@ -78,8 +77,7 @@ final userTransactionsProvider =
 );
 
 // * get user transactions by month, based on month
-final userTransactionsByMonthProvider =
-    StreamProvider.autoDispose<Iterable<Transaction>>(
+final userTransactionsByMonthProvider = StreamProvider<Iterable<Transaction>>(
   (ref) {
     final wallets = ref.watch(userWalletsProvider).value;
     final month = ref.watch(overviewMonthProvider);
@@ -136,7 +134,7 @@ final userTransactionsByMonthProvider =
 
 // * get user transactions by month, based on month, based on WalletVisibility
 final userTransactionsByMonthByWalletProvider =
-    StreamProvider.autoDispose<Iterable<Transaction>>(
+    StreamProvider<Iterable<Transaction>>(
   (ref) {
     final wallets = ref.watch(userWalletsProvider).value!;
     final month = ref.watch(overviewMonthProvider);

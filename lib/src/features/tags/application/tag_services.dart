@@ -20,7 +20,7 @@ Tag? getTagWithName(String tagName, List<Tag> allTags) {
 }
 
 // toggle tag
-void toggleTag(Tag tag) {}
+// void toggleTag(Tag tag) {}
 
 // * userTagsNotifier
 final userTagsNotifier = StateNotifierProvider<UserTagsNotifier, List<Tag>>(
@@ -44,15 +44,15 @@ class UserTagsNotifier extends StateNotifier<List<Tag>> {
   }
 
   // * toggle tags
-  void toggleTag(Tag tag) {
-    state = state.map((existingTag) {
-      if (existingTag.name == tag.name) {
-        return existingTag.copyWith(isSelected: !existingTag.isSelected);
-      } else {
-        return existingTag;
-      }
-    }).toList();
-  }
+  // void toggleTag(Tag tag) {
+  //   state = state.map((existingTag) {
+  //     if (existingTag.name == tag.name) {
+  //       return existingTag.copyWith(isSelected: !existingTag.isSelected);
+  //     } else {
+  //       return existingTag;
+  //     }
+  //   }).toList();
+  // }
 
   // * set tag to selected
   void setTagToSelected(Tag tag) {

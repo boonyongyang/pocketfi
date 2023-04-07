@@ -194,7 +194,7 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
                                 amountController: amountController,
                                 categoryName: selectedCategory,
                                 mounted: mounted,
-                                selectedWallet: selectedWallet,
+                                selectedWallet: selectedWallet!,
                                 isBookmark: isBookmark,
                                 // date: ,
                               ),
@@ -545,7 +545,8 @@ class TransactionAmountField extends ConsumerWidget {
 //                decimal: true,
 //              \)
 //            : TextInputType\.number,
-        keyboardType: TextInputType.number,
+        // keyboardType: TextInputType.number,
+        keyboardType: TextInputType.numberWithOptions(decimal: true),
 // This regex for only amount (price). you can create your own regex based on your requirement
         inputFormatters: [
           FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,4}'))
@@ -621,7 +622,7 @@ class SaveButton extends ConsumerWidget {
   final TextEditingController noteController;
   final TextEditingController amountController;
   final Category? categoryName;
-  final Wallet? selectedWallet;
+  final Wallet selectedWallet;
   final bool mounted;
   final bool isBookmark;
 
@@ -659,14 +660,16 @@ class SaveButton extends ConsumerWidget {
               debugPrint('note is: $note');
               debugPrint('amount is: $amount');
 
-              debugPrint('walletName is: ${selectedWallet!.walletId}');
+              // debugPrint('walletName is: ${selectedWallet?.walletId}');
 
               final isCreated = await ref
                   .read(transactionProvider.notifier)
                   .addNewTransaction(
                     userId: userId,
-                    walletId: selectedWallet!.walletId, // ? sure?
-                    walletName: selectedWallet!.walletName, // ? sure?
+                    walletId: selectedWallet.walletId, // ? sure?
+                    walletName: selectedWallet.walletName, // ? sure?
+                    // walletId: selectedWallet!.walletId, // ? sure?
+                    // walletName: selectedWallet!.walletName, // ? sure?
                     amount: double.parse(amount),
                     type: type,
                     note: note,

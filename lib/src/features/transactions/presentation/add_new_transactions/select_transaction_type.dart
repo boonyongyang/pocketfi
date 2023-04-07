@@ -4,6 +4,7 @@ import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/constants/strings.dart';
 import 'package:pocketfi/src/features/category/application/category_services.dart';
 import 'package:pocketfi/src/features/transactions/application/transaction_services.dart';
+import 'package:pocketfi/src/utils/haptic_feedback_service.dart';
 
 class SelectTransactionType extends ConsumerStatefulWidget {
   const SelectTransactionType({
@@ -19,6 +20,20 @@ class SelectTransactionType extends ConsumerStatefulWidget {
 
 class SelectTransactionTypeState extends ConsumerState<SelectTransactionType>
     with TickerProviderStateMixin {
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: widget.noOfTabs, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
   bool get isSelectedTransactionNull =>
       (ref.watch(selectedTransactionProvider)?.date == null);
 
@@ -35,6 +50,7 @@ class SelectTransactionTypeState extends ConsumerState<SelectTransactionType>
       // * update the category list
       final tabIndex = ref.watch(selectedTransactionProvider)?.type ??
           ref.watch(transactionTypeProvider);
+
       ref.read(categoriesProvider.notifier).updateCategoriesList(tabIndex!);
 
       // ! newly added
@@ -128,16 +144,18 @@ class SelectTransactionTypeState extends ConsumerState<SelectTransactionType>
                         // ref
                         //     .read(transactionTypeProvider.notifier)
                         //     .setTransactionType(index);
+                        HapticFeedbackService.lightImpact();
                         setOrUpdateTransactionType(index);
 
                         final indexSelected = ref.read(transactionTypeProvider);
                         debugPrint('index selected: $indexSelected');
                       },
-                      controller: TabController(
-                        length: widget.noOfTabs,
-                        initialIndex: tabIndex!.index,
-                        vsync: this,
-                      ),
+                      controller: _tabController,
+                      // controller: TabController(
+                      //   length: widget.noOfTabs,
+                      //   initialIndex: tabIndex!.index,
+                      //   vsync: this,
+                      // ),
                     );
                   },
                 ),

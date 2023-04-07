@@ -1,6 +1,8 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/features/category/application/category_services.dart';
 import 'package:pocketfi/src/features/category/domain/category.dart';
+import 'package:pocketfi/src/features/tags/application/tag_services.dart';
+import 'package:pocketfi/src/features/tags/domain/tag.dart';
 import 'package:pocketfi/src/features/transactions/application/transaction_services.dart';
 import 'package:pocketfi/src/features/transactions/data/transaction_repository.dart';
 import 'package:pocketfi/src/features/shared/date_picker/application/date_services.dart';
@@ -25,8 +27,7 @@ final totalAmountProvider = Provider.autoDispose<double>((ref) {
 });
 
 // returns the list of transactions for the current month
-final currentMonthTransactionsProvider =
-    Provider.autoDispose<List<Transaction>>((ref) {
+final currentMonthTransactionsProvider = Provider<List<Transaction>>((ref) {
   final transactionList = ref.watch(userTransactionsProvider);
   final month = ref.watch(overviewMonthProvider);
   if (transactionList.hasValue) {
@@ -59,6 +60,57 @@ final filteredCategoriesProvider = Provider.autoDispose<List<Category>>((ref) {
 
   return filteredCategories;
 });
+
+// returns the list of tags that have transactions in the current month
+final filteredTagsProvider = Provider.autoDispose<List<Tag>>((ref) {
+  final tags = ref.watch(userTagsNotifier);
+  final currentMonthTransactions = ref.watch(currentMonthTransactionsProvider);
+
+  final filteredTags = tags.where((tag) {
+    return currentMonthTransactions.any((tran) {
+      return tran.tags.contains(tag.name);
+    });
+  }).toList()
+    ..sort((a, b) {
+      final aTotalAmount =
+          getTagTotalAmountForCurrentMonth(a.name, currentMonthTransactions);
+      final bTotalAmount =
+          getTagTotalAmountForCurrentMonth(b.name, currentMonthTransactions);
+      return bTotalAmount.compareTo(aTotalAmount);
+    });
+
+  return filteredTags;
+});
+
+final filteredTagsByTypeProvider =
+    Provider.autoDispose.family<List<Tag>, TransactionType>((ref, type) {
+  final tags = ref.watch(userTagsNotifier);
+  final currentMonthTransactions = ref.watch(currentMonthTransactionsProvider);
+
+  final filteredTags = tags.where((tag) {
+    return currentMonthTransactions.any((tran) {
+      return tran.tags.contains(tag.name) && tran.type == type;
+    });
+  }).toList()
+    ..sort((a, b) {
+      final aTotalAmount =
+          getTagTotalAmountForCurrentMonth(a.name, currentMonthTransactions);
+      final bTotalAmount =
+          getTagTotalAmountForCurrentMonth(b.name, currentMonthTransactions);
+      return bTotalAmount.compareTo(aTotalAmount);
+    });
+
+  return filteredTags;
+});
+
+// to calculate the total amount for a category in the current month
+double getTagTotalAmountForCurrentMonth(
+    String tagName, List<Transaction> transactions) {
+  final tagTransactions =
+      // transactions.where((tran) => tran.categoryName == tagName);
+      transactions.where((tran) => tran.tags.contains(tagName));
+  return getTotalAmount(tagTransactions.toList());
+}
 
 // to calculate the total amount for a category in the current month
 double getCategoryTotalAmountForCurrentMonth(
@@ -96,4 +148,23 @@ final totalTypeAmountProvider = Provider.autoDispose<double>((ref) {
   final totalAmountOfType = getTotalAmount(transactionsOfType);
 
   return totalAmountOfType;
+});
+
+// returns the total amount of a specific transaction type
+final monthlyCashFlowProvider = Provider.autoDispose<double>((ref) {
+  final currentMonthTransactions = ref.watch(currentMonthTransactionsProvider);
+
+  final totalIncome = currentMonthTransactions
+      .where((tran) => tran.type == TransactionType.income)
+      .toList();
+  final totalExpense = currentMonthTransactions
+      .where((tran) => tran.type == TransactionType.expense)
+      .toList();
+
+  final incomeAmount = getTotalAmount(totalIncome);
+  final expenseAmount = getTotalAmount(totalExpense);
+
+  final monthlyCashFlow = incomeAmount - expenseAmount;
+
+  return monthlyCashFlow;
 });

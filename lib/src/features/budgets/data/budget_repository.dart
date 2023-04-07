@@ -129,6 +129,7 @@ Future<double> totalAmount() async {
     // for (var i in updatedDebtList) {
     //   debugPrint('updatedDebtList: $i');
     // }
+
     // debugPrint('updatedDebtList length: ${updatedDebtList.length}');
   }
 

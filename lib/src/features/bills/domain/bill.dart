@@ -12,11 +12,11 @@ enum RecurringPeriod {
 }
 
 enum BillStatus {
-  paid(
-    color: Color(AppColors.paidColor),
-  ),
   unpaid(
     color: Color(AppColors.unpaidColor),
+  ),
+  paid(
+    color: Color(AppColors.paidColor),
   ),
   overdue(
     color: Color(AppColors.overdueColor),

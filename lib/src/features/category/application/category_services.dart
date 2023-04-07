@@ -41,6 +41,17 @@ Category getCategoryWithCategoryName(String? categoryName) {
   );
 }
 
+// * to get the type of the category
+TransactionType getCategoryType(Category category) {
+  if (expenseCategories.contains(category)) {
+    return TransactionType.expense;
+  } else if (incomeCategories.contains(category)) {
+    return TransactionType.income;
+  } else {
+    return TransactionType.transfer;
+  }
+}
+
 // * provide the appropriate category list based on the transaction type
 final categoriesProvider =
     StateNotifierProvider<CategoryListNotifier, List<Category>>(

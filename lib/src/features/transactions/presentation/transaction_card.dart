@@ -57,7 +57,10 @@ class TransactionCard extends ConsumerWidget {
                       padding: const EdgeInsets.all(5),
                       decoration: BoxDecoration(
                           shape: BoxShape.circle, color: category.color),
-                      child: Center(child: category.icon),
+                      child: Center(
+                        // heightFactor: 2.0,
+                        child: category.icon,
+                      ),
                     ),
                     const SizedBox(width: 10),
                     Padding(
@@ -104,13 +107,18 @@ class TransactionCard extends ConsumerWidget {
                               tags: getTagsWithTagNames(selectedTags, allTags),
                             ),
                           // const SizedBox(height: 20.0),
-                          Text(transaction.description ?? '',
-                              maxLines: 3,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: Colors.grey[700],
-                              )),
+
+                          Visibility(
+                            visible:
+                                transaction.description?.isNotEmpty ?? false,
+                            child: Text(transaction.description!,
+                                maxLines: 3,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.grey[700],
+                                )),
+                          ),
                           // ! here cast probelm not sure
                           if (transaction.transactionImage?.thumbnailUrl !=
                               null)
