@@ -17,11 +17,44 @@ Features
 
 # Demo 
 
-* View Expenditure Overview \
+<div style="display:flex;">
+  <div style="flex:50%; padding-right:10px;">
+    <h3>View Expenditure Overview</h3>
+    <img src="https://user-images.githubusercontent.com/55826849/230754276-a7ec00c4-ceb8-4d4e-bc48-76da45e6de63.GIF" alt="view-expenditure-overview" width="400"/>
+  </div>
+  <div style="flex:50%; padding-left:10px;">
+    <h3>Receipt Text Highlighter</h3>
+    <img src="https://user-images.githubusercontent.com/55826849/230755142-2bc2b923-69a5-4c5a-9c24-db86fc1bd47c.gif" alt="view-expenditure-overview" width="400"/>
+  </div>
+</div>
+
+* View Expenditure Overview 
 <img src="https://user-images.githubusercontent.com/55826849/230754276-a7ec00c4-ceb8-4d4e-bc48-76da45e6de63.GIF" alt="view-expenditure-overview" width="400"/>
 
-* Receipt Text Highlighter \
-![receipt-text-highlighter](https://user-images.githubusercontent.com/55826849/230754945-36f837c9-0d82-4c5b-b2f2-97bbff93c5d6.gif)
+* Receipt Text Highlighter 
+<img src="https://user-images.githubusercontent.com/55826849/230755142-2bc2b923-69a5-4c5a-9c24-db86fc1bd47c.gif" alt="receipt-text-highlighter" width="400"/>
+
+* Budget
+<img src="https://user-images.githubusercontent.com/55826849/230755819-aedb9570-201a-4943-b54c-475573863b6f.gif" alt="receipt-text-highlighter" width="400"/>
+
+* Debts
+![debt](https://user-images.githubusercontent.com/55826849/230755818-4e2eebb1-f9ee-4829-80b8-21da4e38b0ff.gif)
+
+* Savings
+![saving-goal](https://user-images.githubusercontent.com/55826849/230755815-61803a23-59e4-46fe-a159-0fa4ca5597d9.gif)
+
+<div style="display:flex;">
+  <div style="flex:50%; padding-right:10px;">
+    <h3>View Expenditure Overview</h3>
+    <img src="https://user-images.githubusercontent.com/55826849/230754276-a7ec00c4-ceb8-4d4e-bc48-76da45e6de63.GIF" alt="view-expenditure-overview" width="400"/>
+  </div>
+  <div style="flex:50%; padding-left:10px;">
+    <h3>Receipt Text Highlighter</h3>
+    <img src="https://user-images.githubusercontent.com/55826849/230755815-61803a23-59e4-46fe-a159-0fa4ca5597d9.gif" alt="saving-goal" width="400"/>
+  </div>
+</div>
+
+
 
 
 
