@@ -17,6 +17,36 @@ Features
 
 # Demo 
 
+<table>
+  <tr>
+    <td align="center">
+      <img src="https://user-images.githubusercontent.com/55826849/230754276-a7ec00c4-ceb8-4d4e-bc48-76da45e6de63.GIF" alt="view-expenditure-overview" width="400"/>
+      <br>View Expenditure Overview
+    </td>
+    <td align="center">
+      <img src="https://user-images.githubusercontent.com/55826849/230755142-2bc2b923-69a5-4c5a-9c24-db86fc1bd47c.gif" alt="receipt-text-highlighter" width="400"/>
+      <br>Receipt Text Highlighter
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="https://user-images.githubusercontent.com/55826849/230755819-aedb9570-201a-4943-b54c-475573863b6f.gif" alt="budget" width="400"/>
+      <br>Budget
+    </td>
+    <td align="center">
+      <img src="https://user-images.githubusercontent.com/55826849/230755818-4e2eebb1-f9ee-4829-80b8-21da4e38b0ff.gif" alt="debts" width="400"/>
+      <br>Debts
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="https://user-images.githubusercontent.com/55826849/230755815-61803a23-59e4-46fe-a159-0fa4ca5597d9.gif" alt="savings" width="400"/>
+      <br>Savings
+    </td>
+    <td></td>
+  </tr>
+</table>
+
 <div style="display:flex;">
   <div style="flex:50%; padding-right:10px;">
     <h3>View Expenditure Overview</h3>
