@@ -34,7 +34,7 @@ Pocketfi is an all-in-one personal finance app designed to help you keep track o
 <img src="https://user-images.githubusercontent.com/55826849/230755819-aedb9570-201a-4943-b54c-475573863b6f.gif" alt="budget" width="400"/>
 
 <h3><b>Debt</b></h3>
-<img src="https://user-images.githubusercontent.com/55826849/230755818-4e2eebb1-f9ee-4829-80b8-21da4e38b0ff.gif" alt="debt" width="400"/>
+<img src="https://user-images.githubusercontent.com/55826849/230760293-da884d7a-62fd-4290-b670-8e9031a2cbcd.gif" alt="debt" width="400"/>
 
 <h3><b>Saving Goal</b></h3>
 <img src="https://user-images.githubusercontent.com/55826849/230755815-61803a23-59e4-46fe-a159-0fa4ca5597d9.gif" alt="saving-goal" width="400"/>
