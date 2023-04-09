@@ -17,11 +17,12 @@ Features
 
 # Demo 
 
-* View Expenditure Overview
-![view-expenditure-overview](https://user-images.githubusercontent.com/55826849/230754276-a7ec00c4-ceb8-4d4e-bc48-76da45e6de63.GIF)
+* View Expenditure Overview \
+<img src="https://user-images.githubusercontent.com/55826849/230754276-a7ec00c4-ceb8-4d4e-bc48-76da45e6de63.GIF" alt="view-expenditure-overview" width="400"/>
 
-* Receipt Text Highlighter
-![receipt-text-highlighter](https://user-images.githubusercontent.com/55826849/230754278-174c08e1-325e-4540-8a73-f61c824e4bcd.gif)
+* Receipt Text Highlighter \
+![receipt-text-highlighter](https://user-images.githubusercontent.com/55826849/230754945-36f837c9-0d82-4c5b-b2f2-97bbff93c5d6.gif)
+
 
 
 
