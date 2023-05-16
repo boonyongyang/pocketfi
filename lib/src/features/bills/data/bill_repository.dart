@@ -9,54 +9,11 @@ import 'package:pocketfi/src/constants/typedefs.dart';
 import 'package:pocketfi/src/features/authentication/application/user_id_provider.dart';
 import 'package:pocketfi/src/features/bills/domain/bill.dart';
 import 'package:pocketfi/src/features/shared/date_picker/application/date_services.dart';
-import 'package:pocketfi/src/features/wallets/application/wallet_services.dart';
 import 'package:pocketfi/src/utils/document_id_from_current_date.dart';
-
-// * get all bills from all wallets
-// final userBillsProvider = StreamProvider.autoDispose<Iterable<Bill>>(
-//   (ref) {
-//     final userId = ref.watch(userIdProvider);
-//     final walletId = ref.watch(selectedWalletProvider)?.walletId;
-//     debugPrint('walletId: $walletId');
-//     final controller = StreamController<Iterable<Bill>>();
-
-//     controller.onListen = () {
-//       controller.sink.add([]);
-//     };
-
-//     final sub = FirebaseFirestore.instance
-//         .collection(FirebaseCollectionName.bills)
-//         .where(FirebaseFieldName.userId, isEqualTo: userId)
-//         .orderBy(BillKey.dueDate, descending: true)
-//         .snapshots()
-//         .listen(
-//       (snapshot) {
-//         final documents = snapshot.docs;
-//         final bills = documents
-//             .where(
-//               (doc) => !doc.metadata.hasPendingWrites,
-//             )
-//             .map(
-//               (doc) => Bill.fromJson(
-//                 billId: doc.id,
-//                 json: doc.data(),
-//               ),
-//             );
-//         controller.sink.add(bills);
-//       },
-//     );
-//     ref.onDispose(() {
-//       sub.cancel();
-//       controller.close();
-//     });
-//     return controller.stream;
-//   },
-// );
 
 final userBillsProvider = StreamProvider<Iterable<Bill>>(
   (ref) {
     final userId = ref.watch(userIdProvider);
-    final walletId = ref.watch(selectedWalletProvider)?.walletId;
     final controller = StreamController<Iterable<Bill>>();
 
     controller.onListen = () {
@@ -89,18 +46,6 @@ final userBillsProvider = StreamProvider<Iterable<Bill>>(
               final updatedBill = bill.copyWith(
                 status: BillStatus.overdue,
               );
-
-              //             if (bill.status == BillStatus.unpaid) {
-              // int differenceInDays =
-              //     bill.dueDate.difference(DateTime.now()).inDays;
-
-              // final updatedBill = differenceInDays < 0
-              //     ? bill.copyWith(
-              //         status: BillStatus.overdue,
-              //       )
-              //     : bill.copyWith(
-              //         status: BillStatus.unpaid,
-              //       );
 
               // Update the bill in Firebase
               FirebaseFirestore.instance
@@ -197,7 +142,6 @@ class BillNotifier extends StateNotifier<IsLoading> {
     required UserId userId,
     required String walletId,
     required String walletName,
-    // required String billName,
     required double billAmount,
     required DateTime billDueDate,
     required String categoryName,
@@ -254,32 +198,7 @@ class BillNotifier extends StateNotifier<IsLoading> {
     isLoading = false;
 
     try {
-// check if the billDueDate is before today and the bill status is unpaid then change the status to overdue else change the status to unpaid
-      // final bill = await FirebaseFirestore.instance
-      //     .collection(FirebaseCollectionName.bills)
-      //     .doc(billId)
-      //     .get();
-
-      // final billStatus = bill.data()![BillKey.status];
-
-      // if (billDueDate.isBefore(DateTime.now()) &&
-      //     billStatus == BillStatus.unpaid) {
-      //   await FirebaseFirestore.instance
-      //       .collection(FirebaseCollectionName.bills)
-      //       .doc(billId)
-      //       .update({
-      //     BillKey.status: BillStatus.overdue,
-      //   });
-      // } else if (billDueDate.isAfter(DateTime.now()) &&
-      //     billStatus == BillStatus.overdue) {
-      //   await FirebaseFirestore.instance
-      //       .collection(FirebaseCollectionName.bills)
-      //       .doc(billId)
-      //       .update({
-      //     BillKey.status: BillStatus.unpaid,
-      //   });
-      // }
-
+      // * perform update bill
       await FirebaseFirestore.instance
           .collection(FirebaseCollectionName.bills)
           .doc(billId)
@@ -371,7 +290,6 @@ class BillNotifier extends StateNotifier<IsLoading> {
     String? billNote,
   }) async {
     isLoading = true;
-    final transactionId = documentIdFromCurrentDate();
     final Map<String, dynamic> payload;
     try {
       // * perform create new bill

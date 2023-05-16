@@ -12,7 +12,6 @@ class FullScreenImageDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     debugPrint('path: ${imageFile.path}');
     return Dialog(
-      // surfaceTintColor: Colors.amber,
       insetPadding: const EdgeInsets.all(35),
       shadowColor: AppColors.mainColor1,
       backgroundColor: AppColors.transparent,

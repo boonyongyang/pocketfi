@@ -55,43 +55,6 @@ class BookmarkListView extends ConsumerWidget {
             );
           },
         );
-
-        // * using list tile
-        // return Padding(
-        //   padding:
-        //       const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
-        //   child: Card(
-        //     // border radius
-        //     shape: RoundedRectangleBorder(
-        //       borderRadius: BorderRadius.circular(20.0),
-        //     ),
-        //     child: ListTile(
-        //       leading: CircleAvatar(
-        //         child: Padding(
-        //           padding: const EdgeInsets.all(6.0),
-        //           child: getCategoryWithCategoryName(transaction.categoryName)
-        //               .icon,
-        //           // child: FittedBox(
-        //           // child: Text('\$${transaction.description}'),
-        //           // ),
-        //         ),
-        //       ),
-        //       title: Text(
-        //         transaction.categoryName,
-        //         style: Theme.of(context).textTheme.titleLarge,
-        //       ),
-        //       subtitle: Text(
-        //         DateFormat.yMMMd().format(transaction.date),
-        //       ),
-        //       trailing: IconButton(
-        //         icon: const Icon(Icons.bookmark),
-        //         color: AppColors.mainColor2,
-        //         iconSize: 32.0,
-        //         onPressed: () {},
-        //       ),
-        //     ),
-        //   ),
-        // );
       },
     );
   }

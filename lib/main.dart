@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
+// ignore: unused_import
 import 'package:pocketfi/src/features/authentication/presentation/local_auth_screen.dart';
 import 'firebase_options.dart';
 import 'package:pocketfi/src/common_widgets/loading/loading_screen.dart';
@@ -37,7 +38,6 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      // title: 'Home Page',
       theme: ThemeData(
         brightness: Brightness.light,
         primarySwatch: AppColors.mainMaterialColor1,

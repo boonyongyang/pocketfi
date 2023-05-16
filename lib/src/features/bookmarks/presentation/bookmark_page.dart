@@ -45,10 +45,7 @@ class BookmarkPageState extends ConsumerState<BookmarkPage> {
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
                   children: [
-                    // const SelectTransactionType(noOfTabs: 2),
                     const SizedBox(height: 10.0),
-                    // selectTags(),
-                    // const SizedBox(height: 20.0),
                     Text(
                         'You have ${bookmarks.value?.length ?? 'No'} bookmarks'),
                     const Divider(),

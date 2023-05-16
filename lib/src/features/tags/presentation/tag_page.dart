@@ -15,13 +15,8 @@ class TagPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final tags = ref.watch(userTagsProvider).value;
     final tagsList = tags?.toList() ?? [];
-    debugPrint('tagsList: $tagsList');
     final transactions = ref.watch(userTransactionsProvider).value;
-
-    // Create a map to store the number of times each tag has been used
     final tagUsage = <Tag, int>{};
-
-    // Loop through the transactions and count the number of times each tag has been used
     for (final transaction in transactions!) {
       final tags = getTagsWithTagNames(transaction.tags, tagsList);
       for (final tag in tags) {
@@ -40,8 +35,6 @@ class TagPage extends ConsumerWidget {
         actions: [
           IconButton(
             onPressed: () {
-              // reset selectedColor and Icon providers
-              // resetCategoryComponentsState(ref);
               showModalBottomSheet(
                 isScrollControlled: true,
                 context: context,
@@ -75,9 +68,6 @@ class TagPage extends ConsumerWidget {
                               title: Text(tagsList[index].name),
                               subtitle: Text(
                                   '${tagUsage[tagsList[index]] ?? 0} transaction(s)'),
-                              //  subtitle: Text(
-                              //   '${tagUsage[tagsList[index]]} transaction${tagUsage[tagsList[index]] == 1 ? '' : 's'}',
-                              // ),
                               trailing: const Icon(Icons.edit),
                             ),
                             onTap: () {

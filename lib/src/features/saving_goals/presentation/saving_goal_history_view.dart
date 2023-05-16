@@ -8,14 +8,11 @@ import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/constants/strings.dart';
 import 'package:pocketfi/src/features/saving_goals/application/saving_goal_services.dart';
 import 'package:pocketfi/src/features/saving_goals/data/saving_goal_repository.dart';
-import 'package:pocketfi/src/features/saving_goals/domain/saving_goal.dart';
 import 'package:pocketfi/src/features/saving_goals/domain/saving_goal_history.dart';
 
 class SavingGoalHistoryView extends ConsumerWidget {
-  // SavingGoal selectedSavingGoal;
   const SavingGoalHistoryView({
     super.key,
-    // required this.selectedSavingGoal,
   });
 
   @override
@@ -41,11 +38,10 @@ class SavingGoalHistoryView extends ConsumerWidget {
                     color: Colors.grey.withOpacity(0.5),
                     spreadRadius: 2,
                     blurRadius: 7,
-                    offset: const Offset(3, 6), // changes position of shadow
+                    offset: const Offset(3, 6),
                   ),
                 ],
               ),
-              // height: MediaQuery.of(context).size.height * 0.35,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
@@ -56,7 +52,6 @@ class SavingGoalHistoryView extends ConsumerWidget {
                         const Text(
                           'Amount Saved',
                           style: TextStyle(
-                            // fontSize: 20,
                             color: AppColors.mainColor1,
                             fontWeight: FontWeight.bold,
                           ),
@@ -73,7 +68,6 @@ class SavingGoalHistoryView extends ConsumerWidget {
                         const Text(
                           'MYR',
                           style: TextStyle(
-                            // fontSize: 20,
                             color: AppColors.mainColor1,
                             fontWeight: FontWeight.bold,
                           ),
@@ -85,7 +79,6 @@ class SavingGoalHistoryView extends ConsumerWidget {
                         const Text(
                           'Amount Left to Save',
                           style: TextStyle(
-                            // fontSize: 20,
                             color: AppColors.mainColor1,
                             fontWeight: FontWeight.bold,
                           ),
@@ -101,7 +94,6 @@ class SavingGoalHistoryView extends ConsumerWidget {
                         const Text(
                           'MYR',
                           style: TextStyle(
-                            // fontSize: 20,
                             color: AppColors.mainColor1,
                             fontWeight: FontWeight.bold,
                           ),
@@ -113,8 +105,6 @@ class SavingGoalHistoryView extends ConsumerWidget {
               ),
             ),
           ),
-          // Text('test'),
-          // list view of history
           savingGoalHistories.when(data: (savingGoalHistories) {
             if (savingGoalHistories.isEmpty) {
               return const SingleChildScrollView(
@@ -145,7 +135,6 @@ class SavingGoalHistoryView extends ConsumerWidget {
                       if (isLastSavingGoalForDate)
                         SavingGoalDateRow(
                           date: savingGoalHistory.savingGoalEnterDate,
-                          // netAmount: savingGoalHistories[index].netAmount,
                         ),
                       Padding(
                         padding: const EdgeInsets.only(
@@ -183,7 +172,6 @@ class SavingGoalHistoryView extends ConsumerWidget {
                                           : Strings.withdraw,
                                       style: const TextStyle(
                                         color: AppColors.mainColor1,
-                                        // fontWeight: FontWeight.bold,
                                       ),
                                     ),
                                     const Spacer(),
@@ -240,7 +228,6 @@ class SavingGoalHistoryView extends ConsumerWidget {
     return date1.year == date2.year &&
         date1.month == date2.month &&
         date1.day == date2.day;
-    // return date2.isAtSameMomentAs(date1);
   }
 }
 
@@ -248,10 +235,8 @@ class SavingGoalDateRow extends StatefulWidget {
   const SavingGoalDateRow({
     super.key,
     required this.date,
-    // required this.netAmount,
   });
   final DateTime date;
-  // final double netAmount;
 
   @override
   SavingGoalDateRowState createState() => SavingGoalDateRowState();
@@ -285,7 +270,6 @@ class SavingGoalDateRowState extends State<SavingGoalDateRow> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // color: Colors.grey[400],
       padding: const EdgeInsets.symmetric(
         vertical: 5.0,
         horizontal: 20.0,

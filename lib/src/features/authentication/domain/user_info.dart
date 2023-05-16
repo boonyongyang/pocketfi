@@ -10,7 +10,7 @@ class UserInfo extends MapView<String, String?> {
   final String displayName;
   final String? email;
 
-  // this will create a map of the user info and set it to the super map
+  // create a map of the user info and set it to the super map
   UserInfo({
     required this.userId,
     required this.displayName,
@@ -23,7 +23,7 @@ class UserInfo extends MapView<String, String?> {
           },
         );
 
-  // this will create a UserInfoModel from a json map
+  // create a UserInfoModel from a json map
   UserInfo.fromJson(
     Map<String, dynamic> json, {
     required UserId userId,

@@ -22,9 +22,6 @@ class TransactionsTabView extends ConsumerWidget {
     final transactions = ref.watch(userTransactionsByMonthByWalletProvider);
     final scheduledTransactions = ref.watch(scheduledTransactionsProvider);
     final hasScheduledTransactions = scheduledTransactions.isNotEmpty;
-
-    // final isTransactionEmpty = transactions.valueOrNull?.isEmpty ?? true;
-
     return RefreshIndicator(
       onRefresh: () {
         ref.refresh(userTransactionsProvider);
@@ -51,7 +48,6 @@ class TransactionsTabView extends ConsumerWidget {
                     ),
                   ),
                   onPressed: () {
-                    // final selectedWallet = ref.read(selectedWalletProvider);
                     showModalBottomSheet(
                       context: context,
                       builder: (context) {
@@ -80,7 +76,6 @@ class TransactionsTabView extends ConsumerWidget {
                 } else {
                   return Column(
                     children: [
-                      // if (hasScheduledTransactions && isLastTransactionForDate)
                       if (hasScheduledTransactions)
                         _buildScheduledTransactionsWidget(scheduledTransactions,
                             () {
@@ -100,8 +95,6 @@ class TransactionsTabView extends ConsumerWidget {
                 }
               },
               error: (error, stackTrace) {
-                debugPrint('error: $error');
-                debugPrint('stackTrace: $stackTrace');
                 return const ErrorAnimationView();
               },
               loading: () {
@@ -113,20 +106,6 @@ class TransactionsTabView extends ConsumerWidget {
       ),
     );
   }
-
-  // // Method to filter scheduled transactions
-  // List<Transaction> _getScheduledTransactions(
-  //     Iterable<Transaction> transactions) {
-  //   // ignore: unnecessary_null_comparison
-  //   if (transactions != null) {
-  //     return transactions
-  //         .where((transaction) => transaction.date
-  //             .isAfter(DateTime.now().add(const Duration(days: 1))))
-  //         .toList();
-  //   } else {
-  //     return [];
-  //   }
-  // }
 
   // Method to create the scheduled transactions widget
   Widget _buildScheduledTransactionsWidget(
@@ -168,7 +147,6 @@ class TransactionsTabView extends ConsumerWidget {
                     Text(
                       "${scheduledTransactions.length} ${scheduledTransactions.length == 1 ? 'transaction' : 'transactions'}",
                       style: const TextStyle(
-                        // fontSize: 12,
                         color: Colors.grey,
                       ),
                     ),

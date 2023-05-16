@@ -8,7 +8,6 @@ import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/common_widgets/buttons/full_width_button_with_text.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
-import 'package:pocketfi/src/features/category/application/category_services.dart';
 import 'package:pocketfi/src/features/receipts/add_transaction_with_receipt.dart';
 import 'package:pocketfi/src/features/receipts/domain/receipt.dart';
 import 'package:pocketfi/src/features/receipts/domain/receipt_text_rect.dart';
@@ -38,7 +37,6 @@ class ReceiptHighlightImageState extends ConsumerState<ReceiptHighlightImage> {
 
   String? selectedPrice = '';
   DateTime? selectedDate;
-  // String? selectedMerchant = '', selectedNote = '';
   late TextEditingController priceController,
       merchantController,
       noteController;
@@ -214,12 +212,12 @@ class ReceiptHighlightImageState extends ConsumerState<ReceiptHighlightImage> {
           ),
           ProceedButton(
             isSaveButtonEnabled: isSaveButtonEnabled,
-            // imagePath: widget.imagePath,
             priceController: priceController,
             noteController: noteController,
             merchantController: merchantController,
             recognizedText: widget.recognizedText,
-            imagePath: widget.imagePath ?? '', extractedTextRects: [],
+            imagePath: widget.imagePath ?? '',
+            extractedTextRects: const [],
           ),
         ],
       ),
@@ -264,10 +262,6 @@ class ReceiptHighlightImageState extends ConsumerState<ReceiptHighlightImage> {
         Positioned(
           left: rect.left * scale + padding + horizontalPadding,
           top: rect.top * scale + padding + verticalPadding,
-          // child: GestureDetector(
-          //   onTap: () {
-          //     _showSnackBar(textRect.text);
-          //   },
           child: GestureDetector(
             onTapDown: (TapDownDetails details) {
               final RenderBox box = context.findRenderObject() as RenderBox;
@@ -297,11 +291,7 @@ class ReceiptHighlightImageState extends ConsumerState<ReceiptHighlightImage> {
           ),
         ),
       );
-      debugPrint(
-          'Rect: ${rect.left}, ${rect.top}, ${rect.width}, ${rect.height}');
     }
-    debugPrint(
-        'Screen size: ${MediaQuery.of(context).size.width} x ${MediaQuery.of(context).size.height}');
     return rects;
   }
 
@@ -360,7 +350,6 @@ class ReceiptHighlightImageState extends ConsumerState<ReceiptHighlightImage> {
             child: const Text('Total'),
             onTap: () {
               setState(() => selectedPrice = text);
-
               // Extract numbers and at most one decimal point
               String extractedNumber = '';
               bool hasDecimal = false;
@@ -372,71 +361,12 @@ class ReceiptHighlightImageState extends ConsumerState<ReceiptHighlightImage> {
                   extractedNumber += selectedPrice![i];
                 }
               }
-
               // Assign the extracted number to the priceController
               priceController.text = extractedNumber;
             },
           ),
         ],
       );
-      // FIXME ios popup menu not working
-      // } else if (Platform.isIOS) {
-      //   showCupertinoModalPopup(
-      //     context: context,
-      //     builder: (BuildContext context) {
-      //       return CupertinoContextMenu(
-      //         actions: [
-      //           CupertinoContextMenuAction(
-      //             child: const Text('Merchant'),
-      //             onPressed: () => setState(() => merchantController.text = text),
-      //           ),
-      //           CupertinoContextMenuAction(
-      //             child: const Text('Date'),
-      //             onPressed: () {},
-      //           ),
-      //           CupertinoContextMenuAction(
-      //             child: const Text('Note'),
-      //             onPressed: () => setState(() => noteController.text = text),
-      //           ),
-      //           CupertinoContextMenuAction(
-      //             child: const Text('Total'),
-      //             onPressed: () {
-      //               setState(() => selectedPrice = text);
-
-      //               // Extract numbers and at most one decimal point
-      //               String extractedNumber = '';
-      //               bool hasDecimal = false;
-      //               for (int i = 0; i < selectedPrice!.length; i++) {
-      //                 if (selectedPrice![i] == '.' && !hasDecimal) {
-      //                   extractedNumber += '.';
-      //                   hasDecimal = true;
-      //                 } else if (RegExp(r'\d').hasMatch(selectedPrice![i])) {
-      //                   extractedNumber += selectedPrice![i];
-      //                 }
-      //               }
-
-      //               // Assign the extracted number to the priceController
-      //               priceController.text = extractedNumber;
-      //             },
-      //           ),
-      //         ],
-      //         child: Container(
-      //           color: Colors.blueGrey,
-      //           width: 20.0,
-      //           height: 20.0,
-      //         ),
-      //         // previewBuilder: (BuildContext context, Animation<double> animation,
-      //         //     Widget child) {
-      //         //   return Center(
-      //         //     child: Text(
-      //         //       'set \'$text\' as:',
-      //         //       style: const TextStyle(fontSize: 16),
-      //         //     ),
-      //         //   );
-      //         // },
-      //       );
-      //     },
-      //   );
     }
   }
 
@@ -453,8 +383,6 @@ class ReceiptHighlightImageState extends ConsumerState<ReceiptHighlightImage> {
 
     if (match != null) {
       int day, month, year;
-
-      // You can switch the month and day groups based on your date format
       day = int.parse(match.group(1)!);
       month = int.parse(match.group(2)!);
       year = int.parse(match.group(3)!);
@@ -469,69 +397,6 @@ class ReceiptHighlightImageState extends ConsumerState<ReceiptHighlightImage> {
       });
     }
   }
-
-  // void _showSnackBar(Rect rect, Size imageSize) {
-  //   final extractedText =
-  //       extractTextFromRect(rect, imageSize, widget.recognizedText);
-  //   if (extractedText != null) {
-  //     final snackBar = SnackBar(content: Text(extractedText));
-  //     ScaffoldMessenger.of(context).showSnackBar(snackBar);
-  //   }
-  // }
-
-  // show cupertino popup with snackbar text
-  // void _showSnackBar(String text) {
-  //   showCupertinoModalPopup(
-  //     context: context,
-  //     builder: (context) => CupertinoActionSheet(
-  //       title: Text(text),
-  //       actions: [
-  //         CupertinoActionSheetAction(
-  //           child: const Text('OK'),
-  //           onPressed: () {
-  //             Navigator.pop(context);
-  //           },
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
-
-// * no 5 (moonooi workable for 100.65)
-//   String? extractTextFromRect(
-//       Rect rect, Size imageSize, RecognizedText recognizedText) {
-//     final left = rect.left.toInt();
-//     final top = rect.top.toInt();
-//     final width = rect.width.toInt();
-//     final height = rect.height.toInt();
-
-//     List<String> intersectingTexts = [];
-
-//     for (final block in recognizedText.blocks) {
-//       for (final line in block.lines) {
-//         for (final element in line.elements) {
-//           final rectElement = element.boundingBox;
-//           final x1 = max(left, rectElement.left.toInt());
-//           final y1 = max(top, rectElement.top.toInt());
-//           final x2 =
-//               min(left + width, (rectElement.left + rectElement.width).toInt());
-//           final y2 =
-//               min(top + height, (rectElement.top + rectElement.height).toInt());
-//           final intersection = (x2 - x1) * (y2 - y1);
-
-//           if (intersection > 0) {
-//             intersectingTexts.add(element.text);
-//           }
-//         }
-//       }
-//     }
-
-//     if (intersectingTexts.isEmpty) {
-//       return null;
-//     }
-
-//     return intersectingTexts.last;
-//   }
 }
 
 // SaveButton
@@ -561,41 +426,21 @@ class ProceedButton extends ConsumerWidget {
       text: 'Proceed',
       onPressed: isSaveButtonEnabled.value
           ? () async {
-              // create a receipt instance?
               final id = const Uuid().v4();
               final amount = double.parse(priceController.text);
               final date = ref.read(transactionDateProvider);
-              final chosenCategory = ref.read(selectedCategoryProvider);
-              // final image = ref.read(imageFileProvider);
               final merchant = merchantController.text;
               final note = noteController.text;
-              final scannedText = recognizedText.text;
-
-              // final receipt = Receipt(
-              //   transactionId: id,
-              //   amount: amount,
-              //   date: date,
-              //   // categoryName: chosenCategory.name,
-              //   // file: imagePath,
-              //   merchant: merchant,
-              //   note: note,
-              //   scannedText: scannedText,
-              //   // if success, navigate to AddTransactionWithReceiptPage?
-              //   // if fail, show snackbar?
-              // );
               final receipt = Receipt(
                 transactionId: id,
                 amount: amount,
                 date: date,
-                // file: File(imagePath),
                 merchant: merchant,
                 note: note,
                 scannedText: recognizedText.text,
                 extractedTextRects: extractedTextRects,
                 transactionImage: null,
               );
-
-              // Navigate to AddTransactionWithReceipt
               Navigator.of(context, rootNavigator: true).push(
                 MaterialPageRoute(
                   builder: (context) =>

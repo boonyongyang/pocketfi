@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:firebase_storage/firebase_storage.dart' show FirebaseStorage;
 import 'package:flutter_cache_manager/flutter_cache_manager.dart'
     show DefaultCacheManager;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -24,11 +23,6 @@ class ImageFileNotifier extends StateNotifier<File?> {
     }
   }
 
-  // // clear image file
-  // void clearImageFile() {
-  //   state = null;
-  // }
-
   void clearImageFile() async {
     if (state != null) {
       final cacheManager = DefaultCacheManager();
@@ -36,23 +30,6 @@ class ImageFileNotifier extends StateNotifier<File?> {
       state = null;
     }
   }
-
-  // Future<void> setImageFile(File imageFile) async {
-  //   if (imageFile == state) {
-  //     return;
-  //   }
-  //   state = null;
-  //   final file = await DefaultCacheManager().getSingleFile(imageFile.path);
-  //   if (file.existsSync()) {
-  //     state = file;
-  //   } else {
-  //     final downloadUrl =
-  //         await FirebaseStorage.instance.ref(imageFile.path).getDownloadURL();
-  //     final cacheManager = DefaultCacheManager();
-  //     final fileInfo = await cacheManager.downloadFile(downloadUrl);
-  //     state = fileInfo.file;
-  //   }
-  // }
 }
 
 final imageFileProvider = StateNotifierProvider<ImageFileNotifier, File?>(
@@ -64,10 +41,6 @@ class ReceiptFileNotifier extends StateNotifier<XFile?> {
   void setReceiptImageFile(XFile? imageFile) {
     state = imageFile;
   }
-
-  // void setReceiptImageFile(XFile? imageFile) {
-  //   state = File(imageFile!.path);
-  // }
 }
 
 final receiptFileProvider = StateNotifierProvider<ReceiptFileNotifier, XFile?>(
@@ -79,10 +52,6 @@ class ReceiptStringPathNotifier extends StateNotifier<String?> {
   void setReceiptStringPath(String? imagePath) {
     state = imagePath;
   }
-
-  // void setReceiptImageFile(XFile? imageFile) {
-  //   state = File(imageFile!.path);
-  // }
 
   void clearPath() {
     state = null;

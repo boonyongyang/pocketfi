@@ -17,15 +17,12 @@ class SettingsPageState extends State<SettingsPage> {
       appBar: AppBar(
         title: const Text('Settings'),
         centerTitle: true,
-        // backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        // elevation: 1,
         leading: IconButton(
           onPressed: () {
             Navigator.of(context).pop();
           },
           icon: const Icon(
             Icons.arrow_back,
-            // color: Color.fromARGB(255, 71, 86, 71),
           ),
         ),
       ),
@@ -33,11 +30,6 @@ class SettingsPageState extends State<SettingsPage> {
         padding: const EdgeInsets.only(left: 16, top: 25, right: 16),
         child: ListView(
           children: [
-            // const Text(
-            //   "Settings",
-            //   style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500),
-            // ),
-            // const SizedBox(height: 40),
             Row(
               children: const [
                 Icon(
@@ -56,7 +48,6 @@ class SettingsPageState extends State<SettingsPage> {
               thickness: 2,
             ),
             const SizedBox(height: 10),
-            // buildAccountOptionRow(context, "Social"),
             buildAccountOptionRow(context, "Language"),
             buildAccountOptionRow(context, "Privacy and security"),
             const SwitchOption(
@@ -82,11 +73,6 @@ class SettingsPageState extends State<SettingsPage> {
               thickness: 2,
             ),
             const SizedBox(height: 10),
-            // buildNotificationOptionRow("Transaction activity", true),
-            // buildNotificationOptionRow("Budget progress", true),
-            // buildNotificationOptionRow("Bill Reminders", false),
-            // buildNotificationOptionRow("Debt Reminders", true),
-            // buildNotificationOptionRow("Savings Reminders", false),
             const SwitchOption(
               title: "Transaction activity",
               isActive: true,
@@ -108,57 +94,11 @@ class SettingsPageState extends State<SettingsPage> {
               isActive: false,
             ),
             const SizedBox(height: 50),
-            // Center(
-            //   child: OutlinedButton(
-            //     style: OutlinedButton.styleFrom(
-            //       side: const BorderSide(
-            //         width: 2,
-            //         color: AppColors.mainColor1,
-            //       ),
-            //       padding: const EdgeInsets.symmetric(
-            //         horizontal: 40,
-            //       ),
-            //       shape: RoundedRectangleBorder(
-            //         borderRadius: BorderRadius.circular(20),
-            //       ),
-            //     ),
-            //     onPressed: () {},
-            //     child: const Text("SIGN OUT",
-            //         style: TextStyle(
-            //             fontSize: 16, letterSpacing: 2.2, color: Colors.black)),
-            //   ),
-            // )
           ],
         ),
       ),
     );
   }
-
-  // Row buildNotificationOptionRow(String title, bool isActive) {
-  //   return Row(
-  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //     children: [
-  //       Text(
-  //         title,
-  //         style: TextStyle(
-  //             fontSize: 18,
-  //             fontWeight: FontWeight.w500,
-  //             color: Colors.grey[600]),
-  //       ),
-  //       Transform.scale(
-  //           scale: 0.7,
-  //           child: CupertinoSwitch(
-  //             value: isActive,
-  //             activeColor: AppColors.mainColor2,
-  //             onChanged: (bool val) {
-  //               setState(() {
-  //                 isActive = val;
-  //               });
-  //             },
-  //           ))
-  //     ],
-  //   );
-  // }
 
   GestureDetector buildAccountOptionRow(BuildContext context, String title) {
     return GestureDetector(

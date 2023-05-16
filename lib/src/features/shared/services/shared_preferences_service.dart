@@ -29,26 +29,6 @@ class SharedPreferencesService {
     return prefs.setString('visibility_settings', visibilitySettingsString);
   }
 
-  // // TODO: Add Wallet when created, or just use saveSetting?
-  // // when there are new wallets created,
-  // // add them to the visibility settings, default to true
-  // static Future<bool> addWalletVisibilitySettings(
-  //     String walletId, bool visibility) async {
-  //   final SharedPreferences prefs = await _prefs;
-  //   final String visibilitySettingsString =
-  //       prefs.getString('visibility_settings') ?? '{}';
-  //   final Map<String, bool> visibilitySettings =
-  //       Map<String, bool>.from(jsonDecode(visibilitySettingsString));
-  //   visibilitySettings[walletId] = visibility;
-  //   return prefs.setString(
-  //       'visibility_settings', jsonEncode(visibilitySettings));
-  // }
-
-  // static Future<bool> deleteWalletVisibilitySettings() async {
-  //   final SharedPreferences prefs = await _prefs;
-  //   return prefs.remove('visibility_settings');
-  // }
-
   SharedPreferencesService._();
 }
 

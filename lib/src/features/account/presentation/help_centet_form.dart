@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:pocketfi/src/constants/app_colors.dart';
 
 class HelpCenterForm extends StatefulHookConsumerWidget {
   const HelpCenterForm({super.key});
@@ -104,46 +103,6 @@ class HelpCenterFormState extends ConsumerState<HelpCenterForm> {
                   return null;
                 },
               ),
-              // toggle button for the user submitting the form (required)
-              // ToggleButtons(
-              //   borderWidth: 0,
-              //   borderRadius: BorderRadius.circular(20),
-              //   borderColor: AppColors.mainColor1,
-              //   isSelected: const [false, false, false],
-              //   onPressed: (int index) {
-              //     // Respond to button selection snackbar
-              //     ScaffoldMessenger.of(context).showSnackBar(
-              //       SnackBar(
-              //         content: Text('Selected $index'),
-              //       ),
-              //     );
-              //   },
-              //   children: const <Widget>[
-              //     Padding(
-              //       padding: EdgeInsets.all(8.0),
-              //       child: Text('Bug'),
-              //     ),
-              //     Padding(
-              //       padding: EdgeInsets.all(8.0),
-              //       child: Text('Feature Request'),
-              //     ),
-              //     Padding(
-              //       padding: EdgeInsets.all(8.0),
-              //       child: Text('Other'),
-              //     ),
-              //   ],
-              // ),
-
-              // slider for the rating of the user submitting the form (required)
-              // Slider(
-              //   value: 0,
-              //   min: 0,
-              //   max: 5,
-              //   divisions: 5,
-              //   label: '0',
-              //   onChanged: (value) {},
-              // ),
-
               // a button to submit the form
               ElevatedButton(
                 onPressed: isSaveButtonEnabled.value

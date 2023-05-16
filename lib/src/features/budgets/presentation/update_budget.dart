@@ -16,10 +16,8 @@ import 'package:pocketfi/src/features/transactions/presentation/add_new_transact
 import 'package:pocketfi/src/features/wallets/data/wallet_repository.dart';
 
 class UpdateBudget extends StatefulHookConsumerWidget {
-  // final Budget budget;
   const UpdateBudget({
     super.key,
-    // required this.budget,
   });
 
   @override
@@ -30,22 +28,13 @@ class _UpdateBudgetState extends ConsumerState<UpdateBudget> {
   @override
   Widget build(BuildContext context) {
     final selectedBudget = ref.watch(selectedBudgetProvider);
-
-    final budgetNameController = useTextEditingController(
-      text: selectedBudget?.budgetName,
-    );
+    final budgetNameController =
+        useTextEditingController(text: selectedBudget?.budgetName);
     final amountController = useTextEditingController(
-      text: selectedBudget?.budgetAmount.toStringAsFixed(2),
-    );
-
+        text: selectedBudget?.budgetAmount.toStringAsFixed(2));
     final expenseCategories = ref.watch(expenseCategoriesProvider);
-
     final wallet = ref.watch(
         getWalletFromWalletIdProvider(selectedBudget!.walletId.toString()));
-
-    // if (wallet.value!.walletName == null) {
-    //   return Container();
-    // }
 
     return Scaffold(
       appBar: AppBar(
@@ -59,7 +48,6 @@ class _UpdateBudgetState extends ConsumerState<UpdateBudget> {
                 titleOfObjectToDelete: 'Budget',
               ).present(context);
               if (deletePost == null) return;
-
               if (deletePost) {
                 await ref
                     .read(budgetProvider.notifier)
@@ -182,8 +170,6 @@ class _UpdateBudgetState extends ConsumerState<UpdateBudget> {
                         child: Text(
                           'Categories',
                           style: TextStyle(
-                            // color: AppSwatches.mainColor2,
-                            // fontWeight: FontWeight.bold,
                             fontSize: 15,
                           ),
                         ),
@@ -221,8 +207,6 @@ class _UpdateBudgetState extends ConsumerState<UpdateBudget> {
                         child: Text(
                           'Wallet selected',
                           style: TextStyle(
-                            // color: AppSwatches.mainColor2,
-                            // fontWeight: FontWeight.bold,
                             fontSize: 15,
                           ),
                         ),
@@ -232,8 +216,6 @@ class _UpdateBudgetState extends ConsumerState<UpdateBudget> {
                       padding: const EdgeInsets.only(
                         left: 8.0,
                         right: 32.0,
-                        // top: 16.0,
-                        // bottom: 8.0,
                       ),
                       child: Text(
                         wallet.when(
@@ -266,22 +248,12 @@ class _UpdateBudgetState extends ConsumerState<UpdateBudget> {
                 ref,
               );
             },
-            // isCreateButtonEnabled.value
-            //     ? () async {
-            //         _createNewWalletController(
-            //           budgetNameController,
-            //           amountController,
-            //           ref,
-            //         );
-            //       }
-            // : null
           ),
         ],
       ),
     );
   }
 
-  // );
   Future<void> _updateBudgetController(
     TextEditingController nameController,
     TextEditingController amountController,
@@ -291,19 +263,6 @@ class _UpdateBudgetState extends ConsumerState<UpdateBudget> {
     if (userId == null) {
       return;
     }
-
-    // List<CollaboratorsInfo> collaboratorsInfo = [];
-    // collaborators?.forEach((element) {
-    //   collaboratorsInfo.add(
-    //     CollaboratorsInfo(
-    //       userId: element.userId,
-    //       displayName: element.displayName,
-    //       email: element.email,
-    //       status: element.status,
-    //     ),
-    //   );
-    // });
-
     final selectedBudget = ref.watch(selectedBudgetProvider);
     final isUpdated = await ref.read(budgetProvider.notifier).updateBudget(
           walletId: selectedBudget!.walletId,
@@ -320,7 +279,6 @@ class _UpdateBudgetState extends ConsumerState<UpdateBudget> {
   }
 }
 
-// }
 class SelectCategory extends ConsumerWidget {
   const SelectCategory({
     super.key,
@@ -363,7 +321,6 @@ class SelectCategory extends ConsumerWidget {
                                     fontWeight: FontWeight.bold,
                                   )),
                               IconButton(
-                                // icon: const Icon(Icons.add_outlined),
                                 icon: const Icon(Icons.settings),
                                 onPressed: () {
                                   Navigator.push(
@@ -384,7 +341,6 @@ class SelectCategory extends ConsumerWidget {
                                 const SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 4,
                               crossAxisSpacing: 8.0,
-                              // mainAxisSpacing: 8.0,
                             ),
                             itemCount: categories.length,
                             itemBuilder: (context, index) {
@@ -395,14 +351,9 @@ class SelectCategory extends ConsumerWidget {
                                     ref
                                         .read(selectedBudgetProvider.notifier)
                                         .updateCategory(categories[index], ref);
-
-                                    debugPrint(
-                                        'selected category: ${categories[index].name}');
                                     Navigator.of(context).pop();
                                   },
                                   child: Column(
-                                    // mainAxisAlignment: MainAxisAlignment.center,
-                                    // mainAxisSize: MainAxisSize.min,
                                     children: [
                                       CircleAvatar(
                                         radius: 20,

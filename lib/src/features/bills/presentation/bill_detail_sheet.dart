@@ -9,8 +9,6 @@ import 'package:pocketfi/src/features/bills/application/bill_services.dart';
 import 'package:pocketfi/src/features/bills/domain/bill.dart';
 import 'package:pocketfi/src/features/bills/presentation/update_bill_page.dart';
 import 'package:pocketfi/src/features/category/application/category_services.dart';
-import 'package:pocketfi/src/features/category/data/category_repository.dart';
-import 'package:pocketfi/src/features/shared/date_picker/application/date_services.dart';
 import 'package:pocketfi/src/features/transactions/application/transaction_services.dart';
 import 'package:pocketfi/src/features/transactions/domain/transaction.dart';
 
@@ -146,11 +144,6 @@ class BillDetailSheet extends ConsumerWidget {
 
                   if (isMarkedAsPaid) {
                     final type = ref.read(transactionTypeProvider);
-                    final date = ref.read(transactionDateProvider);
-
-                    // final file = ref.read(imageFileProvider);
-                    // final tags = ref.watch(userTagsNotifier);
-
                     ref.read(transactionProvider.notifier).addNewTransaction(
                       userId: userId,
                       walletId: selectedBill.walletId,
@@ -158,16 +151,14 @@ class BillDetailSheet extends ConsumerWidget {
                       amount: selectedBill.amount,
                       type: type,
                       note: selectedBill.description,
-                      // categoryName: ExpenseCategory.billsAndFees.name,
                       categoryName: selectedBill.categoryName,
-                      // date: date, // ? today's date or bill's date?
                       date: selectedBill.createdAt!,
                       file: null,
                       isBookmark: false,
                       tags: [],
                     );
                   }
-
+                  // ignore: use_build_context_synchronously
                   Navigator.of(context).pop();
                 },
                 text: "Mark as Paid",

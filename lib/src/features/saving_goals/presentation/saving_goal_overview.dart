@@ -4,17 +4,13 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:pocketfi/src/common_widgets/buttons/full_width_button_with_text.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/features/saving_goals/application/saving_goal_services.dart';
 import 'package:pocketfi/src/features/saving_goals/domain/saving_goal.dart';
-import 'package:pocketfi/src/features/saving_goals/presentation/deposit_sheet.dart';
 
 class SavingGoalOverviewView extends StatefulHookConsumerWidget {
-  // SavingGoal selectedSavingGoal;
   const SavingGoalOverviewView({
     super.key,
-    // required this.selectedSavingGoal,
   });
 
   @override
@@ -27,22 +23,16 @@ class _SavingGoalOverviewViewState
   @override
   Widget build(BuildContext context) {
     final selectedSavingGoal = ref.watch(selectedSavingGoalProvider);
-    // if (selectedSavingGoal == null) {
-    //   return Container();
-    // }
     var amountToSavePerDay = selectedSavingGoal!.calculateSavingsPerDay();
     var amountToSavePerWeek = selectedSavingGoal.calculateSavingsPerWeek();
     var amountToSavePerMonth = selectedSavingGoal.calculateSavingsPerMonth();
     var daysLeft = selectedSavingGoal.daysLeft();
     var calculateDaysLeft = selectedSavingGoal.calculateDaysLeft();
-    debugPrint('calculateDaysLeft: $daysLeft');
-
     final amountToSave = useTextEditingController();
     final amountToWithdraw = useTextEditingController();
 
     return Scaffold(
       body: SingleChildScrollView(
-        // physics: const AlwaysScrollableScrollPhysics(),
         child: Column(
           children: [
             Padding(
@@ -63,7 +53,7 @@ class _SavingGoalOverviewViewState
                       color: Colors.grey.withOpacity(0.5),
                       spreadRadius: 2,
                       blurRadius: 7,
-                      offset: const Offset(3, 6), // changes position of shadow
+                      offset: const Offset(3, 6),
                     ),
                   ],
                 ),
@@ -82,7 +72,6 @@ class _SavingGoalOverviewViewState
                               color: AppColors.mainColor1,
                               fontWeight: FontWeight.bold,
                             ),
-                            // textAlign: TextAlign.center,
                           ),
                         ],
                       ),
@@ -90,19 +79,12 @@ class _SavingGoalOverviewViewState
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            // calculateDaysLeft.toString(),
-                            // calculateDaysLeft > 30 || calculateDaysLeft > 31
-                            //     ? '$months months $days days'
-                            //     : calculateDaysLeft > 365
-                            //         ? '$years years $months months $days days'
-                            //         : '$calculateDaysLeft days',
                             daysLeft,
                             style: const TextStyle(
                               color: AppColors.mainColor2,
                               fontWeight: FontWeight.bold,
                               fontSize: 28,
                             ),
-                            // textAlign: TextAlign.center,
                           ),
                         ],
                       ),
@@ -129,7 +111,7 @@ class _SavingGoalOverviewViewState
                       color: Colors.grey.withOpacity(0.5),
                       spreadRadius: 2,
                       blurRadius: 7,
-                      offset: const Offset(3, 6), // changes position of shadow
+                      offset: const Offset(3, 6),
                     ),
                   ],
                 ),
@@ -243,7 +225,6 @@ class _SavingGoalOverviewViewState
                             'Amount Saved',
                             style: TextStyle(
                               color: AppColors.mainColor1,
-                              // fontWeight: FontWeight.bold,
                             ),
                           ),
                           const Spacer(),
@@ -251,7 +232,6 @@ class _SavingGoalOverviewViewState
                             'MYR ${selectedSavingGoal.savingGoalSavedAmount.toStringAsFixed(2)}',
                             style: const TextStyle(
                               color: AppColors.mainColor1,
-                              // fontWeight: FontWeight.bold,
                             ),
                           ),
                         ],
@@ -265,7 +245,6 @@ class _SavingGoalOverviewViewState
                             'Amount to Save Per Day',
                             style: TextStyle(
                               color: AppColors.mainColor1,
-                              // fontWeight: FontWeight.bold,
                             ),
                           ),
                           const Spacer(),
@@ -273,7 +252,6 @@ class _SavingGoalOverviewViewState
                             'MYR ${amountToSavePerDay.toStringAsFixed(2)}/day',
                             style: const TextStyle(
                               color: AppColors.mainColor1,
-                              // fontWeight: FontWeight.bold,
                             ),
                           ),
                         ],
@@ -287,7 +265,6 @@ class _SavingGoalOverviewViewState
                             'Amount to Save Per Week',
                             style: TextStyle(
                               color: AppColors.mainColor1,
-                              // fontWeight: FontWeight.bold,
                             ),
                           ),
                           const Spacer(),
@@ -295,10 +272,8 @@ class _SavingGoalOverviewViewState
                             calculateDaysLeft > 7
                                 ? 'MYR ${amountToSavePerWeek.toStringAsFixed(2)}/week'
                                 : 'MYR 0.00/week',
-                            // 'MYR ${(amountToSavePerDay * 7).toStringAsFixed(2)}/week',
                             style: const TextStyle(
                               color: AppColors.mainColor1,
-                              // fontWeight: FontWeight.bold,
                             ),
                           ),
                         ],
@@ -312,7 +287,6 @@ class _SavingGoalOverviewViewState
                             'Amount to Save Per Month',
                             style: TextStyle(
                               color: AppColors.mainColor1,
-                              // fontWeight: FontWeight.bold,
                             ),
                           ),
                           const Spacer(),
@@ -322,7 +296,6 @@ class _SavingGoalOverviewViewState
                                 : 'MYR 0.00/month',
                             style: const TextStyle(
                               color: AppColors.mainColor1,
-                              // fontWeight: FontWeight.bold,
                             ),
                           ),
                         ],
@@ -426,7 +399,6 @@ class _SavingGoalOverviewViewState
                         ),
                       ),
                       onPressed: () {
-                        // if value still 0 show snack bar
                         if (selectedSavingGoal.savingGoalSavedAmount == 0) {
                           Fluttertoast.showToast(
                             msg: 'You have no money to withdraw!',
@@ -487,15 +459,6 @@ class _SavingGoalOverviewViewState
                                                 textColor: AppColors.mainColor1,
                                                 fontSize: 16.0,
                                               );
-                                        // ScaffoldMessenger.of(context)
-                                        //     .showSnackBar(
-                                        //     const SnackBar(
-                                        //       content: Text(
-                                        //         'You do not have enough money to withdraw',
-                                        //         textAlign: TextAlign.center,
-                                        //       ),
-                                        //     ),
-                                        //   );
                                       },
                                       child: const Text('Confirm',
                                           style: TextStyle(
@@ -552,11 +515,6 @@ class _SavingGoalOverviewViewState
         textColor: AppColors.mainColor1,
         fontSize: 16.0,
       );
-      // ScaffoldMessenger.of(context).showSnackBar(
-      //   const SnackBar(
-      //     content: Text('Deposit successful!'),
-      //   ),
-      // );
     }
     if (!isUpdated && mounted) {
       Navigator.of(context).pop();
@@ -570,11 +528,6 @@ class _SavingGoalOverviewViewState
         textColor: AppColors.mainColor1,
         fontSize: 16.0,
       );
-      // ScaffoldMessenger.of(context).showSnackBar(
-      //   const SnackBar(
-      //     content: Text('Deposit failed!'),
-      //   ),
-      // );
     }
   }
 
@@ -603,11 +556,6 @@ class _SavingGoalOverviewViewState
         textColor: AppColors.mainColor1,
         fontSize: 16.0,
       );
-      // ScaffoldMessenger.of(context).showSnackBar(
-      //   const SnackBar(
-      //     content: Text('Withdraw successful!'),
-      //   ),
-      // );
     }
     if (!isUpdated && mounted) {
       Navigator.of(context).pop();
@@ -621,11 +569,6 @@ class _SavingGoalOverviewViewState
         textColor: AppColors.mainColor1,
         fontSize: 16.0,
       );
-      // ScaffoldMessenger.of(context).showSnackBar(
-      //   const SnackBar(
-      //     content: Text('Withdraw failed!'),
-      //   ),
-      // );
     }
   }
 }

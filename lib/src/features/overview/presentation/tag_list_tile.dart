@@ -19,35 +19,18 @@ class TagListTile extends ConsumerWidget {
     final type = ref.watch(transactionTypeProvider);
     final currentMonthTransactions =
         ref.watch(currentMonthTransactionsProvider);
-
     final transactionsOfType =
         currentMonthTransactions.where((tran) => tran.type == type).toList();
-
-    final totalAmountOfType = getTotalAmount(transactionsOfType);
-    debugPrint('Total amount of type: $totalAmountOfType');
-
     final tagTransactions = transactionsOfType
         .where((tran) => tran.tags.contains(tagName) && tran.type == type)
         .toList();
-    debugPrint('tagTransactions: ${tagTransactions.length}');
-
     final numTransactions = tagTransactions.length;
-
-    final filteredTags = ref.watch(filteredTagsByTypeProvider(type));
-    debugPrint('filteredTags: ${filteredTags.length}');
-
     final tagTotalAmount = getTotalAmount(tagTransactions);
-
-    // final percentageStr = totalAmountOfType > 0
-    //     ? (tagTotalAmount / totalAmountOfType * 100).toStringAsFixed(1)
-    //     : '0.0';
-
     final amountStr = 'MYR ${tagTotalAmount.toStringAsFixed(2)}';
 
     if (tagTransactions.isNotEmpty) {
       return GestureDetector(
         onTap: () {
-          // navigate to tag details
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) => TagDetailPage(tagName: tagName),
@@ -77,7 +60,6 @@ class TagListTile extends ConsumerWidget {
                     ),
                   ),
                   Text(
-                    // if numTransactions is more than 1 then plural
                     numTransactions > 1
                         ? '$numTransactions transactions'
                         : '$numTransactions transaction',
@@ -89,14 +71,6 @@ class TagListTile extends ConsumerWidget {
                 ],
               ),
               const Spacer(),
-              // Text(
-              //   '$percentageStr%',
-              //   style: TextStyle(
-              //     fontSize: 16,
-              //     fontWeight: FontWeight.w400,
-              //     color: type.color,
-              //   ),
-              // ),
               const SizedBox(width: 12.0),
               Text(
                 type.symbol + amountStr,

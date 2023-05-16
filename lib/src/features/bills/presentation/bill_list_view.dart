@@ -4,7 +4,6 @@ import 'package:pocketfi/src/features/bills/application/bill_services.dart';
 import 'package:pocketfi/src/features/bills/domain/bill.dart';
 import 'package:pocketfi/src/features/bills/presentation/bill_card_view.dart';
 import 'package:pocketfi/src/features/bills/presentation/bill_detail_sheet.dart';
-import 'package:pocketfi/src/features/bills/presentation/update_bill_page.dart';
 
 class BillListView extends ConsumerWidget {
   final Iterable<Bill> bills;
@@ -16,7 +15,6 @@ class BillListView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // debugPrint('bills length is ${bills.length}');
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Container(
@@ -36,7 +34,6 @@ class BillListView extends ConsumerWidget {
           separatorBuilder: (context, index) => const Divider(),
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          // physics: const BouncingScrollPhysics(),
           padding: const EdgeInsets.all(8.0),
           itemCount: bills.length,
           itemBuilder: (context, index) {
@@ -45,20 +42,11 @@ class BillListView extends ConsumerWidget {
               bill: bill,
               onTapped: () {
                 ref.read(selectedBillProvider.notifier).setSelectedBill(bill);
-
-                // show bottom sheet
                 showModalBottomSheet(
                   isScrollControlled: true,
                   context: context,
                   builder: (context) => (const BillDetailSheet()),
                 );
-
-                // Navigator.of(context, rootNavigator: true).push(
-                //   MaterialPageRoute(
-                //     builder: (context) => const UpdateBillPage(),
-                //     fullscreenDialog: true,
-                //   ),
-                // );
               },
             );
           },

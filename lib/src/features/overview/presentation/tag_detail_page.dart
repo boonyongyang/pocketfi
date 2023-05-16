@@ -4,7 +4,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/common_widgets/animations/empty_contents_with_text_animation_view.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/constants/strings.dart';
-import 'package:pocketfi/src/features/category/application/category_services.dart';
 import 'package:pocketfi/src/features/transactions/application/transaction_services.dart';
 import 'package:pocketfi/src/features/transactions/data/transaction_repository.dart';
 import 'package:pocketfi/src/features/shared/date_picker/application/date_services.dart';
@@ -25,7 +24,6 @@ class TagDetailPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final userTransactions = ref.watch(userTransactionsProvider);
     final type = ref.watch(transactionTypeProvider);
-
     final currentMonthTransactions = userTransactions.when<List<Transaction>>(
       data: (transactions) => transactions.where((tran) {
         return tran.date.month == ref.watch(overviewMonthProvider).month &&
@@ -40,8 +38,6 @@ class TagDetailPage extends ConsumerWidget {
       },
     );
     final totalAmount = getTagTotalAmount(currentMonthTransactions);
-
-    // prepare chart data
     final chartData = currentMonthTransactions
         .groupListsBy((tran) => tran.date.day)
         .entries
@@ -60,12 +56,9 @@ class TagDetailPage extends ConsumerWidget {
           }
         },
       );
-      final tag = getCategoryWithCategoryName(transactions.first.categoryName);
-
       return TagChartData(
         x: day.toString(),
         y: total,
-        // color: tag.color,
         color: AppColors.mainColor2,
       );
     }).toList();
@@ -108,7 +101,6 @@ class TagDetailPage extends ConsumerWidget {
               const SizedBox(height: 10),
               currentMonthTransactions.isEmpty
                   ? const SizedBox(
-                      // color: Colors.grey,
                       child: EmptyContentsWithTextAnimationView(
                         text: Strings.youHaveNoRecords,
                       ),
@@ -116,16 +108,9 @@ class TagDetailPage extends ConsumerWidget {
                   : SizedBox(
                       height: MediaQuery.of(context).size.height * 0.3,
                       child: SfCartesianChart(
-                        // legend: Legend(isVisible: false),
-                        // title: ChartTitle(text: 'Monthly expense'),
                         plotAreaBorderWidth: 0,
-                        primaryXAxis: CategoryAxis(
-                            // majorGridLines: null,
-                            // minorGridLines: null,
-                            ),
+                        primaryXAxis: CategoryAxis(),
                         primaryYAxis: NumericAxis(
-                          // majorGridLines: null,
-                          // minorGridLines: null,
                           labelFormat: '{value} MYR',
                         ),
                         series: <ChartSeries>[
@@ -157,7 +142,6 @@ class TagDetailPage extends ConsumerWidget {
   }
 
   double getTagTotalAmount(List<Transaction> transactions) {
-    // get the total amount of the tag
     return transactions.fold<double>(
       0.0,
       (previousValue, transaction) {

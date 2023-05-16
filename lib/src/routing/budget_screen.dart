@@ -1,4 +1,3 @@
-import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -9,13 +8,11 @@ import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/common_widgets/buttons/full_width_button_with_text.dart';
 import 'package:pocketfi/src/constants/app_icons.dart';
 import 'package:pocketfi/src/constants/strings.dart';
-import 'package:pocketfi/src/features/authentication/application/user_id_provider.dart';
 import 'package:pocketfi/src/features/budgets/application/budget_services.dart';
 import 'package:pocketfi/src/features/budgets/data/budget_repository.dart';
 import 'package:pocketfi/src/features/budgets/presentation/add_new_budget.dart';
 import 'package:pocketfi/src/features/budgets/presentation/budger_overview.dart';
 import 'package:pocketfi/src/features/budgets/presentation/budget_details_view.dart';
-import 'package:pocketfi/src/features/budgets/presentation/update_budget.dart';
 import 'package:pocketfi/src/features/budgets/presentation/budget_tile.dart';
 import 'package:pocketfi/src/features/wallets/data/check_request_service.dart';
 import 'package:pocketfi/src/features/wallets/presentation/requests_view.dart';
@@ -34,15 +31,10 @@ class _BudgetPageState extends ConsumerState<BudgetPage> {
   @override
   Widget build(BuildContext context) {
     final budgets = ref.watch(userBudgetsProvider);
-
-    final currentUserId = ref.watch(userIdProvider);
     final walletRequests = ref.watch(getPendingRequestProvider).value;
     if (walletRequests == null) {
       return Container();
     }
-    // final isPending =
-    //     ref.watch(checkRequestProvider.notifier).checkRequest(currentUserId!);
-
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -79,21 +71,6 @@ class _BudgetPageState extends ConsumerState<BudgetPage> {
                 ),
               );
             },
-            // {
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(
-            //     // builder: (_) => const WalletPage(),
-            //     builder: (_) => const CreateNewWalletView(),
-            //   ),
-            // );
-
-            // context.beamToNamed("wallet"),
-            // },
-            // BeamerButton(
-            //   beamer: beamer,
-            //   uri: '/budget/wallet',
-            //   child: const Icon(Icons.wallet),
           ),
         ],
       ),
@@ -101,19 +78,13 @@ class _BudgetPageState extends ConsumerState<BudgetPage> {
           onRefresh: () async {
             ref.refresh(userBudgetsProvider);
             debugPrint('budgets: $budgets');
-            // return Future.delayed(const Duration(seconds: 1));
           },
           child: Flex(
             direction: Axis.vertical,
             children: [
-              // budgets.value?.isNotEmpty ?? false
-              //     ?
               Expanded(
-                // incorrect use of parangedatawidget
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
-
-                  // crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(
@@ -139,7 +110,6 @@ class _BudgetPageState extends ConsumerState<BudgetPage> {
                           ),
                           const SizedBox(height: 15),
                           Row(
-                            // mainAxisSize: MainAxisSize.min,
                             children: [
                               const Text(
                                 'Total',
@@ -150,7 +120,6 @@ class _BudgetPageState extends ConsumerState<BudgetPage> {
                                 ),
                               ),
                               const Spacer(),
-                              // Calculation part
                               FutureBuilder(
                                 future: totalAmount(),
                                 builder: (BuildContext context,
@@ -180,9 +149,7 @@ class _BudgetPageState extends ConsumerState<BudgetPage> {
                                 AsyncSnapshot<double> snapshot) {
                               if (snapshot.hasData) {
                                 final percentage = snapshot.data! * 100;
-                                return
-                                    // Text(percentage.toStringAsFixed(2));
-                                    Stack(
+                                return Stack(
                                   children: [
                                     ClipRRect(
                                       borderRadius: BorderRadius.circular(10.0),
@@ -263,7 +230,6 @@ class _BudgetPageState extends ConsumerState<BudgetPage> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              // Calculation part
                               const Text(
                                 'Left',
                                 style: TextStyle(
@@ -295,7 +261,6 @@ class _BudgetPageState extends ConsumerState<BudgetPage> {
                           ),
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              // fixedSize: Size(80, 30),
                               backgroundColor: Colors.white,
                               foregroundColor: AppColors.mainColor1,
                               shape: const RoundedRectangleBorder(
@@ -320,7 +285,6 @@ class _BudgetPageState extends ConsumerState<BudgetPage> {
                     Expanded(
                       flex: 4,
                       child: budgets.when(data: (budgets) {
-                        debugPrint('budgets: $budgets');
                         if (budgets.isEmpty) {
                           return const SingleChildScrollView(
                             physics: AlwaysScrollableScrollPhysics(),
@@ -340,9 +304,7 @@ class _BudgetPageState extends ConsumerState<BudgetPage> {
                                     .setSelectedBudget(budget, ref);
                                 Navigator.of(context, rootNavigator: true).push(
                                   MaterialPageRoute(
-                                    builder: (_) => const BudgetDetailsView(
-                                        // budget: budget,
-                                        ),
+                                    builder: (_) => const BudgetDetailsView(),
                                   ),
                                 );
                               },
@@ -358,8 +320,6 @@ class _BudgetPageState extends ConsumerState<BudgetPage> {
                   ],
                 ),
               ),
-              // : const EmptyContentsWithTextAnimationView(
-              //     text: 'No Budgets Yet, Create One!'),
               Expanded(
                 flex: 0,
                 child: Align(
@@ -372,10 +332,7 @@ class _BudgetPageState extends ConsumerState<BudgetPage> {
                           builder: (context) => const AddNewBudget(),
                         ),
                       );
-                      // context.beamToNamed("createNewBudget");
-                      debugPrint('totalAmount: $totalAmount');
                     },
-                    // },
                   ),
                 ),
               ),

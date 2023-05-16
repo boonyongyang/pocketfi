@@ -38,13 +38,11 @@ const List<Color> colorAccentList = [
   Colors.pinkAccent,
   Colors.redAccent,
   Colors.purpleAccent,
-  // Colors.brown,
   Colors.amberAccent,
   Colors.deepOrangeAccent,
   Colors.deepPurpleAccent,
   Colors.lightBlueAccent,
   Colors.lightGreenAccent,
-  // Colors.black,
 ];
 
 // list of icons

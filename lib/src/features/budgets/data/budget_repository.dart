@@ -2,29 +2,19 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/constants/firebase_names.dart';
 import 'package:pocketfi/src/constants/typedefs.dart';
-import 'package:pocketfi/src/features/authentication/application/user_id_provider.dart';
 import 'package:pocketfi/src/features/budgets/domain/budget.dart';
 import 'package:pocketfi/src/features/wallets/data/wallet_repository.dart';
 import 'package:pocketfi/src/utils/document_id_from_current_date.dart';
 
 // * get all budgets from all wallets
-
 final userBudgetsProvider = StreamProvider.autoDispose<Iterable<Budget>>((ref) {
-  final wallets =
-      ref.watch(userWalletsProvider).value; // use empty list if wallets is null
+  final wallets = ref.watch(userWalletsProvider).value;
   final controller = StreamController<Iterable<Budget>>();
 
-  // final budgetsList = <Budget>[]; // accumulate all budgets in a list
-  final subscriptions = <StreamSubscription>[]; // store all subscriptions
-
-  // go through wallet and check which wallet the user is a collaborator
-  // for (var wallet in wallets!) {
-  // debugPrint('wallet: ${wallet.walletName}');
-  // debugPrint('walletId: ${wallet.walletId}');
+  final subscriptions = <StreamSubscription>[];
   final sub = FirebaseFirestore.instance
       .collection(FirebaseCollectionName.budgets)
       .where(
@@ -41,17 +31,11 @@ final userBudgetsProvider = StreamProvider.autoDispose<Iterable<Budget>>((ref) {
         .map(
           (doc) => Budget.fromJson(doc.data()),
         );
-
     final updatedDebtList = [...budgets];
-
-    // budgetsList.addAll(budgets); // add budgets to the accumulated list
-    // debugPrint('budgetsList: $budgetsList');
-    // debugPrint('budgetsList length: ${budgetsList.length}');
     controller.sink.add(updatedDebtList);
   });
-  // }
 
-  subscriptions.add(sub); // add the subscription to the list
+  subscriptions.add(sub);
   ref.onDispose(() {
     for (var sub in subscriptions) {
       sub.cancel();
@@ -62,11 +46,10 @@ final userBudgetsProvider = StreamProvider.autoDispose<Iterable<Budget>>((ref) {
 });
 
 final totalAmountProvider = StreamProvider.autoDispose<double>((ref) {
-  final userId = ref.watch(userIdProvider);
   final wallets = ref.watch(userWalletsProvider).value;
   final controller = StreamController<double>();
 
-  final budgetsList = <double>[]; // accumulate all budgets in a list
+  final budgetsList = <double>[];
   final subscriptions = <StreamSubscription>[];
 
   final sub = FirebaseFirestore.instance
@@ -89,11 +72,10 @@ final totalAmountProvider = StreamProvider.autoDispose<double>((ref) {
 
     var totalAmount = budgetsList.fold(
         0.00, (previousValue, element) => previousValue + element);
-    debugPrint('totalAmount: $totalAmount');
     controller.sink.add(totalAmount);
   });
 
-  subscriptions.add(sub); // add the subscription to the list
+  subscriptions.add(sub);
   ref.onDispose(() {
     for (var sub in subscriptions) {
       sub.cancel();
@@ -105,7 +87,6 @@ final totalAmountProvider = StreamProvider.autoDispose<double>((ref) {
 
 Future<double> totalAmount() async {
   final userId = FirebaseAuth.instance.currentUser!.uid;
-  // final budgetsList = <double>[]; // accumulate all budgets in a list
   var updatedDebtList = <double>[];
 
   final wallets = await FirebaseFirestore.instance
@@ -126,25 +107,16 @@ Future<double> totalAmount() async {
           (doc) => Budget.fromJson(doc.data()).budgetAmount,
         );
     updatedDebtList = [...budgetsAmount, ...updatedDebtList];
-    // for (var i in updatedDebtList) {
-    //   debugPrint('updatedDebtList: $i');
-    // }
-
-    // debugPrint('updatedDebtList length: ${updatedDebtList.length}');
   }
 
   var totalAmount = updatedDebtList.fold(0.00, (previousValue, element) {
-    // debugPrint('previousValue: $previousValue');
-    // debugPrint('element: $element');
     return previousValue + element;
   });
-  // debugPrint('totalAmount: $totalAmount');
   return totalAmount;
 }
 
 Future<double> usedAmount() async {
   final userId = FirebaseAuth.instance.currentUser!.uid;
-  // final budgetsList = <double>[]; // accumulate all budgets in a list
   var updatedDebtList = <double>[];
 
   final wallets = await FirebaseFirestore.instance
@@ -169,7 +141,6 @@ Future<double> usedAmount() async {
 
   var usedAmount = updatedDebtList.fold(
       0.00, (previousValue, element) => previousValue + element);
-  // debugPrint('usedAmount: $usedAmount');
   return usedAmount;
 }
 
@@ -178,13 +149,9 @@ Future<double> remainingAmount() async {
 }
 
 Future<double> spentPercentage() async {
-  //* spent percentage
   if (await totalAmount() == 0.00) {
-    // debugPrint('if');
-
     return 0.00;
   } else {
-    // debugPrint('else');
     return await usedAmount() / await totalAmount();
   }
 }
@@ -193,15 +160,11 @@ final usedAmountProvider = StreamProvider.autoDispose<double>((ref) {
   final wallets = ref.watch(userWalletsProvider).value;
   final controller = StreamController<double>();
 
-  final budgetsList = <double>[]; // accumulate all budgets in a list
-  final subscriptions = <StreamSubscription>[]; // store all subscriptions
+  final budgetsList = <double>[];
+  final subscriptions = <StreamSubscription>[];
 
-  // for (var wallet in wallets!) {
-  //   debugPrint('wallet: ${wallet.walletName}');
-  //   debugPrint('walletId: ${wallet.walletId}');
   final sub = FirebaseFirestore.instance
       .collection(FirebaseCollectionName.budgets)
-      // .where(FirebaseFieldName.walletId, isEqualTo: wallet.walletId)
       .where(
         FirebaseFieldName.walletId,
         whereIn: wallets!.map((wallet) => wallet.walletId).toList(),
@@ -220,12 +183,10 @@ final usedAmountProvider = StreamProvider.autoDispose<double>((ref) {
 
     var usedAmount = budgetsList.fold(
         0.00, (previousValue, element) => previousValue + element);
-    // debugPrint('usedAmount: $usedAmount');
     controller.sink.add(usedAmount);
   });
-  // }
 
-  subscriptions.add(sub); // add the subscription to the list
+  subscriptions.add(sub);
   ref.onDispose(() {
     for (var sub in subscriptions) {
       sub.cancel();
@@ -253,7 +214,6 @@ class BudgetNotifier extends StateNotifier<IsLoading> {
     final budgetId = documentIdFromCurrentDate();
 
     final walletDoc = await FirebaseFirestore.instance
-        // .collectionGroup(FirebaseCollectionName.wallets)
         .collection(FirebaseCollectionName.wallets)
         .where(FirebaseFieldName.walletId, isEqualTo: walletId)
         .get();
@@ -339,7 +299,6 @@ class BudgetNotifier extends StateNotifier<IsLoading> {
     });
   }
 
-// * delete budget
   Future<bool> deleteBudget({
     required String budgetId,
   }) async {

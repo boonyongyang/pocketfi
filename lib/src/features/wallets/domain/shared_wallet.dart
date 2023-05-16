@@ -1,14 +1,9 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart' show immutable;
-
 import 'package:pocketfi/src/constants/firebase_names.dart';
 import 'package:pocketfi/src/constants/typedefs.dart';
 import 'package:pocketfi/src/features/authentication/domain/collaborators_info.dart';
 
-@immutable
+// ignore: must_be_immutable
 class SharedWallet {
   final String walletId;
   final String walletName;
@@ -27,7 +22,6 @@ class SharedWallet {
     required this.ownerId,
     required this.ownerName,
     required this.ownerEmail,
-    // this.collaborators,
   });
 
   Map<String, dynamic> toJson() {
@@ -39,8 +33,6 @@ class SharedWallet {
       FirebaseFieldName.ownerId: ownerId,
       FirebaseFieldName.ownerName: ownerName,
       FirebaseFieldName.ownerEmail: ownerEmail,
-      // FirebaseFieldName.collaborators:
-      //     collaborators!.map((x) => x.toMap()).toList(),
     };
   }
 
@@ -54,18 +46,5 @@ class SharedWallet {
           ownerId: map[FirebaseFieldName.ownerId] as UserId,
           ownerName: map[FirebaseFieldName.ownerName] as String,
           ownerEmail: map[FirebaseFieldName.ownerEmail] as String,
-          // collaborators: map[FirebaseFieldName.collaborators] != null
-          //     ? List<CollaboratorsInfo>.from(
-          //         (map[FirebaseFieldName.collaborators] as List<dynamic>)
-          //             .map<CollaboratorsInfo?>(
-          //           (x) => CollaboratorsInfo.fromMap(x as Map<String, dynamic>),
-          //         ),
-          //       )
-          //     : null,
         );
-
-  // String toJson() => json.encode(toMap());
-
-//   factory SharedWallet.fromJson(String source) =>
-//       SharedWallet.fromMap(json.decode(source) as Map<String, dynamic>);
 }

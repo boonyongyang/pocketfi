@@ -24,7 +24,6 @@ class _UpdateTagState extends ConsumerState<UpdateTag> {
     final selectedTag = ref.watch(selectedTagProvider);
     final nameController = useTextEditingController(text: selectedTag?.name);
     final isSaveButtonEnabled = useState(false);
-
     useEffect(
       () {
         void listener() =>
@@ -35,9 +34,6 @@ class _UpdateTagState extends ConsumerState<UpdateTag> {
       },
       [nameController],
     );
-
-    debugPrint('${isSaveButtonEnabled.value}');
-
     return SizedBox(
       height: MediaQuery.of(context).size.height * 0.6,
       child: Container(
@@ -63,7 +59,6 @@ class _UpdateTagState extends ConsumerState<UpdateTag> {
                     fontSize: 18.0,
                   ),
                 ),
-                // const SizedBox(width: 40.0),
                 IconButton(
                   icon: const Icon(
                     Icons.delete_rounded,

@@ -16,7 +16,6 @@ import 'package:pocketfi/src/constants/app_icons.dart';
 import 'package:pocketfi/src/constants/strings.dart';
 import 'package:pocketfi/src/features/authentication/application/user_id_provider.dart';
 import 'package:pocketfi/src/features/wallets/application/wallet_services.dart';
-import 'package:pocketfi/src/features/wallets/data/wallet_repository.dart';
 import 'package:pocketfi/src/features/wallets/domain/wallet.dart';
 import 'package:pocketfi/src/features/category/application/category_services.dart';
 import 'package:pocketfi/src/features/category/domain/category.dart';
@@ -152,10 +151,7 @@ class UpdateBillFormState extends ConsumerState<UpdateBillForm> {
                       ),
                       const Spacer(),
                       const Icon(AppIcons.wallet, color: AppColors.mainColor1),
-                      // ! also need to change the selected
-                      SelectWalletDropdownList(
-                          // selectedWallet: selectedWallet,
-                          ),
+                      const SelectWalletDropdownList(),
                     ],
                   ),
                 ),
@@ -278,16 +274,6 @@ class UpdateBillFormState extends ConsumerState<UpdateBillForm> {
       ],
     );
   }
-
-  Future<Wallet?> _getSelectedWallet() async {
-    final selectedBill = ref.watch(selectedBillProvider);
-    if (selectedBill != null) {
-      final selectedWallet = await getWalletById(selectedBill.walletId);
-      return selectedWallet;
-    } else {
-      return null;
-    }
-  }
 }
 
 class SelectCategory extends ConsumerWidget {
@@ -361,19 +347,10 @@ class SelectCategory extends ConsumerWidget {
                                 padding: const EdgeInsets.all(8.0),
                                 child: GestureDetector(
                                   onTap: () {
-                                    // ! HERE IS THE PROBLEM! INSTEAD OF CHECKING THE SELECTEDCATEGORY, CHECK THE SELECTED BILL!
-                                    // ref
-                                    //     .read(selectedCategoryProvider.notifier)
-                                    //     .state = categories[index];
-
-                                    //! LIKE THIS!
                                     ref
                                         .read(selectedBillProvider.notifier)
                                         .updateBillCategory(
                                             categories[index], ref);
-
-                                    debugPrint(
-                                        'selected category: ${categories[index].name}');
                                     Navigator.of(context).pop();
                                   },
                                   child: Column(
@@ -411,54 +388,6 @@ class SelectCategory extends ConsumerWidget {
   }
 }
 
-// class SelectWalletDropdownList extends ConsumerWidget {
-//   const SelectWalletDropdownList({
-//     super.key,
-//     required this.selectedWallet,
-//   });
-
-//   final Wallet? selectedWallet;
-
-//   @override
-//   Widget build(BuildContext context, WidgetRef ref) {
-//     final wallets = ref.watch(userWalletsProvider).value;
-//     // final selectedWallet = ref.watch(selectedWalletProvider);
-
-//     debugPrint('first wallets: ${selectedWallet?.walletName}');
-//     final walletList = wallets?.toList();
-//     debugPrint('wallet list: ${walletList?.length}');
-//     debugPrint('wallet list: ${walletList?.toString()}');
-
-//     return Padding(
-//       padding: const EdgeInsets.symmetric(horizontal: 8.0),
-//       child: Consumer(
-//         builder: (context, ref, child) {
-//           return DropdownButton(
-//             value: selectedWallet,
-//             items: walletList?.map((wallet) {
-//               return DropdownMenuItem(
-//                 value: wallet,
-//                 child: Text(wallet.walletName),
-//               );
-//             }).toList(),
-//             onChanged: (selectedWallet) {
-//               debugPrint('wallet tapped: ${selectedWallet?.walletName}');
-//               // ! THIS ALSO?????????
-//               // ref.read(selectedWalletProvider.notifier).state = selectedWallet!;
-//               ref
-//                   .read(selectedBillProvider.notifier)
-//                   .updateBillWallet(selectedWallet!, ref);
-
-//               debugPrint(
-//                   'selected wallet: ${ref.read(selectedWalletProvider)?.walletName}');
-//             },
-//           );
-//         },
-//       ),
-//     );
-//   }
-// }
-
 class SelectCurrency extends StatelessWidget {
   const SelectCurrency({
     super.key,
@@ -492,18 +421,7 @@ class BillAmountTextField extends ConsumerWidget {
         textAlign: TextAlign.center,
         enableInteractiveSelection: false,
         showCursor: false,
-        // keyboardType: const TextInputType.numberWithOptions(
-        //   decimal: true,
-        //   signed: true,
-        // ),
-        // textInputAction: TextInputAction.done,
-//        keyboardType: Platform\.isIOS
-//            \? const //TextInputType\.numberWithOptions\(
-//               // signed: true,
-//                decimal: true,
-//              \)
-//            : TextInputType\.number,
-        keyboardType: TextInputType.number,
+        keyboardType: const TextInputType.numberWithOptions(decimal: true),
         inputFormatters: [
           FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,4}'))
         ],
@@ -542,7 +460,6 @@ class WriteOptionalNote extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.only(left: 16.0),
             child: TextField(
-              // autofocus: true,
               decoration: const InputDecoration(
                 border: InputBorder.none,
                 hintText: 'Write a note',
@@ -590,33 +507,24 @@ class SaveButton extends ConsumerWidget {
       onPressed: isSaveButtonEnabled.value
           ? () async {
               final userId = ref.read(userIdProvider);
-              // ! dun use transaction one
-              // final dueDate = ref.read(transactionDateProvider);
-
-              debugPrint('userId is: $userId');
-
               if (userId == null) {
                 return;
               }
-
               final note = noteController.text;
               final amount = amountController.text;
-
               final bill = ref.read(selectedBillProvider);
-              final isCreated = await ref
-                  .read(billProvider.notifier)
-                  .updateBill(
-                    billId: bill!.billId,
-                    userId: userId,
-                    walletId: selectedWallet!.walletId, // ? sure?
-                    walletName: selectedWallet!.walletName, // ? sure?
-                    billAmount: double.parse(amount),
-                    billDueDate: bill.dueDate, // ! might be null, recheck pls
-                    categoryName: categoryName!.name,
-                    billNote: note,
-                    recurringPeriod: recurringPeriod,
-                    // billStatus: billStatus, ! should be update
-                  );
+              final isCreated =
+                  await ref.read(billProvider.notifier).updateBill(
+                        billId: bill!.billId,
+                        userId: userId,
+                        walletId: selectedWallet!.walletId,
+                        walletName: selectedWallet!.walletName,
+                        billAmount: double.parse(amount),
+                        billDueDate: bill.dueDate,
+                        categoryName: categoryName!.name,
+                        billNote: note,
+                        recurringPeriod: recurringPeriod,
+                      );
               debugPrint('isCreated is: $isCreated');
 
               if (isCreated && mounted) {
@@ -671,7 +579,6 @@ class BillDatePickerState extends ConsumerState<BillDatePicker> {
               onDateTimeChanged: (DateTime newDate) {
                 HapticFeedbackService.mediumImpact();
                 setOrUpdateDate(newDate);
-                debugPrint('picked: $newDate');
               },
             ),
           );
@@ -687,7 +594,6 @@ class BillDatePickerState extends ConsumerState<BillDatePicker> {
       if (pickedDate != null) {
         HapticFeedbackService.mediumImpact();
         setOrUpdateDate(pickedDate);
-        debugPrint('picked: $pickedDate');
         // TODO: if selectedDate is in the future, make it a scheduled transaction
       }
     }
@@ -697,14 +603,12 @@ class BillDatePickerState extends ConsumerState<BillDatePicker> {
     HapticFeedbackService.lightImpact();
     final newDate = selectedDate.subtract(const Duration(days: 1));
     setOrUpdateDate(newDate);
-    debugPrint('prev: $newDate');
   }
 
   void _nextDay(DateTime selectedDate) {
     HapticFeedbackService.lightImpact();
     final newDate = selectedDate.add(const Duration(days: 1));
     setOrUpdateDate(newDate);
-    debugPrint('next: $newDate');
   }
 
   // * setOrUpdateDate

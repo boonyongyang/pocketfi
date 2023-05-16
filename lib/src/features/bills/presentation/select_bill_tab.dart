@@ -32,11 +32,6 @@ class SelectBillTabState extends ConsumerState<SelectBillTab>
 
   @override
   Widget build(BuildContext context) {
-    // final tabIndex = ref.watch(selectedBillProvider)?.status ??
-    //     ref.watch(billTabIndexProvider);
-
-    // debugPrint('da index: $tabIndex');
-
     return Transform.scale(
       scale: 0.9,
       child: DefaultTabController(
@@ -73,9 +68,6 @@ class SelectBillTabState extends ConsumerState<SelectBillTab>
                         Tab(text: 'History'),
                       ],
                       onTap: (index) {
-                        // ref
-                        //     .read(billTabIndexProvider.notifier)
-                        //     .setBillStatus(index);
                         HapticFeedbackService.lightImpact();
 
                         ref.read(billTabIndexProvider.notifier).state = index;

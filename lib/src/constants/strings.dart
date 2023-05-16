@@ -6,7 +6,6 @@ class Strings {
   static const welcomeToAppName = 'Welcome to ${Strings.appName}';
   static const youHaveNoRecords = 'You have not made a record yet. \n'
       'Why don\'t you take the first step?';
-  // "No made any records yet. Take the first step and upload your first record!";
   static const youHaveNoRecordsFound =
       "No records found. Try searching for something else.";
   static const noRecordsAvailable =
@@ -14,8 +13,6 @@ class Strings {
   static const enterYourSearchTerm =
       'Enter your search term in order go get started. You can search in the description of all records available in the system';
 
-  // static const facebook = 'Facebook';
-  // static const facebookSignupUrl = 'https://www.facebook.com/signup';
   static const google = 'Google';
   static const googleSignupUrl = 'https://accounts.google.com/signup';
   static const logIntoYourAccount = 'Log into your account gmail.';
@@ -35,7 +32,6 @@ class Strings {
 
   static const dontHaveAnAccount = "Don't have an account?\n";
   static const signUpOn = 'Sign up on ';
-  // static const orCreateAnAccountOn = ' or create an account on ';
 
   // * general
   static const loading = 'Loading...';

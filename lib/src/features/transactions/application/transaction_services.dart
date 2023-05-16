@@ -4,7 +4,6 @@ import 'dart:typed_data';
 
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image/image.dart' as img;
-import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/constants/firebase_names.dart';
 import 'package:pocketfi/src/constants/typedefs.dart';
@@ -43,20 +42,20 @@ class TransactionTypeNotifier extends StateNotifier<TransactionType> {
 
 // * addNewTransaction
 void setNewTransactionState(WidgetRef ref) {
-  //  this two is to reset DatePicker state
+  // reset DatePicker state
   ref.read(transactionDateProvider.notifier).setDate(DateTime.now());
   ref
       .read(selectedTransactionProvider.notifier)
       .resetSelectedTransactionState();
-  //  this is to reset category state
+  // reset category state
   resetCategoryState(ref);
-  //  this is to reset type state
+  // reset type state
   ref.read(transactionTypeProvider.notifier).resetTransactionTypeState();
-  //  this is to reset photo state
+  // reset photo state
   ref.read(imageFileProvider.notifier).clearImageFile();
-  // this is to reset bookmark icon
+  // reset bookmark icon
   ref.read(isBookmarkProvider.notifier).resetBookmarkState();
-  // this is to reset tags
+  // reset tags
   ref.read(userTagsNotifier.notifier).resetTagsState(ref);
 }
 
@@ -76,9 +75,7 @@ class SelectedTransactionNotifier extends StateNotifier<Transaction?> {
   SelectedTransactionNotifier(Transaction? transaction) : super(transaction);
 
   void setSelectedTransaction(Transaction transaction) => state = transaction;
-
   void resetSelectedTransactionState() => state = null;
-
   void updateTransactionDate(DateTime newDate, WidgetRef ref) {
     Transaction? transaction = ref.watch(selectedTransactionProvider);
     if (transaction != null) {
@@ -119,7 +116,6 @@ class SelectedTransactionNotifier extends StateNotifier<Transaction?> {
     if (transaction != null) {
       transaction = transaction.copyWith(transactionImage: null);
       state = transaction;
-      debugPrint('state is now ${state?.transactionImage?.fileUrl}');
     }
   }
 
@@ -132,18 +128,14 @@ class SelectedTransactionNotifier extends StateNotifier<Transaction?> {
 
       if (newFile != null) {
         late Uint8List thumbnailUint8List;
-        // decode the image
         final fileAsImage = img.decodeImage(newFile.readAsBytesSync());
         if (fileAsImage == null) {
-          // isLoading = false;
-          // return false;
           throw const CouldNotBuildThumbnailException();
         }
 
         // create thumbnail
         final thumbnail = img.copyResize(
           fileAsImage,
-          // width: Constants.imageThumbnailWidth,
           height: ImageConstants.imageThumbnailHeight,
         );
         // encode the thumbnail

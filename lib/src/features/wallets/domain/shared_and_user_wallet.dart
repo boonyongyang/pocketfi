@@ -15,7 +15,6 @@ class SharedAndUserWallets {
 
   @override
   bool operator ==(covariant SharedAndUserWallets other) =>
-      // runtimeType == other.runtimeType &&
       const IterableEquality().equals(wallets, other.wallets) &&
       const IterableEquality().equals(sharedWallets, other.sharedWallets);
 

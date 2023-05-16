@@ -6,7 +6,6 @@ import 'package:pocketfi/src/features/authentication/application/user_id_provide
 import 'package:pocketfi/src/features/wallets/domain/wallet.dart';
 
 class WalletTiles extends ConsumerWidget {
-  // final Iterable<Wallet> wallet;
   final Wallet wallet;
   final VoidCallback onTap;
 
@@ -19,7 +18,6 @@ class WalletTiles extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final currentUserId = ref.watch(userIdProvider);
-    // wallet.userId = userInfo.userId;
     return GestureDetector(
       onTap: onTap,
       child: Padding(
@@ -40,7 +38,7 @@ class WalletTiles extends ConsumerWidget {
                 color: Colors.grey.withOpacity(0.5),
                 spreadRadius: 2,
                 blurRadius: 7,
-                offset: const Offset(3, 6), // changes position of shadow
+                offset: const Offset(3, 6),
               ),
             ],
           ),
@@ -90,25 +88,6 @@ class WalletTiles extends ConsumerWidget {
                         ],
                       ),
                     ),
-                    // Padding(
-                    //   padding: const EdgeInsets.only(
-                    //     left: 8.0,
-                    //     top: 2.0,
-                    //     bottom: 8.0,
-                    //   ),
-                    //   child: Row(
-                    //     children: [
-                    //       Text(
-                    //         'RM ${wallet.walletBalance.toStringAsFixed(2)}',
-                    //         style: const TextStyle(
-                    //           fontSize: 20,
-                    //           fontWeight: FontWeight.bold,
-                    //           color: AppColors.mainColor2,
-                    //         ),
-                    //       ),
-                    //     ],
-                    //   ),
-                    // ),
                   ],
                 ),
               ),

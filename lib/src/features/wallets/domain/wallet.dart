@@ -1,6 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart' show immutable;
 import 'package:pocketfi/src/constants/firebase_names.dart';
@@ -11,7 +8,6 @@ import 'package:pocketfi/src/features/authentication/domain/collaborators_info.d
 class Wallet {
   final String walletId;
   final String walletName;
-  // final double walletBalance;
   final DateTime? createdAt;
   final UserId userId;
   final UserId? ownerId;
@@ -23,7 +19,6 @@ class Wallet {
   const Wallet({
     required this.walletId,
     required this.walletName,
-    // required this.walletBalance,
     this.createdAt,
     required this.userId,
     this.ownerId,
@@ -35,7 +30,6 @@ class Wallet {
   Wallet.fromJson(Map<String, dynamic> json)
       : walletId = json[FirebaseFieldName.walletId],
         walletName = json[FirebaseFieldName.walletName],
-        // walletBalance = json[FirebaseFieldName.walletBalance],
         createdAt = (json[FirebaseFieldName.createdAt] as Timestamp).toDate(),
         userId = json[FirebaseFieldName.userId] as UserId,
         ownerId = json[FirebaseFieldName.ownerId] as UserId,
@@ -53,7 +47,6 @@ class Wallet {
   Map<String, dynamic> toJson() => {
         FirebaseFieldName.walletId: walletId,
         FirebaseFieldName.walletName: walletName,
-        // FirebaseFieldName.walletBalance: walletBalance,
         FirebaseFieldName.createdAt: FieldValue.serverTimestamp(),
         FirebaseFieldName.userId: userId,
         FirebaseFieldName.ownerId: ownerId,
@@ -61,16 +54,10 @@ class Wallet {
         FirebaseFieldName.ownerEmail: ownerEmail,
         FirebaseFieldName.collaborators: collaborators,
       };
-  // Wallet(Map<String, dynamic> json, {required this.walletId})
-  //     : walletName = json[FirebaseFieldName.walletName],
-  //       walletBalance = json[FirebaseFieldName.walletBalance],
-  //       createdAt = (json[FirebaseFieldName.createdAt] as Timestamp).toDate(),
-  //       userId = json[FirebaseFieldName.userId] as UserId;
 
   Wallet copyWith({
     String? walletId,
     String? walletName,
-    // double? walletBalance,
     DateTime? createdAt,
     UserId? userId,
     UserId? ownerId,
@@ -96,9 +83,7 @@ class Wallet {
       runtimeType == other.runtimeType &&
       other.walletId == walletId &&
       other.walletName == walletName &&
-      // other.walletBalance == walletBalance &&
       other.createdAt == createdAt &&
-      // other.collaborators == collaborators &&
       other.ownerId == ownerId &&
       other.ownerName == ownerName &&
       other.ownerEmail == ownerEmail &&
@@ -109,7 +94,6 @@ class Wallet {
         [
           walletId,
           walletName,
-          // walletBalance,
           ownerId,
           ownerName,
           ownerEmail,

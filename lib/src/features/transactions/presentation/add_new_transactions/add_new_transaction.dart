@@ -14,7 +14,6 @@ import 'package:pocketfi/src/constants/app_icons.dart';
 import 'package:pocketfi/src/constants/strings.dart';
 import 'package:pocketfi/src/features/authentication/application/user_id_provider.dart';
 import 'package:pocketfi/src/features/tags/application/tag_services.dart';
-import 'package:pocketfi/src/features/tags/domain/taggie.dart';
 import 'package:pocketfi/src/features/tags/presentation/select_tag_widget.dart';
 import 'package:pocketfi/src/features/wallets/application/wallet_services.dart';
 import 'package:pocketfi/src/features/wallets/domain/wallet.dart';
@@ -70,10 +69,6 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
       [amountController],
     );
 
-    // if (!mounted) {
-    //   ref.read(transactionTypeProvider.notifier).resetTransactionTypeState();
-    // }
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.mainColor1,
@@ -92,16 +87,11 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
             color: AppColors.white,
           ),
           onPressed: () {
-            // ref.read(selectedCategoryProvider.notifier).state = null;
-
             Navigator.of(context).pop();
             resetCategoryState(ref);
-            // ref.read(transactionTypeProvider.notifier).setTransactionType(0);
             ref
                 .read(transactionTypeProvider.notifier)
                 .resetTransactionTypeState();
-
-            // ref.read(transactionDateProvider.notifier).setDate(DateTime.now());
           },
         ),
       ),
@@ -109,7 +99,6 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
         child: GestureDetector(
           onTap: () {
             FocusScope.of(context).unfocus();
-            // FocusScopeNode currentFocus = FocusScope.of(context);
           },
           child: Container(
             padding: EdgeInsets.only(
@@ -145,17 +134,12 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
-                    // mainAxisSize: MainAxisSize.min,
                     children: [
-                      // TransactionDatePicker(
-                      //     // date: DateTime.now(),
-                      //     ),
                       const TransactionDatePicker(),
                       WriteOptionalNote(noteController: noteController),
                       selectPhoto(),
                       showIfPhotoIsAdded(),
                       const SizedBox(height: 8.0),
-                      // selectTags(),
                       const SelectTagWidget(),
                       selectReccurence(),
                       Center(
@@ -174,7 +158,6 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
                                 ref
                                     .read(isBookmarkProvider.notifier)
                                     .toggleBookmark();
-
                                 Fluttertoast.showToast(
                                   msg: "Bookmark added",
                                   toastLength: Toast.LENGTH_SHORT,
@@ -196,7 +179,6 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
                                 mounted: mounted,
                                 selectedWallet: selectedWallet!,
                                 isBookmark: isBookmark,
-                                // date: ,
                               ),
                             ),
                           ],
@@ -238,7 +220,6 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
             color: AppColors.mainColor1,
             icon: const Icon(Icons.close),
             onPressed: () {
-              // ref.read(imageFileProvider.notifier).setImageFile(null);
               ref.read(imageFileProvider.notifier).clearImageFile();
             },
           ),
@@ -247,15 +228,12 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
   }
 
   void displayPhoto(File imageFile) {
-    debugPrint('image file path: ${imageFile.path}');
-
     FileThumbnailView(
       thumbnailRequest: ThumbnailRequest(
         imageFile,
         FileType.image,
       ),
     );
-
     ref.read(imageFileProvider.notifier).setImageFile(imageFile);
   }
 
@@ -286,47 +264,6 @@ class AddNewTransactionState extends ConsumerState<AddNewTransaction> {
           )
         : const SizedBox();
   }
-
-  // Row selectTags() {
-  //   return Row(
-  //     children: [
-  //       const Icon(
-  //         Icons.label_important_rounded,
-  //         color: AppColors.mainColor1,
-  //       ),
-  //       const SizedBox(width: 14.0),
-  //       Expanded(
-  //         child: SingleChildScrollView(
-  //           scrollDirection: Axis.horizontal,
-  //           child: Wrap(
-  //             direction: Axis.horizontal,
-  //             spacing: 8.0,
-  //             children: [
-  //               for (final tag in tags)
-  //                 FilterChip(
-  //                   showCheckmark: false,
-  //                   selectedColor: AppColors.mainColor2,
-  //                   label: Text(tag.label),
-  //                   selected: selectedTags.contains(tag),
-  //                   onSelected: (selected) {
-  //                     setState(
-  //                       () {
-  //                         if (selected) {
-  //                           selectedTags.add(tag);
-  //                         } else {
-  //                           selectedTags.remove(tag);
-  //                         }
-  //                       },
-  //                     );
-  //                   },
-  //                 ),
-  //             ],
-  //           ),
-  //         ),
-  //       ),
-  //     ],
-  //   );
-  // }
 
   Row selectReccurence() {
     return Row(
@@ -460,9 +397,6 @@ class SelectCategory extends ConsumerWidget {
                                                 .notifier)
                                             .updateCategory(
                                                 categories[index], ref);
-
-                                    debugPrint(
-                                        'selected category: ${categories[index].name}');
                                     Navigator.of(context).pop();
                                   },
                                   child: Column(
@@ -534,20 +468,7 @@ class TransactionAmountField extends ConsumerWidget {
         textAlign: TextAlign.center,
         enableInteractiveSelection: false,
         showCursor: false,
-        // keyboardType: const TextInputType.numberWithOptions(
-        //   decimal: true,
-        //   signed: true,
-        // ),
-        // textInputAction: TextInputAction.done,
-//        keyboardType: Platform\.isIOS
-//            \? const //TextInputType\.numberWithOptions\(
-//               // signed: true,
-//                decimal: true,
-//              \)
-//            : TextInputType\.number,
-        // keyboardType: TextInputType.number,
-        keyboardType: TextInputType.numberWithOptions(decimal: true),
-// This regex for only amount (price). you can create your own regex based on your requirement
+        keyboardType: const TextInputType.numberWithOptions(decimal: true),
         inputFormatters: [
           FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,4}'))
         ],
@@ -559,11 +480,6 @@ class TransactionAmountField extends ConsumerWidget {
         style: TextStyle(
           fontSize: 28,
           fontWeight: FontWeight.bold,
-          // color: ref.watch(transactionTypeProvider) == TransactionType.expense
-          //     ? AppColors.red
-          //     : ref.watch(transactionTypeProvider) == TransactionType.income
-          //         ? AppColors.green
-          //         : Colors.grey,
           color: type.color,
         ),
       ),
@@ -647,29 +563,17 @@ class SaveButton extends ConsumerWidget {
                       .toList()
                   : [];
 
-              debugPrint('userId is: $userId');
-              debugPrint('transactionType is: $type');
-
               if (userId == null) {
                 return;
               }
               final note = noteController.text;
               final amount = amountController.text;
-              // final selectedCategory =
-              //     ref.read(selectedCategoryProvider).state;
-              debugPrint('note is: $note');
-              debugPrint('amount is: $amount');
-
-              // debugPrint('walletName is: ${selectedWallet?.walletId}');
-
               final isCreated = await ref
                   .read(transactionProvider.notifier)
                   .addNewTransaction(
                     userId: userId,
-                    walletId: selectedWallet.walletId, // ? sure?
-                    walletName: selectedWallet.walletName, // ? sure?
-                    // walletId: selectedWallet!.walletId, // ? sure?
-                    // walletName: selectedWallet!.walletName, // ? sure?
+                    walletId: selectedWallet.walletId,
+                    walletName: selectedWallet.walletName,
                     amount: double.parse(amount),
                     type: type,
                     note: note,
@@ -679,29 +583,19 @@ class SaveButton extends ConsumerWidget {
                     isBookmark: isBookmark,
                     tags: selectedTagNames,
                   );
-              debugPrint('isCreated is: $isCreated');
-
               if (isCreated && mounted) {
                 noteController.clear();
                 amountController.clear();
                 Navigator.of(context).pop();
-
-                // reset the state of the provider
                 resetCategoryState(ref);
                 ref
                     .read(transactionTypeProvider.notifier)
                     .setTransactionType(0);
-
-                // clear the imageFileProvider
-                // ref.read(imageFileProvider.notifier).setImageFile(null);
                 ref.read(imageFileProvider.notifier).clearImageFile();
-
                 ref
                     .read(transactionDateProvider.notifier)
                     .setDate(DateTime.now());
-
                 ref.read(isBookmarkProvider.notifier).resetBookmarkState();
-
                 Fluttertoast.showToast(
                   msg: "Transaction added",
                   toastLength: Toast.LENGTH_SHORT,

@@ -4,8 +4,6 @@ import 'package:pocketfi/src/constants/typedefs.dart';
 import 'package:pocketfi/src/features/tags/data/tag_repository.dart';
 import 'package:pocketfi/src/features/tags/domain/tag.dart';
 
-// final chosenTagsProvider = StateProvider.autoDispose<List<Tag>>((ref) => []);
-
 // * tagProvider
 final tagProvider =
     StateNotifierProvider<TagNotifier, IsLoading>((ref) => TagNotifier());
@@ -18,9 +16,6 @@ List<Tag> getTagsWithTagNames(List<String> tagNames, List<Tag> allTags) {
 Tag? getTagWithName(String tagName, List<Tag> allTags) {
   return allTags.firstWhereOrNull((tag) => tag.name == tagName);
 }
-
-// toggle tag
-// void toggleTag(Tag tag) {}
 
 // * userTagsNotifier
 final userTagsNotifier = StateNotifierProvider<UserTagsNotifier, List<Tag>>(
@@ -43,17 +38,6 @@ class UserTagsNotifier extends StateNotifier<List<Tag>> {
     }
   }
 
-  // * toggle tags
-  // void toggleTag(Tag tag) {
-  //   state = state.map((existingTag) {
-  //     if (existingTag.name == tag.name) {
-  //       return existingTag.copyWith(isSelected: !existingTag.isSelected);
-  //     } else {
-  //       return existingTag;
-  //     }
-  //   }).toList();
-  // }
-
   // * set tag to selected
   void setTagToSelected(Tag tag) {
     state = state.map((existingTag) {
@@ -73,20 +57,6 @@ final selectedTagProvider = StateNotifierProvider<SelectedTagNotifier, Tag?>(
 // * SelectedTagNotifier
 class SelectedTagNotifier extends StateNotifier<Tag?> {
   SelectedTagNotifier(Tag? tag) : super(tag);
-
   void setSelectedTag(Tag tag) => state = tag;
-
   void resetSelectedTagState() => state = null;
-
-  // // * updateTagName
-  // bool updateTagName(String newName) {
-  //   state = state!.copyWith(name: newName);
-  //   return true;
-  // }
-
-  // // * toggleTag
-  // bool toggleTag() {
-  //   state = state!.copyWith(isSelected: !state!.isSelected);
-  //   return true;
-  // }
 }

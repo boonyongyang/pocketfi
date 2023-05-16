@@ -18,24 +18,6 @@ final walletVisibilityProvider =
   final allWallets = ref.watch(userWalletsProvider);
   final walletVisibility = HashMap<Wallet, bool>();
 
-  // Map<Wallet, bool> convertMap(Map<String, bool> originalMap) {
-  //   final convertedMap = <Wallet, bool>{};
-  //   originalMap.forEach((key, value) {
-  //     // final wallet = Wallet(walletId: key);
-
-  //     final wallet = ref.watch(getWalletFromWalletIdProvider(key)).value!;
-
-  //     // final wallet = walletFromWalletId.when(
-  //     //   data: (wallet) => wallet,
-  //     //   loading: () => null,
-  //     //   error: (error, stackTrace) => null,
-  //     // );
-
-  //     convertedMap[wallet] = value;
-  //   });
-  //   return convertedMap;
-  // }
-
   allWallets.when(
     data: (wallets) {
       for (var wallet in wallets) {

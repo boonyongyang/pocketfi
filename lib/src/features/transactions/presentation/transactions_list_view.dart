@@ -32,18 +32,12 @@ class TransactionListView extends ConsumerWidget {
       itemCount: transactions.length,
       itemBuilder: (context, index) {
         final transaction = transactions.elementAt(index);
-
         final isLastTransactionForDate =
             _isLastTransactionForDate(index, transaction);
-
         if (isLastTransactionForDate) {
           totalExpenseOnLastDisplayedDate =
               _getNetAmountOnDate(transaction.date);
         }
-
-        // final scheduledTransactions = _getScheduledTransactions();
-        // final hasScheduledTransactions = scheduledTransactions.isNotEmpty;
-
         return Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -55,32 +49,14 @@ class TransactionListView extends ConsumerWidget {
             TransactionCard(
               transaction: transaction,
               onTapped: () async {
-                // setNewTransactionState(ref);
                 ref
                     .read(selectedTransactionProvider.notifier)
                     .setSelectedTransaction(transaction);
-                // if (transaction.receipt?.transactionImage != null) {
-                //   ref.read(imageFileProvider.notifier).setImageFile(
-                //       // ! recheck this fileUrl!
-                //       File(transaction.receipt!.transactionImage!.fileUrl
-                //           .toString()));
-
-                //   debugPrint(
-                //       'imageFileProvider is ${ref.read(imageFileProvider)}');
-                // }
-
                 if (transaction.transactionImage?.fileUrl != null) {
                   ref.read(imageFileProvider.notifier).setImageFile(
-                      // ! recheck this fileUrl!
                       File(transaction.transactionImage!.fileUrl.toString()));
-
-                  debugPrint(
-                      'imageFileProvider is ${ref.read(imageFileProvider)}');
                 }
-
                 final allTags = ref.watch(userTagsProvider).value?.toList();
-
-                // loop through allTags and set isSelected for each tag that is in the transaction
                 if (allTags != null && allTags.isNotEmpty) {
                   ref.read(userTagsNotifier.notifier).resetTagsState(ref);
                   for (final tag in allTags) {
@@ -91,29 +67,11 @@ class TransactionListView extends ConsumerWidget {
                     }
                   }
                 }
-
                 final chosenWallet = await getWalletById(transaction.walletId);
-
-                // set wallet to selected transaction wallet
-                // ref.read(selectedWalletProvider.notifier).state =
-                //     selectedWallet;
-
                 ref
                     .read(selectedWalletProvider.notifier)
                     .setSelectedWallet(chosenWallet);
-                debugPrint(
-                    'selWallet is ${ref.read(selectedWalletProvider)?.walletName}');
-
-                // // set tags state from selectedTransaction
-                // ref.read(userTagsNotifier.notifier).setTags(getTagsWithTagNames(
-                //       transaction.tags,
-                //       allTags ?? [],
-                //     ));
-
-                // debugPrint(
-                // 'bool is ${ref.read(selectedTransactionProvider)?.isBookmark}');
-                // debugPrint('isBool is ${ref.read(isBookmarkProvider)}');
-
+                // ignore: use_build_context_synchronously
                 Navigator.of(context, rootNavigator: true).push(
                   MaterialPageRoute(
                     builder: (context) => const UpdateTransaction(),
@@ -128,62 +86,22 @@ class TransactionListView extends ConsumerWidget {
     );
   }
 
-  // // Method to filter scheduled transactions
-  // List<Transaction> _getScheduledTransactions() {
-  //   return transactions
-  //       .where((transaction) => transaction.date
-  //           .isAfter(DateTime.now().add(const Duration(days: 1))))
-  //       .toList();
-  // }
-
-  // // Method to create the scheduled transactions widget
-  // Widget _buildScheduledTransactionsWidget(
-  //     List<Transaction> scheduledTransactions) {
-  //   return Container(
-  //     padding: const EdgeInsets.all(8.0),
-  //     decoration: BoxDecoration(
-  //       color: Colors.grey,
-  //       borderRadius: BorderRadius.circular(10.0),
-  //     ),
-  //     child: Column(
-  //       children: [
-  //         const Text(
-  //           "Scheduled Transactions",
-  //           style: TextStyle(
-  //             fontSize: 16,
-  //             fontWeight: FontWeight.bold,
-  //             color: Colors.white,
-  //           ),
-  //         ),
-  //         Text(
-  //           // make plural if more than one transaction
-  //           "${scheduledTransactions.length} ${scheduledTransactions.length == 1 ? 'transaction' : 'transactions'}",
-  //           style: const TextStyle(
-  //             fontSize: 14,
-  //             color: Colors.white,
-  //           ),
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
-
+  // Check if the transaction is the last one for its date
   bool _isLastTransactionForDate(int index, Transaction transaction) {
-    // Check if the transaction is the last one for its date
     if (index == 0) return true;
     final previousTransaction = transactions.elementAt(index - 1);
     return !_areDatesEqual(transaction.date, previousTransaction.date);
   }
 
+  // Check if two dates are equal
   bool _areDatesEqual(DateTime date1, DateTime date2) {
-    // Check if two dates are equal
     return date1.year == date2.year &&
         date1.month == date2.month &&
         date1.day == date2.day;
   }
 
+  // Calculate the net amount for a date
   double _getNetAmountOnDate(DateTime date) {
-    // Calculate the net amount for a date
     final transactionsOnDate = transactions
         .where((transaction) => _areDatesEqual(transaction.date, date));
 

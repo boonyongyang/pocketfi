@@ -19,8 +19,6 @@ class CategoryPage extends ConsumerWidget {
         actions: [
           IconButton(
             onPressed: () {
-              // * show bottom sheet
-              // reset selectedColor and Icon providers
               resetCategoryComponentsState(ref);
               showModalBottomSheet(
                 isScrollControlled: true,
@@ -58,15 +56,10 @@ class CategoryPage extends ConsumerWidget {
                         trailing: const Icon(Icons.menu),
                       ),
                       onTap: () {
-                        // TODO : JUST USE SEELCTEDCATEGORYPROVIDER
-                        // ref.read(selectedCategoryProvider.notifier).state =
-                        //     categoriesList[index];
-
                         ref.read(selectedCategoryColorProvider.notifier).state =
                             categoriesList[index].color;
                         ref.read(selectedCategoryIconProvider.notifier).state =
                             categoriesList[index].icon.icon;
-
                         showModalBottomSheet(
                           isScrollControlled: true,
                           context: context,
@@ -77,41 +70,6 @@ class CategoryPage extends ConsumerWidget {
                         );
                       },
                     );
-                    // return Dismissible(
-                    //   onDismissed: (direction) {
-                    //     // remove category from list
-                    //     // ref.read(categoriesProvider.notifier).removeCategory(
-                    //     //       categoriesList[index],
-                    //     //     );
-                    //     // show snackbar
-                    //     ScaffoldMessenger.of(context).showSnackBar(
-                    //       SnackBar(
-                    //         content: Text(
-                    //           'Category "${categoriesList[index].name}" deleted',
-                    //         ),
-                    //         action: SnackBarAction(
-                    //           label: 'Undo',
-                    //           onPressed: () {
-                    //             // add category back to list
-
-                    //             // ref
-                    //             //     .read(categoriesProvider.notifier)
-                    //             //     .addCategory(categoriesList[index]);
-                    //           },
-                    //         ),
-                    //       ),
-                    //     );
-                    //   },
-                    //   key: ValueKey('${categoriesList[index]}'),
-                    //   child: ListTile(
-                    //     title: Text(categoriesList[index].name),
-                    //     leading: CircleAvatar(
-                    //       backgroundColor: categoriesList[index].color,
-                    //       child: categoriesList[index].icon,
-                    //     ),
-                    //     trailing: const Icon(Icons.menu),
-                    //   ),
-                    // );
                   },
                   separatorBuilder: (BuildContext context, int index) {
                     return const Divider();

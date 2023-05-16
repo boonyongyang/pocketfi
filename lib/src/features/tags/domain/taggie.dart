@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-@immutable
+// ignore: must_be_immutable
 class TagChip extends StatefulWidget {
   final String label;
   bool selected;
@@ -87,19 +87,3 @@ List<TagChip> tags = [
 ];
 
 List<TagChip> selectedTags = [];
-
-// class Tag {
-//   String tagId;
-//   String tagName;
-//   String tagColor;
-//   String tagIcon;
-//   bool isSelected;
-
-//   Tag({
-//     required this.tagId,
-//     required this.tagName,
-//     this.tagColor = '',
-//     this.tagIcon = '',
-//     this.isSelected = false,
-//   });
-// }

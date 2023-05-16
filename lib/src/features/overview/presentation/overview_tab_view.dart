@@ -21,15 +21,11 @@ class OverviewTabView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final screenHeight = MediaQuery.of(context).size.height;
-    // final transactionType = ref.watch(transactionTypeProvider);
-
     final currentMonthTransactions =
         ref.watch(currentMonthTransactionsProvider);
-
     final filteredCategories = ref.watch(filteredCategoriesProvider);
     final filteredTags = ref.watch(filteredTagsProvider);
 
-    // if (currentMonthTransactions.isNotEmpty) {
     return RefreshIndicator(
       onRefresh: () {
         ref.refresh(overviewMonthProvider.notifier).resetMonth();
@@ -60,14 +56,10 @@ class OverviewTabView extends ConsumerWidget {
                     categoryName: category.name,
                     icon: category.icon,
                     color: category.color,
-                    // currentMonthTransactions: currentMonthTransactions,
-                    // type: transactionType,
                   );
                 },
               ),
             ),
-            // const MonthlyCashFlowChart(),
-            // const TagPieChart(),
             const DividerWithMargins(),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -93,14 +85,9 @@ class OverviewTabView extends ConsumerWidget {
                     physics: const NeverScrollableScrollPhysics(),
                     itemCount: filteredTags.length,
                     itemBuilder: (context, index) {
-                      // final category = filteredCategories[index];
                       final tag = filteredTags[index];
                       return TagListTile(
                         tagName: tag.name,
-                        // icon: category.icon,
-                        // color: category.color,
-                        // currentMonthTransactions: currentMonthTransactions,
-                        // type: type,
                       );
                     },
                   ),
@@ -113,7 +100,6 @@ class OverviewTabView extends ConsumerWidget {
                   text:
                       'Nothing to show here just yet. Add a transaction to get started.'),
             ),
-            // * add 20% of screen height to make sure the bottom of the screen is not covered by the floating action button
             SizedBox(height: screenHeight * 0.2)
           ],
         ),
@@ -131,8 +117,6 @@ class MonthlyCashFlowChart extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final screenHeight = MediaQuery.of(context).size.height;
-
-    // FIXME: for 3 months, not working for now
     final cashFlow = ref.watch(monthlyCashFlowProvider);
     final now = DateTime.now();
     int currentMonth = now.month;
@@ -146,18 +130,9 @@ class MonthlyCashFlowChart extends ConsumerWidget {
       } else {
         currentMonth--;
       }
-
       monthlyCashFlows.add(MonthlyCashFlow(
           month: '$currentMonth/$currentYear', amount: cashFlow));
     }
-
-    // final currentMonth = DateTime.now().month;
-    // final currentYear = DateTime.now().year;
-    // final cashFlow = ref.watch(monthlyCashFlowProvider);
-
-    // List<MonthlyCashFlow> monthlyCashFlows = [
-    //   MonthlyCashFlow(month: '$currentMonth/$currentYear', amount: cashFlow),
-    // ];
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
@@ -244,8 +219,6 @@ class CategoryPieChart extends ConsumerWidget {
         const Padding(
           padding: EdgeInsets.only(
             left: 20.0,
-            // top: 16.0,
-            // bottom: 8.0,
           ),
           child: Text('Categories',
               style: TextStyle(
@@ -356,16 +329,7 @@ class TagPieChart extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final screenHeight = MediaQuery.of(context).size.height;
     final allTags = ref.watch(userTagsNotifier);
-    debugPrint('allTags: $allTags');
-    final selectedTag = ref.watch(selectedTagProvider);
-    debugPrint('selectedTag: $selectedTag');
     final transactions = ref.watch(currentMonthTransactionsProvider);
-    debugPrint('transactions: ${transactions.length}');
-
-    // final List<Transaction> transactionsWithSelectedTag = transactions
-    //     .where((transaction) => transaction.tags.contains(selectedTag?.name))
-    //     .toList();
-
     final Map<String, double> transactionsByTag = {};
     for (var transaction in transactions) {
       for (var tag in transaction.tags) {
@@ -387,15 +351,6 @@ class TagPieChart extends ConsumerWidget {
         .where((transaction) => transaction.amount > 0)
         .toList();
 
-    // final List<Transaction> transactionsWithSelectedTag = transactions
-    //     .where((transaction) =>
-    //         allTags.any((tag) => transaction.tags.contains(tag.name)))
-    //     .toList();
-    // debugPrint(
-    //     'transactionsWithSelectedTag: ${transactionsWithSelectedTag.length}');
-    // final totalAmount = getTotalAmount(transactionsWithSelectedTag);
-    // debugPrint('total Amount: $totalAmount');
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -403,7 +358,6 @@ class TagPieChart extends ConsumerWidget {
           padding: EdgeInsets.only(
             left: 20.0,
             top: 24.0,
-            // bottom: 8.0,
           ),
           child: Text('Tags',
               style: TextStyle(
@@ -448,14 +402,12 @@ class TagPieChart extends ConsumerWidget {
                           series: <DoughnutSeries<TagTransaction, String>>[
                             DoughnutSeries<TagTransaction, String>(
                               dataSource: transactionsWithSelectedTag,
-                              // use colorList to set colors for each tag
                               pointColorMapper:
                                   (TagTransaction tagTransaction, _) {
                                 final tag = allTags.firstWhere((tag) =>
                                     tagTransaction.tags.contains(tag.name));
                                 return colorList[allTags.indexOf(tag)];
                               },
-                              // pointColorMapper: (_, __) => Colors.blue,
                               dataLabelSettings: const DataLabelSettings(
                                 isVisible: true,
                               ),

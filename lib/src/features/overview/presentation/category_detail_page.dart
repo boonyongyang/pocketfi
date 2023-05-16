@@ -22,7 +22,6 @@ class CategoryDetailPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final userTransactions = ref.watch(userTransactionsProvider);
-
     final currentMonthTransactions = userTransactions.when<List<Transaction>>(
       data: (transactions) => transactions.where((tran) {
         return tran.date.month == ref.watch(overviewMonthProvider).month &&
@@ -36,11 +35,7 @@ class CategoryDetailPage extends ConsumerWidget {
       },
     );
     final totalAmount = getCategoryTotalAmount(currentMonthTransactions);
-
-    // check if this category is in expenseList or incomeList
     final type = getCategoryType(getCategoryWithCategoryName(categoryName));
-
-    // prepare chart data
     final chartData = currentMonthTransactions
         .groupListsBy((tran) => tran.date.day)
         .entries
@@ -108,7 +103,6 @@ class CategoryDetailPage extends ConsumerWidget {
               const SizedBox(height: 10),
               currentMonthTransactions.isEmpty
                   ? const SizedBox(
-                      // color: Colors.grey,
                       child: EmptyContentsWithTextAnimationView(
                         text: Strings.youHaveNoRecords,
                       ),
@@ -116,16 +110,9 @@ class CategoryDetailPage extends ConsumerWidget {
                   : SizedBox(
                       height: MediaQuery.of(context).size.height * 0.3,
                       child: SfCartesianChart(
-                        // legend: Legend(isVisible: false),
-                        // title: ChartTitle(text: 'Monthly expense'),
                         plotAreaBorderWidth: 0,
-                        primaryXAxis: CategoryAxis(
-                            // majorGridLines: null,
-                            // minorGridLines: null,
-                            ),
+                        primaryXAxis: CategoryAxis(),
                         primaryYAxis: NumericAxis(
-                          // majorGridLines: null,
-                          // minorGridLines: null,
                           labelFormat: '{value} MYR',
                         ),
                         series: <ChartSeries>[

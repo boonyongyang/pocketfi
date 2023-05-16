@@ -20,17 +20,14 @@ class AddNewCategory extends StatefulHookConsumerWidget {
 class _AddNewCategorySheetState extends ConsumerState<AddNewCategory> {
   @override
   Widget build(BuildContext context) {
-    // get transactiontype
     final transactionTypeText =
         ref.watch(transactionTypeProvider) == TransactionType.expense
             ? 'Expense'
             : 'Income';
-
     final colorList = ref.watch(categoryColorListProvider);
     final selectedColor = ref.watch(selectedCategoryColorProvider);
     final iconList = ref.watch(categoryIconListProvider);
     final selectedIcon = ref.watch(selectedCategoryIconProvider);
-
     final nameController = useTextEditingController();
     final isSaveButtonEnabled = useState(false);
 
@@ -45,24 +42,16 @@ class _AddNewCategorySheetState extends ConsumerState<AddNewCategory> {
         }
 
         nameController.addListener(listener);
-
         return () => nameController.removeListener(listener);
       },
       [nameController, selectedColor, selectedIcon],
     );
-
-    debugPrint('${isSaveButtonEnabled.value}');
-    debugPrint('selectedColor: $selectedColor');
-    debugPrint('selectedIcon: $selectedIcon');
-
     return SizedBox(
-      // max height is 90% of screen height
       height: MediaQuery.of(context).size.height * 0.94,
       child: Container(
         color: AppColors.transparent,
         padding: const EdgeInsets.all(16.0),
         child: Wrap(
-          // spacing: 20,
           runSpacing: 20,
           children: [
             Row(
@@ -82,7 +71,7 @@ class _AddNewCategorySheetState extends ConsumerState<AddNewCategory> {
                     fontSize: 18.0,
                   ),
                 ),
-                const SizedBox(width: 40.0), // sure?
+                const SizedBox(width: 40.0),
               ],
             ),
             Row(
@@ -105,7 +94,6 @@ class _AddNewCategorySheetState extends ConsumerState<AddNewCategory> {
                         hintText: 'Category name',
                       ),
                       controller: nameController,
-                      // onSubmitted: (_) => FocusScope.of(context).nextFocus(),
                     ),
                   ),
                 ),
@@ -124,15 +112,11 @@ class _AddNewCategorySheetState extends ConsumerState<AddNewCategory> {
                       runSpacing: 8.0,
                       children: [
                         for (var i = 0; i < colorList.length; i++)
-// on tap change the selected color
                           GestureDetector(
                             onTap: () {
-                              // selectedColor = colorList[i];
                               ref
                                   .read(selectedCategoryColorProvider.notifier)
                                   .state = colorList[i];
-
-                              debugPrint('$selectedColor');
                             },
                             child: Container(
                               decoration: BoxDecoration(
@@ -149,18 +133,6 @@ class _AddNewCategorySheetState extends ConsumerState<AddNewCategory> {
                               height: 35.0,
                             ),
                           ),
-                        // Container(
-                        //   decoration: BoxDecoration(
-                        //     borderRadius: BorderRadius.circular(20.0),
-                        //     color: colorList[i],
-                        //     border: Border.all(
-                        //       color: Colors.grey,
-                        //       width: 1.0,
-                        //     ),
-                        //   ),
-                        //   width: 35.0,
-                        //   height: 35.0,
-                        // ),
                       ],
                     ),
                   ),
@@ -173,19 +145,15 @@ class _AddNewCategorySheetState extends ConsumerState<AddNewCategory> {
                 const Text("Icon"),
                 const SizedBox(width: 16.0),
                 Expanded(
-                  // grid view of 5 columns
                   child: GridView.count(
                     crossAxisCount: 5,
                     mainAxisSpacing: 16.0,
                     crossAxisSpacing: 16.0,
                     shrinkWrap: true,
                     children: [
-                      // loop through a list of icons and display them
                       for (var i = 0; i < iconList.length; i++)
-                        // on tap change the selected icon
                         GestureDetector(
                           onTap: () {
-                            // selectedIcon = iconList[i];
                             ref
                                 .read(selectedCategoryIconProvider.notifier)
                                 .state = iconList[i];
@@ -211,29 +179,14 @@ class _AddNewCategorySheetState extends ConsumerState<AddNewCategory> {
                                     : Colors.black),
                           ),
                         ),
-                      // Container(
-                      //   decoration: BoxDecoration(
-                      //     borderRadius: BorderRadius.circular(40.0),
-                      //     border: Border.all(
-                      //       color: Colors.grey,
-                      //       width: 2.0,
-                      //     ),
-                      //   ),
-                      //   width: 35.0,
-                      //   height: 35.0,
-                      //   child: Icon(iconList[i]),
-                      // ),
                     ],
                   ),
                 ),
               ],
             ),
-            // const SizedBox(height: 16.0),
             FullWidthButtonWithText(
               onPressed: isSaveButtonEnabled.value
                   ? () async {
-                      // ScaffoldMessenger.of(context).showSnackBar(
-                      //     const SnackBar(content: Text('Category added')));
                       Fluttertoast.showToast(
                         msg: "Category added!",
                         toastLength: Toast.LENGTH_SHORT,
@@ -255,27 +208,3 @@ class _AddNewCategorySheetState extends ConsumerState<AddNewCategory> {
     );
   }
 }
-
-// TextButton(
-//   style: ButtonStyle(
-//     overlayColor: !isSaveButtonEnabled.value
-//         ? MaterialStateProperty.all(Colors.transparent)
-//         : null,
-//   ),
-//   onPressed: () {
-//     isSaveButtonEnabled.value
-//         ? () async {
-//             ScaffoldMessenger.of(context).showSnackBar(
-//                 const SnackBar(
-//                     content: Text('Category added')));
-//             Navigator.of(context).pop();
-//           }
-//         : null;
-//   },
-//   child: Text(Strings.save,
-//       style: TextStyle(
-//           fontSize: 16.0,
-//           color: isSaveButtonEnabled.value
-//               ? AppColors.mainColor1
-//               : Colors.grey)),
-// ),

@@ -8,8 +8,8 @@ import 'package:pocketfi/src/features/debts/domain/debt.dart';
 import 'package:pocketfi/src/features/debts/presentation/paid_debt_sheet.dart';
 
 class DebtHistoryView extends ConsumerWidget {
-  Debt debt;
-  DebtHistoryView({
+  final Debt debt;
+  const DebtHistoryView({
     super.key,
     required this.debt,
   });

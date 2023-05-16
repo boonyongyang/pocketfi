@@ -7,8 +7,6 @@ import 'package:pocketfi/src/features/debts/domain/debt.dart';
 import 'package:pocketfi/src/features/debts/presentation/debt_data_table.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
-// import 'update_debt_view.dart';
-
 class DebtOverviewView extends ConsumerStatefulWidget {
   final Debt debt;
 
@@ -31,10 +29,7 @@ class DebtOverviewViewState extends ConsumerState<DebtOverviewView> {
 
     String monthsNYears =
         '$years years $months months'; // combine years and months into a string
-// print(result); // output: "2 years and 8 months"
     var totalAmountPaid = 0.0;
-    // var totalInterestPaid = 0.0;
-
     final debtPaymentsList = ref.watch(userDebtPaymentsProvider).value;
     if (debtPaymentsList != null) {
       for (var debtPayment in debtPaymentsList) {
@@ -42,15 +37,11 @@ class DebtOverviewViewState extends ConsumerState<DebtOverviewView> {
           totalAmountPaid +=
               debtPayment.principleAmount + debtPayment.interestAmount;
         }
-        // totalInterestPaid += debtPayment.interestAmount;
       }
     }
 
     var percentagePaid =
         totalAmountPaid / widget.debt.calculateTotalPayment() * 100;
-
-    // final selectedDebt = ref.watch(selectedDebtProvider);
-
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -58,7 +49,6 @@ class DebtOverviewViewState extends ConsumerState<DebtOverviewView> {
             Padding(
               padding: const EdgeInsets.only(
                 top: 16.0,
-                // bottom: 8.0,
                 left: 16.0,
                 right: 16.0,
               ),
@@ -73,7 +63,7 @@ class DebtOverviewViewState extends ConsumerState<DebtOverviewView> {
                       color: Colors.grey.withOpacity(0.5),
                       spreadRadius: 2,
                       blurRadius: 7,
-                      offset: const Offset(3, 6), // changes position of shadow
+                      offset: const Offset(3, 6),
                     ),
                   ],
                 ),
@@ -92,37 +82,19 @@ class DebtOverviewViewState extends ConsumerState<DebtOverviewView> {
                               color: AppColors.mainColor1,
                               fontWeight: FontWeight.bold,
                             ),
-                            // textAlign: TextAlign.center,
                           ),
                         ],
                       ),
-                      // Row(
-                      //   mainAxisAlignment: MainAxisAlignment.center,
-                      //   children: [
-                      //     Text(
-                      //       '${widget.debt.totalNumberOfMonthsToPay} months',
-                      //       // widget.debt.debtAmount.toStringAsFixed(2),
-                      //       style: const TextStyle(
-                      //         color: AppColors.mainColor2,
-                      //         fontWeight: FontWeight.bold,
-                      //         fontSize: 30,
-                      //       ),
-                      //       // textAlign: TextAlign.center,
-                      //     ),
-                      //   ],
-                      // ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
                             monthsNYears,
-                            // widget.debt.debtAmount.toStringAsFixed(2),
                             style: const TextStyle(
                               color: AppColors.mainColor2,
                               fontWeight: FontWeight.bold,
                               fontSize: 28,
                             ),
-                            // textAlign: TextAlign.center,
                           ),
                         ],
                       ),
@@ -149,7 +121,7 @@ class DebtOverviewViewState extends ConsumerState<DebtOverviewView> {
                       color: Colors.grey.withOpacity(0.5),
                       spreadRadius: 2,
                       blurRadius: 7,
-                      offset: const Offset(3, 6), // changes position of shadow
+                      offset: const Offset(3, 6),
                     ),
                   ],
                 ),
@@ -158,12 +130,10 @@ class DebtOverviewViewState extends ConsumerState<DebtOverviewView> {
                     text: 'Payoff Progress',
                     textStyle: TextStyle(
                       fontSize: 16,
-                      // fontWeight: FontWeight.bold,
                     ),
                   ),
                   axes: <RadialAxis>[
                     RadialAxis(
-                      // radiusFactor: 0.55,
                       startAngle: 270,
                       endAngle: 270,
                       minimum: 0,
@@ -222,7 +192,7 @@ class DebtOverviewViewState extends ConsumerState<DebtOverviewView> {
                       color: Colors.grey.withOpacity(0.5),
                       spreadRadius: 2,
                       blurRadius: 7,
-                      offset: const Offset(3, 6), // changes position of shadow
+                      offset: const Offset(3, 6),
                     ),
                   ],
                 ),
@@ -245,7 +215,6 @@ class DebtOverviewViewState extends ConsumerState<DebtOverviewView> {
                               'Debt Amount',
                               style: TextStyle(
                                 color: AppColors.mainColor1,
-                                // fontWeight: FontWeight.bold,
                               ),
                             ),
                             const Spacer(),
@@ -253,7 +222,6 @@ class DebtOverviewViewState extends ConsumerState<DebtOverviewView> {
                               'MYR ${widget.debt.debtAmount.toStringAsFixed(2)}',
                               style: const TextStyle(
                                 color: AppColors.mainColor1,
-                                // fontWeight: FontWeight.bold,
                               ),
                             ),
                           ],
@@ -267,7 +235,6 @@ class DebtOverviewViewState extends ConsumerState<DebtOverviewView> {
                               'Annual Interest Rate',
                               style: TextStyle(
                                 color: AppColors.mainColor1,
-                                // fontWeight: FontWeight.bold,
                               ),
                             ),
                             const Spacer(),
@@ -275,7 +242,6 @@ class DebtOverviewViewState extends ConsumerState<DebtOverviewView> {
                               '${widget.debt.annualInterestRate.toStringAsFixed(1)}%',
                               style: const TextStyle(
                                 color: AppColors.mainColor1,
-                                // fontWeight: FontWeight.bold,
                               ),
                             ),
                           ],
@@ -289,7 +255,6 @@ class DebtOverviewViewState extends ConsumerState<DebtOverviewView> {
                               'Minumum Payment Per Month',
                               style: TextStyle(
                                 color: AppColors.mainColor1,
-                                // fontWeight: FontWeight.bold,
                               ),
                             ),
                             const Spacer(),
@@ -297,14 +262,10 @@ class DebtOverviewViewState extends ConsumerState<DebtOverviewView> {
                               'MYR ${widget.debt.minimumPayment.toStringAsFixed(2)}',
                               style: const TextStyle(
                                 color: AppColors.mainColor1,
-                                // fontWeight: FontWeight.bold,
                               ),
                             ),
                           ],
                         ),
-                        // const SizedBox(
-                        //   height: 8.0,
-                        // ),
                         const Divider(),
                         Row(
                           children: [
@@ -312,7 +273,6 @@ class DebtOverviewViewState extends ConsumerState<DebtOverviewView> {
                               'Total Amount',
                               style: TextStyle(
                                 color: AppColors.mainColor1,
-                                // fontWeight: FontWeight.bold,
                               ),
                             ),
                             const Spacer(),
@@ -331,12 +291,10 @@ class DebtOverviewViewState extends ConsumerState<DebtOverviewView> {
                 ),
               ),
             ),
-
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  // fixedSize: Size(80, 30),
                   backgroundColor: AppColors.mainColor1,
                   foregroundColor: Colors.white,
                   shape: const RoundedRectangleBorder(
@@ -360,19 +318,6 @@ class DebtOverviewViewState extends ConsumerState<DebtOverviewView> {
                 ),
               ),
             ),
-            // ),
-            // PaginatedDataTable(
-            //   // header: const Text('TableFormDebt'),
-            //   columns: const [
-            //     DataColumn(label: Text('Month')),
-            //     DataColumn(label: Text('Interest')),
-            //     DataColumn(label: Text('Principle')),
-            //     DataColumn(label: Text('End Balance')),
-            //   ],
-            //   columnSpacing: 35,
-            //   source: _TableDataSource(tableData),
-            //   rowsPerPage: 20,
-            // ),
           ],
         ),
       ),
@@ -384,68 +329,23 @@ class DebtOverviewViewState extends ConsumerState<DebtOverviewView> {
     required double minPaymentPerMonth,
     required double annualInterestRate,
   }) {
-    // double totalDebtAmount = 3000;
-    // double minPaymentPerMonth = 200;
-    // double annualInterestRate = 6.0;
-
     double endBalance = totalDebtAmount;
     double monthlyInterestRate = (annualInterestRate / 100) / 12;
     double interest = 0;
+    // ignore: unused_local_variable
     double principle = 0;
     int months = 0;
 
     while (endBalance > 0 && endBalance > minPaymentPerMonth) {
       interest = endBalance * monthlyInterestRate;
-      debugPrint('minumum payment: $minPaymentPerMonth');
-
       endBalance = endBalance + interest - minPaymentPerMonth;
       principle = minPaymentPerMonth - interest;
       months++;
-      debugPrint('Total months: $months');
-      debugPrint('Interest: $interest');
-      debugPrint('endBalance: $endBalance');
-      debugPrint('principle: $principle');
     }
     interest = endBalance * monthlyInterestRate;
     principle = endBalance;
     endBalance = 0.00;
     months++;
-    debugPrint('Total months after : $months');
-    debugPrint('Total principle: $principle');
     return months;
   }
 }
-
-// class _TableDataSource extends DataTableSource {
-//   _TableDataSource(this._tableData);
-
-//   final List<Map<String, dynamic>> _tableData;
-
-//   @override
-//   DataRow? getRow(int index) {
-//     if (index >= _tableData.length) {
-//       return null;
-//     }
-
-//     final rowData = _tableData[index];
-
-//     return DataRow.byIndex(
-//       index: index,
-//       cells: [
-//         DataCell(Text('${rowData['month']}')),
-//         DataCell(Text('${rowData['interest']}')),
-//         DataCell(Text('${rowData['principle']}')),
-//         DataCell(Text('${rowData['endBalance']}')),
-//       ],
-//     );
-//   }
-
-//   @override
-//   int get rowCount => _tableData.length;
-
-//   @override
-//   bool get isRowCountApproximate => false;
-
-//   @override
-//   int get selectedRowCount => 0;
-// }

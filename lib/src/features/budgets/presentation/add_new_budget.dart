@@ -27,12 +27,9 @@ class _AddNewBudgetState extends ConsumerState<AddNewBudget> {
   Widget build(BuildContext context) {
     final budgetNameController = useTextEditingController();
     final amountController = useTextEditingController();
-    // final selectedWallet = ref.watch(selectedWalletForBudgetProvider);
     final selectedWallet = ref.watch(selectedWalletProvider);
-
     final expenseCategories = ref.watch(expenseCategoriesProvider);
     final selectedCategory = ref.watch(selectedCategoryProvider);
-
     final isCreateButtonEnabled = useState(false);
 
     useEffect(
@@ -44,7 +41,6 @@ class _AddNewBudgetState extends ConsumerState<AddNewBudget> {
 
         budgetNameController.addListener(listener);
         amountController.addListener(listener);
-
         return () {
           budgetNameController.removeListener(listener);
           amountController.removeListener(listener);
@@ -66,16 +62,8 @@ class _AddNewBudgetState extends ConsumerState<AddNewBudget> {
             color: AppColors.white,
           ),
           onPressed: () {
-            // ref.read(selectedCategoryProvider.notifier).state = null;
-
             Navigator.of(context).pop();
             resetCategoryState(ref);
-            // ref.read(transactionTypeProvider.notifier).setTransactionType(0);
-            // ref
-            //     .read(transactionTypeProvider.notifier)
-            //     .resetTransactionTypeState();
-
-            // ref.read(transactionDateProvider.notifier).setDate(DateTime.now());
           },
         ),
       ),
@@ -189,8 +177,6 @@ class _AddNewBudgetState extends ConsumerState<AddNewBudget> {
                         child: Text(
                           'Categories',
                           style: TextStyle(
-                            // color: AppSwatches.mainColor2,
-                            // fontWeight: FontWeight.bold,
                             fontSize: 15,
                           ),
                         ),
@@ -204,28 +190,6 @@ class _AddNewBudgetState extends ConsumerState<AddNewBudget> {
                           categories: expenseCategories,
                           selectedCategory: selectedCategory),
                     ),
-                    // Padding(
-                    //   padding: const EdgeInsets.only(
-                    //     left: 8.0,
-                    //     right: 16.0,
-                    //     // top: 16.0,
-                    //     bottom: 8.0,
-                    //   ),
-                    //   child: DropdownButton<String>(
-                    //     // hint: const Text(Strings.budgetType),
-                    //     value: "Expense",
-                    //     items: <String>[
-                    //       "Expense",
-                    //       "Income",
-                    //     ].map<DropdownMenuItem<String>>((String value) {
-                    //       return DropdownMenuItem<String>(
-                    //         value: value,
-                    //         child: Text(value),
-                    //       );
-                    //     }).toList(),
-                    //     onChanged: (_) {},
-                    //   ),
-                    // ),
                   ],
                 ),
                 Row(
@@ -246,8 +210,6 @@ class _AddNewBudgetState extends ConsumerState<AddNewBudget> {
                         child: Text(
                           'Wallets',
                           style: TextStyle(
-                            // color: AppSwatches.mainColor2,
-                            // fontWeight: FontWeight.bold,
                             fontSize: 15,
                           ),
                         ),
@@ -257,10 +219,8 @@ class _AddNewBudgetState extends ConsumerState<AddNewBudget> {
                         padding: EdgeInsets.only(
                           left: 8.0,
                           right: 16.0,
-                          // top: 16.0,
                           bottom: 8.0,
                         ),
-                        // child: SelectWalletForBudgetDropdownList()),
                         child: SelectWalletDropdownList()),
                   ],
                 ),
@@ -292,8 +252,6 @@ class _AddNewBudgetState extends ConsumerState<AddNewBudget> {
     Category selectedCategory,
     WidgetRef ref,
   ) async {
-    // final selectedCategory = ref.watch(selectedCategoryProvider);
-
     final userId = ref.read(userIdProvider);
     if (userId == null) {
       return;
@@ -311,16 +269,9 @@ class _AddNewBudgetState extends ConsumerState<AddNewBudget> {
     if (isCreated && mounted) {
       nameController.clear();
       balanceController.clear();
-      // Navigator.of(context).pop();
-      // Beamer.of(context).beamBack();
       Navigator.of(context).maybePop();
     }
   }
-
-  // Iterable<Wallet> _getWallets() {
-  //   final wallets = ref.watch(userWalletsProvider);
-  //   return wallets.valueOrNull ?? [];
-  // }
 }
 
 class SelectCategory extends ConsumerWidget {
@@ -397,14 +348,9 @@ class SelectCategory extends ConsumerWidget {
                                     ref
                                         .read(selectedCategoryProvider.notifier)
                                         .state = categories[index];
-
-                                    debugPrint(
-                                        'selected category: ${categories[index].name}');
                                     Navigator.of(context).pop();
                                   },
                                   child: Column(
-                                    // mainAxisAlignment: MainAxisAlignment.center,
-                                    // mainAxisSize: MainAxisSize.min,
                                     children: [
                                       CircleAvatar(
                                         radius: 20,

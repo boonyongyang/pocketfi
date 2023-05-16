@@ -65,7 +65,7 @@ class FirebaseFieldName {
   static const savingGoalEnterDate = 'saving_goal_saved_date';
   static const savingGoalStatus = 'saving_goal_status';
 
-  const FirebaseFieldName._(); // private constructor
+  const FirebaseFieldName._();
 }
 
 @immutable
@@ -95,5 +95,5 @@ class FirebaseCollectionName {
   static const savingGoals = 'saving_goals';
   static const savingGoalsHistory = 'saving_goals_history';
 
-  const FirebaseCollectionName._(); // private constructor
+  const FirebaseCollectionName._();
 }

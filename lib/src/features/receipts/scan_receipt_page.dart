@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:edge_detection/edge_detection.dart';
@@ -11,8 +10,6 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pocketfi/src/features/receipts/add_receipt_transaction.dart';
 import 'package:pocketfi/src/features/shared/image_upload/data/image_file_notifier.dart';
-import 'package:pocketfi/src/features/receipts/receipt_highlight_image.dart';
-import 'package:pocketfi/src/features/receipts/scanned_text_page.dart';
 import 'package:pocketfi/src/features/receipts/domain/receipt_text_rect.dart';
 
 class ScanReceiptPage extends StatefulHookConsumerWidget {
@@ -46,7 +43,6 @@ class ScanReceiptPageState extends ConsumerState<ScanReceiptPage> {
   void initState() {
     super.initState();
     final imagePath = ref.read(receiptStringPathProvider);
-    debugPrint('receipt imagePath: $imagePath');
     if (imagePath != null) scanReceipt(XFile(imagePath));
     setState(() {
       _imagePath = imagePath;
@@ -76,24 +72,6 @@ class ScanReceiptPageState extends ConsumerState<ScanReceiptPage> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // const Center(child: SizedBox(height: 20)),
-              // const Text('Cropped image path:'),
-              // Padding(
-              //   padding: const EdgeInsets.only(top: 0, left: 0, right: 0),
-              //   child: Text(
-              //     _imagePath.toString(),
-              //     textAlign: TextAlign.center,
-              //     style: const TextStyle(fontSize: 14),
-              //   ),
-              // ),
-              // Visibility(
-              //   visible: _imagePath != null,
-              //   child: ReceiptHighlightImage(
-              //     recognizedText: recognizedText,
-              //     imagePath: _imagePath,
-              //     extractedTextRects: extractedTextRects,
-              //   ),
-              // ),
               Visibility(
                 visible: _imagePath != null,
                 child: AddReceiptTransaction(
@@ -102,22 +80,6 @@ class ScanReceiptPageState extends ConsumerState<ScanReceiptPage> {
                   extractedTextRects: extractedTextRects,
                 ),
               ),
-              // scannedText.isNotEmpty && !textScanning
-              //     ? ElevatedButton(
-              //         onPressed: () {
-              //           debugPrint(
-              //               'scannedText: $scannedText, extractedTextSpans: $extractedTextSpans');
-              //           Navigator.push(
-              //             context,
-              //             MaterialPageRoute(
-              //               builder: (context) =>
-              //                   ScannedTextPage(scannedText: scannedText),
-              //             ),
-              //           );
-              //         },
-              //         child: const Text('View scanned text'),
-              //       )
-              //     : const SizedBox(),
             ],
           ),
         ),
@@ -137,9 +99,6 @@ class ScanReceiptPageState extends ConsumerState<ScanReceiptPage> {
         androidCropBlackWhiteTitle: 'Black White',
         androidCropReset: 'Reset',
       );
-
-      debugPrint('isDetected: $success');
-
       if (success) {
         File imageFile = File(imagePath);
         Uint8List imageBytes = await imageFile.readAsBytes();
@@ -153,16 +112,8 @@ class ScanReceiptPageState extends ConsumerState<ScanReceiptPage> {
           ),
         );
         await imageFile.writeAsBytes(compressedBytes);
-
         scanReceipt(XFile(imagePath));
-        debugPrint('imagePath = $imagePath');
-        debugPrint('scan receipt completed!');
-
         if (!mounted) return;
-
-        debugPrint('mounted: $mounted');
-        debugPrint('imagePath: $imagePath');
-
         setState(() {
           _imagePath = imagePath;
         });
@@ -190,7 +141,6 @@ class ScanReceiptPageState extends ConsumerState<ScanReceiptPage> {
 
   void scanReceipt(XFile pickedImage) async {
     try {
-      debugPrint('scanning receipt...');
       textScanning = true;
       imageFile = pickedImage;
       setState(() {
@@ -217,9 +167,7 @@ class ScanReceiptPageState extends ConsumerState<ScanReceiptPage> {
       extractedMerchants = extractMerchants(recognizedText);
       extractedDates = extractDates(recognizedText);
       extractedPrices = extractPrices(recognizedText);
-      // extractedTextSpans = getHighlightedTextSpans(recognizedText);
       extractedRects = getHighlightRects(recognizedText);
-      // * added this
       extractedTextRects = createTextRects(recognizedText);
       selectedPrice = extractTotalPrice(recognizedText).toString();
       textScanning = false;
@@ -234,7 +182,6 @@ class ScanReceiptPageState extends ConsumerState<ScanReceiptPage> {
           String text = element.text;
           final RegExpMatch? match = priceRegex.firstMatch(text);
           if (match != null) {
-            // final String? price = match.group(0);
             Rect rect = Rect.fromLTRB(
               element.boundingBox.left.toDouble(),
               element.boundingBox.top.toDouble(),
@@ -248,56 +195,6 @@ class ScanReceiptPageState extends ConsumerState<ScanReceiptPage> {
     }
     return highlightRects;
   }
-
-  // List<TextSpan> getHighlightedTextSpans(RecognizedText recognizedText) {
-  //   final List<TextSpan> textSpans = <TextSpan>[];
-  //   for (TextBlock block in recognizedText.blocks) {
-  //     for (TextLine line in block.lines) {
-  //       final List<TextSpan> lineTextSpans = <TextSpan>[];
-  //       for (TextElement element in line.elements) {
-  //         String text = element.text;
-  //         final RegExpMatch? match = priceRegex.firstMatch(text);
-  //         if (match != null) {
-  //           final int startIndex = match.start;
-  //           final int endIndex = match.end;
-  //           lineTextSpans.add(
-  //             TextSpan(
-  //               text: text.substring(0, startIndex),
-  //             ),
-  //           );
-  //           lineTextSpans.add(
-  //             TextSpan(
-  //               text: text.substring(startIndex, endIndex),
-  //               style: const TextStyle(
-  //                 backgroundColor: Colors.yellow,
-  //               ),
-  //             ),
-  //           );
-  //           lineTextSpans.add(
-  //             TextSpan(
-  //               text: text.substring(endIndex),
-  //             ),
-  //           );
-  //         } else {
-  //           lineTextSpans.add(
-  //             TextSpan(
-  //               text: text,
-  //               style: const TextStyle(
-  //                 color: Colors.black,
-  //               ),
-  //             ),
-  //           );
-  //         }
-  //       }
-  //       textSpans.add(
-  //         TextSpan(
-  //           children: lineTextSpans,
-  //         ),
-  //       );
-  //     }
-  //   }
-  //   return textSpans;
-  // }
 
 // * prices
   final RegExp priceRegex =

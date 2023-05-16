@@ -15,16 +15,6 @@ import 'package:pocketfi/src/features/shared/eg_tabs/eg_tabs_page.dart';
 import 'package:pocketfi/src/features/tags/presentation/tag_page.dart';
 import 'package:pocketfi/src/features/wallets/presentation/wallet_page.dart';
 
-// const AppColors.mainColor1 = Color(0xFFFF7643);
-// const kPrimaryLightColor = Color(0xFFFFECDF);
-// const kPrimaryGradientColor = LinearGradient(
-//   begin: Alignment.topLeft,
-//   end: Alignment.bottomRight,
-//   colors: [Color(0xFFFFA53E), Color(0xFFFF7643)],
-// );
-// const kSecondaryColor = Color(0xFF979797);
-// const kTextColor = Color(0xFF757575);
-
 @immutable
 class AccountPage extends StatelessWidget {
   const AccountPage({super.key});
@@ -74,18 +64,12 @@ class AccountPageBody extends ConsumerWidget {
           const AccountPagePicture(),
           const SizedBox(height: 20),
           const AccountPageUserInfo(),
-          // AccountPageMenu(
-          //   text: "My Account",
-          //   icon: const Icon(Icons.person),
-          //   press: () => {},
-          // ),
           AccountPageMenu(
             text: "Wallets",
             icon: AppIcons.wallet,
             press: () => Navigator.of(context, rootNavigator: true).push(
               MaterialPageRoute(
                 builder: (context) => const WalletPage(),
-                // fullscreenDialog: true,
               ),
             ),
           ),
@@ -95,7 +79,6 @@ class AccountPageBody extends ConsumerWidget {
             press: () => Navigator.of(context, rootNavigator: true).push(
               MaterialPageRoute(
                 builder: (context) => const CategoryPage(),
-                // fullscreenDialog: true,
               ),
             ),
           ),
@@ -111,16 +94,12 @@ class AccountPageBody extends ConsumerWidget {
               );
             },
           ),
-          // AccountPageMenu(
-          // text: "Notifications", icon: Icons.notifications, press: () {}),
           AccountPageMenu(
             text: "Settings",
             icon: Icons.settings,
-            // press: () => Beamer.of(context).beamToNamed('/d/settings'),
             press: () => Navigator.of(context, rootNavigator: true).push(
               MaterialPageRoute(
                 builder: (context) => const SettingsPage(),
-                // fullscreenDialog: true,
               ),
             ),
           ),
@@ -190,11 +169,6 @@ class AccountPageMenu extends StatelessWidget {
         onPressed: press,
         child: Row(
           children: [
-            // SvgPicture.asset(
-            //   icon,
-            //   color: AppColors.mainColor1,
-            //   width: 22,
-            // ),
             Icon(icon, color: color),
             const SizedBox(width: 20),
             Expanded(child: Text(text, style: TextStyle(color: color))),

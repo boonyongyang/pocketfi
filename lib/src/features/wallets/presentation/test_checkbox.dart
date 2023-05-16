@@ -1,34 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/features/authentication/application/user_id_provider.dart';
-import 'package:pocketfi/src/features/authentication/application/user_list_provider.dart';
 import 'package:pocketfi/src/features/wallets/data/temp_user_provider.dart';
-// import 'package:flutter/scheduler.dart' show timeDilation;
 
-// class MyStatefulWidget extends StatefulWidget {
-//   const MyStatefulWidget({super.key});
-
-//   @override
-//   State<MyStatefulWidget> createState() => _MyStatefulWidgetState();
-// }
-
-// class _MyStatefulWidgetState extends State<MyStatefulWidget> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return SafeArea(
-//       child: CheckboxListTile(
-//         title: const Text('Animate Slowly'),
-//         value: timeDilation != 1.0,
-//         onChanged: (bool? value) {
-//           setState(() {
-//             timeDilation = value! ? 10.0 : 1.0;
-//           });
-//         },
-//         secondary: const Icon(Icons.hourglass_empty),
-//       ),
-//     );
-//   }
-// }
 class CheckBoxInListView extends ConsumerStatefulWidget {
   const CheckBoxInListView({super.key});
 
@@ -38,25 +12,19 @@ class CheckBoxInListView extends ConsumerStatefulWidget {
 }
 
 class _CheckBoxInListViewState extends ConsumerState<CheckBoxInListView> {
-  bool _value = false;
-
   @override
   void initState() {
     super.initState();
-    // _isChecked = List<bool>.filled(checkListItems.length, false);
   }
 
   @override
   Widget build(BuildContext context) {
-    final users = ref.watch(usersListProvider).value?.toList();
     final currentUserId = ref.watch(userIdProvider);
-
     final userList = ref.watch(getTempDataProvider).value?.toList();
     List userMap = [];
     if (userList == null) return Container();
     for (var user in userList) {
       userMap.add(user);
-      debugPrint('add user: $user');
     }
 
     return Scaffold(
@@ -68,7 +36,6 @@ class _CheckBoxInListViewState extends ConsumerState<CheckBoxInListView> {
             Column(
               children: List.generate(userList.length, (index) {
                 final eachUser = userList[index];
-                debugPrint('userMap start: $userList');
                 return Consumer(
                   builder: (context, ref, child) {
                     return CheckboxListTile(
@@ -79,19 +46,12 @@ class _CheckBoxInListViewState extends ConsumerState<CheckBoxInListView> {
                       title: Text(eachUser.displayName),
                       subtitle: Text(eachUser.isChecked.toString()),
                       onChanged: (bool? newValue) {
-                        debugPrint('value: $newValue');
-                        debugPrint('userMap before: $userMap');
-
                         newValue ??= false;
-
                         ref.watch(tempDataProvider.notifier).updateIsChecked(
                               eachUser,
                               newValue,
                               currentUserId!,
                             );
-
-                        debugPrint('userMap after: $userMap');
-                        debugPrint('value after: $newValue');
                       },
                       value: eachUser.isChecked,
                     );
@@ -177,21 +137,14 @@ class _CheckBoxExampleState extends State<CheckBoxExample> {
                   ),
                   value: checkListItems[index]["value"],
                   onChanged: (value) {
-                    debugPrint('value: $value');
                     setState(() {
-                      debugPrint(
-                          'checkListItems[index]["value"]: ${checkListItems[index]["value"]}');
                       checkListItems[index]["value"] = value;
-                      debugPrint(
-                          'checkListItems[index]["value"] after: ${checkListItems[index]["value"]}');
-                      debugPrint('value set: $value');
                       if (multipleSelected.contains(checkListItems[index])) {
                         multipleSelected.remove(checkListItems[index]);
                       } else {
                         multipleSelected.add(checkListItems[index]);
                       }
                     });
-                    debugPrint('value after: $value');
                   },
                 ),
               ),

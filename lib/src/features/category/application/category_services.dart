@@ -9,8 +9,6 @@ import 'package:pocketfi/src/features/transactions/domain/transaction.dart';
 final selectedCategoryProvider = StateProvider<Category>(
   (ref) {
     final type = ref.watch(transactionTypeProvider);
-    // final transactionTypeIndex = ref.watch(selectedTransactionProvider)?.type ??
-    // ref.watch(transactionTypeProvider);
     if (type == TransactionType.expense) {
       return expenseCategories.first;
     } else if (type == TransactionType.income) {

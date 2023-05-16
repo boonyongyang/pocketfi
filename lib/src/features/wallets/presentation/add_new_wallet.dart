@@ -14,11 +14,8 @@ import 'package:pocketfi/src/features/wallets/data/temp_user_provider.dart';
 import 'package:pocketfi/src/features/wallets/presentation/share_wallet_sheet.dart';
 
 class AddNewWallet extends StatefulHookConsumerWidget {
-  // final String walletId;
-
   const AddNewWallet({
     super.key,
-    // required this.walletId,
   });
 
   @override
@@ -29,43 +26,14 @@ class _AddNewWalletState extends ConsumerState<AddNewWallet> {
   @override
   Widget build(BuildContext context) {
     final walletNameController = useTextEditingController();
-    // final initialBalanceController = useTextEditingController();
-
     final isCreateButtonEnabled = useState(false);
-    // final request = useState(
-    //   RequestForWallets(
-    //     userId: widget.userId,
-    //   ),
-    // );
-    // var selectedUser = ref.watch(selectedUserProvider);
     final currentUserId = ref.watch(userIdProvider);
     final users = ref.watch(usersListProvider).value?.toList();
-    // final auth = ref.watch(authStateProvider.notifier);
-    // var userEmail;
-    // for (var element in users!) {
-    //   element.userId == currentUserId ? userEmail = element.email : null;
-    // }
-    // debugPrint(userEmail);
-    // final tempUser = ref.watch(getTempDataProvider).value?.toList();
-    // List tempUserEmail = [];
-    // for (var element in tempUser!) {
-    //   tempUserEmail.add(element.email);
-    // }
-
     final getTempData = ref.watch(getTempDataProvider).value?.toList();
     List<CollaboratorsInfo> collaboratorList = [];
-    // List<TempUsers> collaboratorList = [];
     if (getTempData == null) return Container();
-    // for (var data in getTempData) {
-    //   ref.watch(tempDataProvider.notifier).updateIsChecked(
-    //         data,
-    //         false,
-    //         data.userId,
-    //       );
-    // }
     for (var user in getTempData) {
       if (user.isChecked == true) {
-        // collaboratorList.add(user);
         collaboratorList.add(CollaboratorsInfo(
           userId: user.userId,
           displayName: user.displayName,
@@ -75,11 +43,6 @@ class _AddNewWalletState extends ConsumerState<AddNewWallet> {
         ));
       }
     }
-    debugPrint('collaboratorStatus: ${CollaborateRequestStatus.pending.name}');
-    // for (int i = 0; i < collaboratorList.length; i++) {
-    //   debugPrint('collaboratorList: ${collaboratorList}');
-    // }
-    debugPrint('collaboratorList: $collaboratorList');
     useEffect(
       () {
         void listener() {
@@ -87,16 +50,12 @@ class _AddNewWalletState extends ConsumerState<AddNewWallet> {
         }
 
         walletNameController.addListener(listener);
-        // initialBalanceController.addListener(listener);
-
         return () {
           walletNameController.removeListener(listener);
-          // initialBalanceController.removeListener(listener);
         };
       },
       [
         walletNameController,
-        // initialBalanceController,
       ],
     );
 
@@ -156,78 +115,6 @@ class _AddNewWalletState extends ConsumerState<AddNewWallet> {
                       ),
                     ],
                   ),
-                  // Row(
-                  //   children: [
-                  //     const Padding(
-                  //       padding: EdgeInsets.only(left: 16.0, right: 32.0),
-                  //       child: SizedBox(
-                  //         width: 5,
-                  //         child: Icon(
-                  //           Icons.money_rounded,
-                  //           color: AppColors.mainColor1,
-                  //         ),
-                  //       ),
-                  //     ),
-                  //     Expanded(
-                  //       child: Padding(
-                  //         padding: const EdgeInsets.all(8.0),
-                  //         child: TextField(
-                  //           controller: initialBalanceController,
-                  //           keyboardType: TextInputType.number,
-                  //           decoration: const InputDecoration(
-                  //             labelText: Strings.walletBalance,
-                  //           ),
-                  //         ),
-                  //       ),
-                  //     ),
-                  //   ],
-                  // ),
-                  // Row(
-                  //   children: [
-                  //     const Padding(
-                  //       padding: EdgeInsets.only(left: 16.0, right: 32.0),
-                  //       child: SizedBox(
-                  //         width: 5,
-                  //         child: Icon(
-                  //           Icons.category_rounded,
-                  //           color: AppColors.mainColor1,
-                  //         ),
-                  //       ),
-                  //     ),
-                  //     Expanded(
-                  //       child: Padding(
-                  //         padding: const EdgeInsets.all(8.0),
-                  //         child: Row(
-                  //           children: const [
-                  //             Expanded(
-                  //               child: Text(
-                  //                 'Visible Categories',
-                  //                 style: TextStyle(
-                  //                   color: AppColors.mainColor1,
-                  //                   fontSize: 16,
-                  //                 ),
-                  //               ),
-                  //             ),
-                  //             Text(
-                  //               'XX',
-                  //               style: TextStyle(
-                  //                 color: AppColors.mainColor1,
-                  //                 fontSize: 16,
-                  //               ),
-                  //             ),
-                  //             Padding(
-                  //               padding: EdgeInsets.all(8.0),
-                  //               child: Icon(
-                  //                 Icons.arrow_forward_ios_rounded,
-                  //                 color: AppColors.mainColor1,
-                  //               ),
-                  //             ),
-                  //           ],
-                  //         ),
-                  //       ),
-                  //     ),
-                  //   ],
-                  // ),
                   GestureDetector(
                     onTap: () {
                       ref
@@ -239,7 +126,7 @@ class _AddNewWalletState extends ConsumerState<AddNewWallet> {
                       showModalBottomSheet(
                         context: context,
                         isScrollControlled: true,
-                        builder: (context) => ShareWalletSheet(),
+                        builder: (context) => const ShareWalletSheet(),
                       );
                     },
                     child: Row(
@@ -282,8 +169,6 @@ class _AddNewWalletState extends ConsumerState<AddNewWallet> {
                       ],
                     ),
                   ),
-                  // for (final user in getTempData)
-                  //   if (user.isChecked == true)
                   Expanded(
                     child: ListView.builder(
                       itemCount: getTempData.length,
@@ -296,7 +181,6 @@ class _AddNewWalletState extends ConsumerState<AddNewWallet> {
                                   backgroundColor: AppColors.mainColor2,
                                   child: Icon(
                                     Icons.person_rounded,
-                                    // color: AppColors.mainColor1,
                                   ),
                                 ),
                                 title: Text(
@@ -328,29 +212,6 @@ class _AddNewWalletState extends ConsumerState<AddNewWallet> {
                               : null),
                     ),
                   ),
-                  // Expanded(
-                  //   flex: 0,
-                  //   child: Align(
-                  //     alignment: Alignment.bottomCenter,
-                  //     child: FullWidthButtonWithText(
-                  //       text: 'Send email',
-                  //       onPressed: () {
-                  //         // sendEmail(
-                  //         //   'annebelcyy15@gmail.com', auth,
-                  //         //   // tempUserEmail,
-                  //         // );
-                  //         Navigator.push(
-                  //           context,
-                  //           MaterialPageRoute(
-                  //             builder: (_) => const SendEmailView(),
-                  //             // builder: (_) => const CheckBoxExample(),
-                  //             // builder: (_) => const MyStatefulWidget(),
-                  //           ),
-                  //         );
-                  //       },
-                  //     ),
-                  //   ),
-                  // ),
                 ],
               ),
             ),
@@ -363,7 +224,6 @@ class _AddNewWalletState extends ConsumerState<AddNewWallet> {
   Future<void> _createNewWalletController(
     TextEditingController nameController,
     List<CollaboratorsInfo>? collaborators,
-    // TextEditingController balanceController,
     WidgetRef ref,
   ) async {
     final userId = ref.read(userIdProvider);
@@ -383,48 +243,17 @@ class _AddNewWalletState extends ConsumerState<AddNewWallet> {
         ),
       );
     });
-    debugPrint('collaborators in create f: $collaborators');
-    debugPrint('collaboratorsInfo in create f: $collaboratorsInfo');
-
-    debugPrint('userId: $userId');
-    // if (balanceController.text.isEmpty) {
-    //   balanceController.text = '0.00';
-    // }
     final isCreated = await ref.read(walletProvider.notifier).addNewWallet(
           userId: userId,
           walletName: nameController.text,
           users: collaboratorsInfo,
           ownerName: currentUser.value!.displayName,
           ownerEmail: currentUser.value!.email,
-          // walletBalance: double.parse(balanceController.text),
         );
-    debugPrint('isCreated: $isCreated');
     if (isCreated && mounted) {
       nameController.clear();
-      // balanceController.clear();
-      // Navigator.of(context).pop();
-      // Beamer.of(context).beamBack();
       Navigator.of(context).maybePop();
       ref.watch(tempDataProvider.notifier).deleteTempDataInFirebase(userId);
     }
   }
-
-  // Future<bool> _checkWalletNameExists(
-  //   String nameController,
-  // ) async {
-  //   debugPrint(nameController);
-  //   debugPrint('getWallet: ${_getWallets()}');
-  //   for (var wallet in _getWallets()) {
-  //     debugPrint('everywallet: ${wallet.walletName}');
-  //     if (nameController == wallet.walletName) {
-  //       return true;
-  //     }
-  //   }
-  //   return false;
-  // }
-
-//   Iterable<Wallet> _getWallets() {
-//     final wallets = ref.read(userWalletsProvider);
-//     return wallets.maybeWhen(orElse: () => [], data: (wallets) => wallets);
-//   }
 }

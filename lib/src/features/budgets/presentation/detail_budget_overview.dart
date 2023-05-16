@@ -55,11 +55,6 @@ class DetailBudgetOverview extends ConsumerWidget {
         color: category.color,
       );
     }).toList();
-
-    for (var a in chartData) {
-      debugPrint('x: ${a.x}, y: ${a.y}');
-    }
-    debugPrint('chartData: $chartData');
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -78,19 +73,16 @@ class DetailBudgetOverview extends ConsumerWidget {
                 color: Colors.grey.withOpacity(0.5),
                 spreadRadius: 2,
                 blurRadius: 7,
-                offset: const Offset(3, 6), // changes position of shadow
+                offset: const Offset(3, 6),
               ),
             ],
           ),
-          // height: MediaQuery.of(context).size.height * 0.5,
           child: SfCartesianChart(
             title: ChartTitle(
               text:
                   'Monthly Budget Overview for ${selectedBudget.categoryName}',
               textStyle: const TextStyle(
-                // fontSize: 16,
                 color: AppColors.mainColor1,
-                // fontWeight: FontWeight.bold,
               ),
             ),
             plotAreaBorderWidth: 0,
@@ -99,14 +91,12 @@ class DetailBudgetOverview extends ConsumerWidget {
             ),
             primaryYAxis: NumericAxis(
               labelFormat: '{value} MYR',
-              // opposedPosition: true,
             ),
             series: <ChartSeries>[
               ColumnSeries<CategoryChartData, String>(
                 borderRadius: const BorderRadius.all(
                   Radius.circular(5),
                 ),
-
                 dataLabelSettings: const DataLabelSettings(
                   isVisible: true,
                   textStyle: TextStyle(
@@ -116,25 +106,6 @@ class DetailBudgetOverview extends ConsumerWidget {
                 ),
                 dataLabelMapper: (CategoryChartData data, _) =>
                     'MYR ${data.y.toStringAsFixed(2)}',
-
-                // dataLabelSettings: const DataLabelSettings(
-                //   isVisible: true,
-                //   labelPosition: ChartDataLabelPosition.outside,
-                //   textStyle: TextStyle(
-                //     fontSize: 14.0,
-                //     fontWeight: FontWeight.bold,
-                //     color: AppColors.mainColor1,
-                //     fontFamily: 'Roboto',
-                //   ),
-                // ),
-                // dataLabelMapper: (CategoryChartData trans, _) {
-                //   final totalAmount = chartData.fold<double>(
-                //     0.0,
-                //     (previousValue, element) => previousValue + element.y,
-                //   );
-
-                //   return 'MYR $totalAmount';
-                // },
                 dataSource: chartData,
                 xValueMapper: (CategoryChartData data, _) => data.x,
                 yValueMapper: (CategoryChartData data, _) => data.y,

@@ -11,7 +11,6 @@ class WalletPayload extends MapView<String, dynamic> {
   WalletPayload({
     required String walletId,
     required String walletName,
-    // required double? walletBalance,
     required UserId userId,
     UserId? ownerId,
     String? ownerName,
@@ -21,7 +20,6 @@ class WalletPayload extends MapView<String, dynamic> {
   }) : super({
           FirebaseFieldName.walletId: walletId,
           FirebaseFieldName.walletName: walletName,
-          // FirebaseFieldName.walletBalance: walletBalance,
           FirebaseFieldName.createdAt: FieldValue.serverTimestamp(),
           FirebaseFieldName.userId: userId,
           FirebaseCollectionName.collaborators:

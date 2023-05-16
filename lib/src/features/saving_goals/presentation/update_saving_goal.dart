@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_null_comparison
+
 import 'dart:io';
 
 import 'package:auto_size_text_field/auto_size_text_field.dart';
@@ -19,8 +21,8 @@ import 'package:pocketfi/src/features/wallets/data/wallet_repository.dart';
 
 @immutable
 class UpdateSavingGoalView extends StatefulHookConsumerWidget {
-  SavingGoal savingGoal;
-  UpdateSavingGoalView({
+  final SavingGoal savingGoal;
+  const UpdateSavingGoalView({
     super.key,
     required this.savingGoal,
   });
@@ -41,13 +43,9 @@ class _UpdateSavingGoalViewState extends ConsumerState<UpdateSavingGoalView> {
     final savingGoalAmount = useTextEditingController(
       text: widget.savingGoal.savingGoalAmount.toStringAsFixed(2),
     );
-
     final isCreateButtonEnabled = useState(false);
-
     final wallet = ref.watch(
         getWalletFromWalletIdProvider(widget.savingGoal.walletId.toString()));
-
-    // final selectedWallet = ref.watch(selectedWalletForSavingGoalProvider);
 
     useEffect(() {
       void listener() {
@@ -109,18 +107,11 @@ class _UpdateSavingGoalViewState extends ConsumerState<UpdateSavingGoalView> {
                       textAlign: TextAlign.center,
                       enableInteractiveSelection: false,
                       showCursor: false,
-                      // keyboardType: const TextInputType.numberWithOptions(
-                      //   decimal: true,
-                      //   signed: true,
-                      // ),
-                      // textInputAction: TextInputAction.done,
                       keyboardType: Platform.isIOS
                           ? const TextInputType.numberWithOptions(
-                              // signed: true,
                               decimal: true,
                             )
                           : TextInputType.number,
-                      // This regex for only amount (price). you can create your own regex based on your requirement
                       inputFormatters: [
                         FilteringTextInputFormatter.allow(
                             RegExp(r'^\d+\.?\d{0,4}'))
@@ -133,11 +124,6 @@ class _UpdateSavingGoalViewState extends ConsumerState<UpdateSavingGoalView> {
                       style: const TextStyle(
                         fontSize: 28,
                         fontWeight: FontWeight.bold,
-                        // color: ref.watch(transactionTypeProvider) == TransactionType.expense
-                        //     ? AppColors.red
-                        //     : ref.watch(transactionTypeProvider) == TransactionType.income
-                        //         ? AppColors.green
-                        //         : Colors.grey,
                         color: AppColors.mainColor2,
                       ),
                     ),
@@ -147,7 +133,6 @@ class _UpdateSavingGoalViewState extends ConsumerState<UpdateSavingGoalView> {
                   'MYR',
                   style: TextStyle(
                     color: AppColors.mainColor1,
-                    // fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -176,7 +161,6 @@ class _UpdateSavingGoalViewState extends ConsumerState<UpdateSavingGoalView> {
                     ),
                   ],
                 ),
-                //datepicker
                 Row(
                   children: [
                     const Padding(
@@ -199,27 +183,21 @@ class _UpdateSavingGoalViewState extends ConsumerState<UpdateSavingGoalView> {
                                 widget.savingGoal.dueDate != null &&
                                     widget.savingGoal.startDate != null
                             ? TextButton(
-                                child: Text(
+                                onPressed: dateRangePicker,
+                                child: const Text(
                                   'Selected Date Range',
                                   style: TextStyle(
                                       // color: Colors.grey,
                                       ),
                                 ),
-                                onPressed: dateRangePicker,
                               )
                             : TextButton(
-                                child: Text(
-                                  'Select a Date Range',
-                                  style: TextStyle(
-                                      // color: Colors.grey,
-                                      ),
-                                ),
                                 onPressed: dateRangePicker,
+                                child: const Text(
+                                  'Select a Date Range',
+                                  style: TextStyle(),
+                                ),
                               ),
-                        // _selectedDateRange == null &&
-                        //         widget.savingGoal.dueDate != null &&
-                        //         widget.savingGoal.startDate != null
-                        //     ?
                         Row(
                           children: [
                             Padding(
@@ -234,25 +212,17 @@ class _UpdateSavingGoalViewState extends ConsumerState<UpdateSavingGoalView> {
                                       '${DateFormat('d MMM yyyy').format(widget.savingGoal.startDate)} to ${DateFormat('d MMM yyyy').format(widget.savingGoal.dueDate)}')
                                   : Text(
                                       '${DateFormat('d MMM yyyy').format(_selectedDateRange!.start)} to ${DateFormat('d MMM yyyy').format(_selectedDateRange!.end)}',
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         fontSize: 15,
                                       ),
                                     ),
                             ),
                           ],
                         )
-                        // : const SizedBox(),
                       ],
                     ),
-                    // Text(
-                    //   'Start Date',
-                    //   style: TextStyle(
-                    //     color: Colors.grey,
-                    //   ),
-                    // ),
                   ],
                 ),
-                // wallet
                 Row(
                   children: [
                     const Padding(
@@ -281,27 +251,6 @@ class _UpdateSavingGoalViewState extends ConsumerState<UpdateSavingGoalView> {
                         fontSize: 15,
                       ),
                     ),
-                    // const Expanded(
-                    //   child: Padding(
-                    //     padding: EdgeInsets.all(16.0),
-                    //     child: Text(
-                    //       'Wallets',
-                    //       style: TextStyle(
-                    //         // color: AppSwatches.mainColor2,
-                    //         // fontWeight: FontWeight.bold,
-                    //         fontSize: 15,
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
-                    // Padding(
-                    //     padding: const EdgeInsets.only(
-                    //       left: 8.0,
-                    //       right: 16.0,
-                    //       // top: 16.0,
-                    //       bottom: 8.0,
-                    //     ),
-                    //     child: SelectWalletForSavingGoalDropdownList()),
                   ],
                 ),
               ],
@@ -318,12 +267,9 @@ class _UpdateSavingGoalViewState extends ConsumerState<UpdateSavingGoalView> {
                       _selectedDateRange == null
                           ? widget.savingGoal.startDate
                           : _selectedDateRange!.start,
-                      // !! issue: on update, must click in select date range button to not get null
                       _selectedDateRange == null
                           ? widget.savingGoal.dueDate
                           : _selectedDateRange!.end,
-                      // ref.watch(transactionDateProvider),
-                      // selectedWallet!,
                       ref,
                     );
                   }
@@ -342,10 +288,6 @@ class _UpdateSavingGoalViewState extends ConsumerState<UpdateSavingGoalView> {
     DateTime dueDate,
     WidgetRef ref,
   ) async {
-    debugPrint('savingGoalName: ${savingGoalName.text}');
-    debugPrint('savingGoalAmount: ${savingGoalAmount.text}');
-    debugPrint('startDate: $startDate');
-    debugPrint('dueDate: $dueDate');
     final isCreated =
         await ref.read(savingGoalProvider.notifier).updateSavingGoal(
               savingGoalId: savingGoal.savingGoalId,
@@ -356,9 +298,6 @@ class _UpdateSavingGoalViewState extends ConsumerState<UpdateSavingGoalView> {
               startDate: startDate,
               dueDate: dueDate,
             );
-
-    debugPrint('isCreated: $isCreated');
-
     if (isCreated && mounted) {
       savingGoalName.clear();
       savingGoalAmount.clear();
@@ -385,15 +324,8 @@ class _UpdateSavingGoalViewState extends ConsumerState<UpdateSavingGoalView> {
       saveText: 'Done',
     );
 
-    DateTime startDate = result!.start;
-    DateTime endDate = result.end;
-
-    debugPrint('startDate: $startDate');
-    debugPrint('endDate: $endDate');
-
     if (result != null) {
-      // Rebuild the UI
-      print(result.start.toString());
+      debugPrint(result.start.toString());
       setState(() {
         _selectedDateRange = result;
       });

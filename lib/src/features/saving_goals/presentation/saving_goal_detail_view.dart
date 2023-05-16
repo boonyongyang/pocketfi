@@ -2,16 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/features/saving_goals/application/saving_goal_services.dart';
-import 'package:pocketfi/src/features/saving_goals/domain/saving_goal.dart';
 import 'package:pocketfi/src/features/saving_goals/presentation/saving_goal_history_view.dart';
 import 'package:pocketfi/src/features/saving_goals/presentation/saving_goal_overview.dart';
 import 'package:pocketfi/src/features/saving_goals/presentation/update_saving_goal.dart';
 
 class SavingGoalDetailView extends ConsumerWidget {
-  // SavingGoal selectedSavingGoal;
-  SavingGoalDetailView({
+  const SavingGoalDetailView({
     super.key,
-    // required this.selectedSavingGoal,
   });
 
   @override
@@ -45,23 +42,15 @@ class SavingGoalDetailView extends ConsumerWidget {
               labelColor: AppColors.mainColor2,
               unselectedLabelColor: Colors.grey,
               tabs: [
-                Tab(
-                  text: 'Overview',
-                ),
-                Tab(
-                  text: 'History',
-                ),
+                Tab(text: 'Overview'),
+                Tab(text: 'History'),
               ],
             ),
           ),
-          body: TabBarView(
+          body: const TabBarView(
             children: [
-              const SavingGoalOverviewView(
-                  // savingGoal: selectedSavingGoal,
-                  ),
-              SavingGoalHistoryView(
-                  // selectedSavingGoal: selectedSavingGoal,
-                  ),
+              SavingGoalOverviewView(),
+              SavingGoalHistoryView(),
             ],
           ),
         ));

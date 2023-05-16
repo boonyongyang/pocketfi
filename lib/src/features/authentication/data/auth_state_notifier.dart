@@ -46,23 +46,6 @@ class AuthStateNotifier extends StateNotifier<AuthState> {
     );
   }
 
-// // login with facebook
-//   Future<void> loginWithFacebook() async {
-//     state = state.copiedWithIsLoading(true);
-//     final result = await _authenticator.loginWithFacebook();
-//     final userId = _authenticator.userId;
-//     if (result == AuthResult.success && userId != null) {
-//       await saveUserInfo(
-//         userId: userId,
-//       );
-//     }
-//     state = AuthState(
-//       result: result,
-//       isLoading: false,
-//       userId: userId,
-//     );
-//   }
-
   Future<void> saveUserInfo({required UserId userId}) =>
       _userInfoStorage.saveUserInfo(
         userId: userId,

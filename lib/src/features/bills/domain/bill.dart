@@ -37,7 +37,6 @@ class Bill {
   final String walletName;
   final double amount;
   final String categoryName;
-  // final TransactionType type;
   final DateTime? createdAt;
   final DateTime dueDate;
   final String description;
@@ -72,7 +71,6 @@ class Bill {
               (json[BillKey.dueDate] as Timestamp?)?.toDate() ?? DateTime.now(),
           createdAt: (json[BillKey.createdAt] as Timestamp).toDate(),
           description: json[BillKey.description],
-          // status: json[BillKey.isPaid] ?? false,
           status: BillStatus.values.firstWhere(
             (billStatus) => billStatus.name == json[BillKey.status],
             orElse: () => BillStatus.unpaid,

@@ -47,7 +47,6 @@ class DebtNotifier extends StateNotifier<IsLoading> {
     required double totalDebtAmount,
     required double annualInterestRate,
     required double minimumPayment,
-    // required String frequency,
     required String walletId,
     required UserId userId,
     required int totalNumberOfMonthsToPay,
@@ -64,14 +63,11 @@ class DebtNotifier extends StateNotifier<IsLoading> {
       debtAmount: totalDebtAmount,
       annualInterestRate: annualInterestRate,
       minimumPayment: minimumPayment,
-      // recurringDateToPay: recurrence,
-      // frequency: frequency,
       walletId: walletId,
       userId: userId,
       totalNumberOfMonthsToPay: totalNumberOfMonthsToPay,
       lastMonthInterest: lastMonthInterest,
       lastMonthPrinciple: lastMonthPrinciple,
-      // ownerId: ownerId != userId ? ownerId : userId,
     ).toJson();
 
     await FirebaseFirestore.instance
@@ -96,7 +92,6 @@ class DebtNotifier extends StateNotifier<IsLoading> {
   }) async {
     try {
       isLoading = true;
-      // change the debt name and the debt amount
       final query = FirebaseFirestore.instance
           .collection(FirebaseCollectionName.debts)
           .where(FirebaseFieldName.debtId, isEqualTo: debtId)
@@ -116,8 +111,6 @@ class DebtNotifier extends StateNotifier<IsLoading> {
               FirebaseFieldName.annualInterestRate: annualInterestRate,
               FirebaseFieldName.totalNumberOfMonthsToPay:
                   totalNumberOfMonthsToPay,
-              // FirebaseFieldName.userId: userId,
-              // FirebaseFieldName.walletId: walletId,
             });
           }
         }

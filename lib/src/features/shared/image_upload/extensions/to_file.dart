@@ -11,16 +11,3 @@ extension ToFile on Future<XFile?> {
       // result is a Future<XFile?>, if not null, is an actual XFile
       .then((filePath) => filePath != null ? File(filePath) : null);
 }
-
-// "ToFile" can be used on a Future<XFile?> object. 
-// The extension adds a new method called toFile() 
-// which when called on a Future<XFile?> object, 
-// it will then convert the XFile object to a File object 
-// by calling the then() method on the future, 
-// which allows you to perform some action when the future completes. 
-// Inside the then method, it is checking if the XFile object is not null and 
-// if it is not, it is getting the path of the XFile object and 
-// converting it to a File object by passing the path to the File constructor. 
-// The resulting File object is returned in a new future. 
-// The last then method is checking if filePath is not null, 
-// it will return the file object, otherwise it will return null.

@@ -8,32 +8,18 @@ import 'package:pocketfi/src/features/wallets/application/wallet_services.dart';
 import 'package:pocketfi/src/features/wallets/data/temp_user_provider.dart';
 import 'package:pocketfi/src/features/wallets/data/wallet_repository.dart';
 import 'package:pocketfi/src/features/wallets/presentation/add_new_wallet.dart';
-import 'package:pocketfi/src/features/wallets/presentation/update_wallet.dart';
 import 'package:pocketfi/src/features/wallets/presentation/wallet_details_view.dart';
 import 'package:pocketfi/src/features/wallets/presentation/wallet_tiles.dart';
 
 class WalletBottomSheet extends ConsumerWidget {
-  // final Iterable<Wallet> wallets;
-  // final Wallet wallet;
-
   const WalletBottomSheet({
     super.key,
-    // required this.wallet,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final wallets = ref.watch(userWalletsProvider);
     final userId = ref.watch(userIdProvider);
-
-    // final request = useState(
-    //   RequestForWallets(
-    //     walletId: widget.wallet.walletId,
-    //   ),
-    // );
-
-    // final specificWallet = ref.watch(specificWalletProvider(request.value));
-
     return RefreshIndicator(
       onRefresh: () async {
         return await ref.refresh(userWalletsProvider);
@@ -55,7 +41,6 @@ class WalletBottomSheet extends ConsumerWidget {
                       color: Colors.transparent,
                     ),
                     onPressed: null,
-                    // visualDensity: VisualDensity.standard,
                   ),
                 ),
                 const Expanded(
@@ -79,7 +64,6 @@ class WalletBottomSheet extends ConsumerWidget {
                       ref
                           .watch(tempDataProvider.notifier)
                           .deleteTempDataInFirebase(userId!);
-                      // context.beamToNamed('createNewWallet');
                       Navigator.of(context, rootNavigator: true).push(
                         MaterialPageRoute(
                           builder: (context) => const AddNewWallet(),
@@ -104,24 +88,11 @@ class WalletBottomSheet extends ConsumerWidget {
                           ref
                               .read(selectedWalletProvider.notifier)
                               .setSelectedWallet(wallet);
-                          // specificWallet.when(data: (specificWallet) {
-                          // final walletId = specificWallet.wallet.walletId;
                           Navigator.of(context, rootNavigator: true).push(
                             MaterialPageRoute(
-                              builder: (context) => WalletDetailsView(
-                                  // selectedWallet: wallet,
-                                  ),
+                              builder: (context) => const WalletDetailsView(),
                             ),
                           );
-
-                          // );
-
-                          // show snackbar code
-                          // ScaffoldMessenger.of(context).showSnackBar(
-                          //   const SnackBar(
-                          //     content: Text('Wallet tapped'),
-                          //   ),
-                          // );
                         },
                       );
                     },
@@ -135,52 +106,6 @@ class WalletBottomSheet extends ConsumerWidget {
                 },
               ),
             ),
-            // const SizedBox(
-            //   height: 10,
-            // ),
-            // Expanded(
-            //   child: wallets.when(
-            //     data: (wallets) {
-            //       return ListView.builder(
-            //         padding: const EdgeInsets.all(8.0),
-            //         itemCount: wallets.length,
-            //         itemBuilder: (context, index) {
-            //           final wallet = wallets.elementAt(index);
-            //           return WalletTiles(
-            //             wallet: wallet,
-            //             onTap: () {
-            //               // specificWallet.when(data: (specificWallet) {
-            //               // final walletId = specificWallet.wallet.walletId;
-            //               Navigator.push(
-            //                 context,
-            //                 MaterialPageRoute(
-            //                   builder: (_) => WalletDetailsView(
-            //                     wallet: wallet,
-            //                   ),
-            //                 ),
-            //               );
-
-            //               // );
-
-            //               // show snackbar code
-            //               // ScaffoldMessenger.of(context).showSnackBar(
-            //               //   const SnackBar(
-            //               //     content: Text('Wallet tapped'),
-            //               //   ),
-            //               // );
-            //             },
-            //           );
-            //         },
-            //       );
-            //     },
-            //     error: (error, stackTrace) {
-            //       return const ErrorAnimationView();
-            //     },
-            //     loading: () {
-            //       return const LoadingAnimationView();
-            //     },
-            //   ),
-            // ),
           ],
         ),
       ),

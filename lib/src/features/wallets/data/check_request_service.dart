@@ -41,25 +41,7 @@ class CheckRequestNotifier extends StateNotifier<bool> {
         // Update the Firestore document with the updated collaborators list
         await walletDocRef
             .update({FirebaseFieldName.collaborators: collaborators});
-
-        // Add the shared wallet to the collaborator if the status is "accepted"
-        // if (status == CollaborateRequestStatus.accepted.name) {
-        //   await addSharedWalletToCollaborator(
-        //     currentUserId: currentUserId,
-        //     walletId: walletId,
-        //     walletName: walletDocSnapshot.data()![FirebaseFieldName.walletName],
-        //     ownerId: inviteeId,
-        //     ownerName: walletDocSnapshot.data()![FirebaseFieldName.ownerName],
-        //     ownerEmail: walletDocSnapshot.data()![FirebaseFieldName.ownerEmail],
-        //     createdAt:
-        //         walletDocSnapshot.data()![FirebaseFieldName.createdAt].toDate(),
-        //     // collaborators:
-        //     //     collaborators.map((c) => CollaboratorsInfo.fromMap(c)).toList(),
-        //   );
-        // }
-        // need to check if got budget, then need to add here to the other user too
-
-        break; // Exit the loop after updating the collaborator
+        break;
       }
     }
   }
@@ -72,7 +54,6 @@ class CheckRequestNotifier extends StateNotifier<bool> {
     required String ownerName,
     required String? ownerEmail,
     required DateTime? createdAt,
-    // List<CollaboratorsInfo>? collaborators,
   }) async {
     final payload = SharedWallet(
       walletId: walletId,
@@ -82,7 +63,6 @@ class CheckRequestNotifier extends StateNotifier<bool> {
       ownerName: ownerName,
       ownerEmail: ownerEmail!,
       createdAt: createdAt,
-      // collaborators: collaborators,
     ).toJson();
     try {
       await FirebaseFirestore.instance
@@ -92,7 +72,7 @@ class CheckRequestNotifier extends StateNotifier<bool> {
 
       return true;
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
       return false;
     }
   }
@@ -104,7 +84,6 @@ class CheckRequestNotifier extends StateNotifier<bool> {
     required String collaboratorUserId,
     required String collaboratorUserName,
     required String collaboratorUserEmail,
-    // required String? status,
   }) async {
     debugPrint('currentUserId: $currentUserId');
     debugPrint('inviteeId: $inviteeId');
@@ -114,43 +93,16 @@ class CheckRequestNotifier extends StateNotifier<bool> {
     final walletDocRef = FirebaseFirestore.instance
         .collection(FirebaseCollectionName.wallets)
         .doc(walletId);
-
     final walletDocSnapshot = await walletDocRef.get();
-
-    // List collaborators = walletDocSnapshot.get(FirebaseFieldName.collaborators);
-    debugPrint('test1');
-
     if (!walletDocSnapshot.exists) {
-      // Handle the case where the wallet document doesn't exist
+      //TODO: Handle the case where the wallet document doesn't exist
       return;
     }
-    debugPrint('test2');
-
     var collaborators =
         walletDocSnapshot.data()![FirebaseFieldName.collaborators] as List;
     for (var i = 0; i < collaborators.length; i++) {
-      debugPrint('test3');
       if (collaborators[i][FirebaseFieldName.userId] == collaboratorUserId) {
-        // Remove the collaborator from the list of collaborators
-        debugPrint('test4');
-        // ! not working
-        // for (final c in collaborators) {
-        debugPrint("Collaborators before: ${collaborators.toString()}");
-        // }
         collaborators.removeAt(i);
-        //  print collaborators code
-        debugPrint("Collaborators after remove: ${collaborators.toString()}");
-        // for (final c in collaborators) {
-        //   if (c == null) {
-        //     debugPrint('c is null');
-        //   } else {
-        //     debugPrint("Collaborators after remove: ${c.toString()}");
-        //   }
-        // }
-
-        debugPrint(
-            'date: ${walletDocSnapshot.data()![FirebaseFieldName.createdAt].toDate()}');
-
         final payload = WalletPayload(
           walletId: walletId,
           walletName: walletDocSnapshot.data()![FirebaseFieldName.walletName],
@@ -162,26 +114,12 @@ class CheckRequestNotifier extends StateNotifier<bool> {
               walletDocSnapshot.data()![FirebaseFieldName.createdAt].toDate(),
           collaborators:
               collaborators.map((e) => CollaboratorsInfo.fromJson(e)).toList(),
-        ); // .toJson();
-
-        debugPrint('test5');
-
-        // walletDocRef.delete();
-
+        );
         await FirebaseFirestore.instance
             .collection(FirebaseCollectionName.wallets)
             .doc(walletId)
             .set(payload);
-
-        debugPrint('test6');
-        // Remove the shared wallet from the collaborator
-        // removeSharedWalletFromCollaborator(
-        //   collaboratorUserId: collaboratorUserId,
-        //   walletId: walletId,
-        // );
-        debugPrint('test7');
-
-        break; // Exit the loop after removing the collaborator
+        break;
       }
     }
   }
@@ -198,7 +136,7 @@ class CheckRequestNotifier extends StateNotifier<bool> {
 
       return true;
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
       return false;
     }
   }
@@ -227,15 +165,6 @@ final getPendingRequestProvider = StreamProvider.autoDispose<Iterable>((ref) {
     }).map((doc) => Wallet.fromJson(
           doc.data(),
         ));
-
-    // final pendingRequest = docs
-    //     .where((doc) => (doc.data()[FirebaseFieldName.collaborators] as List)
-    //         .any((collaborator) =>
-    //             collaborator[FirebaseFieldName.userId] == currentUserId &&
-    //             collaborator[FirebaseFieldName.status] == 'pending'))
-    //     .map((doc) => Wallet(
-    //           doc.data(),
-    //         ));
 
     controller.add(pendingRequest);
   });

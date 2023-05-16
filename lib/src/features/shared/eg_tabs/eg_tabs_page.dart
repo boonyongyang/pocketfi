@@ -179,12 +179,9 @@ class EgTabsPageState extends State<EgTabsPage> {
 
   List<Widget> _getChildren2() {
     return <Widget>[
-      // Image.asset('assets/car1.jpg'),
       const Icon(Icons.dangerous_rounded),
       const Icon(Icons.safety_divider_sharp),
       const Icon(Icons.production_quantity_limits_outlined),
-      // Image.asset('assets/car2.jpg'),
-      // Image.asset('assets/car3.jpg'),
     ];
   }
 

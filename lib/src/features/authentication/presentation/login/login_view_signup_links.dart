@@ -4,7 +4,6 @@ import 'package:pocketfi/src/common_widgets/rich_text/rich_text_widget.dart';
 import 'package:pocketfi/src/constants/strings.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-// no need constructor because it will know what to show
 class LoginViewSignupLinks extends StatelessWidget {
   const LoginViewSignupLinks({super.key});
 
@@ -21,9 +20,6 @@ class LoginViewSignupLinks extends StatelessWidget {
         BaseText.plain(
           text: Strings.signUpOn,
         ),
-        // BaseText.plain(
-        //   text: Strings.orCreateAnAccountOn,
-        // ),
         BaseText.link(
           text: Strings.google,
           onTapped: () {

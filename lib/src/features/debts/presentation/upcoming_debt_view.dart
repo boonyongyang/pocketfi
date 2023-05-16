@@ -6,19 +6,12 @@ import 'package:pocketfi/src/features/debts/domain/debt.dart';
 import 'package:pocketfi/src/features/debts/presentation/debt_payment_sheet.dart';
 
 class UpcomingDebtView extends ConsumerWidget {
-  Debt debt;
-  UpcomingDebtView({super.key, required this.debt});
+  final Debt debt;
+  const UpcomingDebtView({super.key, required this.debt});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    DateTime now = DateTime.now();
-    int currentMonth = now.month;
-    List<Map<String, dynamic>> tableData = debt.debtLoanInTable(
-        // debtAmount: debt.debtAmount,
-        // minimumPayment: debt.minimumPayment,
-        // annualInterestRate: debt.annualInterestRate,
-        // createdAt: debt.createdAt!,
-        );
+    List<Map<String, dynamic>> tableData = debt.debtLoanInTable();
     final debtHistories = ref.watch(userDebtPaymentsProvider).value;
     if (debtHistories == null) {
       return Container();
@@ -28,7 +21,6 @@ class UpcomingDebtView extends ConsumerWidget {
         tableData
             .removeWhere((element) => element['month'] == history.paidMonth);
       }
-      // tableData.removeWhere((element) => element['month'] == history.paidMonth);
     }
 
     return Scaffold(
@@ -81,46 +73,6 @@ class UpcomingDebtView extends ConsumerWidget {
             );
           },
         ),
-
-        //     ListView.builder(
-        //   itemCount: debt.totalNumberOfMonthsToPay,
-        //   itemBuilder: (BuildContext context, int index) {
-        //     int month = currentMonth + index;
-        //     if (month > 12) {
-        //       month -= 12;
-        //     }
-        //     String monthName = DateFormat('MMM yyyy').format(
-        //       DateTime(now.year, month),
-        //     );
-        //     final lastMonthAmount =
-        //         debt.lastMonthInterest + debt.lastMonthPrinciple;
-        //     return GestureDetector(
-        //       onTap: () {},
-        //       child: ListTile(
-        //         title: Text(monthName),
-        //         // Text(
-        //         // '$monthName \n ${debt.totalNumberOfMonthsToPay} \n index: $index'),
-        //         trailing: index == debt.totalNumberOfMonthsToPay - 1
-        //             ? Text(lastMonthAmount.toStringAsFixed(2))
-        //             : Text(debt.minimumPayment.toStringAsFixed(2)),
-        //       ),
-        //     );
-        //   },
-        // )
-
-        // ListView.builder(
-        //     itemCount: 12,
-        //     itemBuilder: (context, index) {
-        //       return Card(
-        //         child: ListTile(
-        //           title: Text(
-        //               returnMonth(DateTime.now().add(Duration(days: index)))),
-        //           subtitle: Text('Amount: \$${debt.minimumPayment} \n Date:' +
-        //               DateFormat('dd/MM/yyyy')
-        //                   .format(DateTime.now().add(Duration(days: index)))),
-        //         ),
-        //       );
-        //     }),
       ),
     );
   }

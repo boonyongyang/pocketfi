@@ -118,8 +118,6 @@ class MonthSelectorState extends ConsumerState<MonthPicker> {
       if (pickedDate != null) {
         HapticFeedbackService.mediumImpact();
         ref.read(overviewMonthProvider.notifier).setMonth(pickedDate);
-        debugPrint('picked: $pickedDate');
-        // if selectedDate is in the future, make it a scheduled transaction
       }
     }
   }

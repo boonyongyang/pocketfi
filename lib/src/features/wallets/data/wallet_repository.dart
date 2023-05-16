@@ -16,7 +16,6 @@ import 'package:pocketfi/src/features/wallets/domain/shared_and_user_wallet.dart
 final userWalletsProvider = StreamProvider<Iterable<Wallet>>((ref) {
   final userId = ref.watch(userIdProvider);
   final controller = StreamController<Iterable<Wallet>>();
-
   final sub = FirebaseFirestore.instance
       .collection(FirebaseCollectionName.wallets)
       .snapshots()
@@ -48,35 +47,6 @@ final userWalletsProvider = StreamProvider<Iterable<Wallet>>((ref) {
   });
   return controller.stream;
 });
-
-// final userSharedWalletsProvider =
-//     StreamProvider.autoDispose<Iterable<SharedWallet>>((ref) {
-//   final controller = StreamController<Iterable<SharedWallet>>();
-//   final userId = ref.watch(userIdProvider);
-
-//   final sub = FirebaseFirestore.instance
-//       .collection(FirebaseCollectionName.users)
-//       .doc(userId)
-//       .collection(FirebaseCollectionName.wallets)
-//       .where(FirebaseFieldName.userId, isEqualTo: userId)
-//       .snapshots()
-//       .listen((snapshot) {
-//     final document = snapshot.docs;
-//     final sharedWallets = document.map(
-//       (doc) => SharedWallet.fromJson(
-//         map: doc.data(),
-//       ),
-//     );
-//     // .where((doc) => !doc.metadata.hasPendingWrites)
-//     controller.sink.add(sharedWallets);
-//   });
-
-//   ref.onDispose(() {
-//     sub.cancel();
-//     controller.close();
-//   });
-//   return controller.stream;
-// });
 
 final allWalletsProvider =
     StreamProvider.autoDispose<Iterable<SharedAndUserWallets>>((ref) {
@@ -114,7 +84,6 @@ final allWalletsProvider =
       ),
     );
     notify();
-    // .where((doc) => !doc.metadata.hasPendingWrites)
   });
 
   final sharedWalletSub = FirebaseFirestore.instance
@@ -133,25 +102,9 @@ final allWalletsProvider =
       ),
     );
     notify();
-    // .where((doc) => !doc.metadata.hasPendingWrites)
   });
 
-  // final sub = FirebaseFirestore.instance
-  //     .collection(FirebaseCollectionName.wallets)
-  //     .snapshots()
-  //     .listen((snapshot) {
-  //   final document = snapshot.docs;
-  //   final sharedWallets = document.map(
-  //     (doc) => SharedAndUserWallets.fromJson(
-  //       map: doc.data(),
-  //     ),
-  //   );
-  //   // .where((doc) => !doc.metadata.hasPendingWrites)
-  //   controller.sink.add(sharedWallets);
-  // });
-
   ref.onDispose(() {
-    // sub.cancel();
     walletSub.cancel();
     sharedWalletSub.cancel();
     controller.close();
@@ -164,13 +117,8 @@ final getWalletFromWalletIdProvider = StreamProvider.family<Wallet, String>((
   String walletId,
 ) {
   final controller = StreamController<Wallet>();
-
-  final userId = ref.watch(userIdProvider);
   final sub = FirebaseFirestore.instance
-      // .collection(FirebaseCollectionName.users)
-      // .doc(userId)
       .collection(FirebaseCollectionName.wallets)
-      // .doc(walletId.toString())
       .where(
         FirebaseFieldName.walletId,
         isEqualTo: walletId,
@@ -185,7 +133,6 @@ final getWalletFromWalletIdProvider = StreamProvider.family<Wallet, String>((
         json,
       );
       controller.add(wallet);
-      // controller.sink.add(userInfoModel); // this works too
     },
   );
   ref.onDispose(() {
@@ -199,7 +146,6 @@ final getWalletFromWalletIdProvider = StreamProvider.family<Wallet, String>((
 final getWalletWithWalletId =
     FutureProvider.family<Wallet, String>((ref, walletId) async {
   final snapshot = await FirebaseFirestore.instance
-      // .collectionGroup(FirebaseCollectionName.wallets)
       .collection(FirebaseCollectionName.wallets)
       .where(FirebaseFieldName.walletId, isEqualTo: walletId)
       .limit(1)
@@ -222,7 +168,6 @@ Future<Wallet?> getPersonalWalletByUserId(String userId) async {
         .get();
     if (walletDoc.docs.isNotEmpty) {
       return Wallet.fromJson(
-        // walletId: walletDoc.id,
         walletDoc.docs.first.data(),
       );
     }
@@ -241,7 +186,6 @@ Future<Wallet?> getWalletById(String walletId) async {
         .get();
     if (walletDoc.exists) {
       return Wallet.fromJson(
-        // walletId: walletDoc.id,
         walletDoc.data()!,
       );
     }
@@ -259,7 +203,6 @@ class WalletNotifier extends StateNotifier<IsLoading> {
 
   Future<bool> addNewWallet({
     required String walletName,
-    // double? walletBalance = 0.00,
     required UserId userId,
     required String ownerName,
     required String? ownerEmail,
@@ -272,47 +215,18 @@ class WalletNotifier extends StateNotifier<IsLoading> {
     final payload = WalletPayload(
       walletId: walletId,
       walletName: walletName,
-      // walletBalance: walletBalance,
       userId: userId,
       ownerId: userId,
       ownerName: ownerName,
       ownerEmail: ownerEmail,
       collaborators: users,
     );
-    // final collaboratorPayload = UserInfoPayload(
-    //   userId: users!.userId,
-    //   displayName: users.displayName,
-    //   email: users.email,
-    // );
-    debugPrint('walletPayload: $payload');
 
     try {
-      // final wallets = await FirebaseFirestore.instance
-      //     .collection(FirebaseCollectionName.users)
-      //     .doc(userId)
-      //     .collection(FirebaseCollectionName.wallets)
-      //     .get();
-
-      // if (wallets.docs.elementAt([FirebaseFieldName.walletName] as int) ==
-      //     walletName) {
-      //   return false;
-      // }
-
       await FirebaseFirestore.instance
-          // .collection(FirebaseCollectionName.users)
-          // .doc(userId)
           .collection(FirebaseCollectionName.wallets)
           .doc(walletId)
           .set(payload);
-
-      // await FirebaseFirestore.instance
-      //     .collection(FirebaseCollectionName.users)
-      //     .doc(userId)
-      //     .collection(FirebaseCollectionName.wallets)
-      //     .doc(walletId)
-      //     .collection(FirebaseCollectionName.collaborators)
-      //     .doc(users.userId)
-      //     .set(collaboratorPayload);
       return true;
     } catch (e) {
       debugPrint('error in creating new wallet: $e');
@@ -327,13 +241,9 @@ class WalletNotifier extends StateNotifier<IsLoading> {
     required String walletId,
     required String walletName,
     List<CollaboratorsInfo>? users,
-    // required double walletBalance,
   }) async {
     try {
       isLoading = true;
-      debugPrint('users: $users');
-
-      // update wallet name in all users
       final query2 = FirebaseFirestore.instance
           .collection(FirebaseCollectionName.wallets)
           .where(FirebaseFieldName.walletId, isEqualTo: walletId)
@@ -360,11 +270,6 @@ class WalletNotifier extends StateNotifier<IsLoading> {
 
       final query3Snapshot = await query3.get();
 
-      var collaborators =
-          query3Snapshot.data()![FirebaseFieldName.collaborators] as List;
-
-      // for (var i = 0; i < collaborators.length; i++) {
-      // if (collaborators == []) {
       if (users != query3Snapshot.data()![FirebaseFieldName.collaborators]) {
         await query3.update({
           FirebaseFieldName.collaborators: FieldValue.arrayRemove(
@@ -375,32 +280,10 @@ class WalletNotifier extends StateNotifier<IsLoading> {
           FirebaseFieldName.collaborators:
               users?.map((e) => e.toJson()).toList(),
         });
-        // final payload = Wallet(
-        //   walletId: walletId,
-        //   walletName: walletName,
-        //   userId: query3Snapshot.data()![FirebaseFieldName.userId],
-        //   ownerId: query3Snapshot.data()![FirebaseFieldName.ownerId],
-        //   ownerEmail: query3Snapshot.data()![FirebaseFieldName.ownerEmail],
-        //   ownerName: query3Snapshot.data()![FirebaseFieldName.ownerName],
-        //   // createdAt: query3Snapshot.data()![FirebaseFieldName.createdAt],
-        //   collaborators:
-        //       users?.map((e) => CollaboratorsInfo.fromJson(e)).toList(),
-        // ).toJson();
-        // debugPrint(query3Snapshot.data()![FirebaseFieldName.ownerName]);
-        // debugPrint(query3Snapshot.data()![FirebaseFieldName.ownerEmail]);
-
-        // await FirebaseFirestore.instance
-        //     .collection(FirebaseCollectionName.wallets)
-        //     .doc(walletId)
-        //     .set(payload);
-        // }else{
-
-        // }
       }
 
       // * update all transactions' walletName in this wallet
       final walletTransactions = FirebaseFirestore.instance
-          // .collectionGroup(FirebaseCollectionName.transactions)
           .collection(FirebaseCollectionName.wallets)
           .where(FirebaseFieldName.walletId, isEqualTo: walletId)
           .get();
@@ -427,8 +310,6 @@ class WalletNotifier extends StateNotifier<IsLoading> {
   }) async {
     try {
       final wallets = await FirebaseFirestore.instance
-          // .collection(FirebaseCollectionName.users)
-          // .doc(FirebaseAuth.instance.currentUser!.uid)
           .collection(FirebaseCollectionName.wallets)
           .get();
       isLoading = true;
@@ -438,8 +319,6 @@ class WalletNotifier extends StateNotifier<IsLoading> {
       }
 
       final query = FirebaseFirestore.instance
-          // .collection(FirebaseCollectionName.users)
-          // .doc(FirebaseAuth.instance.currentUser!.uid)
           .collection(FirebaseCollectionName.wallets)
           .where(FieldPath.documentId, isEqualTo: walletId)
           .limit(1)

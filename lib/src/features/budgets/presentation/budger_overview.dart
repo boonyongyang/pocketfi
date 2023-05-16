@@ -4,7 +4,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/features/budgets/data/budget_repository.dart';
-import 'package:pocketfi/src/features/shared/date_picker/application/date_services.dart';
 import 'package:pocketfi/src/features/transactions/data/transaction_repository.dart';
 import 'package:pocketfi/src/features/transactions/domain/transaction.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -23,12 +22,10 @@ class BudgetOverview extends ConsumerWidget {
 
     final transactionsWithBudgets = userTransactions.when<List<Transaction>>(
       data: (transactions) {
-        // Get the category names from the budgets list
         final budgetCategoryNames =
             budgets.value!.map((budget) => budget.categoryName).toList();
         final budgetWalletId =
             budgets.value!.map((budget) => budget.walletId).toList();
-        // Filter the transactions by category name
         final filteredTransactions = transactions.where((tran) {
           return budgetCategoryNames.contains(tran.categoryName) &&
               budgetWalletId.contains(tran.walletId);
@@ -42,19 +39,6 @@ class BudgetOverview extends ConsumerWidget {
         return [];
       },
     );
-
-    // for (var budget in budgetss) {
-    // final allTransaction = userTransactions.when<List<Transaction>>(
-    //   data: (transactions) => transactions.where((tran) {
-    //     return tran.date.year == DateTime.now().year &&
-    //         tran.categoryName == budgets.value!.first.categoryName;
-    //   }).toList(),
-    //   loading: () => [],
-    //   error: (error, stackTrace) {
-    //     debugPrint(error.toString());
-    //     return [];
-    //   },
-    // );
     final chartData = transactionsWithBudgets
         .groupListsBy((tran) => tran.date.month)
         .entries
@@ -79,51 +63,6 @@ class BudgetOverview extends ConsumerWidget {
         color: AppColors.mainColor2,
       );
     }).toList();
-    // }
-
-    // debugPrint('allTransactions: $allTransactions');
-    // final transChartData = allTransactions
-    //     .groupListsBy((tran) => tran.date.month)
-    //     .entries
-    //     .map((entry) {
-    //   final date = entry.key;
-    //   final transactions = entry.value;
-    //   final total = transactions.fold<double>(
-    //     0.0,
-    //     (previousValue, transaction) {
-    //       if (transaction.type == TransactionType.expense) {
-    //         return previousValue - transaction.amount;
-    //       } else {
-    //         return previousValue;
-    //       }
-    //     },
-    //   );
-    //   return CategoryChartData(
-    //     x: DateFormat.MMMM().format(DateTime(DateTime.now().year, date)),
-    //     y: total * -1,
-    //     color: total < 0 ? Colors.red : Colors.green,
-    //   );
-    // }).toList();
-
-    // debugPrint('chartData: $chartData');
-
-    // final budgetChartData = budgets.when<List<CategoryChartData>>(
-    //   data: (budgets) => budgets.map((budget) {
-    //     return CategoryChartData(
-    //       x: budget.categoryName,
-    //       y: budget.usedAmount,
-    //       color: Colors.blue,
-    //     );
-    //   }).toList(),
-    //   loading: () => [],
-    //   error: (error, stackTrace) {
-    //     debugPrint(error.toString());
-    //     return [];
-    //   },
-    // );
-
-    // final chartData = [...transChartData, ...budgetChartData];
-
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -142,18 +81,15 @@ class BudgetOverview extends ConsumerWidget {
                 color: Colors.grey.withOpacity(0.5),
                 spreadRadius: 2,
                 blurRadius: 7,
-                offset: const Offset(3, 6), // changes position of shadow
+                offset: const Offset(3, 6),
               ),
             ],
           ),
-          // height: MediaQuery.of(context).size.height * 0.5,
           child: SfCartesianChart(
             title: ChartTitle(
               text: 'Monthly Budget Overview',
               textStyle: const TextStyle(
-                // fontSize: 16,
                 color: AppColors.mainColor1,
-                // fontWeight: FontWeight.bold,
               ),
             ),
             plotAreaBorderWidth: 0,
@@ -162,14 +98,9 @@ class BudgetOverview extends ConsumerWidget {
             ),
             primaryYAxis: NumericAxis(
               labelFormat: '{value} MYR',
-              // opposedPosition: true,
             ),
             series: <ChartSeries>[
               LineSeries<CategoryChartData, String>(
-                // borderRadius: const BorderRadius.all(
-                //   Radius.circular(5),
-                // ),
-
                 dataLabelSettings: const DataLabelSettings(
                   isVisible: true,
                   textStyle: TextStyle(
@@ -179,25 +110,6 @@ class BudgetOverview extends ConsumerWidget {
                 ),
                 dataLabelMapper: (CategoryChartData data, _) =>
                     'MYR ${data.y.toStringAsFixed(2)}',
-
-                // dataLabelSettings: const DataLabelSettings(
-                //   isVisible: true,
-                //   labelPosition: ChartDataLabelPosition.outside,
-                //   textStyle: TextStyle(
-                //     fontSize: 14.0,
-                //     fontWeight: FontWeight.bold,
-                //     color: AppColors.mainColor1,
-                //     fontFamily: 'Roboto',
-                //   ),
-                // ),
-                // dataLabelMapper: (CategoryChartData trans, _) {
-                //   final totalAmount = chartData.fold<double>(
-                //     0.0,
-                //     (previousValue, element) => previousValue + element.y,
-                //   );
-
-                //   return 'MYR $totalAmount';
-                // },
                 dataSource: chartData,
                 xValueMapper: (CategoryChartData data, _) => data.x,
                 yValueMapper: (CategoryChartData data, _) => data.y,

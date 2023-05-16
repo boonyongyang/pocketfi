@@ -49,11 +49,6 @@ class BookmarkCard extends ConsumerWidget {
               TextButton(
                 onPressed: () {
                   Navigator.of(ctx).pop(true);
-                  // ref
-                  //     .read(selectedTransactionProvider.notifier)
-                  //     .toggleBookmark(ref);
-
-                  // update transaction
                   ref
                       .read(transactionProvider.notifier)
                       .toogleBookmark(transaction: transaction);
@@ -67,12 +62,7 @@ class BookmarkCard extends ConsumerWidget {
           ),
         );
       },
-      onDismissed: (direction) {
-        // make isBookmark false
-        // ref.read(selectedTransactionProvider.notifier).toggleBookmark(ref);
-        debugPrint('onDismissed: $direction');
-        // debugPrint('t: ${t?.isBookmark}');
-      },
+      onDismissed: (direction) {},
       background: Container(
         color: Colors.red,
         alignment: Alignment.centerRight,
@@ -139,8 +129,6 @@ class BookmarkCard extends ConsumerWidget {
                               )
                             else
                               const SizedBox(),
-                            // Text(DateFormat('d MMM')
-                            //     .format(transaction.date)),
                           ],
                         ),
                       ),
@@ -153,11 +141,6 @@ class BookmarkCard extends ConsumerWidget {
                       fontWeight: FontWeight.w600,
                       fontSize: 16,
                       color: transactionType.color,
-                      // color: transactionType == TransactionType.expense
-                      //     ? TransactionType.expense.color
-                      //     : transactionType == TransactionType.income
-                      //         ? TransactionType.income.color
-                      //         : TransactionType.transfer.color,
                     ),
                   ),
                 ],

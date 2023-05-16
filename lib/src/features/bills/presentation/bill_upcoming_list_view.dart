@@ -35,15 +35,6 @@ class BillUpcomingListView extends ConsumerWidget {
                   '\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t No bills yet. \n Click the button to add a bill.',
             );
           } else {
-            // final overdueAndUnpaidBills = bills.where(
-            //   (bill) => bill.status != BillStatus.paid,
-            // );
-
-            // final overdueBills =
-            //     bills.where((bill) => bill.status == BillStatus.overdue);
-            // final unpaidBills =
-            //     bills.where((bill) => bill.status == BillStatus.unpaid);
-
             final overdueBills = bills
                 .where((bill) => bill.status == BillStatus.overdue)
                 .toList()

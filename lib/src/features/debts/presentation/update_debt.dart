@@ -8,14 +8,12 @@ import 'package:pocketfi/src/common_widgets/dialogs/alert_dialog_model.dart';
 import 'package:pocketfi/src/common_widgets/dialogs/delete_dialog.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/constants/strings.dart';
-import 'package:pocketfi/src/features/authentication/application/user_id_provider.dart';
 import 'package:pocketfi/src/features/debts/application/debt_services.dart';
 import 'package:pocketfi/src/features/debts/domain/debt.dart';
-import 'package:pocketfi/src/features/debts/presentation/debt_overview_view.dart';
 
 class UpdateDebt extends StatefulHookConsumerWidget {
-  Debt debt;
-  UpdateDebt({
+  final Debt debt;
+  const UpdateDebt({
     super.key,
     required this.debt,
   });
@@ -25,7 +23,6 @@ class UpdateDebt extends StatefulHookConsumerWidget {
 }
 
 class _UpdateDebtViewState extends ConsumerState<UpdateDebt> {
-  String _selectedRecurrence = 'Monthly';
   @override
   Widget build(BuildContext context) {
     final debtNameController = useTextEditingController(
@@ -40,9 +37,7 @@ class _UpdateDebtViewState extends ConsumerState<UpdateDebt> {
     final minimumPaymentController = useTextEditingController(
       text: widget.debt.minimumPayment.toStringAsFixed(2),
     );
-
     final isCreateButtonEnabled = useState(false);
-
     useEffect(() {
       void listener() {
         final isDebtNameEmpty = debtNameController.text.isEmpty;
@@ -61,7 +56,6 @@ class _UpdateDebtViewState extends ConsumerState<UpdateDebt> {
       totalDebtAmountController.addListener(listener);
       annualInterestRateController.addListener(listener);
       minimumPaymentController.addListener(listener);
-
       return () {
         debtNameController.removeListener(listener);
         totalDebtAmountController.removeListener(listener);
@@ -108,75 +102,6 @@ class _UpdateDebtViewState extends ConsumerState<UpdateDebt> {
           Expanded(
             child: Column(
               children: [
-                // add the years to finish paying
-                // Padding(
-                //   padding: const EdgeInsets.only(
-                //     top: 16.0,
-                //     bottom: 8.0,
-                //     left: 8.0,
-                //     right: 8.0,
-                //   ),
-                //   child: Container(
-                //     decoration: BoxDecoration(
-                //       color: Colors.white,
-                //       borderRadius: const BorderRadius.all(
-                //         Radius.circular(20),
-                //       ),
-                //       boxShadow: [
-                //         BoxShadow(
-                //           color: Colors.grey.withOpacity(0.5),
-                //           spreadRadius: 2,
-                //           blurRadius: 7,
-                //           offset:
-                //               const Offset(3, 6), // changes position of shadow
-                //         ),
-                //       ],
-                //     ),
-                //     child: Padding(
-                //       padding: const EdgeInsets.all(
-                //         8.0,
-                //       ),
-                //       child: Column(
-                //         children: [
-                //           Row(
-                //             mainAxisAlignment: MainAxisAlignment.center,
-                //             children: const [
-                //               Text(
-                //                 'Years to Finish Paying',
-                //                 style: TextStyle(
-                //                   color: AppColors.mainColor1,
-                //                   fontWeight: FontWeight.bold,
-                //                 ),
-                //                 // textAlign: TextAlign.center,
-                //               ),
-                //             ],
-                //           ),
-                //           Row(
-                //             mainAxisAlignment: MainAxisAlignment.center,
-                //             children: [
-                //               Text(
-                //                 '${calculateDebtLoan(
-                //                   totalDebtAmount: widget.debt.debtAmount,
-                //                   annualInterestRate:
-                //                       widget.debt.annualInterestRate,
-                //                   minPaymentPerMonth:
-                //                       widget.debt.minimumPayment,
-                //                 ).toString()} months',
-                //                 // widget.debt.debtAmount.toStringAsFixed(2),
-                //                 style: const TextStyle(
-                //                   color: AppColors.mainColor1,
-                //                   // fontWeight: FontWeight.bold,
-                //                   fontSize: 30,
-                //                 ),
-                //                 // textAlign: TextAlign.center,
-                //               ),
-                //             ],
-                //           ),
-                //         ],
-                //       ),
-                //     ),
-                //   ),
-                // ),
                 Row(
                   children: [
                     const Padding(
@@ -251,8 +176,6 @@ class _UpdateDebtViewState extends ConsumerState<UpdateDebt> {
                           decoration: const InputDecoration(
                             labelText: 'Minimum Payment',
                             prefixText: 'RM ',
-
-                            // suffixText: '%',
                           ),
                         ),
                       ),
@@ -282,49 +205,6 @@ class _UpdateDebtViewState extends ConsumerState<UpdateDebt> {
                     ),
                   ],
                 ),
-
-                // Row(
-                //   // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   children: [
-                //     const Padding(
-                //       padding: EdgeInsets.only(left: 16.0, right: 32.0),
-                //       child: SizedBox(
-                //         width: 5,
-                //         child: Icon(
-                //           Icons.date_range_rounded,
-                //           color: AppColors.mainColor1,
-                //         ),
-                //       ),
-                //     ),
-                //     Padding(
-                //       padding: const EdgeInsets.all(8.0),
-                //       child: DropdownButton(
-                //         items: const [
-                //           DropdownMenuItem(
-                //             value: 'Every 2 Weeks',
-                //             child: Text('Every 2 Weeks'),
-                //           ),
-                //           DropdownMenuItem(
-                //             value: 'Monthly',
-                //             child: Text('Monthly'),
-                //           ),
-                //           // DropdownMenuItem(
-                //           //   value: 'Every Year',
-                //           //   child: Text('Every Year'),
-                //           // ),
-                //         ],
-                //         onChanged: (value) {
-                //           setState(() {
-                //             _selectedRecurrence = value!;
-                //           });
-                //         },
-                //         value: _selectedRecurrence,
-                //       ),
-                //     ),
-                //   ],
-                // ),
-
-                //! add wallet here
               ],
             ),
           ),
@@ -340,18 +220,6 @@ class _UpdateDebtViewState extends ConsumerState<UpdateDebt> {
                 ref,
               );
             },
-            // isCreateButtonEnabled.value
-            //     ? () async {
-            //         _addDebtController(
-            //           debtNameController,
-            //           totalDebtAmountController,
-            //           annualInterestRateController,
-            //           minimumPaymentController,
-            //           _selectedRecurrence,
-            //           ref,
-            //         );
-            //       }
-            //     : null
           ),
         ],
       ),
@@ -364,11 +232,8 @@ class _UpdateDebtViewState extends ConsumerState<UpdateDebt> {
     TextEditingController annualInterestRateController,
     TextEditingController minimumPaymentController,
     Debt debt,
-    // Wallet selectedWallet,
-    // String recurring,
     WidgetRef ref,
   ) async {
-    // final userId = ref.watch(userIdProvider);
     final debtName = debtNameController.text;
     final debtAmount = double.parse(totalDebtAmountController.text);
     final annualInterestRate = double.parse(annualInterestRateController.text);
@@ -414,34 +279,23 @@ class _UpdateDebtViewState extends ConsumerState<UpdateDebt> {
     required double minPaymentPerMonth,
     required double annualInterestRate,
   }) {
-    // double totalDebtAmount = 3000;
-    // double minPaymentPerMonth = 200;
-    // double annualInterestRate = 6.0;
-
     double endBalance = totalDebtAmount;
     double monthlyInterestRate = (annualInterestRate / 100) / 12;
     double interest = 0;
+    // ignore: unused_local_variable
     double principle = 0;
     int months = 0;
 
     while (endBalance > 0 && endBalance > minPaymentPerMonth) {
       interest = endBalance * monthlyInterestRate;
-      debugPrint('minumum payment: $minPaymentPerMonth');
-
       endBalance = endBalance + interest - minPaymentPerMonth;
       principle = minPaymentPerMonth - interest;
       months++;
-      debugPrint('Total months: $months');
-      debugPrint('Interest: $interest');
-      debugPrint('endBalance: $endBalance');
-      debugPrint('principle: $principle');
     }
     interest = endBalance * monthlyInterestRate;
     principle = endBalance;
     endBalance = 0.00;
     months++;
-    debugPrint('Total months after : $months');
-    debugPrint('Total principle: $principle');
     return months;
   }
 }

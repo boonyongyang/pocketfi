@@ -19,7 +19,7 @@ class WalletVisibilitySheetState extends ConsumerState<WalletVisibilitySheet> {
     final walletVisibility = ref.watch(walletVisibilityProvider);
 
     return SizedBox(
-      height: (wallets?.length ?? 1) * 125, // haha for fun only
+      height: (wallets?.length ?? 1) * 125,
       child: Column(
         children: [
           Padding(
@@ -60,11 +60,6 @@ class WalletVisibilitySheetState extends ConsumerState<WalletVisibilitySheet> {
                       ref
                           .read(walletVisibilityProvider.notifier)
                           .toggleVisibility(wallet!);
-                      for (var wallet
-                          in ref.watch(walletVisibilityProvider).entries) {
-                        debugPrint(
-                            'walletVisibility: ${wallet.key.walletName} ${wallet.value}');
-                      }
                     },
                     icon: Icon(
                       walletVisibility[wallet] == true

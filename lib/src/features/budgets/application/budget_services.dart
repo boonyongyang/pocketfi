@@ -22,10 +22,8 @@ class SelectedBudgetNotifier extends StateNotifier<Budget?> {
 
   void updateCategory(Category newCategory, WidgetRef ref) {
     Budget? budget = ref.watch(selectedBudgetProvider);
-    // debugPrint('budget: ${budget?.categoryName}');
     if (budget != null) {
       budget = budget.copyWith(categoryName: newCategory.name);
-      // debugPrint('budget after: ${budget.categoryName}');
       state = budget;
     }
   }

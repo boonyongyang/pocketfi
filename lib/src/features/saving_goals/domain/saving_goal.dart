@@ -14,7 +14,6 @@ class SavingGoal {
   final UserId userId;
   final DateTime startDate;
   final DateTime dueDate;
-  // final double savedAmount;
 
   const SavingGoal({
     required this.savingGoalId,
@@ -81,8 +80,6 @@ class SavingGoal {
     DateTime todayDate = DateTime.now();
     double remainingAmountToSave = savingGoalAmount - savingGoalSavedAmount;
 
-    // int daysInAMonth = 30;
-
     if (todayDate.difference(startDate).inDays == 0) {
       final differenceInWeeks =
           dueDate.difference(startDate).inDays / daysInAWeek;
@@ -106,7 +103,6 @@ class SavingGoal {
     DateTime todayDate = DateTime.now();
     double remainingAmountToSave = savingGoalAmount - savingGoalSavedAmount;
 
-    // int daysInAWeek = 7;
     int daysInAMonth = 30;
 
     if (todayDate.difference(startDate).inDays == 0) {
@@ -129,8 +125,6 @@ class SavingGoal {
 
   String daysLeft() {
     DateTime todayDate = DateTime.now();
-    // Duration duration = dueDate.difference(todayDate);
-    // // final differenceInDays = dueDate.difference(todayDate).inDays;
     String remainingTime;
     Duration duration = dueDate.difference(todayDate);
     int days = duration.inDays;

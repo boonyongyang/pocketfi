@@ -28,21 +28,6 @@ class TimelinePage extends ConsumerStatefulWidget {
 
 class _MainViewState extends ConsumerState<TimelinePage>
     with AutomaticKeepAliveClientMixin<TimelinePage> {
-  // double getTotalAmount() {
-  //   final transactions = ref.watch(userTransactionsProvider).value;
-  //   double total = 0.0;
-  //   if (transactions != null) {
-  //     for (Transaction transaction in transactions) {
-  //       if (transaction.type == TransactionType.expense) {
-  //         total -= transaction.amount;
-  //       } else if (transaction.type == TransactionType.income) {
-  //         total += transaction.amount;
-  //       }
-  //     }
-  //   }
-  //   return total;
-  // }
-
   String getNetAmountString() {
     // double netAmount = 5000;
     double netAmount = ref.watch(totalAmountProvider);
@@ -60,7 +45,6 @@ class _MainViewState extends ConsumerState<TimelinePage>
     super.build(context);
     return DefaultTabController(
       length: 2,
-      // length: 3,
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: AppColors.mainColor1,
@@ -75,38 +59,6 @@ class _MainViewState extends ConsumerState<TimelinePage>
                   ),
                   onPressed: () {},
                 ),
-                // IconButton(
-                //   icon: const Icon(
-                //     Icons.videocam,
-                //     color: Colors.white,
-                //   ),
-                //   onPressed: () async {
-                //     // pick a video first
-                //     final videoFile =
-                //         await ImagePickerHelper.pickVideoFromGallery();
-                //     if (videoFile == null) {
-                //       // no video available so return early
-                //       return;
-                //     }
-
-                //     // refresh the provider so it does not contain the previous
-                //     ref.refresh(userTransactionsProvider);
-
-                //     // go to the screen to create a new post
-                //     if (!mounted) return;
-
-                //     // Navigator.push(
-                //     //   context,
-                //     //   MaterialPageRoute(
-                //     //     builder: (_) => CreateNewPostView(
-                //     //       fileToPost: videoFile,
-                //     //       fileType: FileType.video,
-                //     //     ),
-                //     //   ),
-                //     // );
-                //     context.beamToNamed('/transactions');
-                //   },
-                // ),
                 Center(
                   child: Column(
                     children: [
@@ -131,19 +83,6 @@ class _MainViewState extends ConsumerState<TimelinePage>
                     ],
                   ),
                 ),
-                // IconButton(
-                //   icon: const Icon(
-                //     Icons.camera,
-                //     color: Colors.white,
-                //   ),
-                //   onPressed: () {
-                //     Navigator.of(context, rootNavigator: true).push(
-                //       MaterialPageRoute(
-                //         builder: (context) => const ScanReceipt(),
-                //       ),
-                //     );
-                //   },
-                // ),
                 IconButton(
                   icon: const Icon(
                     Icons.search,
@@ -173,7 +112,6 @@ class _MainViewState extends ConsumerState<TimelinePage>
                   child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: const [
-                  // FaIcon(FontAwesomeIcons.moneyBills),
                   Text('Transactions'),
                 ],
               )),
@@ -181,18 +119,9 @@ class _MainViewState extends ConsumerState<TimelinePage>
                   child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: const [
-                  // FaIcon(FontAwesomeIcons.chartPie),
                   Text('Overview'),
                 ],
               )),
-              // Tab(
-              //     child: Row(
-              //   mainAxisAlignment: MainAxisAlignment.center,
-              //   children: const [
-              //     // Icon(Icons.receipt_long),
-              //     Text('Bills'),
-              //   ],
-              // )),
             ],
           ),
         ),
@@ -200,7 +129,6 @@ class _MainViewState extends ConsumerState<TimelinePage>
           children: [
             TransactionsTabView(),
             OverviewTabView(),
-            // BillsTabView(),
           ],
         ),
         floatingActionButton: Column(

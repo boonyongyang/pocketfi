@@ -12,51 +12,32 @@ class CategoryListTile extends ConsumerWidget {
     required this.categoryName,
     required this.icon,
     required this.color,
-    // required this.currentMonthTransactions,
-    // required this.type,
   }) : super(key: key);
 
   final String categoryName;
   final Icon icon;
   final Color color;
-  // final List<Transaction> currentMonthTransactions;
-  // final TransactionType type;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final type = ref.watch(transactionTypeProvider);
-
     final currentMonthTransactions =
         ref.watch(currentMonthTransactionsProvider);
-
     final transactionsOfType =
         currentMonthTransactions.where((tran) => tran.type == type).toList();
-    // debugPrint('transactionsOfType: $transactionsOfType');
-
     final totalAmountOfType = getTotalAmount(transactionsOfType);
-
     final categoryTransactions = transactionsOfType
         .where((tran) => tran.categoryName == categoryName)
         .toList();
-    // debugPrint('categoryTransactions: $categoryTransactions');
-
     final numTransactions = categoryTransactions.length;
-    // debugPrint('numTransactions: $numTransactions');
-
     final categoryTotalAmount = getTotalAmount(categoryTransactions);
-    // debugPrint('categoryTotalAmount: $categoryTotalAmount');
-
     final percentageStr = totalAmountOfType > 0
         ? (categoryTotalAmount / totalAmountOfType * 100).toStringAsFixed(1)
         : '0.0';
-    // debugPrint('percentageStr: $percentageStr');
-
     final amountStr = 'MYR ${categoryTotalAmount.toStringAsFixed(2)}';
-    // debugPrint('amountStr: $amountStr');
 
     return GestureDetector(
       onTap: () {
-        // navigate to category details
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) =>
@@ -84,7 +65,6 @@ class CategoryListTile extends ConsumerWidget {
                   ),
                 ),
                 Text(
-                  // if numTransactions is more than 1 then plural
                   numTransactions > 1
                       ? '$numTransactions transactions'
                       : '$numTransactions transaction',

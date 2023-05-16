@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/common_widgets/animations/empty_contents_with_text_animation_view.dart';
@@ -20,7 +18,6 @@ class DebtTabView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final debts = ref.watch(userDebtsProvider);
-    // Color randomColor = colorList[Random().nextInt(colorList.length)];
 
     return Scaffold(
       body: RefreshIndicator(
@@ -46,26 +43,13 @@ class DebtTabView extends ConsumerWidget {
                             color: Colors.grey.withOpacity(0.5),
                             spreadRadius: 2,
                             blurRadius: 7,
-                            offset: const Offset(
-                                3, 6), // changes position of shadow
+                            offset: const Offset(3, 6),
                           ),
                         ],
                       ),
                       height: MediaQuery.of(context).size.height * 0.4,
-                      // add circular progress indicator
                       child: debts.when(
                         data: (debts) {
-                          // return Padding(
-                          //   padding: const EdgeInsets.all(32.0),
-                          //   child: CircularProgressIndicator(
-                          //     valueColor: const AlwaysStoppedAnimation<Color>(
-                          //       AppColors.mainColor2,
-                          //     ),
-                          //     value: 0.4,
-                          //     backgroundColor: Colors.grey[300],
-                          //     strokeWidth: 50.0,
-                          //   ),
-                          // );
                           return SfCircularChart(
                             title: ChartTitle(text: 'Debt Summary'),
                             legend: Legend(
@@ -96,13 +80,8 @@ class DebtTabView extends ConsumerWidget {
                                 xValueMapper: (Debt debt, _) => debt.debtName,
                                 yValueMapper: (Debt debt, _) =>
                                     debt.calculateTotalPayment(),
-                                pointColorMapper: (Debt debt, _) =>
-                                    // Colors.pink[100 * debt.debtAmount.toInt()],
-                                    colorList[debt.debtAmount.toInt() %
-                                        colorList.length],
-                                // colorList[
-                                //     Random().nextInt(colorList.length)],
-                                // randomColor,
+                                pointColorMapper: (Debt debt, _) => colorList[
+                                    debt.debtAmount.toInt() % colorList.length],
                                 dataLabelSettings: const DataLabelSettings(
                                   isVisible: true,
                                   labelPosition: ChartDataLabelPosition.outside,
@@ -130,7 +109,6 @@ class DebtTabView extends ConsumerWidget {
                                           .toStringAsFixed(1)
                                       : '0.0';
                                   return '$percentage%';
-                                  // return 'MYR ${debt.calculateTotalPayment().toStringAsFixed(2)}';
                                 },
                                 pointRenderMode: PointRenderMode.segment,
                                 enableTooltip: true,
@@ -147,9 +125,6 @@ class DebtTabView extends ConsumerWidget {
                 ),
               ),
             ),
-            // SliverToBoxAdapter(
-            //   child: SizedBox(height: 10),
-            // ),
             SliverToBoxAdapter(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -188,37 +163,6 @@ class DebtTabView extends ConsumerWidget {
                       ),
                     ),
                   ),
-                  // SizedBox(
-                  //   width: MediaQuery.of(context).size.width * 0.1,
-                  // ),
-                  // SizedBox(
-                  //   child: Padding(
-                  //     padding: const EdgeInsets.all(8.0),
-                  //     child: ElevatedButton(
-                  //       style: ElevatedButton.styleFrom(
-                  //         fixedSize: Size(
-                  //             MediaQuery.of(context).size.width * 0.35, 55),
-                  //         backgroundColor: AppColors.mainColor1,
-                  //         foregroundColor: Colors.white,
-                  //         shape: const RoundedRectangleBorder(
-                  //           borderRadius: BorderRadius.all(
-                  //             Radius.circular(30),
-                  //           ),
-                  //         ),
-                  //       ),
-                  //       onPressed: () {},
-                  //       child: const SizedBox(
-                  //         child: Text(
-                  //           'Track',
-                  //           textAlign: TextAlign.center,
-                  //           style: TextStyle(
-                  //             fontSize: 17,
-                  //           ),
-                  //         ),
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
                 ],
               ),
             ),
@@ -236,14 +180,8 @@ class DebtTabView extends ConsumerWidget {
                           ),
                           child: DebtTiles(
                             debt: debt,
-                            circleAvatarColor:
-                                // Colors.pink[500 * debt.debtAmount.toInt()],
-                                // Colors.primaries[debt.debtAmount.toInt() %
-                                //     Colors.primaries.length],
-
-                                colorList[
-                                    debt.debtAmount.toInt() % colorList.length],
-                            // colorList[Random().nextInt(colorList.length)],
+                            circleAvatarColor: colorList[
+                                debt.debtAmount.toInt() % colorList.length],
                             onTap: () {
                               Navigator.of(context, rootNavigator: true).push(
                                 MaterialPageRoute(
@@ -264,7 +202,6 @@ class DebtTabView extends ConsumerWidget {
                     child: EmptyContentsWithTextAnimationView(
                       text:
                           '\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t No debts yet. \n Click the button to add a debt.',
-                      // 'No debts yet.\nClick the button to add a debt.',
                     ),
                   );
                 }

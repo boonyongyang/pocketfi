@@ -7,11 +7,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/features/shared/image_upload/presentation/full_screen_image_dialog.dart';
-import 'package:pocketfi/src/features/receipts/add_transaction_with_receipt.dart';
-import 'package:pocketfi/src/features/receipts/application/receipt_services.dart';
-import 'package:pocketfi/src/features/receipts/domain/receipt.dart';
 import 'package:pocketfi/src/features/receipts/scanned_text_page.dart';
-import 'package:uuid/uuid.dart';
 
 class VerifyReceiptDetails extends StatefulHookConsumerWidget {
   const VerifyReceiptDetails({
@@ -44,25 +40,11 @@ class VerifyReceiptDetailsState extends ConsumerState<VerifyReceiptDetails> {
       scanReceipt(widget.pickedImage!);
       debugPrint('pickedImage: ${widget.pickedImage?.name}');
     }
-
-    // if (extractedPrices.isNotEmpty) {
-    //   // Get the highest amount from the list
-    //   String? highestAmount = extractedPrices.reduce(
-    //       (a, b) => double.parse(a ?? '0') > double.parse(b ?? '0') ? a : b);
-    //   amountController.text = highestAmount ?? 's';
-    // }
-
-    // if (extractedMerchants.isNotEmpty) {
-    //   String? firstMerchant = extractedMerchants.first;
-    //   merchantController.text = firstMerchant;
-    // }
   }
 
   @override
   Widget build(BuildContext context) {
-    amountController =
-        // useTextEditingController(text: extractedPrices.toString());
-        useTextEditingController(
+    amountController = useTextEditingController(
       text: extractedPrices.isNotEmpty ? extractedPrices[0] : '0.20',
     );
     debugPrint('extractedPrices: $extractedPrices');
@@ -109,7 +91,6 @@ class VerifyReceiptDetailsState extends ConsumerState<VerifyReceiptDetails> {
                 Container(
                   color: Colors.grey[300],
                 ),
-              // if (imageFile != null) Image.file(File(imageFile!.path)),
               if (imageFile != null)
                 showReceiptPhotoFrame(File(imageFile!.path)),
               const SizedBox(height: 20),
@@ -125,14 +106,6 @@ class VerifyReceiptDetailsState extends ConsumerState<VerifyReceiptDetails> {
                       child: const Text('View scanned text'),
                     )
                   : const SizedBox(),
-              // const TransactionDatePicker(),
-              // TextField(
-              //   controller: amountController,
-              //   decoration: const InputDecoration(
-              //     labelText: 'Amount',
-              //     hintText: 'Enter amount',
-              //   ),
-              // ),
               Row(
                 children: [
                   const Icon(Icons.attach_money, color: AppColors.mainColor1),
@@ -145,13 +118,10 @@ class VerifyReceiptDetailsState extends ConsumerState<VerifyReceiptDetails> {
                       child: TextField(
                         keyboardType: Platform.isIOS
                             ? const TextInputType.numberWithOptions(
-                                // signed: true,
                                 decimal: true,
                               )
                             : TextInputType.number,
-                        // autofocus: true,
                         decoration: const InputDecoration(
-                          // border: InputBorder.none,
                           prefixIcon: Icon(Icons.attach_money),
                           hintText: '0.00',
                         ),
@@ -172,11 +142,8 @@ class VerifyReceiptDetailsState extends ConsumerState<VerifyReceiptDetails> {
                     child: Padding(
                       padding: const EdgeInsets.only(left: 16.0),
                       child: TextField(
-                        // autofocus: true,
                         decoration: const InputDecoration(
-                          // border: InputBorder.none,
                           prefixIcon: Icon(Icons.date_range),
-                          // suffixIcon: Icon(Icons.calendar_today),
                           hintText: '10/03/2023',
                         ),
                         controller: dateController,
@@ -196,9 +163,7 @@ class VerifyReceiptDetailsState extends ConsumerState<VerifyReceiptDetails> {
                     child: Padding(
                       padding: const EdgeInsets.only(left: 16.0),
                       child: TextField(
-                        // autofocus: true,
                         decoration: const InputDecoration(
-                          // border: InputBorder.none,
                           prefixIcon: Icon(Icons.store),
                           hintText: 'merchant (optional)',
                         ),

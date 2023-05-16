@@ -50,7 +50,6 @@ class UserInfoStorage {
         ownerId: userId,
         ownerName: displayName,
         ownerEmail: email ?? '',
-        // walletBalance: 0.00,
         userId: userId,
         collaborators: const [],
       );
@@ -64,10 +63,6 @@ class UserInfoStorage {
           .set(payload);
 
       await FirebaseFirestore.instance
-          // .collection(
-          //   FirebaseCollectionName.users
-          // )
-          // .doc(userId)
           .collection(FirebaseCollectionName.wallets)
           .doc(walletId)
           .set(walletPayload);
@@ -105,9 +100,4 @@ class UserInfoStorage {
     final userDoc = await usersRef.doc(uid).get();
     return userDoc;
   }
-
-// Usage:
-// final userDoc = await getUser('userUid');
-// final email = userDoc.data()!['email'];
-// final displayName = userDoc.data()!['display_name'];
 }

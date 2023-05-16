@@ -10,7 +10,6 @@ import 'package:pocketfi/src/features/tags/application/tag_services.dart';
 import 'package:pocketfi/src/features/tags/data/tag_repository.dart';
 import 'package:pocketfi/src/features/tags/domain/tag.dart';
 import 'package:pocketfi/src/features/transactions/domain/transaction.dart';
-import 'package:pocketfi/src/features/wallets/data/wallet_repository.dart';
 
 class TransactionCard extends ConsumerWidget {
   final Transaction transaction;
@@ -25,12 +24,7 @@ class TransactionCard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final category = getCategoryWithCategoryName(transaction.categoryName);
     final transactionType = transaction.type;
-    // final userInfo = getUserInfoWithUserId(transaction.userId);
     final allTags = ref.watch(userTagsProvider).value ?? [];
-    // final selectedTags = getTagsWithTagNames(
-    //   transaction.tags,
-    //   allTags.toList(),
-    // );
     final selectedTags = transaction.tags;
 
     return GestureDetector(
@@ -38,7 +32,6 @@ class TransactionCard extends ConsumerWidget {
       child: Padding(
         padding: const EdgeInsets.only(bottom: 12.0),
         child: ClipRRect(
-          // borderRadius: BorderRadius.circular(10.0),
           borderRadius: const BorderRadius.only(
             bottomLeft: Radius.circular(10.0),
             bottomRight: Radius.circular(10.0),
@@ -59,7 +52,6 @@ class TransactionCard extends ConsumerWidget {
                       decoration: BoxDecoration(
                           shape: BoxShape.circle, color: category.color),
                       child: Center(
-                        // heightFactor: 2.0,
                         child: category.icon,
                       ),
                     ),
@@ -74,7 +66,6 @@ class TransactionCard extends ConsumerWidget {
                                 ? Strings.transfer
                                 : transaction.categoryName,
                             style: const TextStyle(
-                              // fontWeight: FontWeight.w600,
                               fontSize: 14.0,
                             ),
                           ),
@@ -106,7 +97,6 @@ class TransactionCard extends ConsumerWidget {
                                       Text(
                                         shortenedName.toLowerCase(),
                                         style: const TextStyle(
-                                          // fontWeight: FontWeight.w600,
                                           fontSize: 14.0,
                                         ),
                                       ),
@@ -120,8 +110,6 @@ class TransactionCard extends ConsumerWidget {
                             ShowTags(
                               tags: getTagsWithTagNames(selectedTags, allTags),
                             ),
-                          // const SizedBox(height: 20.0),
-
                           Visibility(
                             visible:
                                 transaction.description?.isNotEmpty ?? false,
@@ -133,19 +121,15 @@ class TransactionCard extends ConsumerWidget {
                                   color: Colors.grey[700],
                                 )),
                           ),
-                          // ! here cast probelm not sure
                           if (transaction.transactionImage?.thumbnailUrl !=
                               null)
                             Image.network(
                               transaction.transactionImage!.thumbnailUrl!,
                               height: 100,
-                              // width: 100,
                               fit: BoxFit.cover,
                             )
                           else
                             const SizedBox(),
-                          // Text(transaction.createdAt!.toIso8601String()),
-                          // Text(transaction.walletName),
                           Row(
                             children: [
                               Icon(
@@ -162,25 +146,17 @@ class TransactionCard extends ConsumerWidget {
                               ),
                             ],
                           ),
-                          // format date to dd/mm/yyyy
-                          // Text(DateFormat('d MMM').format(transaction.date)),
                         ],
                       ),
                     ),
                   ],
                 ),
                 Text(
-                  // '${transactionType == TransactionType.expense ? TransactionType.expense.symbol : transactionType == TransactionType.income ? TransactionType.income.symbol : TransactionType.transfer.symbol}MYR ${transaction.amount}',
                   '${transactionType.symbol}MYR ${transaction.amount.toStringAsFixed(2)}',
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 16,
                     color: transactionType.color,
-                    // color: transactionType == TransactionType.expense
-                    //     ? TransactionType.expense.color
-                    //     : transactionType == TransactionType.income
-                    //         ? TransactionType.income.color
-                    //         : TransactionType.transfer.color,
                   ),
                 ),
               ],
@@ -224,7 +200,6 @@ class ShowTags extends StatelessWidget {
         .toList();
 
     return Column(
-      // mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: List<Widget>.generate(
         (tagWidgets.length / 3).ceil(),
@@ -244,38 +219,3 @@ class ShowTags extends StatelessWidget {
     );
   }
 }
-
-
-// class ShowTags extends StatelessWidget {
-//   const ShowTags({
-//     super.key,
-//   });
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Row(
-//       children: [
-//         ActionChip(
-//           visualDensity: const VisualDensity(horizontal: -4.0, vertical: -4.0),
-//           // materialTapTargetSize:
-//           //     MaterialTapTargetSize.shrinkWrap,
-//           label: const Text('Lunch'),
-//           onPressed: () => Fluttertoast.showToast(
-//             msg: "Lunch!",
-//             toastLength: Toast.LENGTH_SHORT,
-//             gravity: ToastGravity.BOTTOM,
-//             timeInSecForIosWeb: 2,
-//             backgroundColor: Colors.white,
-//             textColor: AppColors.mainColor1,
-//             fontSize: 16.0,
-//           ),
-//         ),
-//         const SizedBox(width: 5),
-//         const Chip(
-//           visualDensity: VisualDensity(horizontal: -4.0, vertical: -4.0),
-//           label: Text('Foodpanda'),
-//         ),
-//       ],
-//     );
-//   }
-// }

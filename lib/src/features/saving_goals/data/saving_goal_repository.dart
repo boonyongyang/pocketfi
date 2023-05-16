@@ -22,7 +22,6 @@ final userSavingGoalsProvider =
     final document = snapshot.docs;
     final savingGoals = document
         .where(
-          //   (element) => element.data()[FirebaseFieldName.userId] == userId,
           (doc) => !doc.metadata.hasPendingWrites,
         )
         .map((e) => SavingGoal.fromJson(e.data()))
@@ -48,7 +47,6 @@ final userSavingGoalsHistoryProvider = StreamProvider.autoDispose
     final document = snapshot.docs;
     final savingGoalsHistory = document
         .where(
-          //   (element) => element.data()[FirebaseFieldName.userId] == userId,
           (doc) => !doc.metadata.hasPendingWrites,
         )
         .map((e) => SavingGoalHistory.fromJson(e.data()))
@@ -108,32 +106,9 @@ final totalSavedAmountProvider = StreamProvider.autoDispose<double>((ref) {
   return controller.stream;
 });
 
-// final savingProvider = FutureProvider.family.autoDispose<SavingGoal, String>(
-//   (ref, String savingGoalId) async {
-//     final snapshot = await FirebaseFirestore.instance
-//         .collection(FirebaseCollectionName.savingGoals)
-//         .where(FirebaseFieldName.savingGoalId, isEqualTo: savingGoalId)
-//         // .doc(savingGoal.savingGoalId)
-//         .limit(1)
-//         .get();
-
-//     final document = snapshot.docs;
-//     final savingGoal = document
-//         .map(
-//           (doc) => SavingGoal.fromJson(doc.data()),
-//         )
-//         .first;
-
-//     return savingGoal;
-//   },
-// );
-
 class SavingGoalNotifier extends StateNotifier<IsLoading> {
   SavingGoalNotifier() : super(false);
-
   set isLoading(bool isLoading) => state = isLoading;
-
-  // final SavingGoalRepository _savingGoalRepository;
 
   Future<bool> addNewSavingGoal({
     required String savingGoalName,
@@ -144,9 +119,7 @@ class SavingGoalNotifier extends StateNotifier<IsLoading> {
     required DateTime dueDate,
   }) async {
     isLoading = true;
-
     final savingGoalId = documentIdFromCurrentDate();
-
     final payload = SavingGoal(
       savingGoalId: savingGoalId,
       savingGoalName: savingGoalName,

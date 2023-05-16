@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/common_widgets/buttons/full_width_button_with_text.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
@@ -8,10 +7,10 @@ import 'package:pocketfi/src/features/debts/application/debt_services.dart';
 import 'package:pocketfi/src/features/debts/domain/debt.dart';
 
 class DebtPaymentSheet extends ConsumerStatefulWidget {
-  Debt debt;
-  Map<String, dynamic> rowData;
-  Map<String, dynamic>? previousRowData;
-  DebtPaymentSheet({
+  final Debt debt;
+  final Map<String, dynamic> rowData;
+  final Map<String, dynamic>? previousRowData;
+  const DebtPaymentSheet({
     super.key,
     required this.debt,
     required this.rowData,
@@ -19,10 +18,10 @@ class DebtPaymentSheet extends ConsumerStatefulWidget {
   });
 
   @override
-  _DebtPaymentSheetState createState() => _DebtPaymentSheetState();
+  DebtPaymentSheetState createState() => DebtPaymentSheetState();
 }
 
-class _DebtPaymentSheetState extends ConsumerState<DebtPaymentSheet> {
+class DebtPaymentSheetState extends ConsumerState<DebtPaymentSheet> {
   @override
   Widget build(BuildContext context) {
     double totalPayment = double.parse(widget.rowData['interest']) +
@@ -98,7 +97,6 @@ class _DebtPaymentSheetState extends ConsumerState<DebtPaymentSheet> {
               color: AppColors.mainColor1,
             ),
           ),
-
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Container(
@@ -107,14 +105,6 @@ class _DebtPaymentSheetState extends ConsumerState<DebtPaymentSheet> {
                 borderRadius: BorderRadius.all(
                   Radius.circular(20),
                 ),
-                // boxShadow: [
-                //   BoxShadow(
-                //     color: Colors.grey.withOpacity(0.5),
-                //     spreadRadius: 2,
-                //     blurRadius: 7,
-                //     offset: const Offset(3, 6), // changes position of shadow
-                //   ),
-                // ],
               ),
               child: Padding(
                 padding: const EdgeInsets.only(
@@ -143,7 +133,6 @@ class _DebtPaymentSheetState extends ConsumerState<DebtPaymentSheet> {
                                 style: const TextStyle(
                                   color: AppColors.mainColor1,
                                   fontSize: 15,
-                                  // fontWeight: FontWeight.bold,
                                 ),
                                 textAlign: TextAlign.center,
                               )
@@ -152,7 +141,6 @@ class _DebtPaymentSheetState extends ConsumerState<DebtPaymentSheet> {
                                 style: const TextStyle(
                                   color: AppColors.mainColor1,
                                   fontSize: 15,
-                                  // fontWeight: FontWeight.bold,
                                 ),
                                 textAlign: TextAlign.center,
                               ),
@@ -178,7 +166,6 @@ class _DebtPaymentSheetState extends ConsumerState<DebtPaymentSheet> {
                           style: const TextStyle(
                             color: AppColors.mainColor1,
                             fontSize: 15,
-                            // fontWeight: FontWeight.bold,
                           ),
                           textAlign: TextAlign.center,
                         ),
@@ -204,7 +191,6 @@ class _DebtPaymentSheetState extends ConsumerState<DebtPaymentSheet> {
                           style: const TextStyle(
                             color: AppColors.mainColor1,
                             fontSize: 15,
-                            // fontWeight: FontWeight.bold,
                           ),
                           textAlign: TextAlign.center,
                         ),
@@ -217,32 +203,6 @@ class _DebtPaymentSheetState extends ConsumerState<DebtPaymentSheet> {
                     const SizedBox(
                       height: 5,
                     ),
-                    // Row(
-                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //   children: [
-                    //     const Text(
-                    //       'Payment',
-                    //       style: TextStyle(
-                    //         color: AppColors.mainColor1,
-                    //         fontSize: 15,
-                    //         fontWeight: FontWeight.bold,
-                    //       ),
-                    //       textAlign: TextAlign.center,
-                    //     ),
-                    //     Text(
-                    //       'RM ${totalPayment.toStringAsFixed(2)}',
-                    //       style: const TextStyle(
-                    //         color: AppColors.mainColor1,
-                    //         fontSize: 15,
-                    //         // fontWeight: FontWeight.bold,
-                    //       ),
-                    //       textAlign: TextAlign.center,
-                    //     ),
-                    //   ],
-                    // ),
-                    // const SizedBox(
-                    //   height: 20,
-                    // ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -271,9 +231,6 @@ class _DebtPaymentSheetState extends ConsumerState<DebtPaymentSheet> {
               ),
             ),
           ),
-          // const SizedBox(
-          //   height: 10,
-          // ),
           FullWidthButtonWithText(
             text: 'Mark Complete',
             onPressed: () {
@@ -289,24 +246,14 @@ class _DebtPaymentSheetState extends ConsumerState<DebtPaymentSheet> {
                 widget.debt.walletId,
                 ref,
               );
-              // Navigator.pop(context);
             },
             backgroundColor: AppColors.mainColor2,
           )
-          // Expanded(
-          //   child: ListView.builder(
-          //     itemCount: 1,
-          //     itemBuilder: (BuildContext context, int index) {
-          //       return const WalletTile();
-          //     },
-          //   ),
-          // ),
         ],
       ),
     );
   }
 
-  // function to add the paid debt into
   Future<void> _addPaidDebt(
     String debtId,
     double interestAmount,
@@ -317,12 +264,10 @@ class _DebtPaymentSheetState extends ConsumerState<DebtPaymentSheet> {
     String walletId,
     WidgetRef ref,
   ) async {
-    // await _debtRepository.addPaidDebt(debt);
     final userId = ref.watch(userIdProvider);
     if (userId == null) {
       return;
     }
-
     final isCreated = await ref.read(debtPaymentProvider.notifier).addPaidDebt(
         debtId: debtId,
         userId: userId,
@@ -332,10 +277,6 @@ class _DebtPaymentSheetState extends ConsumerState<DebtPaymentSheet> {
         previousBalance: previousBalance,
         paidMonth: paidMonth,
         walletId: walletId);
-
-    debugPrint('paidMonth: $paidMonth');
-    debugPrint('isCreated: $isCreated');
-    debugPrint('mounted: $mounted');
     if (isCreated && mounted) {
       Navigator.pop(context);
     }

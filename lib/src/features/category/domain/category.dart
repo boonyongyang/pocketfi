@@ -35,15 +35,6 @@ class Category {
         isSelected,
       ]);
 
-  // factory Category.fromJson(Map<String, dynamic> json) {
-  //   return Category(
-  //     name: json[CategoryKey.name],
-  //     color: Color(json[CategoryKey.color]),
-  //     icon: Icon(json[CategoryKey.icon]),
-  //     isSelected: json[CategoryKey.isSelected] ?? false,
-  //   );
-  // }
-
   Category.fromJson({
     required name,
     required Map<String, dynamic> jsoon,

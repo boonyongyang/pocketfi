@@ -29,7 +29,6 @@ final userInfoModelProvider =
       .snapshots()
       .listen(
     (snapshot) {
-      // get the first document
       final doc = snapshot.docs.first;
       // get the json data of the document (Map)
       final json = doc.data();

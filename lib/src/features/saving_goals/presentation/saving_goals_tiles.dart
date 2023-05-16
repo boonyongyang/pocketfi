@@ -7,9 +7,9 @@ import 'package:pocketfi/src/features/saving_goals/domain/saving_goal.dart';
 import 'package:pocketfi/src/features/wallets/data/wallet_repository.dart';
 
 class SavingGoalsTiles extends ConsumerWidget {
-  SavingGoal savingGoal;
-  VoidCallback onTap;
-  SavingGoalsTiles({
+  final SavingGoal savingGoal;
+  final VoidCallback onTap;
+  const SavingGoalsTiles({
     super.key,
     required this.savingGoal,
     required this.onTap,
@@ -44,7 +44,7 @@ class SavingGoalsTiles extends ConsumerWidget {
                 color: Colors.grey.withOpacity(0.5),
                 spreadRadius: 2,
                 blurRadius: 7,
-                offset: const Offset(3, 6), // changes position of shadow
+                offset: const Offset(3, 6),
               ),
             ],
           ),
@@ -72,7 +72,6 @@ class SavingGoalsTiles extends ConsumerWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
-                        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Expanded(
@@ -81,18 +80,9 @@ class SavingGoalsTiles extends ConsumerWidget {
                               style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 17,
-                                // color: AppColors.mainColor1,
                               ),
                             ),
                           ),
-                          // const Text(
-                          //   'RM 1500.00 ',
-                          //   style: TextStyle(
-                          //     color: AppColors.mainColor1,
-                          //     fontWeight: FontWeight.bold,
-                          //     fontSize: 16,
-                          //   ),
-                          // ),
                         ],
                       ),
                       const SizedBox(
@@ -171,7 +161,6 @@ class SavingGoalsTiles extends ConsumerWidget {
                       ),
                       Stack(
                         children: [
-                          //progress indicator
                           ClipRRect(
                             borderRadius: BorderRadius.circular(10.0),
                             child: LinearProgressIndicator(

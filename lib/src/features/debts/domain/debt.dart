@@ -19,7 +19,6 @@ class Debt {
   final int totalNumberOfMonthsToPay;
   final double lastMonthInterest;
   final double lastMonthPrinciple;
-  // final DateTime? recurringDateToPay;
 
   const Debt({
     required this.debtId,
@@ -33,7 +32,6 @@ class Debt {
     required this.lastMonthPrinciple,
     required this.lastMonthInterest,
     this.frequency = 'Monthly',
-    // this.recurringDateToPay,
     this.createdAt,
   });
 
@@ -50,8 +48,6 @@ class Debt {
             json[FirebaseFieldName.totalNumberOfMonthsToPay],
         lastMonthInterest = json[FirebaseFieldName.lastMonthInterest],
         lastMonthPrinciple = json[FirebaseFieldName.lastMonthPrinciple],
-        // recurringDateToPay =
-        //     (json[FirebaseFieldName.recurringDateToPay] as Timestamp).toDate(),
         createdAt = (json[FirebaseFieldName.createdAt] as Timestamp).toDate();
 
   Map<String, dynamic> toJson() => {
@@ -66,7 +62,6 @@ class Debt {
         FirebaseFieldName.totalNumberOfMonthsToPay: totalNumberOfMonthsToPay,
         FirebaseFieldName.lastMonthInterest: lastMonthInterest,
         FirebaseFieldName.lastMonthPrinciple: lastMonthPrinciple,
-        // FirebaseFieldName.recurringDateToPay: recurringDateToPay,
         FirebaseFieldName.createdAt: FieldValue.serverTimestamp(),
       };
 
@@ -82,7 +77,6 @@ class Debt {
     double? lastMonthInterest,
     double? lastMonthPrinciple,
     int? totalNumberOfMonthsToPay,
-    // DateTime? recurringDateToPay,
     DateTime? createdAt,
   }) {
     return Debt(
@@ -98,7 +92,6 @@ class Debt {
           totalNumberOfMonthsToPay ?? this.totalNumberOfMonthsToPay,
       lastMonthInterest: lastMonthInterest ?? this.lastMonthInterest,
       lastMonthPrinciple: lastMonthPrinciple ?? this.lastMonthPrinciple,
-      // recurringDateToPay: recurringDateToPay ?? this.recurringDateToPay,
       createdAt: createdAt ?? this.createdAt,
     );
   }
@@ -153,11 +146,6 @@ class Debt {
       endBalance = endBalance + interest - minimumPayment;
       principle = minimumPayment - interest;
       months++;
-
-      // int month = createdMonth + months;
-      // if (month > 12) {
-      //   month -= 12;
-      // }
       String monthName = DateFormat('MMM yyyy').format(
         DateTime(createdAt!.year, months),
       );
@@ -199,6 +187,7 @@ class Debt {
     double monthlyInterestRate = (annualInterestRate / 100) / 12;
     double interest = 0;
     double principle = 0;
+    // ignore: unused_local_variable
     int months = createdMonth - 1;
     double totalPayment = 0.00;
 

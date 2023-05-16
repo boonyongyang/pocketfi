@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:collection';
 
 import 'package:pocketfi/src/constants/firebase_names.dart';
@@ -10,7 +9,7 @@ class TempUsers extends MapView<String, dynamic> {
   final String? email;
   bool isChecked;
 
-  // this will create a map of the user info and set it to the super map
+  // create a map of the user info and set it to the super map
   TempUsers({
     required this.userId,
     required this.displayName,
@@ -25,7 +24,7 @@ class TempUsers extends MapView<String, dynamic> {
           },
         );
 
-  // this will create a TempUsers from a json map
+  // create a TempUsers from a json map
   TempUsers.fromJson(
     Map<String, dynamic> json, {
     required UserId userId,

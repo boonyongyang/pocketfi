@@ -11,7 +11,6 @@ class Budget {
   final double usedAmount;
   final String categoryName;
   final String ownerId;
-  // final double remainingAmount;
   final DateTime? createdAt;
   final String walletId;
   final UserId userId;
@@ -37,7 +36,6 @@ class Budget {
         userId = json[FirebaseFieldName.userId] as UserId,
         ownerId = json[FirebaseFieldName.ownerId],
         categoryName = json[FirebaseFieldName.categoryName],
-        // remainingAmount = json[FirebaseFieldName.remainingAmount],
         createdAt = (json[FirebaseFieldName.createdAt] as Timestamp).toDate();
 
   Map<String, dynamic> toJson() => {
@@ -71,62 +69,9 @@ class Budget {
       usedAmount: usedAmount ?? this.usedAmount,
       categoryName: categoryName ?? this.categoryName,
       ownerId: ownerId ?? this.ownerId,
-      // remainingAmount: remainingAmount ?? this.remainingAmount,
       createdAt: createdAt ?? this.createdAt,
       walletId: walletId ?? this.walletId,
       userId: userId ?? this.userId,
     );
   }
 }
-
-// @immutable
-// class Budget {
-//   final String budgetId;
-//   final String budgetName;
-//   final double budgetAmount;
-//   final double usedAmount;
-//   final String categoryName;
-//   // final double remainingAmount;
-//   final DateTime createdAt;
-//   final String walletId;
-//   final UserId userId;
-
-//   Budget(Map<String, dynamic> json)
-//       : budgetId = json[FirebaseFieldName.budgetId],
-//         budgetName = json[FirebaseFieldName.budgetName],
-//         budgetAmount = json[FirebaseFieldName.budgetAmount],
-//         usedAmount = json[FirebaseFieldName.usedAmount],
-//         walletId = json[FirebaseFieldName.walletId],
-//         userId = json[FirebaseFieldName.userId] as UserId,
-//         categoryName = json[FirebaseFieldName.categoryName],
-//         // remainingAmount = json[FirebaseFieldName.remainingAmount],
-//         createdAt = (json[FirebaseFieldName.createdAt] as Timestamp).toDate();
-
-//   @override
-//   bool operator ==(covariant Budget other) =>
-//       runtimeType == other.runtimeType &&
-//       other.budgetId == budgetId &&
-//       other.budgetName == budgetName &&
-//       other.budgetAmount == budgetAmount &&
-//       other.createdAt == createdAt &&
-//       other.walletId == walletId &&
-//       other.userId == userId &&
-//       other.categoryName == categoryName &&
-//       other.usedAmount == usedAmount;
-//   // other.remainingAmount == remainingAmount;
-
-//   @override
-//   int get hashCode => Object.hashAll(
-//         [
-//           budgetId,
-//           budgetName,
-//           budgetAmount,
-//           createdAt,
-//           walletId,
-//           userId,
-//           categoryName,
-//           // remainingAmount,
-//           usedAmount,
-//         ],
-//       );
-// }

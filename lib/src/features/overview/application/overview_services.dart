@@ -12,7 +12,6 @@ import 'package:pocketfi/src/features/transactions/domain/transaction.dart';
 final totalAmountProvider = Provider.autoDispose<double>((ref) {
   final transactionList = ref.watch(userTransactionsProvider);
   double totalAmount = 0.0;
-  // if (transactionList.hasValue && transactionList.value != null) {
   if (transactionList.hasValue) {
     final transactions = transactionList.value ?? [];
     for (final transaction in transactions) {
@@ -33,7 +32,6 @@ final currentMonthTransactionsProvider = Provider<List<Transaction>>((ref) {
   if (transactionList.hasValue) {
     final transactions = transactionList.value ?? [];
     return transactions.where((tran) {
-      // if data is empty, then the where function will return an empty list
       return tran.date.month == month.month && tran.date.year == month.year;
     }).toList();
   }
@@ -107,7 +105,6 @@ final filteredTagsByTypeProvider =
 double getTagTotalAmountForCurrentMonth(
     String tagName, List<Transaction> transactions) {
   final tagTransactions =
-      // transactions.where((tran) => tran.categoryName == tagName);
       transactions.where((tran) => tran.tags.contains(tagName));
   return getTotalAmount(tagTransactions.toList());
 }
@@ -153,18 +150,14 @@ final totalTypeAmountProvider = Provider.autoDispose<double>((ref) {
 // returns the total amount of a specific transaction type
 final monthlyCashFlowProvider = Provider.autoDispose<double>((ref) {
   final currentMonthTransactions = ref.watch(currentMonthTransactionsProvider);
-
   final totalIncome = currentMonthTransactions
       .where((tran) => tran.type == TransactionType.income)
       .toList();
   final totalExpense = currentMonthTransactions
       .where((tran) => tran.type == TransactionType.expense)
       .toList();
-
   final incomeAmount = getTotalAmount(totalIncome);
   final expenseAmount = getTotalAmount(totalExpense);
-
   final monthlyCashFlow = incomeAmount - expenseAmount;
-
   return monthlyCashFlow;
 });

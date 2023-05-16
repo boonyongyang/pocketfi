@@ -5,28 +5,16 @@ import 'package:pocketfi/src/features/budgets/application/budget_services.dart';
 import 'package:pocketfi/src/features/budgets/domain/budget.dart';
 import 'package:pocketfi/src/features/category/application/category_services.dart';
 import 'package:pocketfi/src/features/transactions/data/transaction_repository.dart';
-import 'package:pocketfi/src/features/shared/date_picker/application/date_services.dart';
 import 'package:pocketfi/src/features/transactions/domain/transaction.dart';
 import 'package:pocketfi/src/features/wallets/data/wallet_repository.dart';
 
 class BudgetTile extends ConsumerWidget {
-  // final double totalBudgetAmount;
-  // final double remainingAmount;
-  // final String budgetName;
-  // final Icon categoryIcon;
-  // final Color categoryColor;
   final Budget budget;
   final VoidCallback onTap;
   const BudgetTile({
     super.key,
     required this.budget,
     required this.onTap,
-
-    // required this.totalBudgetAmount,
-    // required this.remainingAmount,
-    // required this.budgetName,
-    // required this.categoryIcon,
-    // required this.categoryColor,
   });
 
   @override
@@ -49,8 +37,6 @@ class BudgetTile extends ConsumerWidget {
     // get absolute value of total amount
     final spentAmount = getCategoryTotalAmount(currentMonthTransactions).abs();
     if (spentAmount != budget.usedAmount) {
-      debugPrint('budget used amount updated: $spentAmount');
-      debugPrint('budget used amount updated: ${budget.usedAmount}');
       updateUsedAmount(
         budget,
         spentAmount,
@@ -84,14 +70,13 @@ class BudgetTile extends ConsumerWidget {
                 color: Colors.grey.withOpacity(0.5),
                 spreadRadius: 2,
                 blurRadius: 7,
-                offset: const Offset(3, 6), // changes position of shadow
+                offset: const Offset(3, 6),
               ),
             ],
           ),
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Row(
-              // mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Expanded(
                   child: Column(
@@ -149,9 +134,6 @@ class BudgetTile extends ConsumerWidget {
                               value: spentPercentage,
                               backgroundColor: Colors.grey[300],
                               valueColor: AlwaysStoppedAnimation<Color>(
-                                // spentPercentage > 0.8
-                                //     ? AppColors.red
-                                //     : category.color,
                                 category.color,
                               ),
                             ),
@@ -187,7 +169,6 @@ class BudgetTile extends ConsumerWidget {
                               style: const TextStyle(
                                 color: Colors.grey,
                                 fontSize: 14,
-                                // fontWeight: FontWeight.bold,
                               ),
                               children: [
                                 TextSpan(
@@ -205,7 +186,6 @@ class BudgetTile extends ConsumerWidget {
                       ),
                       Row(
                         mainAxisSize: MainAxisSize.max,
-                        // mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           Container(
                             padding: const EdgeInsets.all(5),
@@ -226,7 +206,6 @@ class BudgetTile extends ConsumerWidget {
                                     ? AppColors.red
                                     : Colors.grey,
                                 fontSize: 14,
-                                // fontWeight: FontWeight.bold,
                               ),
                               children: [
                                 TextSpan(
@@ -281,16 +260,3 @@ class BudgetTile extends ConsumerWidget {
     );
   }
 }
-  
-
-
-// Row
-  // column
-    // circle avatar
-    // Row 
-      // food drinks 
-      // RM 1200
-    //Row 
-      // progress bar
-    //row 
-      //left 

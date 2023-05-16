@@ -8,8 +8,6 @@ class BaseText {
   final String text;
   final TextStyle? style;
 
-  // bool get isLinkText => this is LinkText;
-
   const BaseText({
     required this.text,
     this.style,

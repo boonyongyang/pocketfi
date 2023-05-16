@@ -75,14 +75,8 @@ class _AddNewSavingGoalState extends ConsumerState<AddNewSavingGoal> {
                       textAlign: TextAlign.center,
                       enableInteractiveSelection: false,
                       showCursor: false,
-                      // keyboardType: const TextInputType.numberWithOptions(
-                      //   decimal: true,
-                      //   signed: true,
-                      // ),
-                      // textInputAction: TextInputAction.done,
                       keyboardType: Platform.isIOS
                           ? const TextInputType.numberWithOptions(
-                              // signed: true,
                               decimal: true,
                             )
                           : TextInputType.number,
@@ -99,11 +93,6 @@ class _AddNewSavingGoalState extends ConsumerState<AddNewSavingGoal> {
                       style: const TextStyle(
                         fontSize: 28,
                         fontWeight: FontWeight.bold,
-                        // color: ref.watch(transactionTypeProvider) == TransactionType.expense
-                        //     ? AppColors.red
-                        //     : ref.watch(transactionTypeProvider) == TransactionType.income
-                        //         ? AppColors.green
-                        //         : Colors.grey,
                         color: AppColors.mainColor2,
                       ),
                     ),
@@ -113,7 +102,6 @@ class _AddNewSavingGoalState extends ConsumerState<AddNewSavingGoal> {
                   'MYR',
                   style: TextStyle(
                     color: AppColors.mainColor1,
-                    // fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -142,7 +130,6 @@ class _AddNewSavingGoalState extends ConsumerState<AddNewSavingGoal> {
                     ),
                   ],
                 ),
-                //datepicker
                 Row(
                   children: [
                     const Padding(
@@ -166,18 +153,14 @@ class _AddNewSavingGoalState extends ConsumerState<AddNewSavingGoal> {
                                 onPressed: dateRangePicker,
                                 child: const Text(
                                   'Select a Date Range',
-                                  style: TextStyle(
-                                      // color: Colors.grey,
-                                      ),
+                                  style: TextStyle(),
                                 ),
                               )
                             : TextButton(
                                 onPressed: dateRangePicker,
                                 child: const Text(
                                   'Selected Date Range',
-                                  style: TextStyle(
-                                      // color: Colors.grey,
-                                      ),
+                                  style: TextStyle(),
                                 ),
                               ),
                         _selectedDateRange != null
@@ -216,27 +199,12 @@ class _AddNewSavingGoalState extends ConsumerState<AddNewSavingGoal> {
                         ),
                       ),
                     ),
-                    // const Expanded(
-                    //   child: Padding(
-                    //     padding: EdgeInsets.all(16.0),
-                    //     child: Text(
-                    //       'Wallets',
-                    //       style: TextStyle(
-                    //         // color: AppSwatches.mainColor2,
-                    //         // fontWeight: FontWeight.bold,
-                    //         fontSize: 15,
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
                     Padding(
                         padding: EdgeInsets.only(
                           left: 8.0,
                           right: 16.0,
-                          // top: 16.0,
                           bottom: 8.0,
                         ),
-                        // child: SelectWalletForSavingGoalDropdownList()),
                         child: SelectWalletDropdownList()),
                   ],
                 ),
@@ -247,14 +215,11 @@ class _AddNewSavingGoalState extends ConsumerState<AddNewSavingGoal> {
               text: Strings.createNewSavingGoal,
               onPressed: isCreateButtonEnabled.value
                   ? () async {
-                      debugPrint(
-                          '_selectedDateRange.end: ${_selectedDateRange!.end}');
                       _createSavingGoalController(
                         savingGoalName,
                         savingGoalAmount,
                         _selectedDateRange!.start,
                         _selectedDateRange!.end,
-                        // ref.watch(transactionDateProvider),
                         selectedWallet!,
                         ref,
                       );
@@ -270,16 +235,10 @@ class _AddNewSavingGoalState extends ConsumerState<AddNewSavingGoal> {
     TextEditingController savingGoalAmount,
     DateTime startDate,
     DateTime dueDate,
-    // DateTime dueDate,
     Wallet selectedWallet,
     WidgetRef ref,
   ) async {
     final userId = ref.watch(userIdProvider);
-    // final dueDate = ref.watch(transactionDateProvider);
-
-    debugPrint('startDate: $startDate');
-    debugPrint('dueDate: $dueDate');
-
     final isCreated =
         await ref.read(savingGoalProvider.notifier).addNewSavingGoal(
               savingGoalName: savingGoalName.text,
@@ -300,28 +259,14 @@ class _AddNewSavingGoalState extends ConsumerState<AddNewSavingGoal> {
   void dateRangePicker() async {
     DateTimeRange? result = await showDateRangePicker(
       context: context,
-      // initialDateRange: DateTimeRange(
-      //   end: DateTime(
-      //       DateTime.now().year, DateTime.now().month, DateTime.now().day + 13),
-      //   start: DateTime.now(),
-      // ),
       firstDate: DateTime(DateTime.now().year - 5),
       lastDate: DateTime(DateTime.now().year + 5),
       currentDate: DateTime.now(),
       saveText: 'Done',
-      // useRootNavigator: false,
-      // cancelText: 'Cancel',
     );
 
-    DateTime startDate = result!.start;
-    DateTime endDate = result.end;
-
-    debugPrint('startDate: $startDate');
-    debugPrint('endDate: $endDate');
-
     if (result != null) {
-      // Rebuild the UI
-      print(result.start.toString());
+      debugPrint(result.start.toString());
       setState(() {
         _selectedDateRange = result;
       });

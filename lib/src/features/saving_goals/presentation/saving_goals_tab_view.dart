@@ -32,7 +32,6 @@ class SavingGoalsTabView extends ConsumerWidget {
     } else {
       savedPercentage = (totalSavedAmount / totalSavingGoalsAmount);
     }
-    debugPrint('savedPercentage: $savedPercentage');
     return RefreshIndicator(
       onRefresh: () async {
         ref.refresh(userSavingGoalsProvider);
@@ -62,9 +61,7 @@ class SavingGoalsTabView extends ConsumerWidget {
                               ),
                             ),
                             const Spacer(),
-                            // Calculation part
                             Text(
-                              // 'RM XX.XX',
                               'MYR ${totalSavingGoalsAmount.toStringAsFixed(2)}',
                               style: const TextStyle(
                                 color: AppColors.mainColor1,
@@ -79,7 +76,6 @@ class SavingGoalsTabView extends ConsumerWidget {
                         ),
                         Stack(
                           children: [
-                            //progress indicator
                             ClipRRect(
                               borderRadius: BorderRadius.circular(10.0),
                               child: LinearProgressIndicator(
@@ -118,7 +114,6 @@ class SavingGoalsTabView extends ConsumerWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            // Calculation part
                             const Text(
                               'Saved',
                               style: TextStyle(
@@ -144,7 +139,6 @@ class SavingGoalsTabView extends ConsumerWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            // Calculation part
                             const Text(
                               'Left',
                               style: TextStyle(
@@ -192,9 +186,7 @@ class SavingGoalsTabView extends ConsumerWidget {
                                 rootNavigator: true,
                               ).push(
                                 MaterialPageRoute(
-                                  builder: (_) => SavingGoalDetailView(
-                                      // savingGoal: savingGoal,
-                                      ),
+                                  builder: (_) => const SavingGoalDetailView(),
                                 ),
                               );
                             },
@@ -207,58 +199,6 @@ class SavingGoalsTabView extends ConsumerWidget {
                       return const LoadingAnimationView();
                     }),
                   ),
-
-                  // const SavingGoalsTiles(
-                  //   savingGoalsName: 'Trip ',
-                  // ),
-                  // const SavingGoalsTiles(
-                  //   savingGoalsName: 'Savings ',
-                  // ),
-
-                  //       Expanded(
-                  //         flex: 4,
-                  //         child: budgets.when(data: (budgets) {
-                  //           if (budgets.isEmpty) {
-                  //             return const SingleChildScrollView(
-                  //               physics: AlwaysScrollableScrollPhysics(),
-                  //               child: EmptyContentsWithTextAnimationView(
-                  //                   text: Strings.noBudgetsYet),
-                  //             );
-                  //           }
-                  //           return RefreshIndicator(
-                  //             onRefresh: () async {
-                  //               ref.refresh(userBudgetsProvider);
-                  //               return Future.delayed(const Duration(seconds: 1));
-                  //             },
-                  //             child: ListView.builder(
-                  //               itemCount: budgets.length,
-                  //               itemBuilder: (context, index) {
-                  //                 final budget = budgets.elementAt(index);
-                  //                 return BudgetTile(
-                  //                   budget: budget,
-                  //                   onTap: () {
-                  //                     Navigator.push(
-                  //                       context,
-                  //                       MaterialPageRoute(
-                  //                         builder: (_) => BudgetDetailsView(
-                  //                           budget: budget,
-                  //                         ),
-                  //                       ),
-                  //                     );
-                  //                   },
-                  //                 );
-                  //               },
-                  //             ),
-                  //           );
-                  //         }, error: ((error, stackTrace) {
-                  //           return const ErrorAnimationView();
-                  //         }), loading: () {
-                  //           return const LoadingAnimationView();
-                  //         }),
-                  //       ),
-                  //     ],
-                  //   ),
-                  // ),
                 ],
               ),
             ),
@@ -271,11 +211,7 @@ class SavingGoalsTabView extends ConsumerWidget {
                   builder: (context) => const AddNewSavingGoal(),
                 ),
               );
-
-              // context.beamToNamed("createNewBudget");
-              // debugPrint('totalAmount: $totalAmount');
             },
-            // },
           ),
         ],
       ),

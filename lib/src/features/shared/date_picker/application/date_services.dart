@@ -31,14 +31,3 @@ class OverviewMonthNotifier extends StateNotifier<DateTime> {
     state = DateTime.now();
   }
 }
-
-// * this is for
-// final getDateProvider =
-//     StateNotifierProvider.family<DateNotifier, DateTime, DateTime?>(
-//         (ref, date) {
-//   return DateNotifier(date);
-// });
-
-// final selectedDateProvider = StateNotifierProvider<DateNotifier, DateTime>(
-//   (ref) => DateNotifier(null),
-// );

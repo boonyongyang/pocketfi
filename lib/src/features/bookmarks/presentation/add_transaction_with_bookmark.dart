@@ -50,10 +50,6 @@ class AddTransactionWithBookmarkState
     final categories = ref.watch(categoriesProvider);
     final selectedCategory = ref.watch(selectedCategoryProvider);
     final selectedWallet = ref.watch(selectedWalletProvider);
-    final isBookmark = ref.watch(selectedTransactionProvider)?.isBookmark;
-
-    debugPrint('aBook is $isBookmark');
-
     final amountController =
         useTextEditingController(text: selectedTransaction?.amount.toString());
     final noteController =
@@ -69,8 +65,6 @@ class AddTransactionWithBookmarkState
       },
       [amountController],
     );
-
-    debugPrint('transaction date: ${selectedTransaction?.date}');
 
     return Scaffold(
       appBar: AppBar(
@@ -141,7 +135,6 @@ class AddTransactionWithBookmarkState
                     selectPhoto(),
                     showIfPhotoIsAdded(),
                     const SizedBox(height: 8.0),
-                    // selectTags(),
                     const SelectTagWidget(),
                     selectReccurence(),
                     SizedBox(
@@ -198,8 +191,6 @@ class AddTransactionWithBookmarkState
   }
 
   void displayPhoto(File imageFile) {
-    debugPrint('image file path: ${imageFile.path}');
-
     FileThumbnailView(
       thumbnailRequest: ThumbnailRequest(
         imageFile,
@@ -210,51 +201,13 @@ class AddTransactionWithBookmarkState
     ref.read(imageFileProvider.notifier).setImageFile(imageFile);
   }
 
-  // Widget showIfPhotoIsAdded() {
-  //   final transaction = ref.watch(selectedTransactionProvider);
-
-  //   return (transaction?.transactionImage?.fileUrl != null)
-  //       ? InkWell(
-  //           onTap: () {
-  //             Navigator.of(context).push(
-  //               MaterialPageRoute(
-  //                 builder: (context) => FullScreenImageDialog(
-  //                     imageFile: File(transaction.transactionImage!.fileUrl!)),
-  //                 fullscreenDialog: true,
-  //               ),
-  //             );
-  //           },
-  //           child: SizedBox(
-  //             width: double.infinity,
-  //             height: 150.0,
-  //             child: Image.network(
-  //               transaction!.transactionImage!.fileUrl!,
-  //               width: MediaQuery.of(context).size.width * 0.8,
-  //               fit: BoxFit.cover,
-  //             ),
-  //           ),
-  //         )
-  //       : const SizedBox();
-  // }
-
   Widget showIfPhotoIsAdded() {
     final transaction = ref.watch(selectedTransactionProvider);
     final imageFile = ref.watch(imageFileProvider);
-    debugPrint('image path: ${imageFile?.path}');
 
     if (imageFile != null) {
       return InkWell(
-        onTap: () {
-          // Navigator.of(context).push(
-          //   MaterialPageRoute(
-          //     builder: (context) {
-          //       debugPrint('image file path: ${imageFile.path}');
-          //       return FullScreenImageDialog(imageFile: imageFile);
-          //     },
-          //     fullscreenDialog: true,
-          //   ),
-          // );
-        },
+        onTap: () {},
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20.0),
@@ -274,47 +227,6 @@ class AddTransactionWithBookmarkState
       return const SizedBox();
     }
   }
-
-  // Row selectTags() {
-  //   return Row(
-  //     children: [
-  //       const Icon(
-  //         Icons.label_important_rounded,
-  //         color: AppColors.mainColor1,
-  //       ),
-  //       const SizedBox(width: 14.0),
-  //       Expanded(
-  //         child: SingleChildScrollView(
-  //           scrollDirection: Axis.horizontal,
-  //           child: Wrap(
-  //             direction: Axis.horizontal,
-  //             spacing: 8.0,
-  //             children: [
-  //               for (final tag in tags)
-  //                 FilterChip(
-  //                   showCheckmark: false,
-  //                   selectedColor: AppColors.mainColor2,
-  //                   label: Text(tag.label),
-  //                   selected: selectedTags.contains(tag),
-  //                   onSelected: (selected) {
-  //                     setState(
-  //                       () {
-  //                         if (selected) {
-  //                           selectedTags.add(tag);
-  //                         } else {
-  //                           selectedTags.remove(tag);
-  //                         }
-  //                       },
-  //                     );
-  //                   },
-  //                 ),
-  //             ],
-  //           ),
-  //         ),
-  //       ),
-  //     ],
-  //   );
-  // }
 
   Row selectReccurence() {
     return Row(
@@ -447,9 +359,6 @@ class SelectCategory extends ConsumerWidget {
                                                 .notifier)
                                             .updateCategory(
                                                 categories[index], ref);
-
-                                    debugPrint(
-                                        'selected category: ${categories[index].name}');
                                     Navigator.of(context).pop();
                                   },
                                   child: Column(
@@ -521,19 +430,7 @@ class TransactionAmountField extends ConsumerWidget {
         textAlign: TextAlign.center,
         enableInteractiveSelection: false,
         showCursor: false,
-        // keyboardType: const TextInputType.numberWithOptions(
-        //   decimal: true,
-        //   signed: true,
-        // ),
-        // textInputAction: TextInputAction.done,
-//        keyboardType: Platform\.isIOS
-//            \? const //TextInputType\.numberWithOptions\(
-//               // signed: true,
-//                decimal: true,
-//              \)
-//            : TextInputType\.number,
-        keyboardType: TextInputType.number,
-// This regex for only amount (price). you can create your own regex based on your requirement
+        keyboardType: const TextInputType.numberWithOptions(decimal: true),
         inputFormatters: [
           FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,4}'))
         ],
@@ -545,7 +442,6 @@ class TransactionAmountField extends ConsumerWidget {
         style: TextStyle(
           fontSize: 28,
           fontWeight: FontWeight.bold,
-          // FIXME: not changing color as it refers to the initial value
           color: type.color,
         ),
       ),
@@ -573,7 +469,6 @@ class WriteOptionalNote extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.only(left: 16.0),
             child: TextField(
-              // autofocus: true,
               decoration: const InputDecoration(
                 border: InputBorder.none,
                 hintText: 'Write a note',
@@ -617,9 +512,6 @@ class SaveButton extends ConsumerWidget {
       onPressed: isSaveButtonEnabled.value
           ? () async {
               final transaction = ref.read(selectedTransactionProvider)!;
-              // ? problem? need to ensure transaction is selected
-
-              // get selected tags from transaction
               final tags = ref.watch(userTagsNotifier);
               final List<String> selectedTagNames = tags.isNotEmpty
                   ? tags
@@ -629,22 +521,12 @@ class SaveButton extends ConsumerWidget {
                   : [];
 
               final userId = ref.read(userIdProvider);
-              final file = ref.read(imageFileProvider);
-
-              debugPrint('userId is: $userId');
-              debugPrint('transactionType is: ${transaction.type}');
-
               if (userId == null) {
                 return;
               }
+              final file = ref.read(imageFileProvider);
               final note = noteController.text;
               final amount = amountController.text;
-              // final selectedCategory =
-              //     ref.read(selectedCategoryProvider).state;
-              debugPrint('note is: $note');
-              debugPrint('amount is: $amount');
-              debugPrint('walletName is: ${selectedWallet!.walletId}');
-
               final isAdded = await ref
                   .read(transactionProvider.notifier)
                   .addNewTransaction(
@@ -672,9 +554,6 @@ class SaveButton extends ConsumerWidget {
                 ref
                     .read(transactionTypeProvider.notifier)
                     .setTransactionType(0);
-
-                // clear the imageFileProvider
-                // ref.read(imageFileProvider.notifier).setImageFile(null);
                 ref.read(imageFileProvider.notifier).clearImageFile();
 
                 Fluttertoast.showToast(

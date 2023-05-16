@@ -7,17 +7,17 @@ import 'package:pocketfi/src/features/debts/application/debt_services.dart';
 import 'package:pocketfi/src/features/debts/domain/debt_payments.dart';
 
 class PaidDebtSheet extends ConsumerStatefulWidget {
-  DebtPayment debtPayment;
-  PaidDebtSheet({
+  final DebtPayment debtPayment;
+  const PaidDebtSheet({
     super.key,
     required this.debtPayment,
   });
 
   @override
-  _PaidDebtSheetState createState() => _PaidDebtSheetState();
+  PaidDebtSheetState createState() => PaidDebtSheetState();
 }
 
-class _PaidDebtSheetState extends ConsumerState<PaidDebtSheet> {
+class PaidDebtSheetState extends ConsumerState<PaidDebtSheet> {
   @override
   Widget build(BuildContext context) {
     var totalAmountPaid =
@@ -91,7 +91,6 @@ class _PaidDebtSheetState extends ConsumerState<PaidDebtSheet> {
               color: AppColors.mainColor1,
             ),
           ),
-
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Container(
@@ -100,14 +99,6 @@ class _PaidDebtSheetState extends ConsumerState<PaidDebtSheet> {
                 borderRadius: BorderRadius.all(
                   Radius.circular(20),
                 ),
-                // boxShadow: [
-                //   BoxShadow(
-                //     color: Colors.grey.withOpacity(0.5),
-                //     spreadRadius: 2,
-                //     blurRadius: 7,
-                //     offset: const Offset(3, 6), // changes position of shadow
-                //   ),
-                // ],
               ),
               child: Padding(
                 padding: const EdgeInsets.only(
@@ -118,40 +109,6 @@ class _PaidDebtSheetState extends ConsumerState<PaidDebtSheet> {
                 ),
                 child: Column(
                   children: [
-                    // Row(
-                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //   children: [
-                    //     const Text(
-                    //       'Previous Balance',
-                    //       style: TextStyle(
-                    //         color: AppColors.mainColor1,
-                    //         fontSize: 15,
-                    //         fontWeight: FontWeight.bold,
-                    //       ),
-                    //       textAlign: TextAlign.center,
-                    //     ),
-                    //     widget.previousRowData == null
-                    //         ? Text(
-                    //             'RM ${debtAmount.toStringAsFixed(2)}',
-                    //             style: const TextStyle(
-                    //               color: AppColors.mainColor1,
-                    //               fontSize: 15,
-                    //               // fontWeight: FontWeight.bold,
-                    //             ),
-                    //             textAlign: TextAlign.center,
-                    //           )
-                    //         : Text(
-                    //             'RM ${widget.previousRowData!['endBalance']}',
-                    //             style: const TextStyle(
-                    //               color: AppColors.mainColor1,
-                    //               fontSize: 15,
-                    //               // fontWeight: FontWeight.bold,
-                    //             ),
-                    //             textAlign: TextAlign.center,
-                    //           ),
-                    //   ],
-                    // ),
-
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -169,7 +126,6 @@ class _PaidDebtSheetState extends ConsumerState<PaidDebtSheet> {
                           style: const TextStyle(
                             color: AppColors.mainColor1,
                             fontSize: 15,
-                            // fontWeight: FontWeight.bold,
                           ),
                           textAlign: TextAlign.center,
                         ),
@@ -195,7 +151,6 @@ class _PaidDebtSheetState extends ConsumerState<PaidDebtSheet> {
                           style: const TextStyle(
                             color: AppColors.mainColor1,
                             fontSize: 15,
-                            // fontWeight: FontWeight.bold,
                           ),
                           textAlign: TextAlign.center,
                         ),
@@ -208,32 +163,6 @@ class _PaidDebtSheetState extends ConsumerState<PaidDebtSheet> {
                     const SizedBox(
                       height: 5,
                     ),
-                    // Row(
-                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //   children: [
-                    //     const Text(
-                    //       'Payment',
-                    //       style: TextStyle(
-                    //         color: AppColors.mainColor1,
-                    //         fontSize: 15,
-                    //         fontWeight: FontWeight.bold,
-                    //       ),
-                    //       textAlign: TextAlign.center,
-                    //     ),
-                    //     Text(
-                    //       'RM ${totalPayment.toStringAsFixed(2)}',
-                    //       style: const TextStyle(
-                    //         color: AppColors.mainColor1,
-                    //         fontSize: 15,
-                    //         // fontWeight: FontWeight.bold,
-                    //       ),
-                    //       textAlign: TextAlign.center,
-                    //     ),
-                    //   ],
-                    // ),
-                    // const SizedBox(
-                    //   height: 20,
-                    // ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -275,35 +204,14 @@ class _PaidDebtSheetState extends ConsumerState<PaidDebtSheet> {
                 widget.debtPayment.transactionId,
                 ref,
               );
-              // _addPaidDebt(
-              //   widget.debt.debtId,
-              //   double.parse(widget.rowData['interest']),
-              //   double.parse(widget.rowData['principle']),
-              //   double.parse(widget.rowData['endBalance']),
-              //   widget.previousRowData == null
-              //       ? debtAmount
-              //       : double.parse(widget.previousRowData!['endBalance']),
-              //   widget.rowData['month'],
-              //   ref,
-              // );
-              // Navigator.pop(context);
             },
             backgroundColor: Colors.grey,
           )
-          // Expanded(
-          //   child: ListView.builder(
-          //     itemCount: 1,
-          //     itemBuilder: (BuildContext context, int index) {
-          //       return const WalletTile();
-          //     },
-          //   ),
-          // ),
         ],
       ),
     );
   }
 
-  // function to add the paid debt into
   Future<void> _deletePaidDebt(
     String debtId,
     String debtPaymentId,
@@ -311,12 +219,10 @@ class _PaidDebtSheetState extends ConsumerState<PaidDebtSheet> {
     String transactionId,
     WidgetRef ref,
   ) async {
-    // await _debtRepository.addPaidDebt(debt);
     final userId = ref.watch(userIdProvider);
     if (userId == null) {
       return;
     }
-
     final isCreated =
         await ref.read(debtPaymentProvider.notifier).deletePaidDebt(
               debtId: debtId,

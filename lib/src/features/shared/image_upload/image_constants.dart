@@ -1,7 +1,5 @@
-
 import 'package:flutter/foundation.dart' show immutable;
 
-// default size for photo and videos
 @immutable
 class ImageConstants {
   // for photo

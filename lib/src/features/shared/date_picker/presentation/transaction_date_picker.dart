@@ -22,6 +22,7 @@ class TransactionDatePicker extends ConsumerStatefulWidget {
 }
 
 class TransactionDatePickerState extends ConsumerState<TransactionDatePicker> {
+  // ignore: unused_field
   DateTime? _selectedDate;
 
   @override
@@ -61,11 +62,8 @@ class TransactionDatePickerState extends ConsumerState<TransactionDatePicker> {
         lastDate: DateTime.now().add(const Duration(days: 365)),
       );
       if (pickedDate != null) {
-        // ref.read(transactionDateProvider.notifier).setDate(pickedDate);
         HapticFeedbackService.mediumImpact();
         setOrUpdateDate(pickedDate);
-        debugPrint('picked: $pickedDate');
-        // if selectedDate is in the future, make it a scheduled transaction
       }
     }
   }
@@ -73,21 +71,13 @@ class TransactionDatePickerState extends ConsumerState<TransactionDatePicker> {
   void _previousDay(DateTime selectedDate) {
     HapticFeedbackService.lightImpact();
     final newDate = selectedDate.subtract(const Duration(days: 1));
-    // if (isSelectedTransactionNull) {
-    //   ref.read(transactionDateProvider.notifier).setDate(newDate);
-    // } else {
-    //   ref.read(selectedTransactionProvider.notifier).updateDate(newDate, ref);
-    // }
     setOrUpdateDate(newDate);
-    debugPrint('prev: $newDate');
   }
 
   void _nextDay(DateTime selectedDate) {
     HapticFeedbackService.lightImpact();
     final newDate = selectedDate.add(const Duration(days: 1));
-    // ref.read(transactionDateProvider.notifier).setDate(newDate);
     setOrUpdateDate(newDate);
-    debugPrint('next: $newDate');
   }
 
   // setOrUpdateDate
@@ -100,26 +90,12 @@ class TransactionDatePickerState extends ConsumerState<TransactionDatePicker> {
   }
 
   DateTime getSelectedDate() {
-    // if (ref.watch(selectedTransactionProvider) == null) {
-    //   return ref.watch(transactionDateProvider);
-    // } else {
-    //   return ref.watch(selectedTransactionProvider)!.date;
-    // }
-
     return ref.watch(selectedTransactionProvider)?.date ??
         ref.watch(transactionDateProvider);
   }
 
   String get _selectedDateText {
-    // final selectedDate = ref.watch(transactionDateProvider);
-
     final DateTime selectedDate = getSelectedDate();
-    // if (ref.watch(selectedTransactionProvider) == null) {
-    //   selectedDate = ref.watch(transactionDateProvider);
-    // } else {
-    //   selectedDate = ref.watch(selectedTransactionProvider)!.date;
-    // }
-
     final now = DateTime.now();
     final yesterday = DateTime(now.year, now.month, now.day - 1);
     final tomorrow = DateTime(now.year, now.month, now.day + 1);
@@ -146,15 +122,7 @@ class TransactionDatePickerState extends ConsumerState<TransactionDatePicker> {
 
   @override
   Widget build(BuildContext context) {
-    // final selectedDate = ref.watch(transactionDateProvider);
-
     final DateTime selectedDate = getSelectedDate();
-    // if (ref.watch(selectedTransactionProvider) == null) {
-    //   selectedDate = ref.watch(transactionDateProvider);
-    // } else {
-    //   selectedDate = ref.watch(selectedTransactionProvider)!.date;
-    // }
-
     return Padding(
       padding: const EdgeInsets.symmetric(
         vertical: 12.0,

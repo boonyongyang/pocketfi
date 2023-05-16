@@ -28,7 +28,6 @@ class _EditCategorySheetState extends ConsumerState<EditCategorySheet> {
     final selectedColor = ref.watch(selectedCategoryColorProvider);
     final iconList = ref.watch(categoryIconListProvider);
     final selectedIcon = ref.watch(selectedCategoryIconProvider);
-
     final nameController = useTextEditingController(
       text: widget.category.name,
     );
@@ -45,16 +44,10 @@ class _EditCategorySheetState extends ConsumerState<EditCategorySheet> {
         }
 
         nameController.addListener(listener);
-
         return () => nameController.removeListener(listener);
       },
       [nameController, selectedColor, selectedIcon],
     );
-
-    debugPrint('${isSaveButtonEnabled.value}');
-    debugPrint('selectedColor: $selectedColor');
-    debugPrint('selectedIcon: $selectedIcon');
-
     return SizedBox(
       height: MediaQuery.of(context).size.height * 0.94,
       child: Container(
@@ -82,11 +75,9 @@ class _EditCategorySheetState extends ConsumerState<EditCategorySheet> {
                 ),
                 IconButton(
                   onPressed: () {
-                    // TODO: stll need to remove from firebase
                     ref
                         .read(categoriesProvider.notifier)
                         .deleteCategory(widget.category);
-                    // snackbar
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text(
@@ -97,11 +88,9 @@ class _EditCategorySheetState extends ConsumerState<EditCategorySheet> {
                         ),
                         backgroundColor: Colors.grey,
                         duration: const Duration(seconds: 2),
-                        // undo action
                         action: SnackBarAction(
                           label: 'Undo',
                           onPressed: () {
-                            // FIXME : prob, can't access ancestor widgets
                             ref
                                 .read(categoriesProvider.notifier)
                                 .updateCategory(widget.category);
@@ -109,7 +98,6 @@ class _EditCategorySheetState extends ConsumerState<EditCategorySheet> {
                         ),
                       ),
                     );
-                    // resetCategoryComponentsState(ref);
                     Navigator.of(context).pop();
                   },
                   icon: const Icon(Icons.delete),
@@ -136,7 +124,6 @@ class _EditCategorySheetState extends ConsumerState<EditCategorySheet> {
                         hintText: 'Category name',
                       ),
                       controller: nameController,
-                      // onSubmitted: (_) => FocusScope.of(context).nextFocus(),
                     ),
                   ),
                 ),
@@ -155,16 +142,11 @@ class _EditCategorySheetState extends ConsumerState<EditCategorySheet> {
                       runSpacing: 8.0,
                       children: [
                         for (var i = 0; i < colorList.length; i++)
-// on tap change the selected color
                           GestureDetector(
                             onTap: () {
                               ref
                                   .read(selectedCategoryColorProvider.notifier)
                                   .state = colorList[i];
-
-                              // final newSelectedColor = colorList[i];
-
-                              debugPrint('$selectedColor');
                             },
                             child: Container(
                               decoration: BoxDecoration(
@@ -181,18 +163,6 @@ class _EditCategorySheetState extends ConsumerState<EditCategorySheet> {
                               height: 35.0,
                             ),
                           ),
-                        // Container(
-                        //   decoration: BoxDecoration(
-                        //     borderRadius: BorderRadius.circular(20.0),
-                        //     color: colorList[i],
-                        //     border: Border.all(
-                        //       color: Colors.grey,
-                        //       width: 1.0,
-                        //     ),
-                        //   ),
-                        //   width: 35.0,
-                        //   height: 35.0,
-                        // ),
                       ],
                     ),
                   ),
@@ -205,19 +175,15 @@ class _EditCategorySheetState extends ConsumerState<EditCategorySheet> {
                 const Text("Icon"),
                 const SizedBox(width: 16.0),
                 Expanded(
-                  // grid view of 5 columns
                   child: GridView.count(
                     crossAxisCount: 5,
                     mainAxisSpacing: 16.0,
                     crossAxisSpacing: 16.0,
                     shrinkWrap: true,
                     children: [
-                      // loop through a list of icons and display them
                       for (var i = 0; i < iconList.length; i++)
-                        // on tap change the selected icon
                         GestureDetector(
                           onTap: () {
-                            // selectedIcon = iconList[i];
                             ref
                                 .read(selectedCategoryIconProvider.notifier)
                                 .state = iconList[i];
@@ -243,29 +209,14 @@ class _EditCategorySheetState extends ConsumerState<EditCategorySheet> {
                                     : Colors.black),
                           ),
                         ),
-                      // Container(
-                      //   decoration: BoxDecoration(
-                      //     borderRadius: BorderRadius.circular(40.0),
-                      //     border: Border.all(
-                      //       color: Colors.grey,
-                      //       width: 2.0,
-                      //     ),
-                      //   ),
-                      //   width: 35.0,
-                      //   height: 35.0,
-                      //   child: Icon(iconList[i]),
-                      // ),
                     ],
                   ),
                 ),
               ],
             ),
-            // const SizedBox(height: 16.0),
             FullWidthButtonWithText(
               onPressed: isSaveButtonEnabled.value
                   ? () async {
-                      // ScaffoldMessenger.of(context).showSnackBar(
-                      //     const SnackBar(content: Text('Category added')));
                       Fluttertoast.showToast(
                         msg: "Category edited!",
                         toastLength: Toast.LENGTH_SHORT,
@@ -287,27 +238,3 @@ class _EditCategorySheetState extends ConsumerState<EditCategorySheet> {
     );
   }
 }
-
-// TextButton(
-//   style: ButtonStyle(
-//     overlayColor: !isSaveButtonEnabled.value
-//         ? MaterialStateProperty.all(Colors.transparent)
-//         : null,
-//   ),
-//   onPressed: () {
-//     isSaveButtonEnabled.value
-//         ? () async {
-//             ScaffoldMessenger.of(context).showSnackBar(
-//                 const SnackBar(
-//                     content: Text('Category added')));
-//             Navigator.of(context).pop();
-//           }
-//         : null;
-//   },
-//   child: Text(Strings.save,
-//       style: TextStyle(
-//           fontSize: 16.0,
-//           color: isSaveButtonEnabled.value
-//               ? AppColors.mainColor1
-//               : Colors.grey)),
-// ),

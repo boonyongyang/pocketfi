@@ -23,7 +23,6 @@ class ScheduledTransactionsPage extends ConsumerWidget {
           padding: const EdgeInsets.symmetric(vertical: 8.0),
           child: Column(
             children: [
-              // const SizedBox(height: 20),
               TransactionListView(transactions: transactions),
             ],
           ),

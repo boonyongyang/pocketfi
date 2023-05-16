@@ -4,7 +4,6 @@ import 'package:auto_size_text_field/auto_size_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/common_widgets/buttons/full_width_button_with_text.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
@@ -78,18 +77,11 @@ class _DepositSheetState extends ConsumerState<DepositSheet> {
                 textAlign: TextAlign.center,
                 enableInteractiveSelection: false,
                 showCursor: false,
-                // keyboardType: const TextInputType.numberWithOptions(
-                //   decimal: true,
-                //   signed: true,
-                // ),
-                // textInputAction: TextInputAction.done,
                 keyboardType: Platform.isIOS
                     ? const TextInputType.numberWithOptions(
-                        // signed: true,
                         decimal: true,
                       )
                     : TextInputType.number,
-                // This regex for only amount (price). you can create your own regex based on your requirement
                 inputFormatters: [
                   FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,4}'))
                 ],
@@ -110,7 +102,6 @@ class _DepositSheetState extends ConsumerState<DepositSheet> {
             'MYR',
             style: TextStyle(
               color: AppColors.mainColor1,
-              // fontSize: 20,
               fontWeight: FontWeight.bold,
             ),
           ),

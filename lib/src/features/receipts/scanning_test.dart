@@ -12,7 +12,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:pocketfi/src/features/receipts/receipt_highlight_image.dart';
 import 'package:pocketfi/src/features/receipts/scanned_text_page.dart';
 import 'package:pocketfi/src/features/receipts/domain/receipt_text_rect.dart';
-// import 'package:permission_handler/permission_handler.dart';
 
 class ScanningTest extends StatefulHookConsumerWidget {
   const ScanningTest({super.key});
@@ -77,7 +76,6 @@ class ScanningTestState extends ConsumerState<ScanningTest> {
               child: ReceiptHighlightImage(
                 recognizedText: recognizedText,
                 imagePath: _imagePath,
-                // extractedRects: extractedRects,
                 extractedTextRects: extractedTextRects,
               ),
             ),
@@ -151,8 +149,6 @@ class ScanningTestState extends ConsumerState<ScanningTest> {
         androidCropReset: 'Reset',
       );
 
-      debugPrint('isDetected: $success');
-
       if (success) {
         File imageFile = File(imagePath);
         Uint8List imageBytes = await imageFile.readAsBytes();
@@ -166,19 +162,8 @@ class ScanningTestState extends ConsumerState<ScanningTest> {
           ),
         );
         await imageFile.writeAsBytes(compressedBytes);
-
         scanReceipt(XFile(imagePath));
-        debugPrint('imagePath = $imagePath');
-        debugPrint('scan receipt completed!');
-
-        // If the widget was removed from the tree while the asynchronous platform
-        // message was in flight, we want to discard the reply rather than calling
-        // setState to update our non-existent appearance.
         if (!mounted) return;
-
-        debugPrint('mounted: $mounted');
-        debugPrint('imagePath: $imagePath');
-
         setState(() {
           _imagePath = imagePath;
         });
@@ -200,13 +185,11 @@ class ScanningTestState extends ConsumerState<ScanningTest> {
         }
       }
     }
-
     return extractedTextRects;
   }
 
   void scanReceipt(XFile pickedImage) async {
     try {
-      debugPrint('scanning receipt...');
       textScanning = true;
       imageFile = pickedImage;
       setState(() {});
@@ -233,7 +216,6 @@ class ScanningTestState extends ConsumerState<ScanningTest> {
       extractedPrices = extractPrices(recognizedText);
       extractedTextSpans = getHighlightedTextSpans(recognizedText);
       extractedRects = getHighlightRects(recognizedText);
-      // * added this
       extractedTextRects = createTextRects(recognizedText);
       selectedPrice = extractTotalPrice(recognizedText).toString();
       textScanning = false;
@@ -248,7 +230,6 @@ class ScanningTestState extends ConsumerState<ScanningTest> {
           String text = element.text;
           final RegExpMatch? match = priceRegex.firstMatch(text);
           if (match != null) {
-            // final String? price = match.group(0);
             Rect rect = Rect.fromLTRB(
               element.boundingBox.left.toDouble(),
               element.boundingBox.top.toDouble(),

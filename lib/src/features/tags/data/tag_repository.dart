@@ -20,7 +20,6 @@ final userTagsProvider = StreamProvider<List<Tag>>((ref) {
       .collection('users')
       .doc(userId)
       .collection('tags')
-      // .where('uid', isEqualTo: userId)
       .snapshots()
       .listen((snapshot) {
     final tags = snapshot.docs
@@ -56,8 +55,6 @@ class TagNotifier extends StateNotifier<IsLoading> {
       final tag = Tag(
         name: name,
         userId: userId,
-        // walletId: 'walletId',
-        // walletName: 'walletName',
       ).toJson();
 
       // * add new tag to firebase

@@ -91,7 +91,6 @@ class AddNewBillFormState extends ConsumerState<AddNewBillForm> {
         child: GestureDetector(
           onTap: () {
             FocusScope.of(context).unfocus();
-            // FocusScopeNode currentFocus = FocusScope.of(context);
           },
           child: Container(
             padding: EdgeInsets.only(
@@ -349,18 +348,7 @@ class BillAmountTextField extends ConsumerWidget {
         textAlign: TextAlign.center,
         enableInteractiveSelection: false,
         showCursor: false,
-        // keyboardType: const TextInputType.numberWithOptions(
-        //   decimal: true,
-        //   signed: true,
-        // ),
-        // textInputAction: TextInputAction.done,
-        // keyboardType: Platform\.isIOS
-        //     \? const //TextInputType\.numberWithOptions\(
-        //        // signed: true,
-        //         decimal: true,
-        //       \)
-        //     : TextInputType\.number,
-        keyboardType: TextInputType.number,
+        keyboardType: const TextInputType.numberWithOptions(decimal: true),
         inputFormatters: [
           FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,4}'))
         ],
@@ -423,7 +411,6 @@ class SaveButton extends ConsumerWidget {
     required this.categoryName,
     required this.selectedWallet,
     required this.mounted,
-    // this.billStatus = BillStatus.unpaid,
     this.recurringPeriod = RecurringPeriod.never,
   });
 
@@ -433,7 +420,6 @@ class SaveButton extends ConsumerWidget {
   final Category? categoryName;
   final Wallet selectedWallet;
   final bool mounted;
-  // final BillStatus billStatus;
   final RecurringPeriod recurringPeriod;
 
   @override
@@ -445,7 +431,6 @@ class SaveButton extends ConsumerWidget {
       onPressed: isSaveButtonEnabled.value
           ? () async {
               final userId = ref.read(userIdProvider);
-              // ! dun use transaction one
               final dueDate = ref.read(transactionDateProvider);
 
               debugPrint('userId is: $userId');
@@ -463,16 +448,13 @@ class SaveButton extends ConsumerWidget {
               final isCreated =
                   await ref.read(billProvider.notifier).createNewBill(
                         userId: userId,
-                        walletId: selectedWallet.walletId, // ? sure?
-                        walletName: selectedWallet.walletName, // ? sure?
-                        // walletId: selectedWallet!.walletId, // ? sure?
-                        // walletName: selectedWallet!.walletName, // ? sure?
+                        walletId: selectedWallet.walletId,
+                        walletName: selectedWallet.walletName,
                         billAmount: double.parse(amount),
                         billDueDate: dueDate,
                         categoryName: categoryName!.name,
                         billNote: note,
                         recurringPeriod: recurringPeriod,
-                        // billStatus: billStatus,
                       );
               debugPrint('isCreated is: $isCreated');
 

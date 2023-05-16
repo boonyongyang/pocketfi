@@ -46,17 +46,10 @@ class UpdateTransactionState extends ConsumerState<UpdateTransaction> {
   @override
   Widget build(BuildContext context) {
     final selectedTransaction = ref.watch(selectedTransactionProvider);
-
     final categories = ref.watch(categoriesProvider);
     final selectedCategory = ref.watch(selectedCategoryProvider);
-
-    debugPrint('be4 wallet is ${selectedTransaction?.walletName}');
     final selectedWallet = ref.watch(selectedWalletProvider);
-    debugPrint('after wallet is ${selectedWallet?.walletName}');
-
-    // final chosenWallet = await selectedTransaction.walletId;
     final isBookmark = ref.watch(selectedTransactionProvider)?.isBookmark;
-
     final amountController =
         useTextEditingController(text: selectedTransaction?.amount.toString());
     final noteController =
@@ -73,14 +66,11 @@ class UpdateTransactionState extends ConsumerState<UpdateTransaction> {
       [amountController],
     );
 
-    // debugPrint('transaction date: ${selectedTransaction?.date}');
-
     return WillPopScope(
       onWillPop: () {
         ref.read(imageFileProvider.notifier).clearImageFile();
         resetCategoryState(ref);
         ref.read(transactionTypeProvider.notifier).setTransactionType(0);
-        // clear tag state
         ref.read(userTagsNotifier.notifier).resetTagsState(ref);
         return Future.value(true);
       },
@@ -187,7 +177,6 @@ class UpdateTransactionState extends ConsumerState<UpdateTransaction> {
                       selectPhoto(),
                       showIfPhotoIsAdded(),
                       const SizedBox(height: 8.0),
-                      // selectTags(),
                       const SelectTagWidget(),
                       selectReccurence(),
                       Center(
@@ -260,36 +249,9 @@ class UpdateTransactionState extends ConsumerState<UpdateTransaction> {
           IconButton(
             color: AppColors.mainColor1,
             icon: const Icon(Icons.close),
-            // onPressed: () async {
-            //   // ref.read(imageFileProvider.notifier).setImageFile(null);
-
-            //   final transaction = ref.read(selectedTransactionProvider);
-
-            //   final oldPhotoUrl = transaction?.transactionImage?.fileUrl;
-            //   if (oldPhotoUrl != null) {
-            //     final storageRef =
-            //         FirebaseStorage.instance.refFromURL(oldPhotoUrl);
-            //     await storageRef.delete();
-            //   }
-
-            //   ref.read(imageFileProvider.notifier).clearImageFile();
-
-            //   // final imageFile = ref.read(imageFileProvider);
-
-            //   await ref
-            //       .read(selectedTransactionProvider.notifier)
-            //       .updateTransactionPhoto(null, ref);
-
-            //   debugPrint('delete photo');
-            // },
             onPressed: () async {
               final transaction = ref.read(selectedTransactionProvider);
               final oldPhotoUrl = transaction?.transactionImage?.fileUrl;
-              // if (oldPhotoUrl != null) {
-              //   final storageRef =
-              //       FirebaseStorage.instance.refFromURL(oldPhotoUrl);
-              //   await storageRef.delete();
-              // }
               if (oldPhotoUrl != null) {
                 final storageRef =
                     FirebaseStorage.instance.refFromURL(oldPhotoUrl);
@@ -297,8 +259,6 @@ class UpdateTransactionState extends ConsumerState<UpdateTransaction> {
                   await storageRef.delete();
                 } catch (e) {
                   if (e is FirebaseException && e.code == 'object-not-found') {
-                    // Handle the case where the object was already deleted
-                    // or the reference is incorrect
                     debugPrint('Error deleting photo: $e');
                   } else {
                     rethrow;
@@ -309,12 +269,9 @@ class UpdateTransactionState extends ConsumerState<UpdateTransaction> {
               ref
                   .read(selectedTransactionProvider.notifier)
                   .removeTransactionImage(ref);
-
-              // FIXME problem: remove ?
               await ref
                   .read(selectedTransactionProvider.notifier)
                   .updateTransactionPhoto(null, ref);
-              debugPrint('delete photo');
             },
           ),
       ],
@@ -322,8 +279,6 @@ class UpdateTransactionState extends ConsumerState<UpdateTransaction> {
   }
 
   void displayPhoto(File imageFile) {
-    debugPrint('image file path: ${imageFile.path}');
-
     FileThumbnailView(
       thumbnailRequest: ThumbnailRequest(
         imageFile,
@@ -337,21 +292,9 @@ class UpdateTransactionState extends ConsumerState<UpdateTransaction> {
   Widget showIfPhotoIsAdded() {
     final transaction = ref.watch(selectedTransactionProvider);
     final imageFile = ref.watch(imageFileProvider);
-    debugPrint('image path: ${imageFile?.path}');
-
     if (imageFile != null) {
       return InkWell(
-        onTap: () {
-          // Navigator.of(context).push(
-          //   MaterialPageRoute(
-          //     builder: (context) {
-          //       debugPrint('image file path: ${imageFile.path}');
-          //       return FullScreenImageDialog(imageFile: imageFile);
-          //     },
-          //     fullscreenDialog: true,
-          //   ),
-          // );
-        },
+        onTap: () {},
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20.0),
@@ -371,71 +314,6 @@ class UpdateTransactionState extends ConsumerState<UpdateTransaction> {
       return const SizedBox();
     }
   }
-
-  // Widget showIfPhotoIsAdded() {
-  //   final transaction = ref.watch(selectedTransactionProvider);
-  //   final imageFile = ref.watch(imageFileProvider);
-  //   debugPrint('image 1path: ${imageFile?.path}');
-
-  //   if (transaction?.transactionImage?.fileUrl != null) {
-  //     final imageUrl = transaction!.transactionImage!.fileUrl!;
-  //     ref.read(imageFileProvider.notifier).setImageUrl(imageUrl);
-  //     return InkWell(
-  //       onTap: () {
-  //         Navigator.of(context).push(
-  //           MaterialPageRoute(
-  //             builder: (context) {
-  //               debugPrint('PATH: ${imageFile!.path}');
-  //               return FullScreenImageDialog(imageFile: imageFile);
-  //             },
-  //             fullscreenDialog: true,
-  //           ),
-  //         );
-  //       },
-  //       child: Container(
-  //         decoration: BoxDecoration(
-  //           borderRadius: BorderRadius.circular(20.0),
-  //         ),
-  //         child: CachedNetworkImage(
-  //           imageUrl: imageUrl,
-  //           width: double.infinity,
-  //           height: 150.0,
-  //           fit: BoxFit.cover,
-  //           progressIndicatorBuilder: (context, url, progress) =>
-  //               const Center(child: CircularProgressIndicator()),
-  //           errorWidget: (context, url, error) => const Icon(Icons.error),
-  //         ),
-  //       ),
-  //     );
-  //   } else if (imageFile != null) {
-  //     return InkWell(
-  //       onTap: () {
-  //         Navigator.of(context).push(
-  //           MaterialPageRoute(
-  //             builder: (context) {
-  //               debugPrint('image file path: ${imageFile.path}');
-  //               return FullScreenImageDialog(imageFile: imageFile);
-  //             },
-  //             fullscreenDialog: true,
-  //           ),
-  //         );
-  //       },
-  //       child: Container(
-  //         decoration: BoxDecoration(
-  //           borderRadius: BorderRadius.circular(20.0),
-  //         ),
-  //         child: Image.file(
-  //           imageFile,
-  //           width: double.infinity,
-  //           height: 150.0,
-  //           fit: BoxFit.cover,
-  //         ),
-  //       ),
-  //     );
-  //   } else {
-  //     return const SizedBox();
-  //   }
-  // }
 
   Row selectTags() {
     return Row(
@@ -588,7 +466,6 @@ class SelectCategory extends ConsumerWidget {
                                 const SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 4,
                               crossAxisSpacing: 8.0,
-                              // mainAxisSpacing: 8.0,
                             ),
                             itemCount: categories.length,
                             itemBuilder: (context, index) {
@@ -610,9 +487,6 @@ class SelectCategory extends ConsumerWidget {
                                                 .notifier)
                                             .updateCategory(
                                                 categories[index], ref);
-
-                                    debugPrint(
-                                        'selected category: ${categories[index].name}');
                                     Navigator.of(context).pop();
                                   },
                                   child: Column(
@@ -680,7 +554,6 @@ class TransactionAmountField extends ConsumerWidget {
     return SizedBox(
       width: 250,
       child: AutoSizeTextField(
-        // autofocus: true,
         textAlign: TextAlign.center,
         enableInteractiveSelection: false,
         showCursor: false,
@@ -722,7 +595,6 @@ class WriteOptionalNote extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.only(left: 16.0),
             child: TextField(
-              // autofocus: true,
               decoration: const InputDecoration(
                 border: InputBorder.none,
                 hintText: 'Write a note',
@@ -807,21 +679,15 @@ class SaveButton extends ConsumerWidget {
                     tags: selectedTagNames,
                   );
 
-              debugPrint('isUpdated is: $isUpdated');
-
               if (isUpdated && mounted) {
                 noteController.clear();
                 amountController.clear();
                 Navigator.of(context).pop();
 
-                // reset the state of the provider
                 resetCategoryState(ref);
                 ref
                     .read(transactionTypeProvider.notifier)
                     .setTransactionType(0);
-
-                // clear the imageFileProvider
-                // ref.read(imageFileProvider.notifier).setImageFile(null);
                 ref.read(imageFileProvider.notifier).clearImageFile();
 
                 Fluttertoast.showToast(
