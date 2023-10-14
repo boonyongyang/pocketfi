@@ -22,12 +22,9 @@ class TransactionDatePicker extends ConsumerStatefulWidget {
 }
 
 class TransactionDatePickerState extends ConsumerState<TransactionDatePicker> {
-  DateTime? _selectedDate;
-
   @override
   void initState() {
     super.initState();
-    _selectedDate = widget.initialDate;
   }
 
   // * select date using date picker

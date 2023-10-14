@@ -7,17 +7,18 @@ import 'package:pocketfi/src/features/debts/application/debt_services.dart';
 import 'package:pocketfi/src/features/debts/domain/debt_payments.dart';
 
 class PaidDebtSheet extends ConsumerStatefulWidget {
-  DebtPayment debtPayment;
-  PaidDebtSheet({
+  const PaidDebtSheet({
     super.key,
     required this.debtPayment,
   });
 
+  final DebtPayment debtPayment;
+
   @override
-  _PaidDebtSheetState createState() => _PaidDebtSheetState();
+  PaidDebtSheetState createState() => PaidDebtSheetState();
 }
 
-class _PaidDebtSheetState extends ConsumerState<PaidDebtSheet> {
+class PaidDebtSheetState extends ConsumerState<PaidDebtSheet> {
   @override
   Widget build(BuildContext context) {
     var totalAmountPaid =

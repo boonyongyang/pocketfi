@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 // import 'package:google_mlkit_entity_extraction/google_mlkit_entity_extraction.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:pocketfi/src/features/shared/image_upload/helpers/image_picker_helper.dart';
 import 'package:pocketfi/src/features/receipts/scanned_text_page.dart';
 
 class ScanReceipt extends StatefulWidget {

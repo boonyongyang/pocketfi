@@ -8,7 +8,6 @@ import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/common_widgets/buttons/full_width_button_with_text.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
-import 'package:pocketfi/src/features/category/application/category_services.dart';
 import 'package:pocketfi/src/features/receipts/add_transaction_with_receipt.dart';
 import 'package:pocketfi/src/features/receipts/domain/receipt.dart';
 import 'package:pocketfi/src/features/receipts/domain/receipt_text_rect.dart';
@@ -219,7 +218,7 @@ class ReceiptHighlightImageState extends ConsumerState<ReceiptHighlightImage> {
             noteController: noteController,
             merchantController: merchantController,
             recognizedText: widget.recognizedText,
-            imagePath: widget.imagePath ?? '', extractedTextRects: [],
+            imagePath: widget.imagePath ?? '', extractedTextRects: const [],
           ),
         ],
       ),
@@ -565,11 +564,9 @@ class ProceedButton extends ConsumerWidget {
               final id = const Uuid().v4();
               final amount = double.parse(priceController.text);
               final date = ref.read(transactionDateProvider);
-              final chosenCategory = ref.read(selectedCategoryProvider);
               // final image = ref.read(imageFileProvider);
               final merchant = merchantController.text;
               final note = noteController.text;
-              final scannedText = recognizedText.text;
 
               // final receipt = Receipt(
               //   transactionId: id,

@@ -14,7 +14,6 @@ import 'package:pocketfi/src/constants/app_icons.dart';
 import 'package:pocketfi/src/constants/strings.dart';
 import 'package:pocketfi/src/features/authentication/application/user_id_provider.dart';
 import 'package:pocketfi/src/features/tags/application/tag_services.dart';
-import 'package:pocketfi/src/features/tags/domain/taggie.dart';
 import 'package:pocketfi/src/features/tags/presentation/select_tag_widget.dart';
 import 'package:pocketfi/src/features/wallets/application/wallet_services.dart';
 import 'package:pocketfi/src/features/wallets/domain/wallet.dart';
@@ -546,7 +545,7 @@ class TransactionAmountField extends ConsumerWidget {
 //              \)
 //            : TextInputType\.number,
         // keyboardType: TextInputType.number,
-        keyboardType: TextInputType.numberWithOptions(decimal: true),
+        keyboardType: const TextInputType.numberWithOptions(decimal: true),
 // This regex for only amount (price). you can create your own regex based on your requirement
         inputFormatters: [
           FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,4}'))

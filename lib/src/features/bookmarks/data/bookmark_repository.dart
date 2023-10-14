@@ -6,7 +6,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/constants/firebase_names.dart';
 import 'package:pocketfi/src/features/authentication/application/user_id_provider.dart';
 import 'package:pocketfi/src/features/transactions/domain/transaction.dart';
-import 'package:pocketfi/src/features/wallets/application/wallet_services.dart';
 
 final bookmarkTransactionsProvider =
     StreamProvider.autoDispose<Iterable<Transaction>>(
@@ -16,7 +15,7 @@ final bookmarkTransactionsProvider =
     // FIXME get the selected walletId, need to based on Wallet Visibility
     // walletVisibilityProvider get boolean value for each wallet
 
-    final walletId = ref.watch(selectedWalletProvider)?.walletId;
+    // final walletId = ref.watch(selectedWalletProvider)?.walletId;
 
     final controller = StreamController<Iterable<Transaction>>();
 

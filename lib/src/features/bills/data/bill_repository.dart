@@ -9,7 +9,6 @@ import 'package:pocketfi/src/constants/typedefs.dart';
 import 'package:pocketfi/src/features/authentication/application/user_id_provider.dart';
 import 'package:pocketfi/src/features/bills/domain/bill.dart';
 import 'package:pocketfi/src/features/shared/date_picker/application/date_services.dart';
-import 'package:pocketfi/src/features/wallets/application/wallet_services.dart';
 import 'package:pocketfi/src/utils/document_id_from_current_date.dart';
 
 // * get all bills from all wallets
@@ -56,7 +55,6 @@ import 'package:pocketfi/src/utils/document_id_from_current_date.dart';
 final userBillsProvider = StreamProvider<Iterable<Bill>>(
   (ref) {
     final userId = ref.watch(userIdProvider);
-    final walletId = ref.watch(selectedWalletProvider)?.walletId;
     final controller = StreamController<Iterable<Bill>>();
 
     controller.onListen = () {
@@ -371,7 +369,7 @@ class BillNotifier extends StateNotifier<IsLoading> {
     String? billNote,
   }) async {
     isLoading = true;
-    final transactionId = documentIdFromCurrentDate();
+    // final transactionId = documentIdFromCurrentDate();
     final Map<String, dynamic> payload;
     try {
       // * perform create new bill

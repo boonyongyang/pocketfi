@@ -1,16 +1,17 @@
-//get all users in the users collection
 import 'dart:async';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:pocketfi/src/constants/firebase_names.dart';
-import 'package:pocketfi/src/features/authentication/application/user_id_provider.dart';
-import 'package:pocketfi/src/features/authentication/domain/user_info.dart';
+import 'package:cloud_firestore/cloud_firestore.dart' show FirebaseFirestore;
+import 'package:hooks_riverpod/hooks_riverpod.dart' show StreamProvider;
+import 'package:pocketfi/src/constants/firebase_names.dart'
+    show FirebaseCollectionName;
+import 'package:pocketfi/src/features/authentication/domain/user_info.dart'
+    show UserInfo;
+
+//get all users in the users collection
 
 final usersListProvider = StreamProvider.autoDispose<Iterable<UserInfo>>((ref) {
   // create a stream controller
   final controller = StreamController<Iterable<UserInfo>>();
-  final userId = ref.watch(userIdProvider);
 
   // create a subscription to the user collection
   final sub = FirebaseFirestore.instance

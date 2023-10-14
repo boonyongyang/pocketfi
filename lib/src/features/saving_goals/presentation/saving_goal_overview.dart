@@ -4,11 +4,9 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:pocketfi/src/common_widgets/buttons/full_width_button_with_text.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/features/saving_goals/application/saving_goal_services.dart';
 import 'package:pocketfi/src/features/saving_goals/domain/saving_goal.dart';
-import 'package:pocketfi/src/features/saving_goals/presentation/deposit_sheet.dart';
 
 class SavingGoalOverviewView extends StatefulHookConsumerWidget {
   // SavingGoal selectedSavingGoal;
@@ -73,9 +71,9 @@ class _SavingGoalOverviewViewState
                   ),
                   child: Column(
                     children: [
-                      Row(
+                      const Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
+                        children: [
                           Text(
                             'Count Down to Due Date',
                             style: TextStyle(

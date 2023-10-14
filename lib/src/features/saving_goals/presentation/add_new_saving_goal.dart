@@ -204,8 +204,8 @@ class _AddNewSavingGoalState extends ConsumerState<AddNewSavingGoal> {
                 ),
 
                 // wallet
-                Row(
-                  children: const [
+                const Row(
+                  children: [
                     Padding(
                       padding: EdgeInsets.only(left: 16.0, right: 32.0),
                       child: SizedBox(
@@ -319,12 +319,9 @@ class _AddNewSavingGoalState extends ConsumerState<AddNewSavingGoal> {
     debugPrint('startDate: $startDate');
     debugPrint('endDate: $endDate');
 
-    if (result != null) {
-      // Rebuild the UI
-      print(result.start.toString());
-      setState(() {
-        _selectedDateRange = result;
-      });
-    }
+    print(result.start.toString());
+    setState(() {
+      _selectedDateRange = result;
+    });
   }
 }

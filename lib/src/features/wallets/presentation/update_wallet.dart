@@ -11,7 +11,6 @@ import 'package:pocketfi/src/features/authentication/application/user_id_provide
 import 'package:pocketfi/src/features/authentication/application/user_list_provider.dart';
 import 'package:pocketfi/src/features/authentication/domain/collaborators_info.dart';
 import 'package:pocketfi/src/features/wallets/application/wallet_services.dart';
-import 'package:pocketfi/src/features/wallets/data/check_request_service.dart';
 import 'package:pocketfi/src/features/wallets/data/temp_user_provider.dart';
 import 'package:pocketfi/src/features/wallets/data/wallet_repository.dart';
 import 'package:pocketfi/src/features/wallets/domain/wallet.dart';

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/features/authentication/application/user_id_provider.dart';
-import 'package:pocketfi/src/features/authentication/application/user_list_provider.dart';
 import 'package:pocketfi/src/features/wallets/data/temp_user_provider.dart';
 // import 'package:flutter/scheduler.dart' show timeDilation;
 
@@ -38,8 +37,6 @@ class CheckBoxInListView extends ConsumerStatefulWidget {
 }
 
 class _CheckBoxInListViewState extends ConsumerState<CheckBoxInListView> {
-  bool _value = false;
-
   @override
   void initState() {
     super.initState();
@@ -48,7 +45,6 @@ class _CheckBoxInListViewState extends ConsumerState<CheckBoxInListView> {
 
   @override
   Widget build(BuildContext context) {
-    final users = ref.watch(usersListProvider).value?.toList();
     final currentUserId = ref.watch(userIdProvider);
 
     final userList = ref.watch(getTempDataProvider).value?.toList();

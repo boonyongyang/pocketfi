@@ -239,12 +239,12 @@ class _AddNewWalletState extends ConsumerState<AddNewWallet> {
                       showModalBottomSheet(
                         context: context,
                         isScrollControlled: true,
-                        builder: (context) => ShareWalletSheet(),
+                        builder: (context) => const ShareWalletSheet(),
                       );
                     },
-                    child: Row(
+                    child: const Row(
                       children: [
-                        const Padding(
+                        Padding(
                           padding: EdgeInsets.only(left: 16.0, right: 32.0),
                           child: SizedBox(
                             width: 5,
@@ -256,9 +256,9 @@ class _AddNewWalletState extends ConsumerState<AddNewWallet> {
                         ),
                         Expanded(
                           child: Padding(
-                            padding: const EdgeInsets.all(8.0),
+                            padding: EdgeInsets.all(8.0),
                             child: Row(
-                              children: const [
+                              children: [
                                 Expanded(
                                   child: Text(
                                     'Share Wallet with Other People',

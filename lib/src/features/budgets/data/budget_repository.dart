@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/constants/firebase_names.dart';
 import 'package:pocketfi/src/constants/typedefs.dart';
-import 'package:pocketfi/src/features/authentication/application/user_id_provider.dart';
 import 'package:pocketfi/src/features/budgets/domain/budget.dart';
 import 'package:pocketfi/src/features/wallets/data/wallet_repository.dart';
 import 'package:pocketfi/src/utils/document_id_from_current_date.dart';
@@ -62,7 +61,7 @@ final userBudgetsProvider = StreamProvider.autoDispose<Iterable<Budget>>((ref) {
 });
 
 final totalAmountProvider = StreamProvider.autoDispose<double>((ref) {
-  final userId = ref.watch(userIdProvider);
+  // final userId = ref.watch(userIdProvider);
   final wallets = ref.watch(userWalletsProvider).value;
   final controller = StreamController<double>();
 

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/common_widgets/buttons/full_width_button_with_text.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
@@ -8,21 +7,22 @@ import 'package:pocketfi/src/features/debts/application/debt_services.dart';
 import 'package:pocketfi/src/features/debts/domain/debt.dart';
 
 class DebtPaymentSheet extends ConsumerStatefulWidget {
-  Debt debt;
-  Map<String, dynamic> rowData;
-  Map<String, dynamic>? previousRowData;
-  DebtPaymentSheet({
+  const DebtPaymentSheet({
     super.key,
     required this.debt,
     required this.rowData,
     this.previousRowData,
   });
 
+  final Debt debt;
+  final Map<String, dynamic> rowData;
+  final Map<String, dynamic>? previousRowData;
+
   @override
-  _DebtPaymentSheetState createState() => _DebtPaymentSheetState();
+  DebtPaymentSheetState createState() => DebtPaymentSheetState();
 }
 
-class _DebtPaymentSheetState extends ConsumerState<DebtPaymentSheet> {
+class DebtPaymentSheetState extends ConsumerState<DebtPaymentSheet> {
   @override
   Widget build(BuildContext context) {
     double totalPayment = double.parse(widget.rowData['interest']) +

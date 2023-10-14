@@ -7,13 +7,14 @@ import 'package:pocketfi/src/features/saving_goals/domain/saving_goal.dart';
 import 'package:pocketfi/src/features/wallets/data/wallet_repository.dart';
 
 class SavingGoalsTiles extends ConsumerWidget {
-  SavingGoal savingGoal;
-  VoidCallback onTap;
-  SavingGoalsTiles({
+  const SavingGoalsTiles({
     super.key,
     required this.savingGoal,
     required this.onTap,
   });
+
+  final SavingGoal savingGoal;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

@@ -1,37 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:pocketfi/src/common_widgets/animations/empty_contents_with_text_animation_view.dart';
-import 'package:pocketfi/src/common_widgets/animations/error_animation_view.dart';
-import 'package:pocketfi/src/common_widgets/animations/loading_animation_view.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
-import 'package:pocketfi/src/constants/strings.dart';
-import 'package:pocketfi/src/features/budgets/application/budget_services.dart';
 import 'package:pocketfi/src/features/category/application/category_services.dart';
 import 'package:pocketfi/src/features/category/domain/category.dart';
 import 'package:pocketfi/src/features/shared/date_picker/presentation/month_picker.dart';
-import 'package:pocketfi/src/features/transactions/application/transaction_services.dart';
 import 'package:pocketfi/src/features/transactions/data/transaction_repository.dart';
 import 'package:pocketfi/src/features/shared/date_picker/application/date_services.dart';
 import 'package:pocketfi/src/features/transactions/domain/transaction.dart';
 import 'package:pocketfi/src/features/transactions/presentation/transactions_list_view.dart';
 import 'package:pocketfi/src/features/wallets/application/wallet_services.dart';
-import 'package:pocketfi/src/features/wallets/domain/wallet.dart';
 import 'package:pocketfi/src/features/wallets/presentation/update_wallet.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class WalletDetailsView extends ConsumerWidget {
   // Wallet selectedWallet;
-  WalletDetailsView({
+  const WalletDetailsView({
     super.key,
     // required this.selectedWallet,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final selectedWallet = ref.watch(selectedWalletProvider);
-    final transactions =
-        ref.watch(userTransactionsInWalletProvider(selectedWallet!.walletId));
-    final transactionType = ref.watch(transactionTypeProvider);
+    final selectedWallet = ref.watch(selectedWalletProvider)!;
+    // final transactionType = ref.watch(transactionTypeProvider);
     final userTransactions = ref.watch(userTransactionsProvider);
     final month = ref.watch(overviewMonthProvider);
 
@@ -83,7 +74,7 @@ class WalletDetailsView extends ConsumerWidget {
                   .setSelectedWallet(selectedWallet);
               Navigator.of(context, rootNavigator: true).push(
                 MaterialPageRoute(
-                  builder: (context) => UpdateWallet(
+                  builder: (context) => const UpdateWallet(
                       // selectedWallet: wallet,
                       ),
                 ),
@@ -154,22 +145,22 @@ class WalletDetailsView extends ConsumerWidget {
                                 ),
                               ),
                               dataLabelMapper: (Category category, _) {
-                                final totalAmount = (() {
-                                  switch (transactionType) {
-                                    case TransactionType.expense:
-                                    case TransactionType.income:
-                                    case TransactionType.transfer:
-                                      final type = transactionType;
-                                      final transactionsOfType =
-                                          currentMonthTransactions
-                                              .where(
-                                                  (tran) => tran.type == type)
-                                              .toList();
-                                      final totalAmountOfType =
-                                          getTotalAmount(transactionsOfType);
-                                      return totalAmountOfType;
-                                  }
-                                })();
+                                // final totalAmount = (() {
+                                //   switch (transactionType) {
+                                //     case TransactionType.expense:
+                                //     case TransactionType.income:
+                                //     case TransactionType.transfer:
+                                //       final type = transactionType;
+                                //       final transactionsOfType =
+                                //           currentMonthTransactions
+                                //               .where(
+                                //                   (tran) => tran.type == type)
+                                //               .toList();
+                                //       final totalAmountOfType =
+                                //           getTotalAmount(transactionsOfType);
+                                //       return totalAmountOfType;
+                                //   }
+                                // })();
                                 final categoryTotalAmount =
                                     getCategoryTotalAmountForCurrentMonth(
                                         category.name,

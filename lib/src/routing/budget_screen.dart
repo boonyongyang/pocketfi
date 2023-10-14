@@ -1,21 +1,19 @@
-import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
+
 import 'package:pocketfi/src/common_widgets/animations/empty_contents_with_text_animation_view.dart';
 import 'package:pocketfi/src/common_widgets/animations/error_animation_view.dart';
 import 'package:pocketfi/src/common_widgets/animations/loading_animation_view.dart';
-import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/common_widgets/buttons/full_width_button_with_text.dart';
+import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/constants/app_icons.dart';
 import 'package:pocketfi/src/constants/strings.dart';
-import 'package:pocketfi/src/features/authentication/application/user_id_provider.dart';
 import 'package:pocketfi/src/features/budgets/application/budget_services.dart';
 import 'package:pocketfi/src/features/budgets/data/budget_repository.dart';
 import 'package:pocketfi/src/features/budgets/presentation/add_new_budget.dart';
 import 'package:pocketfi/src/features/budgets/presentation/budger_overview.dart';
 import 'package:pocketfi/src/features/budgets/presentation/budget_details_view.dart';
-import 'package:pocketfi/src/features/budgets/presentation/update_budget.dart';
 import 'package:pocketfi/src/features/budgets/presentation/budget_tile.dart';
 import 'package:pocketfi/src/features/wallets/data/check_request_service.dart';
 import 'package:pocketfi/src/features/wallets/presentation/requests_view.dart';
@@ -35,7 +33,6 @@ class _BudgetPageState extends ConsumerState<BudgetPage> {
   Widget build(BuildContext context) {
     final budgets = ref.watch(userBudgetsProvider);
 
-    final currentUserId = ref.watch(userIdProvider);
     final walletRequests = ref.watch(getPendingRequestProvider).value;
     if (walletRequests == null) {
       return Container();
@@ -100,7 +97,7 @@ class _BudgetPageState extends ConsumerState<BudgetPage> {
       body: RefreshIndicator(
           onRefresh: () async {
             ref.refresh(userBudgetsProvider);
-            debugPrint('budgets: $budgets');
+            // debugPrint('budgets: $budgets');
             // return Future.delayed(const Duration(seconds: 1));
           },
           child: Flex(
@@ -320,7 +317,7 @@ class _BudgetPageState extends ConsumerState<BudgetPage> {
                     Expanded(
                       flex: 4,
                       child: budgets.when(data: (budgets) {
-                        debugPrint('budgets: $budgets');
+                        // debugPrint('budgets: $budgets');
                         if (budgets.isEmpty) {
                           return const SingleChildScrollView(
                             physics: AlwaysScrollableScrollPhysics(),

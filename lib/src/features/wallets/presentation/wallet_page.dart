@@ -1,10 +1,8 @@
-import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/common_widgets/animations/empty_contents_with_text_animation_view.dart';
 import 'package:pocketfi/src/common_widgets/animations/error_animation_view.dart';
 import 'package:pocketfi/src/common_widgets/animations/loading_animation_view.dart';
-import 'package:pocketfi/src/common_widgets/buttons/full_width_button_with_text.dart';
 import 'package:pocketfi/src/constants/strings.dart';
 import 'package:pocketfi/src/features/wallets/application/wallet_services.dart';
 import 'package:pocketfi/src/features/wallets/data/wallet_repository.dart';
@@ -103,7 +101,7 @@ class WalletPage extends ConsumerWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (_) => UpdateWallet(
+                              builder: (_) => const UpdateWallet(
                                   // selectedWallet: wallet,
                                   ),
                             ),

@@ -1,16 +1,16 @@
-import 'package:flutter/material.dart';
+import 'dart:developer' as devtools show log;
+
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:pocketfi/src/constants/app_colors.dart';
-import 'package:pocketfi/src/features/authentication/presentation/local_auth_screen.dart';
-import 'firebase_options.dart';
 import 'package:pocketfi/src/common_widgets/loading/loading_screen.dart';
+import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/features/authentication/application/is_logged_in_provider.dart';
 import 'package:pocketfi/src/features/authentication/presentation/login/login_view.dart';
 import 'package:pocketfi/src/features/shared/is_loading_provider.dart';
 import 'package:pocketfi/src/routing/bottom_nav_bar_beamer.dart';
 
-import 'dart:developer' as devtools show log;
+import 'firebase_options.dart';
 
 extension Log on Object {
   void log() => devtools.log(toString());

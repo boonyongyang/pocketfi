@@ -1,17 +1,17 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
+
 import 'package:pocketfi/src/common_widgets/animations/empty_contents_with_text_animation_view.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/constants/strings.dart';
-import 'package:pocketfi/src/features/category/application/category_services.dart';
+import 'package:pocketfi/src/features/shared/date_picker/application/date_services.dart';
+import 'package:pocketfi/src/features/shared/date_picker/presentation/month_picker.dart';
 import 'package:pocketfi/src/features/transactions/application/transaction_services.dart';
 import 'package:pocketfi/src/features/transactions/data/transaction_repository.dart';
-import 'package:pocketfi/src/features/shared/date_picker/application/date_services.dart';
 import 'package:pocketfi/src/features/transactions/domain/transaction.dart';
-import 'package:pocketfi/src/features/shared/date_picker/presentation/month_picker.dart';
 import 'package:pocketfi/src/features/transactions/presentation/transactions_list_view.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
 
 class TagDetailPage extends ConsumerWidget {
   final String tagName;
@@ -60,7 +60,7 @@ class TagDetailPage extends ConsumerWidget {
           }
         },
       );
-      final tag = getCategoryWithCategoryName(transactions.first.categoryName);
+      // final tag = getCategoryWithCategoryName(transactions.first.categoryName);
 
       return TagChartData(
         x: day.toString(),

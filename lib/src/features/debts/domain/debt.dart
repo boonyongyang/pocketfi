@@ -199,6 +199,7 @@ class Debt {
     double monthlyInterestRate = (annualInterestRate / 100) / 12;
     double interest = 0;
     double principle = 0;
+    // ignore: unused_local_variable
     int months = createdMonth - 1;
     double totalPayment = 0.00;
 

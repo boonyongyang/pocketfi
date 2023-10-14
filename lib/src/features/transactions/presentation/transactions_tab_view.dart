@@ -69,8 +69,8 @@ class TransactionsTabView extends ConsumerWidget {
             transactions.when(
               data: (trans) {
                 if (trans.isEmpty) {
-                  return Column(
-                    children: const [
+                  return const Column(
+                    children: [
                       SizedBox(height: 69.0),
                       EmptyContentsWithTextAnimationView(
                         text: Strings.youHaveNoRecords,

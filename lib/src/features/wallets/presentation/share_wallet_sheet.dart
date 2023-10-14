@@ -32,7 +32,6 @@ class _ShareWalletSheetState extends ConsumerState<ShareWalletSheet> {
     // });
     // debugPrint(checkedList.toString());
     final userList = ref.watch(getTempDataProvider).value?.toList();
-    List userMap = [];
     if (userList == null) return Container();
     // for (var user in userList) {
     //   userMap.add(user);

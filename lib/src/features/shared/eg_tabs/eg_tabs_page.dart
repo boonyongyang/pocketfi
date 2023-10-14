@@ -208,12 +208,12 @@ class EgTabsPageState extends State<EgTabsPage> {
           children: [
             Text('Documents', style: Theme.of(context).textTheme.headlineSmall),
             const Spacer(flex: 2),
-            Expanded(
+            const Expanded(
               flex: 4,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
+                children: [
                   Divider(thickness: 1),
                   Padding(
                     padding: EdgeInsets.only(left: 10.0),
@@ -240,7 +240,7 @@ class EgTabsPageState extends State<EgTabsPage> {
           children: [
             Text('Profile', style: Theme.of(context).textTheme.headlineSmall),
             const Spacer(flex: 3),
-            Expanded(
+            const Expanded(
               flex: 3,
               child: Row(
                 children: [
@@ -249,20 +249,20 @@ class EgTabsPageState extends State<EgTabsPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: const [
+                      children: [
                         Text('username:'),
                         Text('email:'),
                         Text('birthday:'),
                       ],
                     ),
                   ),
-                  const Spacer(),
+                  Spacer(),
                   Flexible(
                     flex: 5,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: const [
+                      children: [
                         Text('John Doe'),
                         Text('john.doe@email.com'),
                         Text('1/1/1985'),

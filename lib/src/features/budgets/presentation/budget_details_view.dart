@@ -1,17 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:pocketfi/src/common_widgets/animations/empty_contents_with_text_animation_view.dart';
-import 'package:pocketfi/src/common_widgets/animations/error_animation_view.dart';
-import 'package:pocketfi/src/common_widgets/animations/loading_animation_view.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
-import 'package:pocketfi/src/constants/strings.dart';
 import 'package:pocketfi/src/features/budgets/application/budget_services.dart';
 import 'package:pocketfi/src/features/budgets/presentation/detail_budget_overview.dart';
 import 'package:pocketfi/src/features/budgets/presentation/update_budget.dart';
 import 'package:pocketfi/src/features/category/application/category_services.dart';
 import 'package:pocketfi/src/features/category/domain/category.dart';
 import 'package:pocketfi/src/features/shared/date_picker/presentation/month_picker.dart';
-import 'package:pocketfi/src/features/transactions/application/transaction_services.dart';
 import 'package:pocketfi/src/features/transactions/data/transaction_repository.dart';
 import 'package:pocketfi/src/features/shared/date_picker/application/date_services.dart';
 import 'package:pocketfi/src/features/transactions/domain/transaction.dart';
@@ -24,10 +19,10 @@ class BudgetDetailsView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final selectedBudget = ref.watch(selectedBudgetProvider);
-    final transactionType = ref.watch(transactionTypeProvider);
-    final transactions =
-        ref.watch(userTransactionsInBudgetProvider(selectedBudget!.budgetId));
+    final selectedBudget = ref.watch(selectedBudgetProvider)!;
+    // final transactionType = ref.watch(transactionTypeProvider);
+    // final transactions =
+    // ref.watch(userTransactionsInBudgetProvider(selectedBudget!.budgetId));
     final userTransactions = ref.watch(userTransactionsProvider);
     final month = ref.watch(
         overviewMonthProvider); // ! make a separate one so won't affect by the other
@@ -114,9 +109,9 @@ class BudgetDetailsView extends ConsumerWidget {
                   padding: const EdgeInsets.only(top: 16.0),
                   child: Column(
                     children: [
-                      Row(
+                      const Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
+                        children: [
                           Text('Amount left to spend',
                               style: TextStyle(
                                 fontSize: 13,

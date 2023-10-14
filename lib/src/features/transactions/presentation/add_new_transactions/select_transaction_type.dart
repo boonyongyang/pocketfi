@@ -86,7 +86,7 @@ class SelectTransactionTypeState extends ConsumerState<SelectTransactionType>
       Duration.zero,
       () {
         // * gets the appropriate category list based on the transaction type
-        final type = ref.read(selectedTransactionProvider)?.type;
+        // final type = ref.read(selectedTransactionProvider)?.type;
         // * get category list based on transaction type
         final selectedCategoryName = ref.read(selectedCategoryProvider).name;
         debugPrint('cat: $selectedCategoryName');

@@ -8,24 +8,23 @@ import 'package:pocketfi/src/common_widgets/dialogs/alert_dialog_model.dart';
 import 'package:pocketfi/src/common_widgets/dialogs/delete_dialog.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/constants/strings.dart';
-import 'package:pocketfi/src/features/authentication/application/user_id_provider.dart';
 import 'package:pocketfi/src/features/debts/application/debt_services.dart';
 import 'package:pocketfi/src/features/debts/domain/debt.dart';
-import 'package:pocketfi/src/features/debts/presentation/debt_overview_view.dart';
 
 class UpdateDebt extends StatefulHookConsumerWidget {
-  Debt debt;
-  UpdateDebt({
+  const UpdateDebt({
     super.key,
     required this.debt,
   });
+
+  final Debt debt;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _UpdateDebtViewState();
 }
 
 class _UpdateDebtViewState extends ConsumerState<UpdateDebt> {
-  String _selectedRecurrence = 'Monthly';
+  // final String _selectedRecurrence = 'Monthly';
   @override
   Widget build(BuildContext context) {
     final debtNameController = useTextEditingController(

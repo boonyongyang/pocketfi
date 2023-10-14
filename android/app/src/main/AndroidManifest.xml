@@ -1,5 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="jellyy.pocketfi">
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.USE_BIOMETRIC"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
    <application
         android:label="pocketfi"
         android:name="${applicationName}"
@@ -31,8 +35,4 @@
             android:name="flutterEmbedding"
             android:value="2" />
     </application>
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.USE_BIOMETRIC"/>
-    <!-- <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> -->
 </manifest>

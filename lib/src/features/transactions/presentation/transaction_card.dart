@@ -10,7 +10,6 @@ import 'package:pocketfi/src/features/tags/application/tag_services.dart';
 import 'package:pocketfi/src/features/tags/data/tag_repository.dart';
 import 'package:pocketfi/src/features/tags/domain/tag.dart';
 import 'package:pocketfi/src/features/transactions/domain/transaction.dart';
-import 'package:pocketfi/src/features/wallets/data/wallet_repository.dart';
 
 class TransactionCard extends ConsumerWidget {
   final Transaction transaction;

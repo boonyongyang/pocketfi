@@ -38,8 +38,8 @@ class SettingsPageState extends State<SettingsPage> {
             //   style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500),
             // ),
             // const SizedBox(height: 40),
-            Row(
-              children: const [
+            const Row(
+              children: [
                 Icon(
                   Icons.person,
                   color: AppColors.mainColor1,
@@ -64,8 +64,8 @@ class SettingsPageState extends State<SettingsPage> {
               isActive: false,
             ),
             const SizedBox(height: 40),
-            Row(
-              children: const [
+            const Row(
+              children: [
                 Icon(
                   Icons.volume_up_outlined,
                   color: AppColors.mainColor1,
@@ -168,9 +168,9 @@ class SettingsPageState extends State<SettingsPage> {
             builder: (BuildContext context) {
               return AlertDialog(
                 title: Text(title),
-                content: Column(
+                content: const Column(
                   mainAxisSize: MainAxisSize.min,
-                  children: const [
+                  children: [
                     Text("Option 1"),
                     Text("Option 2"),
                     Text("Option 3"),

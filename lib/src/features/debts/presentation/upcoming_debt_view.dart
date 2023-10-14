@@ -6,13 +6,17 @@ import 'package:pocketfi/src/features/debts/domain/debt.dart';
 import 'package:pocketfi/src/features/debts/presentation/debt_payment_sheet.dart';
 
 class UpcomingDebtView extends ConsumerWidget {
-  Debt debt;
-  UpcomingDebtView({super.key, required this.debt});
+  const UpcomingDebtView({
+    super.key,
+    required this.debt,
+  });
+
+  final Debt debt;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    DateTime now = DateTime.now();
-    int currentMonth = now.month;
+    // DateTime now = DateTime.now();
+    // int currentMonth = now.month;
     List<Map<String, dynamic>> tableData = debt.debtLoanInTable(
         // debtAmount: debt.debtAmount,
         // minimumPayment: debt.minimumPayment,

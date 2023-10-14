@@ -8,11 +8,12 @@ import 'package:pocketfi/src/features/debts/domain/debt.dart';
 import 'package:pocketfi/src/features/debts/presentation/paid_debt_sheet.dart';
 
 class DebtHistoryView extends ConsumerWidget {
-  Debt debt;
-  DebtHistoryView({
+  const DebtHistoryView({
     super.key,
     required this.debt,
   });
+
+  final Debt debt;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

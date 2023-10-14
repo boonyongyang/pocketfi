@@ -19,11 +19,12 @@ import 'package:pocketfi/src/features/wallets/data/wallet_repository.dart';
 
 @immutable
 class UpdateSavingGoalView extends StatefulHookConsumerWidget {
-  SavingGoal savingGoal;
-  UpdateSavingGoalView({
+  const UpdateSavingGoalView({
     super.key,
     required this.savingGoal,
   });
+
+  final SavingGoal savingGoal;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -195,26 +196,25 @@ class _UpdateSavingGoalViewState extends ConsumerState<UpdateSavingGoalView> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        _selectedDateRange != null ||
-                                widget.savingGoal.dueDate != null &&
-                                    widget.savingGoal.startDate != null
+                        _selectedDateRange != null
+                            // || widget.savingGoal.startDate != null
                             ? TextButton(
-                                child: Text(
+                                onPressed: dateRangePicker,
+                                child: const Text(
                                   'Selected Date Range',
                                   style: TextStyle(
                                       // color: Colors.grey,
                                       ),
                                 ),
-                                onPressed: dateRangePicker,
                               )
                             : TextButton(
-                                child: Text(
+                                onPressed: dateRangePicker,
+                                child: const Text(
                                   'Select a Date Range',
                                   style: TextStyle(
                                       // color: Colors.grey,
                                       ),
                                 ),
-                                onPressed: dateRangePicker,
                               ),
                         // _selectedDateRange == null &&
                         //         widget.savingGoal.dueDate != null &&
@@ -227,14 +227,12 @@ class _UpdateSavingGoalViewState extends ConsumerState<UpdateSavingGoalView> {
                                 left: 8.0,
                                 bottom: 8.0,
                               ),
-                              child: _selectedDateRange == null &&
-                                      widget.savingGoal.dueDate != null &&
-                                      widget.savingGoal.startDate != null
+                              child: _selectedDateRange == null
                                   ? Text(
                                       '${DateFormat('d MMM yyyy').format(widget.savingGoal.startDate)} to ${DateFormat('d MMM yyyy').format(widget.savingGoal.dueDate)}')
                                   : Text(
                                       '${DateFormat('d MMM yyyy').format(_selectedDateRange!.start)} to ${DateFormat('d MMM yyyy').format(_selectedDateRange!.end)}',
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         fontSize: 15,
                                       ),
                                     ),
@@ -370,9 +368,7 @@ class _UpdateSavingGoalViewState extends ConsumerState<UpdateSavingGoalView> {
   void dateRangePicker() async {
     DateTimeRange? result = await showDateRangePicker(
       context: context,
-      initialDateRange: _selectedDateRange == null &&
-              widget.savingGoal.dueDate != null &&
-              widget.savingGoal.startDate != null
+      initialDateRange: _selectedDateRange == null
           ? DateTimeRange(
               start: widget.savingGoal.startDate,
               end: widget.savingGoal.dueDate,
@@ -391,12 +387,9 @@ class _UpdateSavingGoalViewState extends ConsumerState<UpdateSavingGoalView> {
     debugPrint('startDate: $startDate');
     debugPrint('endDate: $endDate');
 
-    if (result != null) {
-      // Rebuild the UI
-      print(result.start.toString());
-      setState(() {
-        _selectedDateRange = result;
-      });
-    }
+    print(result.start.toString());
+    setState(() {
+      _selectedDateRange = result;
+    });
   }
 }

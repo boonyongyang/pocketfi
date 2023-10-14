@@ -48,6 +48,7 @@ class LoadingScreen {
   }) {
     // get overlay state
     final state = Overlay.of(context);
+    // ignore: unnecessary_null_comparison
     if (state == null) {
       return null; // return if state is null
     }

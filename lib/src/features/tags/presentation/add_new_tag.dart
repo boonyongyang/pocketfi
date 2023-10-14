@@ -8,8 +8,6 @@ import 'package:pocketfi/src/constants/strings.dart';
 import 'package:pocketfi/src/features/authentication/application/user_id_provider.dart';
 import 'package:pocketfi/src/features/category/application/category_services.dart';
 import 'package:pocketfi/src/features/tags/application/tag_services.dart';
-import 'package:pocketfi/src/features/transactions/application/transaction_services.dart';
-import 'package:pocketfi/src/features/transactions/domain/transaction.dart';
 
 class AddNewTag extends StatefulHookConsumerWidget {
   const AddNewTag({super.key});

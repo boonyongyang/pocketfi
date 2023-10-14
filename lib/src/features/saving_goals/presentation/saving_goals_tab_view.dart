@@ -192,7 +192,7 @@ class SavingGoalsTabView extends ConsumerWidget {
                                 rootNavigator: true,
                               ).push(
                                 MaterialPageRoute(
-                                  builder: (_) => SavingGoalDetailView(
+                                  builder: (_) => const SavingGoalDetailView(
                                       // savingGoal: savingGoal,
                                       ),
                                 ),

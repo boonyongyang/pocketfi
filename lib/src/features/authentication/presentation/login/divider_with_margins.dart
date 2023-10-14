@@ -9,8 +9,8 @@ class DividerWithMargins extends StatelessWidget {
     //   padding: EdgeInsets.symmetric(horizontal: 40.0),
     //   child: Divider(),
     // );
-    return Column(
-      children: const [SizedBox(height: 20), Divider(), SizedBox(height: 20)],
+    return const Column(
+      children: [SizedBox(height: 20), Divider(), SizedBox(height: 20)],
     );
   }
 }

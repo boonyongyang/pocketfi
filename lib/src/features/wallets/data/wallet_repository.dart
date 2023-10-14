@@ -165,7 +165,7 @@ final getWalletFromWalletIdProvider = StreamProvider.family<Wallet, String>((
 ) {
   final controller = StreamController<Wallet>();
 
-  final userId = ref.watch(userIdProvider);
+  // final userId = ref.watch(userIdProvider);
   final sub = FirebaseFirestore.instance
       // .collection(FirebaseCollectionName.users)
       // .doc(userId)
@@ -360,8 +360,7 @@ class WalletNotifier extends StateNotifier<IsLoading> {
 
       final query3Snapshot = await query3.get();
 
-      var collaborators =
-          query3Snapshot.data()![FirebaseFieldName.collaborators] as List;
+      // var collaborators = query3Snapshot.data()![FirebaseFieldName.collaborators] as List;
 
       // for (var i = 0; i < collaborators.length; i++) {
       // if (collaborators == []) {

@@ -164,7 +164,7 @@ class _MainViewState extends ConsumerState<TimelinePage>
               ],
             ),
           ),
-          bottom: TabBar(
+          bottom: const TabBar(
             indicatorColor: AppColors.mainColor2,
             labelColor: AppColors.mainColor2,
             unselectedLabelColor: Colors.grey,
@@ -172,7 +172,7 @@ class _MainViewState extends ConsumerState<TimelinePage>
               Tab(
                   child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
+                children: [
                   // FaIcon(FontAwesomeIcons.moneyBills),
                   Text('Transactions'),
                 ],
@@ -180,7 +180,7 @@ class _MainViewState extends ConsumerState<TimelinePage>
               Tab(
                   child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
+                children: [
                   // FaIcon(FontAwesomeIcons.chartPie),
                   Text('Overview'),
                 ],
