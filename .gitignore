@@ -42,9 +42,12 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+**/android/local.properties
+**/android/key.properties
 
 # google-services.json file should not be checked into public repos
 /android/app/google-services.json
 # info.plist files should not be checked into public repos
 /ios/Runner/Info.plist
 /ios/Runner/GoogleService-Info.plist
+keystore.jpeg
