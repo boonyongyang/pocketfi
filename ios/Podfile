@@ -31,6 +31,10 @@ target 'Runner' do
   use_frameworks!
   use_modular_headers!
 
+  # issue: https://stackoverflow.com/questions/72970985/xcode-14-beta-error-stored-properties-cannot-be-marked-potentially-unavailable
+  # https://github.com/sawankumarbundelkhandi/edge_detection#fix-build-on-xcode-15
+  pod 'WeScan', :path => '.symlinks/plugins/edge_detection/ios/WeScan-3.0.0'
+
   pod 'MLKitVision', :podspec => 'MLKitVision.podspec.json'
   pod 'MLKitCommon', :podspec => 'MLKitCommon.podspec.json'
 
