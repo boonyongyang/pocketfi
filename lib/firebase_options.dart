@@ -63,6 +63,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '308866983425',
     projectId: 'pocketfi-jellyy',
     storageBucket: 'pocketfi-jellyy.appspot.com',
+    androidClientId: '308866983425-ftf0brdlsr0tt2osvklcnjocmld1v9sd.apps.googleusercontent.com',
     iosClientId: '308866983425-aq8b8ug1k8bfovlmorltrfe1a5rhg8o9.apps.googleusercontent.com',
     iosBundleId: 'jellyy.pocketfi',
   );

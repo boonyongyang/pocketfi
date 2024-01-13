@@ -14,7 +14,31 @@
       },
       "oauth_client": [
         {
-          "client_id": "308866983425-p6qk1am1fb0fo1e8de5eai11kq1mjgvi.apps.googleusercontent.com",
+          "client_id": "308866983425-ftf0brdlsr0tt2osvklcnjocmld1v9sd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "jellyy.pocketfi",
+            "certificate_hash": "1b73ee9006664b4ca65c4228a3f2eb8d6d0f81c1"
+          }
+        },
+        {
+          "client_id": "308866983425-t23jnfln71pshhvs1v80cp69d3qt5fvj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "jellyy.pocketfi",
+            "certificate_hash": "94fdd48c4710095db002a2337c69c3438aeffdf8"
+          }
+        },
+        {
+          "client_id": "308866983425-tc5if0fhe788324gl12rt41ot5heqm6d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "jellyy.pocketfi",
+            "certificate_hash": "81e72b2d0547d9ea6a5d3a731aac185ce7a0a7fb"
+          }
+        },
+        {
+          "client_id": "308866983425-peed128kiarag27muk9ip51e3dg05j0n.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -29,6 +53,13 @@
             {
               "client_id": "308866983425-p6qk1am1fb0fo1e8de5eai11kq1mjgvi.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "308866983425-aq8b8ug1k8bfovlmorltrfe1a5rhg8o9.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "jellyy.pocketfi"
+              }
             }
           ]
         }
