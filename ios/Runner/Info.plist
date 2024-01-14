@@ -2,12 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 	<dict>
-		<key>NSFaceIDUsageDescription</key>
-		<string>${PRODUCT_NAME} would like to access FaceID</string>
-		<key>NSPhotoLibraryUsageDescription</key>
-		<string>${PRODUCT_NAME} would like to access your photos</string>
-		<key>NSCameraUsageDescription</key>
-		<string>${PRODUCT_NAME} would like to access your camera</string>
 		<key>CADisableMinimumFrameDurationOnPhone</key>
 		<true/>
 		<key>CFBundleDevelopmentRegion</key>
@@ -43,12 +37,20 @@
 		<string>$(FLUTTER_BUILD_NUMBER)</string>
 		<key>LSRequiresIPhoneOS</key>
 		<true/>
+		<key>NSCameraUsageDescription</key>
+		<string>${PRODUCT_NAME} would like to access your camera</string>
+		<key>NSFaceIDUsageDescription</key>
+		<string>${PRODUCT_NAME} would like to access FaceID</string>
+		<key>NSPhotoLibraryUsageDescription</key>
+		<string>${PRODUCT_NAME} would like to access your photos</string>
 		<key>UIApplicationSupportsIndirectInputEvents</key>
 		<true/>
 		<key>UILaunchStoryboardName</key>
 		<string>LaunchScreen</string>
 		<key>UIMainStoryboardFile</key>
 		<string>Main</string>
+		<key>UIStatusBarHidden</key>
+		<false/>
 		<key>UISupportedInterfaceOrientations</key>
 		<array>
 			<string>UIInterfaceOrientationPortrait</string>
@@ -63,8 +65,6 @@
 			<string>UIInterfaceOrientationLandscapeRight</string>
 		</array>
 		<key>UIViewControllerBasedStatusBarAppearance</key>
-		<false/>
-		<key>UIStatusBarHidden</key>
 		<false/>
 	</dict>
 </plist>

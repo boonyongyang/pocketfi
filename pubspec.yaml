@@ -84,18 +84,19 @@ dev_dependencies:
 flutter_native_splash:
   color: "FFFFFF"
   image: assets/icon/pocketfi_no_bg_1152.png
-  fill: false
+  # image: assets/icon/pocketfi2.png
+  # fill: false
   android: true
   ios: true
-  web: false
-  macos: false
-  windows: false
-  linux: false
+  # web: false
+  # macos: false
+  # windows: false
+  # linux: false
 
 flutter_icons:
   android: true
   ios: true
-  image_path: "assets/icon/pocketfi_no_bg_86.png"
+  image_path: "assets/icon/pocketfi2.png"
   # adaptive_icon_background: "#0C0E1E"
   # adaptive_icon_background: "#FFFFFF"
   # adaptive_icon_foreground: "assets/icon/pocketfi_512px.png"
