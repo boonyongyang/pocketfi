@@ -39,6 +39,7 @@ class App extends StatelessWidget {
     return MaterialApp(
       // title: 'Home Page',
       theme: ThemeData(
+        useMaterial3: false,
         brightness: Brightness.light,
         primarySwatch: AppColors.mainMaterialColor1,
         indicatorColor: Colors.white10,

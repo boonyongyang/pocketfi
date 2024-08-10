@@ -51,3 +51,6 @@ app.*.map.json
 /ios/Runner/Info.plist
 /ios/Runner/GoogleService-Info.plist
 keystore.jpeg
+
+
+/ios/build/

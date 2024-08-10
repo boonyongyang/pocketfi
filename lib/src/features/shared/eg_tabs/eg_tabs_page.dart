@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:tab_container/tab_container.dart';
 
@@ -8,13 +10,15 @@ class EgTabsPage extends StatefulWidget {
   EgTabsPageState createState() => EgTabsPageState();
 }
 
-class EgTabsPageState extends State<EgTabsPage> {
+class EgTabsPageState extends State<EgTabsPage> with TickerProviderStateMixin {
   late final TabContainerController _controller;
+  late final TabController _tabController;
   late TextTheme textTheme;
 
   @override
   void initState() {
-    _controller = TabContainerController(length: 3);
+    _controller = TabContainerController(3);
+    _tabController = TabController(length: 3, vsync: this);
     super.initState();
   }
 
@@ -73,7 +77,7 @@ class EgTabsPageState extends State<EgTabsPage> {
                         textTheme.bodyMedium?.copyWith(fontSize: 15.0),
                     unselectedTextStyle:
                         textTheme.bodyMedium?.copyWith(fontSize: 13.0),
-                    tabs: _getTabs1(),
+                    tabs: _getTabs1().map((tab) => Text(tab)).toList(),
                     children: _getChildren1(),
                   ),
                 ),
@@ -82,7 +86,7 @@ class EgTabsPageState extends State<EgTabsPage> {
               SizedBox(
                 height: 330.0,
                 child: TabContainer(
-                  controller: _controller,
+                  controller: _tabController,
                   radius: 0,
                   color: Colors.grey,
                   tabDuration: const Duration(seconds: 0),
@@ -94,19 +98,19 @@ class EgTabsPageState extends State<EgTabsPage> {
                   children: _getChildren2(),
                 ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  IconButton(
-                    onPressed: () => _controller.prev(),
-                    icon: const Icon(Icons.arrow_back),
-                  ),
-                  IconButton(
-                    onPressed: () => _controller.next(),
-                    icon: const Icon(Icons.arrow_forward),
-                  ),
-                ],
-              ),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              //   children: [
+              //     IconButton(
+              //       onPressed: () => _controller.prev(),
+              //       icon: const Icon(Icons.arrow_back),
+              //     ),
+              //     IconButton(
+              //       onPressed: () => _controller.next(),
+              //       icon: const Icon(Icons.arrow_forward),
+              //     ),
+              //   ],
+              // ),
               const Spacer(),
               Expanded(
                 flex: 3,
@@ -133,7 +137,7 @@ class EgTabsPageState extends State<EgTabsPage> {
                     tabStart: 0.1,
                     tabEnd: 0.6,
                     childPadding: const EdgeInsets.all(20.0),
-                    tabs: _getTabs4(),
+                    tabs: _getTabs4().map((tab) => Text(tab)).toList(),
                     selectedTextStyle: const TextStyle(
                       color: Colors.white,
                       fontSize: 15.0,
@@ -188,8 +192,12 @@ class EgTabsPageState extends State<EgTabsPage> {
     ];
   }
 
-  List<String> _getTabs2() {
-    return <String>['Image 1', 'Image 2', 'Image 3'];
+  List<Widget> _getTabs2() {
+    return <Widget>[
+      const Text('Image 1'),
+      const Text('Image 2'),
+      const Text('Image 3'),
+    ];
   }
 
   List<Widget> _getChildren3(BuildContext context) => <Widget>[
@@ -208,12 +216,12 @@ class EgTabsPageState extends State<EgTabsPage> {
           children: [
             Text('Documents', style: Theme.of(context).textTheme.headlineSmall),
             const Spacer(flex: 2),
-            Expanded(
+            const Expanded(
               flex: 4,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
+                children: [
                   Divider(thickness: 1),
                   Padding(
                     padding: EdgeInsets.only(left: 10.0),
@@ -240,7 +248,7 @@ class EgTabsPageState extends State<EgTabsPage> {
           children: [
             Text('Profile', style: Theme.of(context).textTheme.headlineSmall),
             const Spacer(flex: 3),
-            Expanded(
+            const Expanded(
               flex: 3,
               child: Row(
                 children: [
@@ -249,20 +257,20 @@ class EgTabsPageState extends State<EgTabsPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: const [
+                      children: [
                         Text('username:'),
                         Text('email:'),
                         Text('birthday:'),
                       ],
                     ),
                   ),
-                  const Spacer(),
+                  Spacer(),
                   Flexible(
                     flex: 5,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: const [
+                      children: [
                         Text('John Doe'),
                         Text('john.doe@email.com'),
                         Text('1/1/1985'),

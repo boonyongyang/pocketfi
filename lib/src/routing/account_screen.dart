@@ -43,11 +43,11 @@ class AccountPage extends StatelessWidget {
             padding: MaterialStateProperty.all(EdgeInsets.zero),
             shape: MaterialStateProperty.all(const StadiumBorder()),
           ),
-          splashColor: AppColors.transparent,
+          splashColor: AppColors.red,
           splashRadius: 1,
           icon: const Icon(
             Icons.do_not_touch,
-            color: AppColors.transparent,
+            color: AppColors.red,
           ),
           onPressed: () => Navigator.of(context, rootNavigator: true).push(
             MaterialPageRoute(
