@@ -2,7 +2,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pocketfi/src/features/authentication/domain/collaborators_info.dart';
 import 'package:pocketfi/src/features/wallets/data/wallet_repository.dart';
 import 'package:pocketfi/src/constants/typedefs.dart';
-import 'package:flutter/foundation.dart';
 import 'package:pocketfi/src/features/wallets/domain/wallet.dart';
 
 final walletProvider = StateNotifierProvider<WalletNotifier, IsLoading>(

@@ -5,7 +5,6 @@ import 'package:flutter/material.dart' show Color;
 
 import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/constants/strings.dart';
-import 'package:pocketfi/src/features/tags/domain/tag.dart';
 import 'package:pocketfi/src/features/transactions/domain/transaction_image.dart';
 
 enum TransactionType {

@@ -153,7 +153,7 @@ class UpdateBillFormState extends ConsumerState<UpdateBillForm> {
                       const Spacer(),
                       const Icon(AppIcons.wallet, color: AppColors.mainColor1),
                       // ! also need to change the selected
-                      SelectWalletDropdownList(
+                      const SelectWalletDropdownList(
                           // selectedWallet: selectedWallet,
                           ),
                     ],

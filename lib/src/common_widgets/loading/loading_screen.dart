@@ -48,9 +48,6 @@ class LoadingScreen {
   }) {
     // get overlay state
     final state = Overlay.of(context);
-    if (state == null) {
-      return null; // return if state is null
-    }
 
     // create stream controller
     // this is used to update the text in the loading screen

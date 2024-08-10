@@ -228,8 +228,8 @@ class _AddNewBudgetState extends ConsumerState<AddNewBudget> {
                     // ),
                   ],
                 ),
-                Row(
-                  children: const [
+                const Row(
+                  children: [
                     Padding(
                       padding: EdgeInsets.only(left: 16.0, right: 32.0),
                       child: SizedBox(

@@ -4,7 +4,6 @@ import 'package:pocketfi/src/features/bills/application/bill_services.dart';
 import 'package:pocketfi/src/features/bills/domain/bill.dart';
 import 'package:pocketfi/src/features/bills/presentation/bill_card_view.dart';
 import 'package:pocketfi/src/features/bills/presentation/bill_detail_sheet.dart';
-import 'package:pocketfi/src/features/bills/presentation/update_bill_page.dart';
 
 class BillListView extends ConsumerWidget {
   final Iterable<Bill> bills;

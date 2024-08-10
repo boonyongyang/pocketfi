@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:pocketfi/src/common_widgets/animations/empty_contents_with_text_animation_view.dart';
-import 'package:pocketfi/src/common_widgets/animations/error_animation_view.dart';
-import 'package:pocketfi/src/common_widgets/animations/loading_animation_view.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
-import 'package:pocketfi/src/constants/strings.dart';
 import 'package:pocketfi/src/features/budgets/application/budget_services.dart';
 import 'package:pocketfi/src/features/budgets/presentation/detail_budget_overview.dart';
 import 'package:pocketfi/src/features/budgets/presentation/update_budget.dart';
@@ -114,9 +110,9 @@ class BudgetDetailsView extends ConsumerWidget {
                   padding: const EdgeInsets.only(top: 16.0),
                   child: Column(
                     children: [
-                      Row(
+                      const Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
+                        children: [
                           Text('Amount left to spend',
                               style: TextStyle(
                                 fontSize: 13,

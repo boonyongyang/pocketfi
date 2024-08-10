@@ -94,7 +94,7 @@ class _DebtDataTableState extends State<DebtDataTable> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("All Payments"),
+        title: const Text("All Payments"),
       ),
       body: SingleChildScrollView(
         child: Column(

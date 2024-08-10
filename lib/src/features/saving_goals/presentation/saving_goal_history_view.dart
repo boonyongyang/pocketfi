@@ -8,7 +8,6 @@ import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/constants/strings.dart';
 import 'package:pocketfi/src/features/saving_goals/application/saving_goal_services.dart';
 import 'package:pocketfi/src/features/saving_goals/data/saving_goal_repository.dart';
-import 'package:pocketfi/src/features/saving_goals/domain/saving_goal.dart';
 import 'package:pocketfi/src/features/saving_goals/domain/saving_goal_history.dart';
 
 class SavingGoalHistoryView extends ConsumerWidget {

@@ -7,11 +7,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/features/shared/image_upload/presentation/full_screen_image_dialog.dart';
-import 'package:pocketfi/src/features/receipts/add_transaction_with_receipt.dart';
-import 'package:pocketfi/src/features/receipts/application/receipt_services.dart';
-import 'package:pocketfi/src/features/receipts/domain/receipt.dart';
 import 'package:pocketfi/src/features/receipts/scanned_text_page.dart';
-import 'package:uuid/uuid.dart';
 
 class VerifyReceiptDetails extends StatefulHookConsumerWidget {
   const VerifyReceiptDetails({

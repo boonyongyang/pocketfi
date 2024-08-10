@@ -11,7 +11,6 @@ import 'package:pocketfi/src/features/wallets/application/wallet_services.dart';
 import 'package:pocketfi/src/features/wallets/domain/wallet.dart';
 import 'package:pocketfi/src/features/wallets/presentation/select_wallet_dropdownlist.dart';
 import 'package:pocketfi/src/features/debts/application/debt_services.dart';
-import 'package:pocketfi/src/features/debts/data/debt_repository.dart';
 
 class AddNewDebt extends StatefulHookConsumerWidget {
   const AddNewDebt({super.key});
@@ -21,7 +20,7 @@ class AddNewDebt extends StatefulHookConsumerWidget {
 }
 
 class _AddDebtViewState extends ConsumerState<AddNewDebt> {
-  String _selectedRecurrence = 'Monthly';
+  final String _selectedRecurrence = 'Monthly';
   bool isVisible = false;
   @override
   Widget build(BuildContext context) {
@@ -233,8 +232,8 @@ class _AddDebtViewState extends ConsumerState<AddNewDebt> {
                 //     ),
                 //   ],
                 // ),
-                Row(
-                  children: const [
+                const Row(
+                  children: [
                     Padding(
                       padding: EdgeInsets.only(left: 16.0, right: 32.0),
                       child: SizedBox(

@@ -83,9 +83,9 @@ class DebtOverviewViewState extends ConsumerState<DebtOverviewView> {
                   ),
                   child: Column(
                     children: [
-                      Row(
+                      const Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
+                        children: [
                           Text(
                             'Years to Finish Paying',
                             style: TextStyle(

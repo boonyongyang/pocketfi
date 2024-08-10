@@ -112,10 +112,10 @@ class WalletTiles extends ConsumerWidget {
                   ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
+              const Padding(
+                padding: EdgeInsets.all(8.0),
                 child: Column(
-                  children: const [
+                  children: [
                     Icon(
                       Icons.arrow_forward_ios_rounded,
                       color: AppColors.mainColor1,

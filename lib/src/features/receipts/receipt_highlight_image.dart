@@ -219,7 +219,7 @@ class ReceiptHighlightImageState extends ConsumerState<ReceiptHighlightImage> {
             noteController: noteController,
             merchantController: merchantController,
             recognizedText: widget.recognizedText,
-            imagePath: widget.imagePath ?? '', extractedTextRects: [],
+            imagePath: widget.imagePath ?? '', extractedTextRects: const [],
           ),
         ],
       ),

@@ -8,7 +8,6 @@ import 'package:pocketfi/src/features/wallets/application/wallet_services.dart';
 import 'package:pocketfi/src/features/wallets/data/temp_user_provider.dart';
 import 'package:pocketfi/src/features/wallets/data/wallet_repository.dart';
 import 'package:pocketfi/src/features/wallets/presentation/add_new_wallet.dart';
-import 'package:pocketfi/src/features/wallets/presentation/update_wallet.dart';
 import 'package:pocketfi/src/features/wallets/presentation/wallet_details_view.dart';
 import 'package:pocketfi/src/features/wallets/presentation/wallet_tiles.dart';
 
@@ -108,7 +107,7 @@ class WalletBottomSheet extends ConsumerWidget {
                           // final walletId = specificWallet.wallet.walletId;
                           Navigator.of(context, rootNavigator: true).push(
                             MaterialPageRoute(
-                              builder: (context) => WalletDetailsView(
+                              builder: (context) => const WalletDetailsView(
                                   // selectedWallet: wallet,
                                   ),
                             ),

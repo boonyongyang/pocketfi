@@ -1,4 +1,3 @@
-import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -15,7 +14,6 @@ import 'package:pocketfi/src/features/budgets/data/budget_repository.dart';
 import 'package:pocketfi/src/features/budgets/presentation/add_new_budget.dart';
 import 'package:pocketfi/src/features/budgets/presentation/budger_overview.dart';
 import 'package:pocketfi/src/features/budgets/presentation/budget_details_view.dart';
-import 'package:pocketfi/src/features/budgets/presentation/update_budget.dart';
 import 'package:pocketfi/src/features/budgets/presentation/budget_tile.dart';
 import 'package:pocketfi/src/features/wallets/data/check_request_service.dart';
 import 'package:pocketfi/src/features/wallets/presentation/requests_view.dart';

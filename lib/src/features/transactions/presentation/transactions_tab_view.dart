@@ -41,10 +41,10 @@ class TransactionsTabView extends ConsumerWidget {
                 const SizedBox(height: 10.0),
                 ElevatedButton(
                   style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(
+                    backgroundColor: WidgetStateProperty.all(
                       AppColors.mainColor1,
                     ),
-                    shape: MaterialStateProperty.all(
+                    shape: WidgetStateProperty.all(
                       RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30.0),
                       ),
@@ -69,8 +69,8 @@ class TransactionsTabView extends ConsumerWidget {
             transactions.when(
               data: (trans) {
                 if (trans.isEmpty) {
-                  return Column(
-                    children: const [
+                  return const Column(
+                    children: [
                       SizedBox(height: 69.0),
                       EmptyContentsWithTextAnimationView(
                         text: Strings.youHaveNoRecords,

@@ -37,11 +37,11 @@ class AccountPage extends StatelessWidget {
         title: const Text("Account"),
         leading: IconButton(
           style: ButtonStyle(
-            overlayColor: MaterialStateProperty.all(Colors.transparent),
-            foregroundColor: MaterialStateProperty.all(Colors.transparent),
-            backgroundColor: MaterialStateProperty.all(Colors.transparent),
-            padding: MaterialStateProperty.all(EdgeInsets.zero),
-            shape: MaterialStateProperty.all(const StadiumBorder()),
+            overlayColor: WidgetStateProperty.all(Colors.transparent),
+            foregroundColor: WidgetStateProperty.all(Colors.transparent),
+            backgroundColor: WidgetStateProperty.all(Colors.transparent),
+            padding: WidgetStateProperty.all(EdgeInsets.zero),
+            shape: WidgetStateProperty.all(const StadiumBorder()),
           ),
           splashColor: AppColors.red,
           splashRadius: 1,

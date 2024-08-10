@@ -186,37 +186,37 @@ class _ScaffoldWithBottomNavBarState extends State<ScaffoldWithBottomNavBar> {
     BeamerDelegate(
       initialPath: '/timeline',
       locationBuilder: (routeInformation, _) {
-        if (routeInformation.location!.contains('/timeline')) {
+        if (routeInformation.location.contains('/timeline')) {
           return TimelineLocation(routeInformation);
         }
-        return NotFound(path: routeInformation.location!);
+        return NotFound(path: routeInformation.location);
       },
     ),
     BeamerDelegate(
       initialPath: '/budget',
       locationBuilder: (routeInformation, _) {
-        if (routeInformation.location!.contains('/budget')) {
+        if (routeInformation.location.contains('/budget')) {
           return BudgetLocation(routeInformation);
         }
-        return NotFound(path: routeInformation.location!);
+        return NotFound(path: routeInformation.location);
       },
     ),
     BeamerDelegate(
       initialPath: '/finances',
       locationBuilder: (routeInformation, _) {
-        if (routeInformation.location!.contains('/finances')) {
+        if (routeInformation.location.contains('/finances')) {
           return FinanceLocation(routeInformation);
         }
-        return NotFound(path: routeInformation.location!);
+        return NotFound(path: routeInformation.location);
       },
     ),
     BeamerDelegate(
       initialPath: '/account',
       locationBuilder: (routeInformation, _) {
-        if (routeInformation.location!.contains('/account')) {
+        if (routeInformation.location.contains('/account')) {
           return AccountLocation(routeInformation);
         }
-        return NotFound(path: routeInformation.location!);
+        return NotFound(path: routeInformation.location);
       },
     ),
   ];
@@ -224,7 +224,7 @@ class _ScaffoldWithBottomNavBarState extends State<ScaffoldWithBottomNavBar> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final uriString = Beamer.of(context).configuration.location!;
+    final uriString = Beamer.of(context).configuration.location;
     // _currentIndex = uriString.contains('/timeline') ? 0 : 1;
     if (uriString.contains('/timeline')) {
       _currentIndex = 0;

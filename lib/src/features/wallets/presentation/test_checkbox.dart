@@ -38,7 +38,7 @@ class CheckBoxInListView extends ConsumerStatefulWidget {
 }
 
 class _CheckBoxInListViewState extends ConsumerState<CheckBoxInListView> {
-  bool _value = false;
+  final bool _value = false;
 
   @override
   void initState() {

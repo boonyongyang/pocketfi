@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:pocketfi/src/features/transactions/application/transaction_services.dart';
 import 'package:pocketfi/src/features/wallets/application/wallet_services.dart';
 import 'package:pocketfi/src/features/wallets/data/wallet_repository.dart';
-import 'package:pocketfi/src/features/wallets/domain/wallet.dart';
 
 class SelectWalletDropdownList extends ConsumerWidget {
   const SelectWalletDropdownList({
