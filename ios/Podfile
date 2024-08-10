@@ -38,6 +38,8 @@ target 'Runner' do
   pod 'MLKitVision', :podspec => 'MLKitVision.podspec.json'
   pod 'MLKitCommon', :podspec => 'MLKitCommon.podspec.json'
 
+  pod 'GTMSessionFetcher/Core', '~> 2.1'
+
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
 end
 

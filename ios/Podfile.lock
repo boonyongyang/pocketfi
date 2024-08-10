@@ -944,6 +944,7 @@ DEPENDENCIES:
   - google_mlkit_commons (from `.symlinks/plugins/google_mlkit_commons/ios`)
   - google_mlkit_text_recognition (from `.symlinks/plugins/google_mlkit_text_recognition/ios`)
   - google_sign_in_ios (from `.symlinks/plugins/google_sign_in_ios/ios`)
+  - GTMSessionFetcher/Core (~> 2.1)
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
   - local_auth_ios (from `.symlinks/plugins/local_auth_ios/ios`)
   - MLKitCommon (from `MLKitCommon.podspec.json`)
@@ -1119,6 +1120,6 @@ SPEC CHECKSUMS:
   video_thumbnail: c4e2a3c539e247d4de13cd545344fd2d26ffafd1
   WeScan: f50277f7304d146d9ebc4ebdc1b587df84dcdd8b
 
-PODFILE CHECKSUM: cef8ea25aa8d716f9944014a29d78b8fd271f095
+PODFILE CHECKSUM: 0d675164d06634792d53b80d5fa5240508243b3c
 
 COCOAPODS: 1.15.0
