@@ -1,3 +1,5 @@
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -17,9 +19,12 @@ extension Log on Object {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  _setupFirebaseCrashlytics();
 
   runApp(
     const ProviderScope(
@@ -63,4 +68,16 @@ class App extends StatelessWidget {
       // * comment this Consumer to try local authentication
     );
   }
+}
+
+void _setupFirebaseCrashlytics() {
+  final crashlytics = FirebaseCrashlytics.instance;
+  FlutterError.onError = crashlytics.recordFlutterError;
+  PlatformDispatcher.instance.onError = (error, stack) {
+    debugPrint('log error in crashlytics');
+    crashlytics.recordError(error, stack);
+    return true;
+  };
+  crashlytics.setCrashlyticsCollectionEnabled(true);
+  // crashlytics.setCrashlyticsCollectionEnabled(!kDebugMode);
 }
