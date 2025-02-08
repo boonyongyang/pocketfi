@@ -8,7 +8,6 @@ import 'package:pocketfi/src/constants/app_colors.dart';
 import 'package:pocketfi/src/common_widgets/buttons/full_width_button_with_text.dart';
 import 'package:pocketfi/src/constants/app_icons.dart';
 import 'package:pocketfi/src/constants/strings.dart';
-import 'package:pocketfi/src/features/authentication/application/user_id_provider.dart';
 import 'package:pocketfi/src/features/budgets/application/budget_services.dart';
 import 'package:pocketfi/src/features/budgets/data/budget_repository.dart';
 import 'package:pocketfi/src/features/budgets/presentation/add_new_budget.dart';
@@ -33,13 +32,12 @@ class _BudgetPageState extends ConsumerState<BudgetPage> {
   Widget build(BuildContext context) {
     final budgets = ref.watch(userBudgetsProvider);
 
-    final currentUserId = ref.watch(userIdProvider);
+    // final currentUserId = ref.watch(userIdProvider);
     final walletRequests = ref.watch(getPendingRequestProvider).value;
     if (walletRequests == null) {
       return Container();
     }
-    // final isPending =
-    //     ref.watch(checkRequestProvider.notifier).checkRequest(currentUserId!);
+    // final isPending = ref.watch(checkRequestProvider.notifier).checkRequest(currentUserId!);
 
     return Scaffold(
       appBar: AppBar(
@@ -98,7 +96,7 @@ class _BudgetPageState extends ConsumerState<BudgetPage> {
       body: RefreshIndicator(
           onRefresh: () async {
             ref.refresh(userBudgetsProvider);
-            debugPrint('budgets: $budgets');
+            // debugPrint('budgets: $budgets');
             // return Future.delayed(const Duration(seconds: 1));
           },
           child: Flex(
@@ -318,7 +316,7 @@ class _BudgetPageState extends ConsumerState<BudgetPage> {
                     Expanded(
                       flex: 4,
                       child: budgets.when(data: (budgets) {
-                        debugPrint('budgets: $budgets');
+                        // debugPrint('budgets: $budgets');
                         if (budgets.isEmpty) {
                           return const SingleChildScrollView(
                             physics: AlwaysScrollableScrollPhysics(),

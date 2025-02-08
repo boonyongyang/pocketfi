@@ -70,6 +70,7 @@ class BillCard extends ConsumerWidget {
             Align(
               alignment: Alignment.centerLeft,
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // const SizedBox(height: 12.0),
                   Container(
@@ -81,7 +82,8 @@ class BillCard extends ConsumerWidget {
                     ),
                     child: Center(child: category.icon),
                   ),
-                  const SizedBox(height: 32.0),
+                  const SizedBox(height: 8),
+                  Text(bill.walletName),
                 ],
               ),
             ),
@@ -144,7 +146,6 @@ class BillCard extends ConsumerWidget {
                       ),
                     ),
                   ),
-                  Text(bill.walletName),
                   Text(
                     DateFormat('dd/MM/yyyy').format(bill.dueDate),
                   ),

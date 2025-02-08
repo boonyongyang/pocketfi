@@ -136,7 +136,7 @@ final userTransactionsByMonthProvider = StreamProvider<Iterable<Transaction>>(
 final userTransactionsByMonthByWalletProvider =
     StreamProvider<Iterable<Transaction>>(
   (ref) {
-    final wallets = ref.watch(userWalletsProvider).value!;
+    final wallets = ref.watch(userWalletsProvider).value ?? [];
     final month = ref.watch(overviewMonthProvider);
     final walletVisibility = ref.watch(walletVisibilityProvider);
     final controller = StreamController<Iterable<Transaction>>();
@@ -144,11 +144,15 @@ final userTransactionsByMonthByWalletProvider =
     final subscriptions = <StreamSubscription>[]; // store all subscriptions
 
     // get all transactions from all wallets
+    if (wallets.isEmpty) {
+      controller.sink.add([]);
+      return controller.stream;
+    }
+
     final stream = FirebaseFirestore.instance
         .collection(FirebaseCollectionName.transactions)
         .where(
           FirebaseFieldName.walletId,
-          // FIXME - this causes error: Null check operator used on a null value
           whereIn: wallets.map((wallet) => wallet.walletId).toList(),
         )
         .orderBy(FirebaseFieldName.date, descending: true)

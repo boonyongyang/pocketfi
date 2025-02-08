@@ -32,10 +32,7 @@ class SelectBillTabState extends ConsumerState<SelectBillTab>
 
   @override
   Widget build(BuildContext context) {
-    // final tabIndex = ref.watch(selectedBillProvider)?.status ??
-    //     ref.watch(billTabIndexProvider);
-
-    // debugPrint('da index: $tabIndex');
+    // final tabIndex = ref.watch(selectedBillProvider)?.status ?? ref.watch(billTabIndexProvider);
 
     return Transform.scale(
       scale: 0.9,
@@ -46,7 +43,7 @@ class SelectBillTabState extends ConsumerState<SelectBillTab>
           child: Column(
             children: [
               Container(
-                height: 45.0,
+                height: 45,
                 decoration: BoxDecoration(
                   boxShadow: [
                     BoxShadow(
@@ -62,6 +59,7 @@ class SelectBillTabState extends ConsumerState<SelectBillTab>
                 child: Consumer(
                   builder: (context, watch, child) {
                     return TabBar(
+                      splashFactory: NoSplash.splashFactory,
                       indicator: const BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(25.0)),
                         color: AppColors.mainColor1,
@@ -73,9 +71,7 @@ class SelectBillTabState extends ConsumerState<SelectBillTab>
                         Tab(text: 'History'),
                       ],
                       onTap: (index) {
-                        // ref
-                        //     .read(billTabIndexProvider.notifier)
-                        //     .setBillStatus(index);
+                        // ref.read(billTabIndexProvider.notifier).setBillStatus(index);
                         HapticFeedbackService.lightImpact();
 
                         ref.read(billTabIndexProvider.notifier).state = index;
