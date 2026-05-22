@@ -1,60 +1,58 @@
-# Pocketfi - Personal Finance App (Work in Progress)
+# PocketFi
 
-Pocketfi is an all-in-one personal finance app designed to help you keep track of your finances in one place. It provides a comprehensive set of features that allows you to track your expenses, income, and debts, as well as view your spending trends and manage your bills.
+PocketFi is a Flutter personal finance app for tracking everyday spending, receipts, wallets, budgets, bills, debts, and savings goals.
 
-![pocketfi-screenshot](https://user-images.githubusercontent.com/55826849/230759898-d35204ae-65c9-4e5e-9f3e-ea862be3fde0.png)
+The current public launch surface is intentionally practical: source code, setup notes, project status, and issue tracking are available here while the app is prepared for a wider release.
 
-# Features
+## What PocketFi Does
 
-* **Track expenses and income**: Add transactions and categorize them into different categories for easy tracking.
-* **Receipt scanning**: Scan receipts to keep a digital record of your expenses.
-* **Create bookmarks**: Add frequently used transactions as bookmarks for quick access.
-* **View expenditure overview**: See an overview of your expenses and income on the home screen.
-* **Category breakdowns**: View your expenses and income categorized by category for easy analysis.
-* **Spending trends**: Analyze your spending trends over time to better manage your finances.
-* **Manage bills**: Keep track of your bills and their due dates, and receive notifications when they are due.
-* **Share wallets**: Share a wallet with another user to manage joint expenses.
-* **Set budgets**: Set budgets for different categories and view monthly breakdowns and category breakdowns to help you stay on track.
-* **Track debts**: Track your debts and see your payoff progress.
-* **Visualize savings**: Use the virtual piggy bank to visualize your savings progress.
+- Track income, expenses, and transfers.
+- Scan receipts and attach receipt images to transactions.
+- Organize transactions by category, tags, wallet, and month.
+- Manage budgets, bills, debts, savings goals, and shared wallets.
+- Sync data through Firebase Authentication, Firestore, Cloud Storage, and Crashlytics.
 
-# State Management and Architecture Design
-* Riverpod 2.0 is utilized as the state management tool for the project, providing a simple and efficient way to handle state.
-* Each feature folder in the project follows a similar architecture pattern, consisting of four folders: application, data, domain, and presentation.
+## Project Status
 
-# Demo 
+PocketFi is in launch-preparation mode.
 
-<h3><b>View Expenditure Overview</b></h3>
-<img src="https://user-images.githubusercontent.com/55826849/230754276-a7ec00c4-ceb8-4d4e-bc48-76da45e6de63.GIF" alt="view-expenditure-overview" width="400"/>
+- Landing site target: `https://pocketfi-jellyy.web.app`
+- Public issue tracker: [GitHub Issues](https://github.com/boonyongyang/pocketfi/issues)
+- Source license: [MIT](LICENSE)
+- Current release blockers are tracked through issues and launch notes, not store links.
 
-<h3><b>Receipt Text Highlighter</b></h3>
-<img src="https://user-images.githubusercontent.com/55826849/230755142-2bc2b923-69a5-4c5a-9c24-db86fc1bd47c.gif" alt="receipt-text-highlighter" width="400"/>
+## Local Setup
 
-<h3><b>Budget</b></h3>
-<img src="https://user-images.githubusercontent.com/55826849/230755819-aedb9570-201a-4943-b54c-475573863b6f.gif" alt="budget" width="400"/>
+Prerequisites:
 
-<h3><b>Debt</b></h3>
-<img src="https://user-images.githubusercontent.com/55826849/230760293-da884d7a-62fd-4290-b670-8e9031a2cbcd.gif" alt="debt" width="400"/>
+- Flutter SDK compatible with the SDK constraint in `pubspec.yaml`
+- Firebase project with Authentication, Firestore, Cloud Storage, and Crashlytics enabled
+- Android Studio or Xcode for mobile builds
 
-<h3><b>Saving Goal</b></h3>
-<img src="https://user-images.githubusercontent.com/55826849/230755815-61803a23-59e4-46fe-a159-0fa4ca5597d9.gif" alt="saving-goal" width="400"/>
+Setup:
 
-## Getting Started
+```sh
+flutter pub get
+flutter analyze
+flutter test
+```
 
-To get started with Pocketfi, simply clone or download this repository and attach your own Firebase project. Once you have set up your Firebase project, you can connect it to the app and start running on your machine.
+Firebase:
 
-Here's how to set up your Firebase project:
+- Android expects `android/app/google-services.json`.
+- iOS expects `ios/Runner/GoogleService-Info.plist`.
+- `lib/firebase_options.dart` should be regenerated with FlutterFire CLI when using a different Firebase project.
 
-    Go to the Firebase Console and create a new project.
-    Add an Android app to your project and follow the instructions to download the google-services.json file.
-    Copy the google-services.json file into the android/app/ directory of the app.
-    In the Firebase console, enable Authentication, Firestore, and Cloud Storage for the project.
-    Run `flutter pub get` and run the project.
+## Security And Privacy
+
+PocketFi stores user-owned financial records. Treat issues involving account access, shared-wallet visibility, Firebase rules, receipt images, or data deletion as high priority.
+
+For security reports, follow [SECURITY.md](SECURITY.md). Start with a minimal public issue asking for a private contact path and avoid posting secrets, tokens, personal financial data, or full receipt images publicly.
 
 ## Contributing
 
-If you find any bugs or have suggestions for new features, feel free to submit an issue or pull request on our GitHub page. We welcome any contributions to help improve the app.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for local workflow, issue triage, and pull-request expectations.
 
 ## License
 
-Pocketfi is licensed under the MIT License.
+PocketFi is available under the [MIT License](LICENSE).
