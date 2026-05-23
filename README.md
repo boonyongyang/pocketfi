@@ -96,7 +96,7 @@ Firebase setup:
 4. Enable Authentication, Firestore, Cloud Storage, and Crashlytics.
 5. Regenerate `lib/firebase_options.dart` with the FlutterFire CLI when using a different Firebase project.
 
-Firestore rules are included in [firestore.rules](firestore.rules).
+Production Firestore rules are not published as a deployable root `firestore.rules` file in this public proof branch yet. Treat Firebase rules review as a release blocker before wider app distribution.
 
 ## Security And Privacy
 
