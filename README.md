@@ -8,7 +8,7 @@ PocketFi is currently in launch-preparation mode. The public launch surface is i
 
 ## Public Links
 
-- Landing site target: [pocketfi-jellyy.web.app](https://pocketfi-jellyy.web.app)
+- Landing site target: [mypocketfi.web.app](https://mypocketfi.web.app)
 - Public issue tracker: [GitHub Issues](https://github.com/boonyongyang/pocketfi/issues)
 - Security policy: [SECURITY.md](SECURITY.md)
 - License: [MIT](LICENSE)
