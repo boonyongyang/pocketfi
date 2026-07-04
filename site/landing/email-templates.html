@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>PocketFi · Email templates</title>
+  <meta name="description" content="Four transactional email designs — welcome, monthly recap, shared-wallet invite, deletion confirmed.">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <style>
+    html, body { margin: 0; background: #f0eee9; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif; }
+    * { box-sizing: border-box; }
+    body {
+      background-image: url("data:image/svg+xml,%3Csvg width='120' height='120' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M120 0H0v120' fill='none' stroke='rgba(0,0,0,0.06)' stroke-width='1'/%3E%3C/svg%3E");
+      background-size: 120px 120px; min-height: 100vh;
+    }
+    .world { padding: 60px; width: max-content; min-width: 100%; }
+    .sectionhead { padding: 0 0 36px; }
+    .sectionhead .title { font-size: 28px; font-weight: 600; color: rgba(40,30,20,0.85); letter-spacing: -0.4px; margin-bottom: 6px; }
+    .sectionhead .sub { font-size: 16px; color: rgba(60,50,40,0.6); }
+    .row { display: flex; gap: 48px; align-items: flex-start; }
+    .ab-wrap { flex-shrink: 0; }
+    .ab-label { font-size: 15px; font-weight: 500; color: rgba(60,50,40,0.7); padding: 3px 6px; margin-bottom: 4px; }
+    .ab-card { width: 640px; height: 1000px; background: #fff; border-radius: 2px; box-shadow: 0 1px 3px rgba(0,0,0,.08), 0 4px 16px rgba(0,0,0,.06); overflow: hidden; }
+    .ab-card *::-webkit-scrollbar { display: none; } .ab-card * { scrollbar-width: none; }
+  </style>
+</head>
+<body>
+<div class="world">
+  <div class="sectionhead">
+    <div class="title">Email templates (640×1000 desktop)</div>
+    <div class="sub">Four transactional emails shown inside a desktop email client.</div>
+  </div>
+  <div class="row">
+    <div class="ab-wrap"><div class="ab-label">01 · Welcome</div><div class="ab-card" id="e1"></div></div>
+    <div class="ab-wrap"><div class="ab-label">02 · Monthly recap</div><div class="ab-card" id="e2"></div></div>
+    <div class="ab-wrap"><div class="ab-label">03 · Shared wallet invite</div><div class="ab-card" id="e3"></div></div>
+    <div class="ab-wrap"><div class="ab-label">04 · Deletion confirmed</div><div class="ab-card" id="e4"></div></div>
+  </div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+  var NAVY='#0F3D66', YELLOW='#F8B319', SUB='#4A5A6A', BG='#F2EBD8';
+  function logo(size) {
+    return '<svg width="' + size + '" height="' + size + '" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">' +
+      '<rect x="8" y="22" width="84" height="60" rx="14" fill="#0F3D66"/>' +
+      '<rect x="8" y="22" width="84" height="14" rx="14" fill="#0F3D66"/>' +
+      '<circle cx="68" cy="52" r="14" fill="#F8B319"/>' +
+      '<circle cx="68" cy="52" r="6" fill="#0F3D66"/>' +
+      '<rect x="14" y="14" width="60" height="14" rx="6" fill="#0F3D66"/></svg>';
+  }
+  function mailHeader(from, subject, to) {
+    return '<div style="background:#fff;padding:18px 24px;border-bottom:1px solid rgba(15,61,102,0.10)">' +
+      '<div style="font-size:13px;font-weight:700;color:' + NAVY + ';margin-bottom:6px">' + subject + '</div>' +
+      '<div style="display:flex;gap:10px;align-items:center;font-size:11.5px;color:' + SUB + '">' +
+        '<div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg, ' + YELLOW + ', #FCD46A);color:' + NAVY + ';font-weight:700;font-size:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0">PF</div>' +
+        '<div style="flex:1;min-width:0"><div><strong style="color:' + NAVY + '">' + from + '</strong> &lt;GitHub Issues&gt;</div><div>to ' + to + '</div></div>' +
+        '<div>9:41 AM</div>' +
+      '</div></div>';
+  }
+  function emailWrap(inner) {
+    return '<div style="background:#fff;max-width:560px;margin:24px auto;border-radius:14px;overflow:hidden;box-shadow:0 4px 14px rgba(15,61,102,0.08);border:1px solid rgba(15,61,102,0.06);color:' + NAVY + ';font-family:Roboto, system-ui, sans-serif">' +
+      inner +
+      '<div style="padding:22px 32px 28px;background:#FAF4E1;text-align:center;border-top:1px solid rgba(15,61,102,0.06)">' +
+        '<div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:8px">' + logo(20) +
+        '<span style="font-size:13px;font-weight:700;color:' + NAVY + '">PocketFi<span style="color:' + YELLOW + '">!</span></span></div>' +
+        '<div style="font-size:11px;color:' + SUB + ';line-height:1.5">Made in Kuala Lumpur · <a href="#" style="color:' + SUB + '">Unsubscribe</a> · <a href="#" style="color:' + SUB + '">Privacy</a> · <a href="#" style="color:' + SUB + '">GitHub</a></div>' +
+      '</div></div>';
+  }
+  function screenFrame(from, subject, to, inner) {
+    return '<div style="width:640px;height:1000px;background:' + BG + ';color:' + NAVY + ';font-family:Roboto, system-ui, sans-serif;overflow:hidden">' +
+      mailHeader(from, subject, to) + emailWrap(inner) + '</div>';
+  }
+
+  // E1 — Welcome
+  document.getElementById('e1').innerHTML = screenFrame('PocketFi', 'Welcome to PocketFi 🎉', 'you@gmail.com',
+    '<div style="background:' + NAVY + ';color:#FFF6E0;padding:40px 32px;text-align:center">' + logo(48) +
+      '<div style="font-size:30px;font-weight:700;letter-spacing:-0.8px;margin-top:12px;margin-bottom:8px;line-height:1.15">Welcome to PocketFi!</div>' +
+      '<div style="font-size:14px;color:rgba(255,246,224,0.78)">You’re officially tracking your ringgit, simply.</div>' +
+    '</div>' +
+    '<div style="padding:28px 32px;font-size:14.5px;line-height:1.7;color:' + NAVY + '">' +
+      '<p style="margin:0 0 14px">Hi <strong>Boon</strong>,</p>' +
+      '<p style="margin:0 0 14px">Thanks for installing PocketFi. Three quick wins to get the most out of your first week:</p>' +
+      '<ul style="padding-left:20px;margin:0 0 18px">' +
+        '<li style="margin-bottom:6px">Add your first <strong>5 transactions</strong> — the Overview tab needs three before it starts charting.</li>' +
+        '<li style="margin-bottom:6px">Try the <strong>receipt scanner</strong> at your next petrol stop or grocery run.</li>' +
+        '<li>If you split bills with anyone, set up a <strong>shared wallet</strong> from the Wallets tab.</li>' +
+      '</ul>' +
+      '<a href="#" style="display:inline-block;background:' + NAVY + ';color:#FCD46A;padding:12px 22px;border-radius:99px;text-decoration:none;font-weight:700;font-size:13.5px;box-shadow:3px 3px 0 ' + YELLOW + '">Open PocketFi →</a>' +
+      '<div style="margin-top:24px;padding:14px 18px;background:rgba(248,179,25,0.14);border-radius:10px;font-size:13px;color:' + NAVY + ';line-height:1.55"><strong>Quietly important:</strong> we don’t sell, profile, or train on your data. Receipt OCR runs on your phone. <a href="#" style="color:' + NAVY + '">Read the policy →</a></div>' +
+      '<p style="margin:22px 0 0;font-size:13px;color:' + SUB + '">— Boon Yong &amp; the very small PocketFi team<br>Reply directly to this email if anything’s broken.</p>' +
+    '</div>'
+  );
+
+  // E2 — Monthly recap
+  var recapCats = [
+    { c:'#F2AC3C', n:'Food & Drink', v:'487.20', pct:28 },
+    { c:'#D08547', n:'Groceries', v:'418.50', pct:24 },
+    { c:'#78C1AD', n:'Bills', v:'296.40', pct:17 },
+    { c:'#F5D046', n:'Transport', v:'212.00', pct:12 },
+    { c:'#D471E8', n:'Shopping', v:'168.00', pct:10 },
+    { c:'#67686B', n:'Other', v:'160.90', pct:9 }
+  ].map(function (c) {
+    return '<div style="display:flex;align-items:center;gap:10px">' +
+      '<div style="width:14px;height:14px;border-radius:50%;background:' + c.c + '"></div>' +
+      '<div style="flex:1;font-size:13px;color:' + NAVY + '">' + c.n + '</div>' +
+      '<div style="width:120px;height:8px;background:rgba(15,61,102,0.08);border-radius:99px;overflow:hidden">' +
+        '<div style="width:' + (c.pct * 3.5) + '%;height:100%;background:' + c.c + ';border-radius:99px"></div></div>' +
+      '<div style="width:62px;font-size:12px;font-weight:600;text-align:right;color:' + NAVY + '">' + c.v + '</div></div>';
+  }).join('');
+  var recapStats = [
+    { v:'MYR 1,743', l:'Spent', s:'▲ 12% vs Mar' },
+    { v:'MYR 5,800', l:'Earned', s:'level' },
+    { v:'MYR 4,057', l:'Saved', s:'70% of income' }
+  ].map(function (x) {
+    return '<div style="flex:1;background:#FFF6E0;border-radius:12px;padding:14px 16px;text-align:center">' +
+      '<div style="font-size:18px;font-weight:700">' + x.v + '</div>' +
+      '<div style="font-size:10px;color:' + SUB + ';letter-spacing:0.4px;text-transform:uppercase;font-weight:600;margin-top:3px">' + x.l + '</div>' +
+      '<div style="font-size:10px;color:' + SUB + ';margin-top:3px">' + x.s + '</div></div>';
+  }).join('');
+  document.getElementById('e2').innerHTML = screenFrame('PocketFi recap', 'Your April 2026, in a few numbers', 'you@gmail.com',
+    '<div style="padding:32px 32px 18px;text-align:center;background:#FFF6E0">' +
+      '<div style="font-size:11px;color:' + YELLOW + ';letter-spacing:1.4px;text-transform:uppercase;font-weight:700">Monthly recap</div>' +
+      '<div style="font-size:32px;font-weight:700;letter-spacing:-0.8px;margin-top:6px">April, in a few numbers.</div>' +
+      '<div style="font-size:13px;color:' + SUB + ';margin-top:6px">Hi Boon — here’s what your month looked like.</div>' +
+    '</div>' +
+    '<div style="padding:24px 32px">' +
+      '<div style="display:flex;gap:10px;margin-bottom:18px">' + recapStats + '</div>' +
+      '<div style="font-size:11px;font-weight:700;color:' + SUB + ';letter-spacing:0.5px;text-transform:uppercase;margin-bottom:10px">Where it went</div>' +
+      '<div style="display:flex;flex-direction:column;gap:8px">' + recapCats + '</div>' +
+      '<div style="margin-top:22px;padding:14px;background:rgba(248,179,25,0.14);border-radius:12px;font-size:13px;color:' + NAVY + ';line-height:1.6"><strong>One thing we noticed:</strong> bubble tea ran to MYR 80 this month. Not a judgment — just a number for your weekend ponderings.</div>' +
+      '<div style="margin-top:20px;text-align:center"><a href="#" style="display:inline-block;background:' + NAVY + ';color:#FCD46A;padding:12px 22px;border-radius:99px;text-decoration:none;font-weight:700;font-size:13.5px">Open Overview in app</a></div>' +
+    '</div>'
+  );
+
+  // E3 — Shared invite
+  var inviteAvatars = [
+    { c:'#D471E8', n:'A' }, { c:'#53AF77', n:'B' }, { c:'#F2AC3C', n:'M' }
+  ].map(function (p, i) {
+    return '<div style="width:50px;height:50px;border-radius:50%;background:' + p.c + ';color:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;border:3px solid #fff;margin-left:' + (i ? '-14px' : '0') + '">' + p.n + '</div>';
+  }).join('');
+  document.getElementById('e3').innerHTML = screenFrame('Aisha via PocketFi', 'Aisha invited you to KL Trip · Apr 18–22', 'you@gmail.com',
+    '<div style="padding:28px 32px 20px;text-align:center">' +
+      '<div style="display:flex;justify-content:center;margin-bottom:14px">' + inviteAvatars + '</div>' +
+      '<div style="font-size:11px;color:' + YELLOW + ';letter-spacing:1.4px;text-transform:uppercase;font-weight:700">Shared wallet invite</div>' +
+      '<div style="font-size:28px;font-weight:700;letter-spacing:-0.6px;margin-top:8px">Aisha invited you to “KL Trip”.</div>' +
+      '<div style="font-size:13.5px;color:' + SUB + ';margin-top:6px">3 other members · created Apr 17, 2026</div>' +
+    '</div>' +
+    '<div style="padding:8px 32px 24px">' +
+      '<div style="background:#FFF6E0;border-radius:14px;padding:16px 18px;margin-bottom:18px">' +
+        '<div style="display:flex;justify-content:space-between;font-size:12px;color:' + SUB + '"><span>Pooled</span><span>Your share so far</span></div>' +
+        '<div style="display:flex;justify-content:space-between;align-items:flex-end;margin-top:4px">' +
+          '<div style="font-size:24px;font-weight:700">MYR 1,840.50</div>' +
+          '<div style="font-size:18px;font-weight:700;color:' + YELLOW + '">—</div></div>' +
+      '</div>' +
+      '<div style="display:flex;gap:10px;flex-direction:column">' +
+        '<a href="#" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;background:' + NAVY + ';color:#FCD46A;padding:13px 18px;border-radius:99px;text-decoration:none;font-weight:700;font-size:14px;box-shadow:3px 3px 0 ' + YELLOW + '">Accept invite →</a>' +
+        '<a href="#" style="display:inline-block;text-align:center;background:transparent;color:' + SUB + ';padding:10px;text-decoration:none;font-size:13px;font-weight:600">Not now</a>' +
+      '</div>' +
+      '<div style="font-size:12px;color:' + SUB + ';line-height:1.55;margin-top:14px;padding:12px 14px;background:rgba(15,61,102,0.04);border-radius:10px">Joining will let Aisha, Boon, and Mei see entries you post to this wallet only. Your personal wallets stay private.</div>' +
+    '</div>'
+  );
+
+  // E4 — Deletion confirmed
+  document.getElementById('e4').innerHTML = screenFrame('PocketFi', 'Your account has been deleted', 'you@gmail.com',
+    '<div style="padding:30px 32px 18px;text-align:center">' +
+      '<div style="width:64px;height:64px;border-radius:50%;background:rgba(46,125,50,0.10);color:#2E7D32;display:flex;align-items:center;justify-content:center;margin:0 auto 14px">' +
+        '<span class="material-icons" style="font-size:34px">check_circle</span></div>' +
+      '<div style="font-size:11px;color:' + YELLOW + ';letter-spacing:1.4px;text-transform:uppercase;font-weight:700">Account deleted</div>' +
+      '<div style="font-size:28px;font-weight:700;letter-spacing:-0.6px;margin-top:8px">Done. You’re no longer with us.</div>' +
+      '<div style="font-size:13.5px;color:' + SUB + ';margin-top:6px">(We mean that in the dataset sense.)</div>' +
+    '</div>' +
+    '<div style="padding:8px 32px 24px;font-size:14px;line-height:1.7;color:' + NAVY + '">' +
+      '<p style="margin:0 0 12px">This is your confirmation that, as of <strong>9:38 AM, May 16, 2026</strong>:</p>' +
+      '<ul style="padding-left:20px;margin:0 0 14px;color:' + NAVY + '">' +
+        '<li>Your Firebase Auth record has been removed.</li>' +
+        '<li>847 transactions across 12 wallets have been deleted.</li>' +
+        '<li>34 receipt images in your bucket have been purged.</li>' +
+        '<li>Shared wallets you created have been reassigned to a member.</li>' +
+      '</ul>' +
+      '<p style="margin:0 0 14px">Backups in Google’s infrastructure are purged within an additional 30 days.</p>' +
+      '<p style="margin:0 0 14px;color:' + SUB + ';font-size:13px">If you didn’t request this, reply to this email <strong>within 24 hours</strong> and we’ll restore from the most recent snapshot.</p>' +
+      '<p style="margin:0;font-size:13px;color:' + SUB + '">Thanks for using PocketFi. If we did something wrong, we’d genuinely like to know.</p>' +
+    '</div>'
+  );
+})();
+</script>
+</body>
+</html>

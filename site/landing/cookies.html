@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Cookie Policy · PocketFi</title>
+  <meta name="description" content="The PocketFi marketing site sets one localStorage flag and no tracking cookies. No analytics, no ad pixels.">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="canonical" href="https://mypocketfi.web.app/cookies">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="PocketFi">
+  <meta property="og:title" content="Cookie Policy · PocketFi">
+  <meta property="og:description" content="The PocketFi marketing site sets one localStorage flag and no tracking cookies. No analytics, no ad pixels.">
+  <meta property="og:url" content="https://mypocketfi.web.app/cookies">
+  <meta property="og:image" content="https://mypocketfi.web.app/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Cookie Policy · PocketFi">
+  <meta name="twitter:description" content="The PocketFi marketing site sets one localStorage flag and no tracking cookies. No analytics, no ad pixels.">
+  <meta name="twitter:image" content="https://mypocketfi.web.app/og-image.png">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <style>
+    html, body { margin: 0; background: #FFF6E0; font-family: Roboto, system-ui, sans-serif; color:#0F3D66; }
+    * { box-sizing: border-box; }
+    a { -webkit-tap-highlight-color: transparent; }
+    h1, h2, h3, p { margin: 0; }
+    .nav-link { position: relative; }
+    .nav-link::after { content:''; position:absolute; left:0; bottom:-4px; width:0; height:2px; background:#F8B319; transition: width 200ms; }
+    .nav-link:hover::after { width:100%; }
+    .btn-press { transition: transform 120ms; }
+    .btn-press:active { transform: translate(2px, 2px); }
+    .legal h2 + p { margin-top: -4px; }
+    .legal p { margin: 0 0 16px; }
+    .legal ul { margin: 0 0 16px; padding-left: 22px; }
+    .legal li { margin-bottom: 6px; }
+    .legal table { width: 100%; border-collapse: collapse; margin: 0 0 20px; font-size: 14px; }
+    .legal th, .legal td { padding: 10px 12px; text-align: left; border-bottom: 1px solid rgba(15,61,102,0.10); vertical-align: top; }
+    .legal th { font-size: 11px; letter-spacing: 1.2px; text-transform: uppercase; color: #4A5A6A; }
+    .legal code { background: rgba(15,61,102,0.08); padding: 2px 6px; border-radius: 4px; font-family: 'Roboto Mono', monospace; font-size: 0.88em; }
+    .legal a { color: #0F3D66; text-decoration: underline; text-decoration-color: rgba(248,179,25,0.7); text-underline-offset: 3px; }
+    .legal strong { color: #0F3D66; }
+    .legal-toc a:hover { color:#0F3D66 !important; }
+
+    /* ===== Responsive (inlined from landing-responsive.css) ===== */
+    @media (max-width: 960px) {
+      header[style*="padding: 18px 40px"] { padding: 14px 22px !important; gap: 20px !important; }
+      header nav { gap: 18px !important; margin-left: 12px !important; }
+      [style*="padding: 72px 40px 40px"] { padding: 56px 24px 36px !important; }
+      [style*="padding: 48px 40px 80px"] { padding: 36px 24px 60px !important; }
+      [style*="grid-template-columns: 220px 1fr"] { grid-template-columns: 1fr !important; gap: 28px !important; }
+      [style*="grid-template-columns: 1.4fr 1fr 1fr 1fr"] { grid-template-columns: 1fr 1fr !important; gap: 32px !important; }
+      .legal-aside { position: static !important; }
+      [style*="font-size: 54"] { font-size: 42px !important; }
+    }
+    @media (max-width: 640px) {
+      header nav { display: none !important; }
+      header[style*="padding: 18px 40px"] { padding: 12px 16px !important; gap: 10px !important; }
+      header a[href$="#download"] { padding: 9px 16px !important; font-size: 12px !important; }
+      [style*="padding: 72px 40px 40px"],
+      [style*="padding: 48px 40px 80px"] { padding-left: 18px !important; padding-right: 18px !important; }
+      [style*="grid-template-columns: 220px 1fr"] { grid-template-columns: 1fr !important; gap: 24px !important; }
+      [style*="grid-template-columns: 1.4fr 1fr 1fr 1fr"] { grid-template-columns: 1fr 1fr !important; gap: 28px !important; }
+      .legal-aside { position: static !important; }
+      [style*="font-size: 54"] { font-size: 34px !important; }
+    }
+    @media (max-width: 380px) {
+      [style*="font-size: 54"] { font-size: 30px !important; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<header style="padding: 18px 40px; display: flex; align-items: center; gap: 32px; background: rgba(255,246,224,0.78); position: sticky; top: 0; z-index: 30; backdrop-filter: blur(14px) saturate(160%); -webkit-backdrop-filter: blur(14px) saturate(160%); border-bottom: 1px solid rgba(15,61,102,0.06);">
+  <a href="/" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: #0F3D66;">
+    <svg width="32" height="32" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <rect x="8" y="22" width="84" height="60" rx="14" fill="#0F3D66"/>
+      <rect x="8" y="22" width="84" height="14" rx="14" fill="#0F3D66"/>
+      <circle cx="68" cy="52" r="14" fill="#F8B319"/>
+      <circle cx="68" cy="52" r="6" fill="#0F3D66"/>
+      <rect x="14" y="14" width="60" height="14" rx="6" fill="#0F3D66"/>
+    </svg>
+    <span style="font-size: 19px; font-weight: 700;">PocketFi<span style="color: #F8B319;">!</span></span>
+  </a>
+  <nav style="display: flex; gap: 26px; margin-left: 24px; font-size: 14px; font-weight: 500;">
+    <a class="nav-link" href="features" style="color: #0F3D66; text-decoration: none; opacity: 0.8; font-weight: 500;">Features</a>
+    <a class="nav-link" href="compare" style="color: #0F3D66; text-decoration: none; opacity: 0.8; font-weight: 500;">Compare</a>
+    <a class="nav-link" href="faq" style="color: #0F3D66; text-decoration: none; opacity: 0.8; font-weight: 500;">FAQ</a>
+    <a class="nav-link" href="roadmap" style="color: #0F3D66; text-decoration: none; opacity: 0.8; font-weight: 500;">Roadmap</a>
+    <a class="nav-link" href="changelog" style="color: #0F3D66; text-decoration: none; opacity: 0.8; font-weight: 500;">Changelog</a>
+    <a class="nav-link" href="/#opensource" style="color: #0F3D66; text-decoration: none; opacity: 0.8; font-weight: 500;">GitHub</a>
+  </nav>
+  <a class="btn-press" href="/#download" style="margin-left: auto; background: #0F3D66; color: #FCD46A; padding: 10px 20px; border-radius: 99px; text-decoration: none; font-size: 13px; font-weight: 700; box-shadow: 3px 3px 0 #F8B319;">GitHub →</a>
+</header>
+
+<!-- LegalShell -->
+<main style="background: #FFF6E0; color: #0F3D66; min-height: 70vh;">
+  <div style="padding: 72px 40px 40px; border-bottom: 1px solid rgba(15,61,102,0.08);">
+    <div style="max-width: 1100px; margin: 0 auto;">
+      <div style="font-size: 12px; font-weight: 700; color: #F8B319; letter-spacing: 1.5px; text-transform: uppercase;">Cookie policy</div>
+      <h1 style="font-size: 54px; line-height: 1.05; letter-spacing: -1.2px; font-weight: 700; margin: 12px 0 10px; text-wrap: pretty;">Cookies on mypocketfi.web.app</h1>
+      <div style="font-size: 13px; color: #4A5A6A;">Last updated: May 19, 2026</div>
+    </div>
+  </div>
+  <div style="max-width: 1100px; margin: 0 auto; padding: 48px 40px 80px; display: grid; grid-template-columns: 220px 1fr; gap: 48px; align-items: flex-start;">
+    <aside class="legal-aside" style="position: sticky; top: 96px; font-size: 13.5px;">
+      <div style="font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #4A5A6A; margin-bottom: 12px;">On this page</div>
+      <ul class="legal-toc" style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; border-left: 2px solid rgba(15,61,102,0.10);">
+        <li><a href="#tldr" style="display: block; padding: 4px 14px; color: #4A5A6A; text-decoration: none; border-left: 2px solid transparent; margin-left: -2px;">TL;DR</a></li>
+        <li><a href="#what" style="display: block; padding: 4px 14px; color: #4A5A6A; text-decoration: none; border-left: 2px solid transparent; margin-left: -2px;">What is a cookie?</a></li>
+        <li><a href="#we-use" style="display: block; padding: 4px 14px; color: #4A5A6A; text-decoration: none; border-left: 2px solid transparent; margin-left: -2px;">What we use</a></li>
+        <li><a href="#we-dont" style="display: block; padding: 4px 14px; color: #4A5A6A; text-decoration: none; border-left: 2px solid transparent; margin-left: -2px;">What we don’t use</a></li>
+        <li><a href="#choices" style="display: block; padding: 4px 14px; color: #4A5A6A; text-decoration: none; border-left: 2px solid transparent; margin-left: -2px;">Your choices</a></li>
+        <li><a href="#app" style="display: block; padding: 4px 14px; color: #4A5A6A; text-decoration: none; border-left: 2px solid transparent; margin-left: -2px;">About the mobile app</a></li>
+        <li><a href="#changes" style="display: block; padding: 4px 14px; color: #4A5A6A; text-decoration: none; border-left: 2px solid transparent; margin-left: -2px;">Changes</a></li>
+        <li><a href="#contact" style="display: block; padding: 4px 14px; color: #4A5A6A; text-decoration: none; border-left: 2px solid transparent; margin-left: -2px;">Contact</a></li>
+      </ul>
+    </aside>
+    <article class="legal" style="font-size: 15.5px; line-height: 1.75; color: #2A3F50; max-width: 720px;">
+
+      <section id="tldr" style="margin-bottom: 36px; scroll-margin-top: 96px;">
+        <h2 style="font-size: 24px; line-height: 1.2; letter-spacing: -0.4px; font-weight: 700; margin: 0 0 12px; color: #0F3D66;">TL;DR</h2>
+        <p>The PocketFi marketing site (<code>mypocketfi.web.app</code>) sets <strong>one</strong> first-party cookie / localStorage item: a flag that remembers you dismissed the cookie banner so we don't show it again. We run <strong>no analytics</strong>, <strong>no advertising trackers</strong>, and <strong>no third-party cookies</strong>. You don't need to accept anything.</p>
+      </section>
+
+      <section id="what" style="margin-bottom: 36px; scroll-margin-top: 96px;">
+        <h2 style="font-size: 24px; line-height: 1.2; letter-spacing: -0.4px; font-weight: 700; margin: 0 0 12px; color: #0F3D66;">What is a cookie?</h2>
+        <p>A cookie is a small file (or localStorage entry) a website stores in your browser. It can keep you signed in, remember a preference, or be used to track you across sites. Different cookies do very different things.</p>
+      </section>
+
+      <section id="we-use" style="margin-bottom: 36px; scroll-margin-top: 96px;">
+        <h2 style="font-size: 24px; line-height: 1.2; letter-spacing: -0.4px; font-weight: 700; margin: 0 0 12px; color: #0F3D66;">What we use</h2>
+        <p>The complete list of storage this site writes to your browser:</p>
+        <table>
+          <thead>
+            <tr><th>Name</th><th>Type</th><th>Purpose</th><th>Expires</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>pocketfi_cookie_banner</code></td>
+              <td>localStorage</td>
+              <td>Remembers that you dismissed the cookie banner.</td>
+              <td>Until you clear site data</td>
+            </tr>
+            <tr>
+              <td>(none)</td>
+              <td>Cookies</td>
+              <td>We don't set any HTTP cookies. The site is fully static.</td>
+              <td>—</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>That's the complete list. No session cookies, no analytics cookies, no marketing cookies.</p>
+      </section>
+
+      <section id="we-dont" style="margin-bottom: 36px; scroll-margin-top: 96px;">
+        <h2 style="font-size: 24px; line-height: 1.2; letter-spacing: -0.4px; font-weight: 700; margin: 0 0 12px; color: #0F3D66;">What we don't use</h2>
+        <ul>
+          <li><strong>No Google Analytics, Plausible, Fathom,</strong> or any other analytics service. We don't track page views.</li>
+          <li><strong>No Facebook Pixel, Twitter pixel,</strong> or any ad-platform tracker.</li>
+          <li><strong>No A/B testing tools.</strong></li>
+          <li><strong>No third-party fonts that drop cookies</strong> — Google Fonts is loaded via the cookieless <code>fonts.googleapis.com</code> CSS endpoint, which doesn't set cookies on your domain.</li>
+          <li><strong>No CDN cookies.</strong> We host directly on Firebase Hosting.</li>
+        </ul>
+      </section>
+
+      <section id="choices" style="margin-bottom: 36px; scroll-margin-top: 96px;">
+        <h2 style="font-size: 24px; line-height: 1.2; letter-spacing: -0.4px; font-weight: 700; margin: 0 0 12px; color: #0F3D66;">Your choices</h2>
+        <p>Because we don't set tracking cookies, there's nothing meaningful to opt out of. You can still:</p>
+        <ul>
+          <li>Dismiss the cookie banner — clicking <strong>Got it</strong> writes the one localStorage entry described above.</li>
+          <li>Clear site data anytime via your browser's privacy settings to reset the banner.</li>
+          <li>Use any cookie-blocking extension — the site will continue to work normally.</li>
+        </ul>
+      </section>
+
+      <section id="app" style="margin-bottom: 36px; scroll-margin-top: 96px;">
+        <h2 style="font-size: 24px; line-height: 1.2; letter-spacing: -0.4px; font-weight: 700; margin: 0 0 12px; color: #0F3D66;">About the mobile app</h2>
+        <p>This policy covers the marketing website only. The PocketFi mobile app uses platform-native storage (Keychain / Android Keystore for credentials; local SQLite cache for offline data) — see the <a href="privacy">Privacy policy</a> for full details on what the app stores, and the <a href="security">Security page</a> for the architecture.</p>
+      </section>
+
+      <section id="changes" style="margin-bottom: 36px; scroll-margin-top: 96px;">
+        <h2 style="font-size: 24px; line-height: 1.2; letter-spacing: -0.4px; font-weight: 700; margin: 0 0 12px; color: #0F3D66;">Changes to this policy</h2>
+        <p>If we ever add a cookie-setting third party — for example, lightweight privacy-respecting analytics — this page will be updated <em>before</em> the change goes live, and the cookie banner will require explicit consent. We will note the change in the <a href="changelog">Changelog</a>.</p>
+      </section>
+
+      <section id="contact" style="margin-bottom: 36px; scroll-margin-top: 96px;">
+        <h2 style="font-size: 24px; line-height: 1.2; letter-spacing: -0.4px; font-weight: 700; margin: 0 0 12px; color: #0F3D66;">Contact</h2>
+        <p>Questions? Open <a href="https://github.com/boonyongyang/pocketfi/issues/new/choose">GitHub Issues</a>.</p>
+      </section>
+
+    </article>
+  </div>
+</main>
+
+<!-- Footer -->
+<footer style="background: #0F3D66; color: rgba(255,255,255,0.78); padding: 56px 40px 24px;">
+  <div style="max-width: 1200px; margin: 0 auto;">
+    <div style="display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 40px;">
+      <div>
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 14px;">
+          <svg width="32" height="32" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <rect x="8" y="22" width="84" height="60" rx="14" fill="#0F3D66"/>
+            <rect x="8" y="22" width="84" height="14" rx="14" fill="#0F3D66"/>
+            <circle cx="68" cy="52" r="14" fill="#F8B319"/>
+            <circle cx="68" cy="52" r="6" fill="#0F3D66"/>
+            <rect x="14" y="14" width="60" height="14" rx="6" fill="#0F3D66"/>
+          </svg>
+          <span style="font-size: 19px; font-weight: 700; color: #fff;">PocketFi<span style="color: #F8B319;">!</span></span>
+        </div>
+        <p style="font-size: 13px; line-height: 1.65; margin: 0 0 16px; max-width: 280px;">A free budget tracker. Made in KL with Flutter + Firebase.</p>
+        <div style="display: flex; gap: 10px;">
+          <a href="https://github.com/boonyongyang/pocketfi" target="_blank" rel="noopener" style="width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: center; color: #fff;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#fff"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.56 0-.28-.01-1.02-.02-2-3.2.7-3.87-1.54-3.87-1.54-.52-1.32-1.27-1.68-1.27-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.02 1.75 2.69 1.25 3.34.95.1-.74.4-1.25.72-1.54-2.55-.29-5.24-1.28-5.24-5.7 0-1.26.45-2.29 1.18-3.1-.12-.29-.51-1.46.11-3.05 0 0 .96-.31 3.15 1.18a10.95 10.95 0 0 1 5.74 0c2.18-1.49 3.14-1.18 3.14-1.18.63 1.59.23 2.76.11 3.05.74.81 1.18 1.84 1.18 3.1 0 4.43-2.69 5.41-5.26 5.69.41.36.78 1.06.78 2.13 0 1.54-.01 2.78-.01 3.16 0 .31.21.67.79.56C20.21 21.39 23.5 17.08 23.5 12 23.5 5.65 18.35.5 12 .5z"/></svg>
+          </a>
+        </div>
+      </div>
+      <div>
+        <div style="font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #F8B319; margin-bottom: 14px;">Product</div>
+        <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 9px;">
+          <li><a href="features" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Features</a></li>
+          <li><a href="compare" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Compare</a></li>
+          <li><a href="/#screens" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Screens</a></li>
+          <li><a href="faq" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">FAQ</a></li>
+          <li><a href="roadmap" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Roadmap</a></li>
+          <li><a href="changelog" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Changelog</a></li>
+          <li><a href="/#download" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">GitHub</a></li>
+        </ul>
+      </div>
+      <div>
+        <div style="font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #F8B319; margin-bottom: 14px;">GitHub</div>
+        <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 9px;">
+          <li><a href="https://github.com/boonyongyang/pocketfi" target="_blank" rel="noopener" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">GitHub repo ↗</a></li>
+          <li><a href="https://github.com/boonyongyang/pocketfi/blob/main/LICENSE" target="_blank" rel="noopener" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">MIT license ↗</a></li>
+          <li><a href="contribute" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Contribute</a></li>
+          <li><a href="community" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Community</a></li>
+          <li><a href="https://github.com/boonyongyang/pocketfi/issues" target="_blank" rel="noopener" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Report an issue ↗</a></li>
+          <li><a href="about" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">About</a></li>
+          <li><a href="blog" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Blog</a></li>
+          <li><a href="support" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Support</a></li>
+        </ul>
+      </div>
+      <div>
+        <div style="font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #F8B319; margin-bottom: 14px;">Legal &amp; trust</div>
+        <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 9px;">
+          <li><a href="security" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Security</a></li>
+          <li><a href="privacy" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Privacy policy</a></li>
+          <li><a href="cookies" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Cookie policy</a></li>
+          <li><a href="terms" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Terms of service</a></li>
+          <li><a href="delete-account" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Delete my data</a></li>
+          <li><a href="press-kit" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Press kit</a></li>
+          <li><a href="brand-assets" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Brand assets</a></li>
+        </ul>
+      </div>
+    </div>
+    <div style="border-top: 1px solid rgba(255,255,255,0.10); padding-top: 20px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; font-size: 12.5px;">
+      <span>© 2026 PocketFi · public materials licensed · Made in KL ✿</span>
+      <span><a href="https://github.com/boonyongyang/pocketfi" target="_blank" rel="noopener" style="color: #FCD46A; text-decoration: none;">github.com/boonyongyang/pocketfi</a></span>
+    </div>
+  </div>
+</footer>
+
+<!-- Cookie notice (no tracking; localStorage flag only) -->
+<script>
+(function () {
+  'use strict';
+  var KEY = 'pocketfi_cookie_banner';
+  function isDismissed() { try { return localStorage.getItem(KEY) === 'dismissed'; } catch (e) { return false; } }
+  function dismiss() { try { localStorage.setItem(KEY, 'dismissed'); } catch (e) {} }
+  function mount() {
+    if (isDismissed()) return;
+    if (document.getElementById('pf-cookie-banner')) return;
+    var el = document.createElement('div');
+    el.id = 'pf-cookie-banner';
+    el.setAttribute('role', 'region');
+    el.setAttribute('aria-label', 'Cookie notice');
+    el.innerHTML = ['<div class="pf-cb-inner">','<div class="pf-cb-icon" aria-hidden="true"><span class="material-icons">cookie</span></div>',
+      '<div class="pf-cb-text"><strong>We don’t use tracking cookies.</strong> No analytics, no ad pixels — just a flag so this banner stays dismissed. <a href="cookies">Read the full policy</a>.</div>',
+      '<button type="button" class="pf-cb-btn" aria-label="Dismiss notice">Got it</button>','</div>'].join('');
+    el.querySelector('.pf-cb-btn').addEventListener('click', function () {
+      dismiss(); el.classList.add('pf-cb-out');
+      setTimeout(function () { if (el.parentNode) el.parentNode.removeChild(el); }, 280);
+    });
+    document.body.appendChild(el);
+    requestAnimationFrame(function () { el.classList.add('pf-cb-in'); });
+  }
+  function injectStyles() {
+    if (document.getElementById('pf-cookie-banner-styles')) return;
+    var s = document.createElement('style');
+    s.id = 'pf-cookie-banner-styles';
+    s.textContent = [
+      '#pf-cookie-banner { position: fixed; left: 16px; right: 16px; bottom: 16px; z-index: 2147483000; font-family: Roboto, system-ui, sans-serif; opacity: 0; transform: translateY(20px); transition: opacity 260ms ease, transform 260ms cubic-bezier(.34,1.56,.64,1); pointer-events: none; }',
+      '#pf-cookie-banner.pf-cb-in { opacity: 1; transform: translateY(0); pointer-events: auto; }',
+      '#pf-cookie-banner.pf-cb-out { opacity: 0; transform: translateY(12px); pointer-events: none; }',
+      '#pf-cookie-banner .pf-cb-inner { max-width: 720px; margin: 0 auto; display: flex; align-items: center; gap: 16px; background: #0F3D66; color: #FFF6E0; padding: 14px 18px; border-radius: 16px; box-shadow: 0 12px 32px rgba(15,61,102,0.30), 4px 4px 0 #F8B319; border: 1px solid rgba(248,179,25,0.20); }',
+      '#pf-cookie-banner .pf-cb-icon { width: 36px; height: 36px; border-radius: 50%; background: #F8B319; color: #0F3D66; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }',
+      '#pf-cookie-banner .pf-cb-icon .material-icons { font-size: 22px; }',
+      '#pf-cookie-banner .pf-cb-text { flex: 1; font-size: 13.5px; line-height: 1.55; color: rgba(255,246,224,0.92); }',
+      '#pf-cookie-banner .pf-cb-text strong { color: #FFF6E0; font-weight: 700; }',
+      '#pf-cookie-banner .pf-cb-text a { color: #FCD46A; text-decoration: underline; text-underline-offset: 3px; }',
+      '#pf-cookie-banner .pf-cb-btn { background: #F8B319; color: #0F3D66; border: 0; padding: 9px 16px; border-radius: 99px; font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer; flex-shrink: 0; transition: transform 120ms; }',
+      '#pf-cookie-banner .pf-cb-btn:active { transform: translate(1px, 1px); }',
+      '@media (max-width: 640px) { #pf-cookie-banner { left: 10px; right: 10px; bottom: 10px; } #pf-cookie-banner .pf-cb-inner { padding: 12px 14px; gap: 12px; border-radius: 14px; box-shadow: 0 10px 24px rgba(15,61,102,0.28), 3px 3px 0 #F8B319; } #pf-cookie-banner .pf-cb-icon { width: 32px; height: 32px; } #pf-cookie-banner .pf-cb-icon .material-icons { font-size: 19px; } #pf-cookie-banner .pf-cb-text { font-size: 12.5px; } #pf-cookie-banner .pf-cb-btn { padding: 8px 14px; font-size: 12.5px; } }'
+    ].join('\n');
+    document.head.appendChild(s);
+  }
+  function init() { injectStyles(); setTimeout(mount, 400); }
+  if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', init); } else { init(); }
+})();
+</script>
+</body>
+</html>

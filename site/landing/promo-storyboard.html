@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>PocketFi · Promo video storyboard</title>
+  <meta name="description" content="Seven-scene storyboard for the 30-second Play Store hero video — each frame a 16:9 shot with timing, copy, VO and SFX.">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <style>
+    html, body { margin: 0; background: #f0eee9; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif; }
+    * { box-sizing: border-box; }
+    body {
+      background-image: url("data:image/svg+xml,%3Csvg width='120' height='120' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M120 0H0v120' fill='none' stroke='rgba(0,0,0,0.06)' stroke-width='1'/%3E%3C/svg%3E");
+      background-size: 120px 120px; min-height: 100vh;
+    }
+    .world { padding: 60px; width: max-content; min-width: 100%; }
+    .sectionhead { padding: 0 0 36px; }
+    .sectionhead .title { font-size: 28px; font-weight: 600; color: rgba(40,30,20,0.85); letter-spacing: -0.4px; margin-bottom: 6px; }
+    .sectionhead .sub { font-size: 16px; color: rgba(60,50,40,0.6); }
+    .row { display: flex; gap: 48px; align-items: flex-start; }
+    .ab-wrap { flex-shrink: 0; }
+    .ab-label { font-size: 15px; font-weight: 500; color: rgba(60,50,40,0.7); padding: 3px 6px; margin-bottom: 4px; }
+    .ab-card { width: 1280px; height: 720px; background: #fff; border-radius: 2px; box-shadow: 0 1px 3px rgba(0,0,0,.08), 0 4px 16px rgba(0,0,0,.06); overflow: hidden; }
+  </style>
+</head>
+<body>
+<div class="world">
+  <div class="sectionhead">
+    <div class="title">Promo storyboard (1280×720 frames)</div>
+    <div class="sub">Seven scenes · Play Store hero video. Each frame is a 16:9 shot + a strip with timing, on-screen copy, VO and SFX.</div>
+  </div>
+  <div class="row">
+    <div class="ab-wrap"><div class="ab-label">01 · Open hook (00:00–04)</div><div class="ab-card" id="s1"></div></div>
+    <div class="ab-wrap"><div class="ab-label">02 · Tagline reveal (04–09)</div><div class="ab-card" id="s2"></div></div>
+    <div class="ab-wrap"><div class="ab-label">03 · Receipt snap (09–14)</div><div class="ab-card" id="s3"></div></div>
+    <div class="ab-wrap"><div class="ab-label">04 · Shared wallet (14–19)</div><div class="ab-card" id="s4"></div></div>
+    <div class="ab-wrap"><div class="ab-label">05 · Monthly overview (19–24)</div><div class="ab-card" id="s5"></div></div>
+    <div class="ab-wrap"><div class="ab-label">06 · GitHub (24–27)</div><div class="ab-card" id="s6"></div></div>
+    <div class="ab-wrap"><div class="ab-label">07 · CTA (27–30)</div><div class="ab-card" id="s7"></div></div>
+  </div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+  var NAVY='#0F3D66', YELLOW='#F8B319', SUB='#4A5A6A', RED='#F1592A', GREEN='#53AF77';
+  function logo(size) {
+    return '<svg width="' + size + '" height="' + size + '" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">' +
+      '<rect x="8" y="22" width="84" height="60" rx="14" fill="#0F3D66"/>' +
+      '<rect x="8" y="22" width="84" height="14" rx="14" fill="#0F3D66"/>' +
+      '<circle cx="68" cy="52" r="14" fill="#F8B319"/>' +
+      '<circle cx="68" cy="52" r="6" fill="#0F3D66"/>' +
+      '<rect x="14" y="14" width="60" height="14" rx="6" fill="#0F3D66"/></svg>';
+  }
+  function card(o, visual) {
+    return '<div style="width:1280px;height:720px;font-family:Roboto, system-ui, sans-serif;overflow:hidden;display:flex;flex-direction:column;background:#000">' +
+      '<div style="flex:1;position:relative;overflow:hidden">' + visual + '</div>' +
+      '<div style="background:#0E1B27;color:#FFF6E0;padding:18px 26px;display:grid;grid-template-columns:90px 1.4fr 1fr 1fr;gap:24px;align-items:center;border-top:4px solid ' + YELLOW + '">' +
+        '<div><div style="font-size:11px;color:' + YELLOW + ';font-weight:700;letter-spacing:1px;text-transform:uppercase">' + o.time + '</div>' +
+        '<div style="font-size:13px;color:rgba(255,246,224,0.65);margin-top:2px">' + o.length + '</div></div>' +
+        '<div><div style="font-size:10px;color:rgba(255,246,224,0.55);letter-spacing:1px;text-transform:uppercase;font-weight:700;margin-bottom:4px">On screen</div>' +
+        '<div style="font-size:14px;font-weight:600;line-height:1.4">' + o.headline + '</div></div>' +
+        '<div><div style="font-size:10px;color:rgba(255,246,224,0.55);letter-spacing:1px;text-transform:uppercase;font-weight:700;margin-bottom:4px">VO</div>' +
+        '<div style="font-size:13px;color:rgba(255,246,224,0.85);line-height:1.5;font-style:italic">“' + o.vo + '”</div></div>' +
+        '<div><div style="font-size:10px;color:rgba(255,246,224,0.55);letter-spacing:1px;text-transform:uppercase;font-weight:700;margin-bottom:4px">SFX / music</div>' +
+        '<div style="font-size:12px;color:rgba(255,246,224,0.75);line-height:1.5">' + o.sfx + '</div></div>' +
+      '</div></div>';
+  }
+  function phoneShell(w, h, bezel, inner) {
+    return '<div style="width:' + w + 'px;height:' + h + 'px;border-radius:30px;background:' + (bezel || NAVY) + ';padding:5px;box-shadow:0 24px 60px rgba(0,0,0,0.35), 0 8px 16px rgba(0,0,0,0.20)">' +
+      '<div style="width:100%;height:100%;background:#F9F9F9;border-radius:26px;overflow:hidden;position:relative;color:' + NAVY + ';display:flex;flex-direction:column">' + inner + '</div></div>';
+  }
+
+  // S1 — Open hook
+  document.getElementById('s1').innerHTML = card(
+    { time:'00:00–00:04', length:'4s · OPEN HOOK', headline:'Cluttered scene — open notebook with messy numbers; a receipt flutters in.', vo:'The notes-app ledger called. It wants to retire.', sfx:'Soft paper rustle · light bass impact when receipt lands' },
+    '<div style="position:absolute;inset:0;background:#F0D7AC"></div>' +
+    '<div style="position:absolute;top:12%;left:14%;width:58%;height:70%;background:#FFF8EC;border-left:10px solid ' + RED + ';box-shadow:12px 14px 0 rgba(0,0,0,0.10);transform:rotate(-2deg);padding:36px 44px;font-family:Roboto Mono, monospace;font-size:18px;color:#3a3220;line-height:1.85">' +
+      '<div style="font-weight:700;color:' + NAVY + ';font-size:22px;margin-bottom:8px">April spend ??</div>' +
+      '<div>14/4 — Jaya grocer ~140</div><div>16/4 — Starbucks 18</div><div>17/4 — Grab ?? (15?)</div>' +
+      '<div style="text-decoration:line-through;opacity:0.6">20/4 — bills</div><div>23/4 — laksa + roti 22</div>' +
+      '<div style="margin-top:14px;font-weight:700;color:' + RED + '">= no idea</div>' +
+    '</div>' +
+    '<div style="position:absolute;top:10%;right:8%;width:170px;height:230px;background:#fff;transform:rotate(14deg);box-shadow:6px 12px 24px rgba(0,0,0,0.20);padding:14px;font-family:Roboto Mono, monospace;font-size:10px;color:#999">' +
+      '<div style="font-weight:700;text-align:center;font-size:12px;color:' + NAVY + '">JAYA GROCER</div>' +
+      '<div style="border-top:1px dashed #ccc;border-bottom:1px dashed #ccc;margin:10px 0;padding:6px 0;display:flex;flex-direction:column;gap:3px">' +
+        '<div style="display:flex;justify-content:space-between"><span>Bananas</span><span>4.20</span></div>' +
+        '<div style="display:flex;justify-content:space-between"><span>Oat milk</span><span>12.90</span></div>' +
+        '<div style="display:flex;justify-content:space-between"><span>Bread</span><span>5.50</span></div></div>' +
+      '<div style="display:flex;justify-content:space-between;font-weight:700;color:' + NAVY + ';font-size:11px"><span>TOTAL</span><span>142.30</span></div>' +
+    '</div>' +
+    '<div style="position:absolute;bottom:14%;left:42%;width:170px;height:14px;background:#0F3D66;border-radius:99px;transform:rotate(-18deg);box-shadow:2px 4px 8px rgba(0,0,0,0.18)"></div>'
+  );
+
+  // S2 — Tagline reveal
+  document.getElementById('s2').innerHTML = card(
+    { time:'00:04–00:09', length:'5s · BRAND IN', headline:'Cut to color block. Tagline pops in line by line; mark animates.', vo:'So we made a smaller, friendlier one.', sfx:'Pluck synth · two-note brand sting' },
+    '<div style="position:absolute;inset:0;background:' + NAVY + '"></div>' +
+    '<div style="position:absolute;inset:0;opacity:0.08;background-image:radial-gradient(rgba(248,179,25,0.7) 2px, transparent 2px);background-size:34px 34px"></div>' +
+    '<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;color:#FFF6E0;text-align:center;padding:0 80px">' +
+      logo(64) +
+      '<div style="margin-top:18px;font-size:74px;font-weight:700;line-height:1.0;letter-spacing:-2px">Track your<br>ringgit, <span style="color:' + YELLOW + '">simply.</span></div>' +
+      '<div style="margin-top:18px;font-size:18px;color:rgba(255,246,224,0.75)">Free · GitHub · No ads</div>' +
+    '</div>'
+  );
+
+  // S3 — Receipt snap
+  var s3fields = [
+    { l:'Merchant', v:'Jaya Grocer' }, { l:'Amount', v:'MYR 142.30' },
+    { l:'Date', v:'14 Apr 2026' }, { l:'Category', v:'Groceries' }
+  ].map(function (f) {
+    return '<div style="background:#fff;border:1.5px solid ' + GREEN + ';border-radius:10px;padding:10px 12px">' +
+      '<div style="font-size:9.5px;color:' + SUB + ';letter-spacing:0.4px;text-transform:uppercase;font-weight:700">' + f.l + '</div>' +
+      '<div style="font-size:12px;font-weight:700;color:' + NAVY + ';margin-top:2px">' + f.v + '</div></div>';
+  }).join('');
+  document.getElementById('s3').innerHTML = card(
+    { time:'00:09–00:14', length:'5s · FEATURE 1', headline:'Phone in hand snapping a receipt; OCR fields fill on screen.', vo:'Snap a receipt — the merchant, amount, and date fill themselves in.', sfx:'Camera shutter · soft UI tick per field' },
+    '<div style="position:absolute;inset:0;background:linear-gradient(135deg, #FFE4F1, #F5E9D6)"></div>' +
+    '<div style="position:absolute;top:12%;left:8%;width:42%;display:flex;align-items:center;justify-content:center">' +
+      '<div style="width:280px;height:380px;background:#fff;transform:rotate(-6deg);box-shadow:6px 14px 24px rgba(0,0,0,0.18);padding:24px;font-family:Roboto Mono, monospace;font-size:14px;color:#999">' +
+        '<div style="font-weight:700;text-align:center;font-size:18px;color:' + NAVY + '">JAYA GROCER</div>' +
+        '<div style="text-align:center;font-size:11px;color:' + SUB + ';margin-top:4px">Mid Valley · KL</div>' +
+        '<div style="border-top:1px dashed #ccc;border-bottom:1px dashed #ccc;margin:14px 0;padding:10px 0">' +
+          '<div style="display:flex;justify-content:space-between"><span>Bananas</span><span>4.20</span></div>' +
+          '<div style="display:flex;justify-content:space-between"><span>Oat milk</span><span>12.90</span></div>' +
+          '<div style="display:flex;justify-content:space-between"><span>Bread</span><span>5.50</span></div>' +
+          '<div style="display:flex;justify-content:space-between"><span>Eggs</span><span>11.80</span></div></div>' +
+        '<div style="display:flex;justify-content:space-between;font-weight:700;color:' + NAVY + '"><span>TOTAL</span><span>142.30</span></div>' +
+      '</div>' +
+      '<div style="position:absolute;top:36px;left:30px;background:rgba(248,179,25,0.32);border:2px solid ' + YELLOW + ';padding:4px 8px;font-size:11px;font-weight:700;color:' + NAVY + '">JAYA GROCER</div>' +
+      '<div style="position:absolute;bottom:50px;right:30px;background:rgba(248,179,25,0.32);border:2px solid ' + YELLOW + ';padding:4px 8px;font-size:11px;font-weight:700;color:' + NAVY + '">MYR 142.30</div>' +
+    '</div>' +
+    '<div style="position:absolute;top:10%;right:12%">' +
+      phoneShell(220, 440, NAVY,
+        '<div style="background:' + NAVY + ';color:#fff;padding:10px 14px;font-size:13px;font-weight:600;text-align:center">Confirm receipt</div>' +
+        '<div style="padding:14px;display:flex;flex-direction:column;gap:10px">' + s3fields +
+          '<div style="margin-top:6px;background:' + NAVY + ';color:#FCD46A;padding:10px;border-radius:99px;text-align:center;font-size:12px;font-weight:700">Save</div>' +
+        '</div>') +
+    '</div>'
+  );
+
+  // S4 — Shared wallet
+  var s4avatars = [
+    { c:'#D471E8', n:'A' }, { c:'#53AF77', n:'B' }, { c:'#0F3D66', n:'M' }
+  ].map(function (p, i) {
+    return '<div style="width:96px;height:96px;border-radius:50%;background:' + p.c + ';color:#fff;font-size:38px;font-weight:700;display:flex;align-items:center;justify-content:center;border:5px solid #FCD46A;margin-left:' + (i ? '-28px' : '0') + ';box-shadow:0 6px 18px rgba(0,0,0,0.18)">' + p.n + '</div>';
+  }).join('');
+  var s4tally = ['A · 460','B · 480','M · 460','Y · 440'].map(function (x) {
+    var parts = x.split(' · ');
+    return '<div style="display:flex;justify-content:space-between;font-size:12px;color:' + GREEN + '"><span>' + parts[0] + '</span><span style="color:rgba(255,246,224,0.85)">+ ' + parts[1] + '</span></div>';
+  }).join('');
+  document.getElementById('s4').innerHTML = card(
+    { time:'00:14–00:19', length:'5s · FEATURE 2', headline:'Three avatars connect to a pooled wallet card; per-person tally fills.', vo:'Split with roommates, partners, or the road-trip group.', sfx:'Friendly chime per avatar · soft pop on tally' },
+    '<div style="position:absolute;inset:0;background:#FCD46A"></div>' +
+    '<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">' +
+      '<div style="display:flex;gap:60px;align-items:center">' +
+        '<div style="display:flex">' + s4avatars + '</div>' +
+        '<span class="material-icons" style="font-size:60px;color:' + NAVY + '">arrow_forward</span>' +
+        '<div style="background:' + NAVY + ';color:#FFF6E0;border-radius:24px;padding:26px 32px;box-shadow:10px 12px 0 rgba(0,0,0,0.16)">' +
+          '<div style="font-size:12px;color:' + YELLOW + ';letter-spacing:1.2px;text-transform:uppercase;font-weight:700">Pooled</div>' +
+          '<div style="font-size:44px;font-weight:700;margin-top:6px">MYR 1,840</div>' +
+          '<div style="font-size:13px;color:rgba(255,246,224,0.78);margin-top:6px">4 members · KL Trip</div>' +
+          '<div style="margin-top:14px;display:flex;flex-direction:column;gap:6px">' + s4tally + '</div>' +
+        '</div>' +
+      '</div>' +
+    '</div>'
+  );
+
+  // S5 — Monthly overview
+  var s5legend = [
+    { c:'#F2AC3C', t:'Food', v:'487' }, { c:'#D08547', t:'Groceries', v:'418' }, { c:'#78C1AD', t:'Bills', v:'296' }
+  ].map(function (r) {
+    return '<div style="display:flex;align-items:center;gap:8px;font-size:12px;color:' + NAVY + '">' +
+      '<div style="width:10px;height:10px;border-radius:50%;background:' + r.c + '"></div>' +
+      '<span style="flex:1">' + r.t + '</span><span style="font-weight:600">' + r.v + '</span></div>';
+  }).join('');
+  document.getElementById('s5').innerHTML = card(
+    { time:'00:19–00:24', length:'5s · FEATURE 3', headline:'Phone with donut chart sweeping in; category bars fill bottom-up.', vo:'At the end of the month: every ringgit, ranked.', sfx:'Soft whoosh · ascending pluck per bar' },
+    '<div style="position:absolute;inset:0;background:#FFF6E0"></div>' +
+    '<div style="position:absolute;left:10%;top:8%">' +
+      phoneShell(280, 560, NAVY,
+        '<div style="background:' + NAVY + ';color:#fff;padding:10px 14px;text-align:center">' +
+          '<div style="font-size:11px;opacity:0.8">Overview</div>' +
+          '<div style="font-size:14px;font-weight:700;margin-top:2px">April 2026</div></div>' +
+        '<div style="padding:14px;display:flex;flex-direction:column;align-items:center;gap:14px">' +
+          '<div style="width:160px;height:160px;border-radius:50%;background:conic-gradient(#F2AC3C 0 28%, #D08547 28% 52%, #78C1AD 52% 69%, #F5D046 69% 80%, #D471E8 80% 90%, #7246C8 90% 96%, #67686B 96% 100%);display:flex;align-items:center;justify-content:center;box-shadow:0 6px 18px rgba(0,0,0,0.10)">' +
+            '<div style="width:100px;height:100px;border-radius:50%;background:#F9F9F9;display:flex;flex-direction:column;align-items:center;justify-content:center">' +
+              '<div style="font-size:10px;color:' + SUB + '">Spent</div>' +
+              '<div style="font-size:18px;font-weight:700;color:' + NAVY + '">MYR 1,743</div>' +
+              '<div style="font-size:10px;color:' + RED + '">▲ 12%</div></div></div>' +
+          '<div style="width:100%;display:flex;flex-direction:column;gap:6px">' + s5legend + '</div>' +
+        '</div>') +
+    '</div>' +
+    '<div style="position:absolute;right:8%;top:18%;display:flex;flex-direction:column;gap:18px;width:40%">' +
+      '<div style="background:#fff;border-radius:14px;padding:14px 18px;box-shadow:4px 5px 0 ' + YELLOW + ';font-size:18px;font-weight:700;color:' + NAVY + '">Donut. Ranking. <span style="color:' + YELLOW + '">That’s it.</span></div>' +
+      '<div style="background:#fff;border-radius:14px;padding:14px 18px;box-shadow:4px 5px 0 ' + NAVY + ';font-size:14px;color:' + SUB + ';line-height:1.6">No graphs you’ll never look at. No “AI insights” nobody asked for.</div>' +
+      '<div style="background:' + NAVY + ';color:#FFF6E0;border-radius:14px;padding:14px 18px;font-size:14px;line-height:1.6">Just <strong>where your money actually goes</strong> — every month, at a glance.</div>' +
+    '</div>'
+  );
+
+  // S6 — GitHub
+  document.getElementById('s6').innerHTML = card(
+    { time:'00:24–00:27', length:'3s · TRUST', headline:'Code editor scrolls to MIT license; public issue tracker opens.', vo:'Public roadmap. GitHub tracked. Your data, your business.', sfx:'Mechanical keyboard ASMR · soft confirm tone' },
+    '<div style="position:absolute;inset:0;background:#0E1B27"></div>' +
+    '<div style="position:absolute;inset:0;opacity:0.10;background-image:radial-gradient(rgba(248,179,25,0.7) 2px, transparent 2px);background-size:36px 36px"></div>' +
+    '<div style="position:absolute;left:8%;top:10%;width:52%;background:' + NAVY + ';border-radius:14px;padding:18px;font-family:Roboto Mono, monospace;font-size:18px;color:rgba(255,246,224,0.92);line-height:1.7;border:1px solid rgba(255,255,255,0.08)">' +
+      '<div style="display:flex;gap:8px;margin-bottom:14px;align-items:center">' +
+        '<span style="width:12px;height:12px;border-radius:50%;background:#F44336"></span>' +
+        '<span style="width:12px;height:12px;border-radius:50%;background:#F8B319"></span>' +
+        '<span style="width:12px;height:12px;border-radius:50%;background:#4CAF50"></span>' +
+        '<span style="margin-left:auto;font-size:13px;opacity:0.55">LICENSE</span></div>' +
+      '<div><span style="color:' + YELLOW + '">// MIT License</span></div>' +
+      '<div>Permission is hereby granted, free of charge,</div>' +
+      '<div>to any person obtaining a copy of this software</div>' +
+      '<div>to deal in the Software without restriction…</div>' +
+      '<div style="margin-top:10px;opacity:0.65">© 2025 Boon Yong Yang</div>' +
+    '</div>' +
+    '<div style="position:absolute;right:8%;top:22%;background:#fff;border-radius:14px;padding:18px 22px;width:300px">' +
+      '<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">' + logo(24) +
+        '<div style="font-size:14px;font-weight:700;color:' + NAVY + '">boonyongyang/pocketfi</div></div>' +
+      '<div style="font-size:12px;color:' + SUB + ';line-height:1.55;margin-bottom:10px">A budget tracker for receipts, shared wallets, and the monthly overview that finally makes sense.</div>' +
+      '<div style="display:flex;gap:14px;font-size:13px;color:' + NAVY + ';font-weight:600">' +
+        '<span style="display:inline-flex;align-items:center;gap:5px"><span class="material-icons" style="font-size:14px;color:' + YELLOW + '">star</span>240</span>' +
+        '<span style="display:inline-flex;align-items:center;gap:5px"><span class="material-icons" style="font-size:14px">call_split</span>34</span>' +
+        '<span style="display:inline-flex;align-items:center;gap:5px"><span class="material-icons" style="font-size:14px">visibility</span>120</span>' +
+      '</div>' +
+    '</div>'
+  );
+
+  // S7 — CTA
+  document.getElementById('s7').innerHTML = card(
+    { time:'00:27–00:30', length:'3s · END FRAME', headline:'Wordmark + public roadmap + URL. Holds for 1.5s.', vo:'PocketFi — track your ringgit, simply.', sfx:'Brand sting · breath out' },
+    '<div style="position:absolute;inset:0;background:' + NAVY + '"></div>' +
+    '<div style="position:absolute;inset:0;opacity:0.05;background-image:radial-gradient(rgba(248,179,25,0.7) 2px, transparent 2px);background-size:40px 40px"></div>' +
+    '<div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#FFF6E0;gap:24px">' +
+      logo(84) +
+      '<div style="font-size:80px;font-weight:700;letter-spacing:-2px">PocketFi<span style="color:' + YELLOW + '">!</span></div>' +
+      '<div style="font-size:22px;color:rgba(255,246,224,0.78)">Track your ringgit, simply.</div>' +
+      '<div style="display:flex;gap:14px;margin-top:14px">' +
+        '<div style="background:' + YELLOW + ';color:' + NAVY + ';padding:16px 28px;border-radius:99px;font-size:18px;font-weight:700;display:inline-flex;align-items:center;gap:10px;box-shadow:6px 6px 0 rgba(0,0,0,0.25)">' +
+          '<span class="material-icons">route</span> View public roadmap</div>' +
+        '<div style="border:2px solid rgba(255,246,224,0.55);color:#FFF6E0;padding:14px 24px;border-radius:99px;font-size:18px;font-weight:600">pocketfi.app</div>' +
+      '</div>' +
+    '</div>'
+  );
+})();
+</script>
+</body>
+</html>

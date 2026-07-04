@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>PocketFi · Onboarding flow</title>
+  <meta name="description" content="Five-screen first-launch onboarding: welcome, how it works, sign in, first wallet, success.">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <style>
+    html, body { margin: 0; background: #f0eee9; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif; }
+    * { box-sizing: border-box; }
+    body {
+      background-image: url("data:image/svg+xml,%3Csvg width='120' height='120' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M120 0H0v120' fill='none' stroke='rgba(0,0,0,0.06)' stroke-width='1'/%3E%3C/svg%3E");
+      background-size: 120px 120px;
+      min-height: 100vh;
+    }
+    .world { padding: 60px; width: max-content; min-width: 100%; }
+    .sectionhead { padding: 0 0 36px; }
+    .sectionhead .title { font-size: 28px; font-weight: 600; color: rgba(40,30,20,0.85); letter-spacing: -0.4px; margin-bottom: 6px; }
+    .sectionhead .sub { font-size: 16px; color: rgba(60,50,40,0.6); }
+    .row { display: flex; gap: 48px; align-items: flex-start; }
+    .ab-wrap { flex-shrink: 0; }
+    .ab-label { font-size: 15px; font-weight: 500; color: rgba(60,50,40,0.7); padding: 3px 6px; margin-bottom: 4px; }
+    .ab-card { width: 360px; height: 780px; background: #fff; border-radius: 2px; box-shadow: 0 1px 3px rgba(0,0,0,.08), 0 4px 16px rgba(0,0,0,.06); overflow: hidden; }
+  </style>
+</head>
+<body>
+<div class="world">
+  <div class="sectionhead">
+    <div class="title">Onboarding flow (Android · 360×780)</div>
+    <div class="sub">5 screens · welcome → how → sign in → wallet setup → success.</div>
+  </div>
+  <div class="row">
+    <div class="ab-wrap"><div class="ab-label">01 · Welcome</div><div class="ab-card" id="s1"></div></div>
+    <div class="ab-wrap"><div class="ab-label">02 · How it works</div><div class="ab-card" id="s2"></div></div>
+    <div class="ab-wrap"><div class="ab-label">03 · Sign in</div><div class="ab-card" id="s3"></div></div>
+    <div class="ab-wrap"><div class="ab-label">04 · First wallet</div><div class="ab-card" id="s4"></div></div>
+    <div class="ab-wrap"><div class="ab-label">05 · Success</div><div class="ab-card" id="s5"></div></div>
+  </div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+  var LOGO = '<svg width="64" height="64" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">' +
+    '<rect x="8" y="22" width="84" height="60" rx="14" fill="#0F3D66"/>' +
+    '<rect x="8" y="22" width="84" height="14" rx="14" fill="#0F3D66"/>' +
+    '<circle cx="68" cy="52" r="14" fill="#F8B319"/>' +
+    '<circle cx="68" cy="52" r="6" fill="#0F3D66"/>' +
+    '<rect x="14" y="14" width="60" height="14" rx="6" fill="#0F3D66"/></svg>';
+
+  function statusBar() {
+    return '<div style="height:32px;background:#0F3D66;color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 18px;font-size:11px;font-weight:600;font-family:Roboto, sans-serif">' +
+      '<span>9:41</span>' +
+      '<span style="display:flex;gap:5px;align-items:center">' +
+      '<span class="material-icons" style="font-size:13px">signal_cellular_alt</span>' +
+      '<span class="material-icons" style="font-size:13px">wifi</span>' +
+      '<span class="material-icons" style="font-size:13px">battery_full</span></span></div>';
+  }
+  function frame(inner, bg) {
+    bg = bg || '#FFF6E0';
+    return '<div style="width:360px;height:780px;background:' + bg + ';font-family:Roboto, sans-serif;color:#0F3D66;display:flex;flex-direction:column;overflow:hidden">' +
+      statusBar() +
+      '<div style="flex:1;position:relative;overflow:hidden">' + inner + '</div></div>';
+  }
+  function dots(i, n) {
+    var out = '';
+    for (var k = 0; k < n; k++) {
+      out += '<div style="width:' + (k === i ? 22 : 7) + 'px;height:7px;border-radius:99px;background:' + (k === i ? '#F8B319' : 'rgba(15,61,102,0.18)') + ';transition:all 200ms"></div>';
+    }
+    return '<div style="display:flex;gap:6px;justify-content:center">' + out + '</div>';
+  }
+  function btn(text, dark, full) {
+    if (full === undefined) full = true;
+    return '<button style="width:' + (full ? '100%' : 'auto') + ';background:' + (dark ? '#0F3D66' : '#F8B319') + ';color:' + (dark ? '#FCD46A' : '#0F3D66') + ';border:0;border-radius:99px;padding:14px 22px;font-size:15px;font-weight:700;font-family:inherit;cursor:pointer;box-shadow:' + (dark ? '4px 4px 0 #F8B319' : '4px 4px 0 #0F3D66') + ';display:inline-flex;align-items:center;justify-content:center;gap:8px">' + text + '</button>';
+  }
+
+  // S1 — Welcome
+  document.getElementById('s1').innerHTML = frame(
+    '<div style="position:absolute;top:-120px;right:-120px;width:280px;height:280px;border-radius:50%;background:rgba(248,179,25,0.20)"></div>' +
+    '<div style="position:absolute;bottom:-100px;left:-80px;width:220px;height:220px;border-radius:50%;background:rgba(15,61,102,0.06)"></div>' +
+    '<div style="position:absolute;top:60px;left:0;right:0;display:flex;justify-content:center">' + LOGO + '</div>' +
+    '<div style="position:absolute;top:160px;left:24px;right:24px;text-align:center">' +
+      '<div style="font-size:34px;font-weight:700;line-height:1.05;letter-spacing:-1px;margin-bottom:14px">Hi! I\'m <span style="color:#F8B319">PocketFi.</span></div>' +
+      '<div style="font-size:15px;line-height:1.55;color:#4A5A6A">I\'ll help you keep track of every ringgit — without spreadsheets, without nagging.</div>' +
+    '</div>' +
+    '<div style="position:absolute;top:300px;left:30px;width:48px;height:48px;border-radius:50%;background:#F8B319;display:flex;align-items:center;justify-content:center;color:#0F3D66;font-weight:900;font-size:22px;box-shadow:3px 5px 10px rgba(0,0,0,0.12);transform:rotate(-12deg)">$</div>' +
+    '<div style="position:absolute;top:380px;right:36px;width:38px;height:38px;border-radius:50%;background:#FCD46A;box-shadow:2px 4px 8px rgba(0,0,0,0.10)"></div>' +
+    '<div style="position:absolute;top:440px;left:80px;width:30px;height:30px;border-radius:50%;background:#0F3D66;display:flex;align-items:center;justify-content:center;color:#FCD46A;font-weight:900;font-size:14px">RM</div>' +
+    '<div style="position:absolute;bottom:30px;left:24px;right:24px;display:flex;flex-direction:column;gap:14px">' +
+      dots(0, 4) + btn('Get started →', false, true) +
+      '<div style="text-align:center;font-size:12.5px;color:#4A5A6A">Already have an account? <span style="color:#0F3D66;font-weight:600">Sign in</span></div>' +
+    '</div>'
+  );
+
+  // S2 — How it works
+  var howItems = [
+    { i:'edit_note', t:'Type it in', s:'Quick add from anywhere', bg:'#FCD46A', fg:'#0F3D66' },
+    { i:'photo_camera', t:'Snap a receipt', s:'OCR fills it in for you', bg:'#F8B319', fg:'#0F3D66' },
+    { i:'people', t:'Share a wallet', s:'Splits with roommates', bg:'#0F3D66', fg:'#FCD46A' }
+  ].map(function (x) {
+    return '<div style="display:flex;align-items:center;gap:14px;background:#fff;padding:16px 18px;border-radius:16px;box-shadow:2px 4px 10px rgba(15,61,102,0.05)">' +
+      '<div style="width:48px;height:48px;border-radius:14px;background:' + x.bg + ';color:' + x.fg + ';display:flex;align-items:center;justify-content:center;flex-shrink:0">' +
+      '<span class="material-icons" style="font-size:24px">' + x.i + '</span></div>' +
+      '<div><div style="font-size:15px;font-weight:700">' + x.t + '</div>' +
+      '<div style="font-size:12.5px;color:#4A5A6A;margin-top:2px">' + x.s + '</div></div></div>';
+  }).join('');
+  document.getElementById('s2').innerHTML = frame(
+    '<div style="padding:40px 24px 0">' +
+      '<div style="font-size:13px;font-weight:600;color:#F8B319;letter-spacing:1.4px;text-transform:uppercase;margin-bottom:8px">How PocketFi works</div>' +
+      '<div style="font-size:28px;font-weight:700;line-height:1.1;letter-spacing:-0.6px;margin-bottom:30px">Three ways to add a transaction.</div>' +
+      '<div style="display:flex;flex-direction:column;gap:14px">' + howItems + '</div>' +
+    '</div>' +
+    '<div style="position:absolute;bottom:30px;left:24px;right:24px;display:flex;flex-direction:column;gap:14px">' +
+      dots(1, 4) + btn('Continue', false, true) +
+    '</div>'
+  );
+
+  // S3 — Sign in
+  document.getElementById('s3').innerHTML = frame(
+    '<div style="padding:40px 24px 0">' +
+      '<div style="font-size:13px;font-weight:600;color:#F8B319;letter-spacing:1.4px;text-transform:uppercase;margin-bottom:8px">Sign in</div>' +
+      '<div style="font-size:28px;font-weight:700;line-height:1.1;letter-spacing:-0.6px;margin-bottom:14px">One tap. <span style="color:#F8B319">No password.</span></div>' +
+      '<div style="font-size:14.5px;line-height:1.55;color:#4A5A6A;margin-bottom:30px">We use Google sign-in via Firebase. Your data is yours — synced privately to your account.</div>' +
+      '<button style="width:100%;background:#fff;border:1px solid rgba(15,61,102,0.15);border-radius:14px;padding:14px 18px;display:flex;align-items:center;gap:14px;cursor:pointer;font-family:inherit">' +
+        '<svg width="22" height="22" viewBox="0 0 48 48">' +
+          '<path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3c-1.7 4.7-6.2 8-11.3 8-6.6 0-12-5.4-12-12s5.4-12 12-12c3 0 5.7 1.1 7.8 2.9l5.7-5.7C34 6.1 29.3 4 24 4 12.95 4 4 12.95 4 24s8.95 20 20 20c11 0 19.7-8 19.7-20 0-1.3-.1-2.4-.1-3.5z"/>' +
+          '<path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3 0 5.7 1.1 7.8 2.9l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.4 6.3 14.7z"/>' +
+          '<path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2c-2 1.4-4.5 2.4-7.2 2.4-5.1 0-9.5-3.3-11.2-7.9l-6.5 5C9.6 39.5 16.2 44 24 44z"/>' +
+          '<path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.3 4.3-4.1 5.6l6.2 5.2C40 35.4 44 30.2 44 24c0-1.3-.1-2.4-.4-3.5z"/>' +
+        '</svg>' +
+        '<span style="font-size:14.5px;font-weight:600;color:#0F3D66">Continue with Google</span>' +
+      '</button>' +
+      '<div style="margin-top:14px;padding:14px;background:rgba(248,179,25,0.14);border-radius:12px;font-size:12px;color:#4A5A6A;line-height:1.6">' +
+        '<span style="display:inline-flex;align-items:center;gap:6px;color:#0F3D66;font-weight:600;margin-bottom:4px">' +
+        '<span class="material-icons" style="font-size:14px">shield</span>Your data, your business</span><br>' +
+        'No ads, no trackers, no selling. Read the <span style="text-decoration:underline">privacy policy</span>.' +
+      '</div>' +
+    '</div>' +
+    '<div style="position:absolute;bottom:30px;left:24px;right:24px;display:flex;flex-direction:column;gap:14px">' +
+      dots(2, 4) +
+      '<div style="text-align:center;font-size:12px;color:#4A5A6A">By continuing you agree to the <span style="text-decoration:underline">Terms</span> &amp; <span style="text-decoration:underline">Privacy policy</span>.</div>' +
+    '</div>'
+  );
+
+  // S4 — First wallet
+  var presets = [
+    { name:'Cash', icon:'payments', color:'#F8B319', selected:true },
+    { name:'Bank', icon:'account_balance', color:'#0F3D66' },
+    { name:'Card', icon:'credit_card', color:'#F1592A' },
+    { name:'Savings', icon:'savings', color:'#53AF77' }
+  ].map(function (p) {
+    var iconFg = p.color === '#F8B319' ? '#0F3D66' : '#fff';
+    return '<div style="background:#fff;border:' + (p.selected ? '2px solid #F8B319' : '1px solid rgba(15,61,102,0.08)') + ';border-radius:14px;padding:18px 14px;box-shadow:' + (p.selected ? '3px 3px 0 #0F3D66' : '0 1px 4px rgba(15,61,102,0.04)') + ';position:relative">' +
+      '<div style="width:42px;height:42px;border-radius:50%;background:' + p.color + ';color:' + iconFg + ';display:flex;align-items:center;justify-content:center;margin-bottom:10px">' +
+      '<span class="material-icons" style="font-size:22px">' + p.icon + '</span></div>' +
+      '<div style="font-size:14.5px;font-weight:700">' + p.name + '</div>' +
+      (p.selected ? '<div style="position:absolute;top:10px;right:10px;width:20px;height:20px;border-radius:50%;background:#F8B319;display:flex;align-items:center;justify-content:center"><span class="material-icons" style="font-size:14px;color:#0F3D66">check</span></div>' : '') +
+      '</div>';
+  }).join('');
+  document.getElementById('s4').innerHTML = frame(
+    '<div style="padding:40px 24px 0">' +
+      '<div style="font-size:13px;font-weight:600;color:#F8B319;letter-spacing:1.4px;text-transform:uppercase;margin-bottom:8px">Set up</div>' +
+      '<div style="font-size:28px;font-weight:700;line-height:1.1;letter-spacing:-0.6px;margin-bottom:8px">Pick your first wallet.</div>' +
+      '<div style="font-size:13.5px;color:#4A5A6A;margin-bottom:24px">You can add more — and shared ones — later.</div>' +
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">' + presets + '</div>' +
+      '<div style="margin-top:18px;padding:14px 16px;background:#fff;border-radius:14px;border:1px solid rgba(15,61,102,0.08)">' +
+        '<div style="font-size:11px;color:#4A5A6A;letter-spacing:0.4px;text-transform:uppercase;font-weight:600;margin-bottom:6px">Starting balance · MYR</div>' +
+        '<div style="font-size:24px;font-weight:700;color:#0F3D66">1,250.<span style="opacity:0.4">00</span></div>' +
+      '</div>' +
+    '</div>' +
+    '<div style="position:absolute;bottom:30px;left:24px;right:24px;display:flex;flex-direction:column;gap:14px">' +
+      dots(3, 4) + btn('Done — let\'s go', true, true) +
+      '<div style="text-align:center;font-size:12.5px;color:#4A5A6A"><span style="text-decoration:underline">Skip — add wallets later</span></div>' +
+    '</div>'
+  );
+
+  // S5 — Success
+  document.getElementById('s5').innerHTML = frame(
+    '<div style="position:absolute;top:-120px;right:-100px;width:280px;height:280px;border-radius:50%;background:rgba(248,179,25,0.16)"></div>' +
+    '<div style="position:absolute;bottom:-140px;left:-100px;width:280px;height:280px;border-radius:50%;background:rgba(248,179,25,0.10)"></div>' +
+    '<div style="position:absolute;top:120px;left:24px;right:24px;text-align:center">' +
+      '<div style="width:96px;height:96px;border-radius:50%;background:#F8B319;margin:0 auto 28px;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 30px rgba(0,0,0,0.30)">' +
+        '<span class="material-icons" style="font-size:54px;color:#0F3D66">check</span></div>' +
+      '<div style="font-size:30px;font-weight:700;line-height:1.05;letter-spacing:-1px;color:#FFF6E0;margin-bottom:10px">You\'re all set.</div>' +
+      '<div style="font-size:14.5px;line-height:1.55;color:rgba(255,246,224,0.78)">Add your first transaction to see PocketFi come to life.</div>' +
+    '</div>' +
+    '<div style="position:absolute;bottom:30px;left:24px;right:24px;display:flex;flex-direction:column;gap:12px">' +
+      btn('+ Add your first transaction', false, true) +
+      '<button style="background:transparent;border:1.5px solid rgba(255,246,224,0.40);color:#FFF6E0;border-radius:99px;padding:13px 22px;font-size:14px;font-weight:600;font-family:inherit;cursor:pointer">Snap a receipt instead</button>' +
+      '<div style="text-align:center;font-size:12.5px;color:rgba(255,246,224,0.65);margin-top:6px"><span style="text-decoration:underline">I\'ll do this later</span></div>' +
+    '</div>',
+    '#0F3D66'
+  );
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,410 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>About · PocketFi</title>
+  <meta name="description" content="A budget tracker built in Kuala Lumpur by one slightly tired person. The story, the principles, the stack.">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="canonical" href="https://mypocketfi.web.app/about">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="PocketFi">
+  <meta property="og:title" content="About · PocketFi">
+  <meta property="og:description" content="A budget tracker built in Kuala Lumpur by one slightly tired person. The story, the principles, the stack.">
+  <meta property="og:url" content="https://mypocketfi.web.app/about">
+  <meta property="og:image" content="https://mypocketfi.web.app/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="About · PocketFi">
+  <meta name="twitter:description" content="A budget tracker built in Kuala Lumpur by one slightly tired person. The story, the principles, the stack.">
+  <meta name="twitter:image" content="https://mypocketfi.web.app/og-image.png">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <style>
+    html, body { margin: 0; background: #FFF6E0; font-family: Roboto, system-ui, sans-serif; color:#0F3D66; }
+    * { box-sizing: border-box; }
+    a { -webkit-tap-highlight-color: transparent; }
+    h1, h2, h3, p { margin: 0; }
+    .nav-link { position: relative; }
+    .nav-link::after { content:''; position:absolute; left:0; bottom:-4px; width:0; height:2px; background:#F8B319; transition: width 200ms; }
+    .nav-link:hover::after { width:100%; }
+    .btn-press { transition: transform 120ms; }
+    .btn-press:active { transform: translate(2px, 2px); }
+    .timeline-line { position: absolute; left: 16px; top: 28px; bottom: 28px; width: 2px; background: linear-gradient(to bottom, rgba(248,179,25,0.6), rgba(15,61,102,0.20)); }
+    .timeline-dot { position: absolute; left: 9px; width: 16px; height: 16px; border-radius: 50%; background: #F8B319; border: 3px solid #FFF6E0; box-shadow: 0 0 0 2px #F8B319; }
+    .story p { margin: 0 0 18px; font-size: 17px; line-height: 1.75; color:#2A3F50; }
+    .story p strong { color:#0F3D66; }
+    .pull-quote { background: #FCD46A; border-radius: 20px; padding: 32px 40px; font-size: 24px; line-height: 1.4; font-weight: 600; letter-spacing: -0.4px; color:#0F3D66; margin: 28px 0; position: relative; }
+    .pull-quote::before { content: '"'; position: absolute; top: 6px; left: 18px; font-size: 80px; line-height: 1; color: rgba(15,61,102,0.18); font-family: Georgia, serif; }
+
+    /* ===== Responsive (inlined from landing-responsive.css + targeted mobile collapses) ===== */
+    @media (max-width: 960px) {
+      header[style*="padding: 18px 40px"] { padding: 14px 22px !important; gap: 20px !important; }
+      header nav { gap: 18px !important; margin-left: 12px !important; }
+      [style*="padding: 80px 40px"]       { padding: 60px 24px !important; }
+      [style*="padding: 72px 40px"]       { padding: 56px 24px !important; }
+      [style*="padding: 56px 40px"]       { padding: 44px 24px !important; }
+      [style*="grid-template-columns: repeat(4, 1fr)"] { grid-template-columns: repeat(2, 1fr) !important; }
+      [style*="grid-template-columns: 160px 1fr"] { grid-template-columns: 1fr !important; gap: 24px !important; }
+      [style*="grid-template-columns: 1.4fr 1fr 1fr 1fr"] { grid-template-columns: 1fr 1fr !important; gap: 32px !important; }
+      [style*="font-size: 72"] { font-size: 52px !important; line-height: 1.05 !important; }
+      [style*="font-size: 48"] { font-size: 36px !important; }
+      [style*="font-size: 44"] { font-size: 34px !important; }
+      [style*="font-size: 40"] { font-size: 32px !important; }
+      [style*="font-size: 36"] { font-size: 28px !important; }
+    }
+    @media (max-width: 640px) {
+      header nav { display: none !important; }
+      header[style*="padding: 18px 40px"] { padding: 12px 16px !important; gap: 10px !important; }
+      header a[href$="#download"] { padding: 9px 16px !important; font-size: 12px !important; }
+      [style*="padding: 80px 40px"],
+      [style*="padding: 72px 40px"],
+      [style*="padding: 56px 40px"] {
+        padding-left: 18px !important; padding-right: 18px !important;
+      }
+      [style*="padding: 80px 40px"]       { padding-top: 56px !important; padding-bottom: 56px !important; }
+      [style*="padding: 72px 40px"]       { padding-top: 52px !important; padding-bottom: 52px !important; }
+      [style*="grid-template-columns: repeat(4, 1fr)"],
+      [style*="grid-template-columns: repeat(2, 1fr)"],
+      [style*="grid-template-columns: 160px 1fr"] {
+        grid-template-columns: 1fr !important; gap: 16px !important;
+      }
+      [style*="grid-template-columns: 1.4fr 1fr 1fr 1fr"] { grid-template-columns: 1fr 1fr !important; gap: 28px !important; }
+      [style*="font-size: 72"] { font-size: 40px !important; line-height: 1.05 !important; letter-spacing: -0.6px !important; }
+      [style*="font-size: 48"] { font-size: 30px !important; }
+      [style*="font-size: 44"] { font-size: 28px !important; }
+      [style*="font-size: 40"] { font-size: 28px !important; }
+      [style*="font-size: 36"] { font-size: 26px !important; }
+      p[style*="font-size: 18"] { font-size: 16px !important; }
+      p[style*="font-size: 17"] { font-size: 15.5px !important; }
+    }
+    @media (max-width: 380px) {
+      [style*="font-size: 72"] { font-size: 34px !important; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<header style="padding: 18px 40px; display: flex; align-items: center; gap: 32px; background: rgba(255,246,224,0.78); position: sticky; top: 0; z-index: 30; backdrop-filter: blur(14px) saturate(160%); -webkit-backdrop-filter: blur(14px) saturate(160%); border-bottom: 1px solid rgba(15,61,102,0.06);">
+  <a href="/" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: #0F3D66;">
+    <svg width="32" height="32" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <rect x="8" y="22" width="84" height="60" rx="14" fill="#0F3D66"/>
+      <rect x="8" y="22" width="84" height="14" rx="14" fill="#0F3D66"/>
+      <circle cx="68" cy="52" r="14" fill="#F8B319"/>
+      <circle cx="68" cy="52" r="6" fill="#0F3D66"/>
+      <rect x="14" y="14" width="60" height="14" rx="6" fill="#0F3D66"/>
+    </svg>
+    <span style="font-size: 19px; font-weight: 700;">PocketFi<span style="color: #F8B319;">!</span></span>
+  </a>
+  <nav style="display: flex; gap: 26px; margin-left: 24px; font-size: 14px; font-weight: 500;">
+    <a class="nav-link" href="features" style="color: #0F3D66; text-decoration: none; opacity: 0.8; font-weight: 500;">Features</a>
+    <a class="nav-link" href="compare" style="color: #0F3D66; text-decoration: none; opacity: 0.8; font-weight: 500;">Compare</a>
+    <a class="nav-link" href="faq" style="color: #0F3D66; text-decoration: none; opacity: 0.8; font-weight: 500;">FAQ</a>
+    <a class="nav-link" href="roadmap" style="color: #0F3D66; text-decoration: none; opacity: 0.8; font-weight: 500;">Roadmap</a>
+    <a class="nav-link" href="changelog" style="color: #0F3D66; text-decoration: none; opacity: 0.8; font-weight: 500;">Changelog</a>
+    <a class="nav-link" href="/#opensource" style="color: #0F3D66; text-decoration: none; opacity: 0.8; font-weight: 500;">GitHub</a>
+  </nav>
+  <a class="btn-press" href="/#download" style="margin-left: auto; background: #0F3D66; color: #FCD46A; padding: 10px 20px; border-radius: 99px; text-decoration: none; font-size: 13px; font-weight: 700; box-shadow: 3px 3px 0 #F8B319;">GitHub →</a>
+</header>
+
+<!-- Hero -->
+<section style="padding: 80px 40px 32px;">
+  <div style="max-width: 1000px; margin: 0 auto; text-align: center;">
+    <div style="font-size: 12px; font-weight: 700; color: #F8B319; letter-spacing: 1.5px; text-transform: uppercase;">About</div>
+    <h1 style="font-size: 72px; line-height: 1.0; letter-spacing: -2px; font-weight: 700; margin: 14px 0 18px; text-wrap: pretty;">A budget tracker<br>built in <span style="color: #F8B319;">Kuala Lumpur,</span><br>by one slightly tired person.</h1>
+    <p style="font-size: 18px; line-height: 1.6; color: #4A5A6A; margin: 0 auto; max-width: 620px;">Started as a spreadsheet for splitting groceries. Turned into an app because the spreadsheet refused to be carried around in a pocket.</p>
+  </div>
+</section>
+
+<!-- Stats strip -->
+<section style="padding: 24px 40px 56px;">
+  <div style="max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;">
+    <div style="background: #fff; border-radius: 16px; padding: 18px 20px; border: 1px solid rgba(15,61,102,0.08); text-align: center; box-shadow: 2px 3px 0 rgba(15,61,102,0.08);"><div style="font-size: 32px; font-weight: 700; color: #0F3D66; letter-spacing: -0.8px;">Public</div><div style="font-size: 11px; color: #4A5A6A; letter-spacing: 0.6px; text-transform: uppercase; font-weight: 600; margin-top: 2px;">Issue tracker</div></div>
+    <div style="background: #fff; border-radius: 16px; padding: 18px 20px; border: 1px solid rgba(15,61,102,0.08); text-align: center; box-shadow: 2px 3px 0 rgba(15,61,102,0.08);"><div style="font-size: 32px; font-weight: 700; color: #0F3D66; letter-spacing: -0.8px;">Launch</div><div style="font-size: 11px; color: #4A5A6A; letter-spacing: 0.6px; text-transform: uppercase; font-weight: 600; margin-top: 2px;">Preparation</div></div>
+    <div style="background: #fff; border-radius: 16px; padding: 18px 20px; border: 1px solid rgba(15,61,102,0.08); text-align: center; box-shadow: 2px 3px 0 rgba(15,61,102,0.08);"><div style="font-size: 32px; font-weight: 700; color: #0F3D66; letter-spacing: -0.8px;">GitHub</div><div style="font-size: 11px; color: #4A5A6A; letter-spacing: 0.6px; text-transform: uppercase; font-weight: 600; margin-top: 2px;">Tracked</div></div>
+    <div style="background: #fff; border-radius: 16px; padding: 18px 20px; border: 1px solid rgba(15,61,102,0.08); text-align: center; box-shadow: 2px 3px 0 rgba(15,61,102,0.08);"><div style="font-size: 32px; font-weight: 700; color: #0F3D66; letter-spacing: -0.8px;">MIT</div><div style="font-size: 11px; color: #4A5A6A; letter-spacing: 0.6px; text-transform: uppercase; font-weight: 600; margin-top: 2px;">Licensed</div></div>
+  </div>
+</section>
+
+<!-- The story -->
+<section style="padding: 40px 40px 32px;">
+  <div class="story" style="max-width: 760px; margin: 0 auto;">
+    <div style="font-size: 12px; font-weight: 700; color: #F8B319; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 12px;">The story</div>
+    <h2 style="font-size: 40px; line-height: 1.05; letter-spacing: -0.9px; font-weight: 700; margin: 0 0 22px;">It started with a Maybank receipt nobody could read.</h2>
+    <p>April 2025. Three roommates, one shared grocery run, one crumpled receipt at the bottom of a Jaya Grocer bag. The receipt was unreadable. So was the math. So was the WhatsApp thread that followed.</p>
+    <p>I made a spreadsheet. Then a second tab for the cat. Then a third tab for the trip we took in May. Eight tabs later, the spreadsheet was unusable on a phone, and the original problem — "track the small things, easily, with the people I share them with" — was further away than it had been with a receipt.</p>
+    <div class="pull-quote">There were finance apps. I tried four. None of them did shared wallets without paying. None of them did Malaysian receipts. All of them wanted me to log in with my email and a password I would forget by Tuesday.</div>
+    <p>So I taught myself Flutter — partly because Flutter looked fun, partly because I wanted both Android and iOS without writing it twice. The first prototype was deeply ugly. The second was less ugly. By the fifth one, I could scan a receipt at the petrol station, tag it as Groceries, and have it back in my pocket before the engine warmed up.</p>
+    <p><strong>That’s the goal of PocketFi: the smallest amount of friction between you and an accurate picture of your money.</strong> No bank logins (yet). No subscriptions. No ads. No "premium" gates on the features you came for.</p>
+    <p>PocketFi is being prepared with public launch notes, issue tracking, and release documentation so the project can be reviewed before wider distribution. Track release notes and trust docs in the <a href="https://github.com/boonyongyang/pocketfi" target="_blank" rel="noopener" style="color: #0F3D66;">repo</a>.</p>
+  </div>
+</section>
+
+<!-- Principles -->
+<section style="padding: 56px 40px; background: #FCD46A;">
+  <div style="max-width: 1100px; margin: 0 auto;">
+    <div style="text-align: center; margin-bottom: 36px;">
+      <div style="font-size: 12px; font-weight: 700; color: #0F3D66; letter-spacing: 1.5px; text-transform: uppercase; opacity: 0.7;">What we believe</div>
+      <h2 style="font-size: 44px; line-height: 1.06; letter-spacing: -1px; font-weight: 700; margin: 10px 0 0;">Four small rules.</h2>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px;">
+      <div style="background: #FFF6E0; border-radius: 18px; padding: 26px 28px; box-shadow: 5px 5px 0 #0F3D66; position: relative;">
+        <div style="position: absolute; top: -20px; left: -14px; width: 50px; height: 50px; border-radius: 50%; background: #0F3D66; color: #FCD46A; font-weight: 900; font-size: 22px; display: flex; align-items: center; justify-content: center; border: 4px solid #FCD46A;">1</div>
+        <div style="font-size: 20px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.3px;">Your data is yours.</div>
+        <p style="font-size: 14.5px; line-height: 1.65; color: #4A5A6A; margin: 0;">We don’t sell, profile, or train on your transactions. Privacy and deletion requests are handled through the public support flow while the in-app account tools are being prepared.</p>
+      </div>
+      <div style="background: #FFF6E0; border-radius: 18px; padding: 26px 28px; box-shadow: 5px 5px 0 #0F3D66; position: relative;">
+        <div style="position: absolute; top: -20px; left: -14px; width: 50px; height: 50px; border-radius: 50%; background: #0F3D66; color: #FCD46A; font-weight: 900; font-size: 22px; display: flex; align-items: center; justify-content: center; border: 4px solid #FCD46A;">2</div>
+        <div style="font-size: 20px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.3px;">Free should mean free.</div>
+        <p style="font-size: 14.5px; line-height: 1.65; color: #4A5A6A; margin: 0;">No ads, no premium tier hidden behind the feature you actually came for. If we ever charge, it’ll be for an optional service like bank sync — the core stays free.</p>
+      </div>
+      <div style="background: #FFF6E0; border-radius: 18px; padding: 26px 28px; box-shadow: 5px 5px 0 #0F3D66; position: relative;">
+        <div style="position: absolute; top: -20px; left: -14px; width: 50px; height: 50px; border-radius: 50%; background: #0F3D66; color: #FCD46A; font-weight: 900; font-size: 22px; display: flex; align-items: center; justify-content: center; border: 4px solid #FCD46A;">3</div>
+        <div style="font-size: 20px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.3px;">Small things, frictionless.</div>
+        <p style="font-size: 14.5px; line-height: 1.65; color: #4A5A6A; margin: 0;">Most spending is small. Two-tap entry, on-device OCR, bookmarks for the things you do daily. The friction should be lower than not tracking.</p>
+      </div>
+      <div style="background: #FFF6E0; border-radius: 18px; padding: 26px 28px; box-shadow: 5px 5px 0 #0F3D66; position: relative;">
+        <div style="position: absolute; top: -20px; left: -14px; width: 50px; height: 50px; border-radius: 50%; background: #0F3D66; color: #FCD46A; font-weight: 900; font-size: 22px; display: flex; align-items: center; justify-content: center; border: 4px solid #FCD46A;">4</div>
+        <div style="font-size: 20px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.3px;">Built in public.</div>
+        <p style="font-size: 14.5px; line-height: 1.65; color: #4A5A6A; margin: 0;">Release notes, roadmap work, and trust documents are tracked in public as they become ready. PRs welcome.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Builder card -->
+<section style="padding: 72px 40px; background: #FFF6E0;">
+  <div style="max-width: 980px; margin: 0 auto;">
+    <div style="text-align: center; margin-bottom: 32px;">
+      <div style="font-size: 12px; font-weight: 700; color: #F8B319; letter-spacing: 1.5px; text-transform: uppercase;">Who’s behind it</div>
+      <h2 style="font-size: 44px; line-height: 1.06; letter-spacing: -1px; font-weight: 700; margin: 10px 0 0;">Just the one person, so far.</h2>
+    </div>
+    <div style="background: #fff; border-radius: 24px; padding: 32px 36px; border: 1px solid rgba(15,61,102,0.08); box-shadow: 0 8px 24px rgba(15,61,102,0.06); display: grid; grid-template-columns: 160px 1fr; gap: 32px; align-items: center;">
+      <div style="width: 140px; height: 140px; border-radius: 50%; background: linear-gradient(135deg, #F8B319, #FCD46A); display: flex; align-items: center; justify-content: center; color: #0F3D66; font-size: 54px; font-weight: 900; box-shadow: 5px 5px 0 #0F3D66;">BY</div>
+      <div>
+        <h3 style="font-size: 26px; font-weight: 700; letter-spacing: -0.4px; margin: 0 0 4px;">Boon Yong Yang</h3>
+        <div style="font-size: 13px; color: #4A5A6A; letter-spacing: 0.4px; margin-bottom: 14px;">Founder, designer, lone Flutter dev · Kuala Lumpur</div>
+        <p style="font-size: 14.5px; line-height: 1.65; color: #4A5A6A; margin: 0 0 16px;">Former software engineer. Started PocketFi to fix a personal annoyance — it’s now a few thousand active wallets and growing. Spends Saturdays writing Dart and drinking too much oat-flat-whites at Starbucks. Yes, that’s logged in the app.</p>
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+          <a href="https://github.com/boonyongyang" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 8px; background: #0F3D66; color: #FCD46A; padding: 10px 18px; border-radius: 99px; text-decoration: none; font-size: 13px; font-weight: 600;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="#FCD46A" style="flex-shrink:0"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.56 0-.28-.01-1.02-.02-2-3.2.7-3.87-1.54-3.87-1.54-.52-1.32-1.27-1.68-1.27-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.02 1.75 2.69 1.25 3.34.95.1-.74.4-1.25.72-1.54-2.55-.29-5.24-1.28-5.24-5.7 0-1.26.45-2.29 1.18-3.1-.12-.29-.51-1.46.11-3.05 0 0 .96-.31 3.15 1.18a10.95 10.95 0 0 1 5.74 0c2.18-1.49 3.14-1.18 3.14-1.18.63 1.59.23 2.76.11 3.05.74.81 1.18 1.84 1.18 3.1 0 4.43-2.69 5.41-5.26 5.69.41.36.78 1.06.78 2.13 0 1.54-.01 2.78-.01 3.16 0 .31.21.67.79.56C20.21 21.39 23.5 17.08 23.5 12 23.5 5.65 18.35.5 12 .5z"/></svg> @boonyongyang
+          </a>
+          <a href="https://github.com/boonyongyang/pocketfi/issues/new/choose" style="display: inline-flex; align-items: center; gap: 8px; background: transparent; color: #0F3D66; padding: 10px 18px; border-radius: 99px; text-decoration: none; font-size: 13px; font-weight: 600; border: 1.5px solid rgba(15,61,102,0.25);">
+            <span class="material-icons" style="font-size: 15px;">mail</span> GitHub Issues
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Timeline -->
+<section style="padding: 72px 40px; background: #0F3D66; color: #FFF6E0;">
+  <div style="max-width: 880px; margin: 0 auto;">
+    <div style="margin-bottom: 32px;">
+      <div style="font-size: 12px; font-weight: 700; color: #F8B319; letter-spacing: 1.5px; text-transform: uppercase;">From there to here</div>
+      <h2 style="font-size: 44px; line-height: 1.06; letter-spacing: -1px; font-weight: 700; margin: 10px 0 0;">One year, seven moments.</h2>
+    </div>
+    <div style="position: relative; padding-left: 48px;">
+      <div class="timeline-line" style="background: linear-gradient(to bottom, #F8B319, rgba(255,255,255,0.15));"></div>
+      <div style="position: relative; margin-bottom: 28px;">
+        <div class="timeline-dot" style="left: -39px; top: 6px; background: #fff; box-shadow: 0 0 0 2px rgba(255,255,255,0.30);"></div>
+        <div style="font-size: 12px; font-weight: 700; color: #F8B319; letter-spacing: 0.8px; text-transform: uppercase; margin-bottom: 4px;">Apr 2025</div>
+        <div style="font-size: 19px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.2px;">A spreadsheet that wouldn’t shut up</div>
+        <div style="font-size: 14.5px; line-height: 1.65; color: rgba(255,246,224,0.78); max-width: 580px;">It started as a Google Sheet for tracking pasar malam runs and roommate splits. Two months in, it had eight tabs, a broken pivot table, and one very annoyed roommate.</div>
+      </div>
+      <div style="position: relative; margin-bottom: 28px;">
+        <div class="timeline-dot" style="left: -39px; top: 6px; background: #fff; box-shadow: 0 0 0 2px rgba(255,255,255,0.30);"></div>
+        <div style="font-size: 12px; font-weight: 700; color: #F8B319; letter-spacing: 0.8px; text-transform: uppercase; margin-bottom: 4px;">Jul 2025</div>
+        <div style="font-size: 19px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.2px;">First Flutter commit</div>
+        <div style="font-size: 14.5px; line-height: 1.65; color: rgba(255,246,224,0.78); max-width: 580px;">Decided to teach myself Flutter the productive way — by building the app the spreadsheet wanted to be. Riverpod, Firebase, and a navy/yellow color picker. That was the start.</div>
+      </div>
+      <div style="position: relative; margin-bottom: 28px;">
+        <div class="timeline-dot" style="left: -39px; top: 6px; background: #fff; box-shadow: 0 0 0 2px rgba(255,255,255,0.30);"></div>
+        <div style="font-size: 12px; font-weight: 700; color: #F8B319; letter-spacing: 0.8px; text-transform: uppercase; margin-bottom: 4px;">Sep 2025</div>
+        <div style="font-size: 19px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.2px;">v1.0 release prep</div>
+        <div style="font-size: 14.5px; line-height: 1.65; color: rgba(255,246,224,0.78); max-width: 580px;">Manual entry, 17 categories, wallets, the Timeline and Overview tabs. The public launch repo now carries the MIT license and release-prep notes.</div>
+      </div>
+      <div style="position: relative; margin-bottom: 28px;">
+        <div class="timeline-dot" style="left: -39px; top: 6px; background: #fff; box-shadow: 0 0 0 2px rgba(255,255,255,0.30);"></div>
+        <div style="font-size: 12px; font-weight: 700; color: #F8B319; letter-spacing: 0.8px; text-transform: uppercase; margin-bottom: 4px;">Nov 2025</div>
+        <div style="font-size: 19px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.2px;">Budgets v1 + first paying-attention users</div>
+        <div style="font-size: 14.5px; line-height: 1.65; color: rgba(255,246,224,0.78); max-width: 580px;">Per-category budgets, overdue bill tracking, and the first round of release-prep feedback from real usage.</div>
+      </div>
+      <div style="position: relative; margin-bottom: 28px;">
+        <div class="timeline-dot" style="left: -39px; top: 6px; background: #fff; box-shadow: 0 0 0 2px rgba(255,255,255,0.30);"></div>
+        <div style="font-size: 12px; font-weight: 700; color: #F8B319; letter-spacing: 0.8px; text-transform: uppercase; margin-bottom: 4px;">Jan 2026</div>
+        <div style="font-size: 19px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.2px;">Saving goals + bookmarks</div>
+        <div style="font-size: 14.5px; line-height: 1.65; color: rgba(255,246,224,0.78); max-width: 580px;">Long-press to bookmark a merchant; tap once to re-enter. Saving goals with little progress bars. Onboarding dropped from 6 screens to 2.</div>
+      </div>
+      <div style="position: relative; margin-bottom: 28px;">
+        <div class="timeline-dot" style="left: -39px; top: 6px; background: #fff; box-shadow: 0 0 0 2px rgba(255,255,255,0.30);"></div>
+        <div style="font-size: 12px; font-weight: 700; color: #F8B319; letter-spacing: 0.8px; text-transform: uppercase; margin-bottom: 4px;">Mar 2026</div>
+        <div style="font-size: 19px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.2px;">Receipt OCR, on-device</div>
+        <div style="font-size: 14.5px; line-height: 1.65; color: rgba(255,246,224,0.78); max-width: 580px;">The hardest single feature so far. ML Kit, image cropping, field detection, fallback typing. ~94% amount accuracy on Malaysian receipts.</div>
+      </div>
+      <div style="position: relative; margin-bottom: 0;">
+        <div class="timeline-dot" style="left: -39px; top: 6px; background: #F8B319; box-shadow: 0 0 0 3px #F8B319;"></div>
+        <div style="font-size: 12px; font-weight: 700; color: #F8B319; letter-spacing: 0.8px; text-transform: uppercase; margin-bottom: 4px;">May 2026</div>
+        <div style="font-size: 19px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.2px;">Shared wallets, finally</div>
+        <div style="font-size: 14.5px; line-height: 1.65; color: rgba(255,246,224,0.78); max-width: 580px;">The feature that started the whole thing. Up to 8 members, per-member contribution view, and three split modes are part of the current release-prep track.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- The stack -->
+<section style="padding: 72px 40px; background: #FFF6E0;">
+  <div style="max-width: 1100px; margin: 0 auto;">
+    <div style="margin-bottom: 28px;">
+      <div style="font-size: 12px; font-weight: 700; color: #F8B319; letter-spacing: 1.5px; text-transform: uppercase;">How it’s built</div>
+      <h2 style="font-size: 36px; line-height: 1.1; letter-spacing: -0.6px; font-weight: 700; margin: 10px 0 0;">The stack, no secrets.</h2>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;">
+      <div style="background: #fff; border-radius: 14px; padding: 18px 18px; border: 1px solid rgba(15,61,102,0.08);"><div style="width: 32px; height: 32px; border-radius: 8px; background: #0468D7; margin-bottom: 10px;"></div><div style="font-size: 15px; font-weight: 700;">Flutter</div><div style="font-size: 12.5px; color: #4A5A6A; margin-top: 3px;">Single codebase, Android + iOS.</div></div>
+      <div style="background: #fff; border-radius: 14px; padding: 18px 18px; border: 1px solid rgba(15,61,102,0.08);"><div style="width: 32px; height: 32px; border-radius: 8px; background: #7246C8; margin-bottom: 10px;"></div><div style="font-size: 15px; font-weight: 700;">Riverpod</div><div style="font-size: 12.5px; color: #4A5A6A; margin-top: 3px;">State management.</div></div>
+      <div style="background: #fff; border-radius: 14px; padding: 18px 18px; border: 1px solid rgba(15,61,102,0.08);"><div style="width: 32px; height: 32px; border-radius: 8px; background: #F8B319; margin-bottom: 10px;"></div><div style="font-size: 15px; font-weight: 700;">Firebase</div><div style="font-size: 12.5px; color: #4A5A6A; margin-top: 3px;">Auth, Firestore, Storage, Crashlytics.</div></div>
+      <div style="background: #fff; border-radius: 14px; padding: 18px 18px; border: 1px solid rgba(15,61,102,0.08);"><div style="width: 32px; height: 32px; border-radius: 8px; background: #53AF77; margin-bottom: 10px;"></div><div style="font-size: 15px; font-weight: 700;">ML Kit</div><div style="font-size: 12.5px; color: #4A5A6A; margin-top: 3px;">On-device receipt OCR.</div></div>
+      <div style="background: #fff; border-radius: 14px; padding: 18px 18px; border: 1px solid rgba(15,61,102,0.08);"><div style="width: 32px; height: 32px; border-radius: 8px; background: #F1592A; margin-bottom: 10px;"></div><div style="font-size: 15px; font-weight: 700;">Beamer</div><div style="font-size: 12.5px; color: #4A5A6A; margin-top: 3px;">Routing.</div></div>
+      <div style="background: #fff; border-radius: 14px; padding: 18px 18px; border: 1px solid rgba(15,61,102,0.08);"><div style="width: 32px; height: 32px; border-radius: 8px; background: #03589B; margin-bottom: 10px;"></div><div style="font-size: 15px; font-weight: 700;">Dart 3</div><div style="font-size: 12.5px; color: #4A5A6A; margin-top: 3px;">Sound null safety, records.</div></div>
+      <div style="background: #fff; border-radius: 14px; padding: 18px 18px; border: 1px solid rgba(15,61,102,0.08);"><div style="width: 32px; height: 32px; border-radius: 8px; background: #0F3D66; margin-bottom: 10px;"></div><div style="font-size: 15px; font-weight: 700;">GitHub</div><div style="font-size: 12.5px; color: #4A5A6A; margin-top: 3px;">Issues, docs, and release notes.</div></div>
+      <div style="background: #fff; border-radius: 14px; padding: 18px 18px; border: 1px solid rgba(15,61,102,0.08);"><div style="width: 32px; height: 32px; border-radius: 8px; background: #D16B78; margin-bottom: 10px;"></div><div style="font-size: 15px; font-weight: 700;">Crashlytics</div><div style="font-size: 12.5px; color: #4A5A6A; margin-top: 3px;">Anonymized crash reporting.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section style="padding: 80px 40px; background: #FFF6E0; text-align: center;">
+  <div style="max-width: 720px; margin: 0 auto;">
+    <h2 style="font-size: 48px; line-height: 1.04; letter-spacing: -1px; font-weight: 700; margin: 0 0 16px;">Say hi.</h2>
+    <p style="font-size: 17px; color: #4A5A6A; margin: 0 0 28px;">Feature ideas, complaints, oat-flat-white recommendations. All welcome.</p>
+    <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+      <a class="btn-press" href="https://github.com/boonyongyang/pocketfi/issues/new/choose" style="background: #0F3D66; color: #FCD46A; padding: 14px 26px; border-radius: 99px; text-decoration: none; font-weight: 700; font-size: 14px; display: inline-flex; align-items: center; gap: 9px; box-shadow: 4px 4px 0 #F8B319;">
+        <span class="material-icons" style="font-size: 18px;">mail</span> GitHub Issues
+      </a>
+      <a class="btn-press" href="https://github.com/boonyongyang/pocketfi" target="_blank" rel="noopener" style="background: transparent; border: 1.5px solid #0F3D66; color: #0F3D66; padding: 13px 22px; border-radius: 99px; text-decoration: none; font-weight: 600; font-size: 14px; display: inline-flex; align-items: center; gap: 8px;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="#0F3D66" style="flex-shrink:0"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.56 0-.28-.01-1.02-.02-2-3.2.7-3.87-1.54-3.87-1.54-.52-1.32-1.27-1.68-1.27-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.02 1.75 2.69 1.25 3.34.95.1-.74.4-1.25.72-1.54-2.55-.29-5.24-1.28-5.24-5.7 0-1.26.45-2.29 1.18-3.1-.12-.29-.51-1.46.11-3.05 0 0 .96-.31 3.15 1.18a10.95 10.95 0 0 1 5.74 0c2.18-1.49 3.14-1.18 3.14-1.18.63 1.59.23 2.76.11 3.05.74.81 1.18 1.84 1.18 3.1 0 4.43-2.69 5.41-5.26 5.69.41.36.78 1.06.78 2.13 0 1.54-.01 2.78-.01 3.16 0 .31.21.67.79.56C20.21 21.39 23.5 17.08 23.5 12 23.5 5.65 18.35.5 12 .5z"/></svg> Star on GitHub
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer style="background: #0F3D66; color: rgba(255,255,255,0.78); padding: 56px 40px 24px;">
+  <div style="max-width: 1200px; margin: 0 auto;">
+    <div style="display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 40px;">
+      <div>
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 14px;">
+          <svg width="32" height="32" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <rect x="8" y="22" width="84" height="60" rx="14" fill="#0F3D66"/>
+            <rect x="8" y="22" width="84" height="14" rx="14" fill="#0F3D66"/>
+            <circle cx="68" cy="52" r="14" fill="#F8B319"/>
+            <circle cx="68" cy="52" r="6" fill="#0F3D66"/>
+            <rect x="14" y="14" width="60" height="14" rx="6" fill="#0F3D66"/>
+          </svg>
+          <span style="font-size: 19px; font-weight: 700; color: #fff;">PocketFi<span style="color: #F8B319;">!</span></span>
+        </div>
+        <p style="font-size: 13px; line-height: 1.65; margin: 0 0 16px; max-width: 280px;">A free budget tracker. Made in KL with Flutter + Firebase.</p>
+        <div style="display: flex; gap: 10px;">
+          <a href="https://github.com/boonyongyang/pocketfi" target="_blank" rel="noopener" style="width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: center; color: #fff;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#fff"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.56 0-.28-.01-1.02-.02-2-3.2.7-3.87-1.54-3.87-1.54-.52-1.32-1.27-1.68-1.27-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.02 1.75 2.69 1.25 3.34.95.1-.74.4-1.25.72-1.54-2.55-.29-5.24-1.28-5.24-5.7 0-1.26.45-2.29 1.18-3.1-.12-.29-.51-1.46.11-3.05 0 0 .96-.31 3.15 1.18a10.95 10.95 0 0 1 5.74 0c2.18-1.49 3.14-1.18 3.14-1.18.63 1.59.23 2.76.11 3.05.74.81 1.18 1.84 1.18 3.1 0 4.43-2.69 5.41-5.26 5.69.41.36.78 1.06.78 2.13 0 1.54-.01 2.78-.01 3.16 0 .31.21.67.79.56C20.21 21.39 23.5 17.08 23.5 12 23.5 5.65 18.35.5 12 .5z"/></svg>
+          </a>
+        </div>
+      </div>
+      <div>
+        <div style="font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #F8B319; margin-bottom: 14px;">Product</div>
+        <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 9px;">
+          <li><a href="features" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Features</a></li>
+          <li><a href="compare" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Compare</a></li>
+          <li><a href="/#screens" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Screens</a></li>
+          <li><a href="faq" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">FAQ</a></li>
+          <li><a href="roadmap" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Roadmap</a></li>
+          <li><a href="changelog" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Changelog</a></li>
+          <li><a href="/#download" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">GitHub</a></li>
+        </ul>
+      </div>
+      <div>
+        <div style="font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #F8B319; margin-bottom: 14px;">GitHub</div>
+        <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 9px;">
+          <li><a href="https://github.com/boonyongyang/pocketfi" target="_blank" rel="noopener" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">GitHub repo ↗</a></li>
+          <li><a href="https://github.com/boonyongyang/pocketfi/blob/main/LICENSE" target="_blank" rel="noopener" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">MIT license ↗</a></li>
+          <li><a href="contribute" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Contribute</a></li>
+          <li><a href="community" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Community</a></li>
+          <li><a href="https://github.com/boonyongyang/pocketfi/issues" target="_blank" rel="noopener" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Report an issue ↗</a></li>
+          <li><a href="about" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">About</a></li>
+          <li><a href="blog" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Blog</a></li>
+          <li><a href="support" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Support</a></li>
+        </ul>
+      </div>
+      <div>
+        <div style="font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #F8B319; margin-bottom: 14px;">Legal &amp; trust</div>
+        <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 9px;">
+          <li><a href="security" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Security</a></li>
+          <li><a href="privacy" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Privacy policy</a></li>
+          <li><a href="cookies" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Cookie policy</a></li>
+          <li><a href="terms" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Terms of service</a></li>
+          <li><a href="delete-account" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Delete my data</a></li>
+          <li><a href="press-kit" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Press kit</a></li>
+          <li><a href="brand-assets" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Brand assets</a></li>
+        </ul>
+      </div>
+    </div>
+    <div style="border-top: 1px solid rgba(255,255,255,0.10); padding-top: 20px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; font-size: 12.5px;">
+      <span>© 2026 PocketFi · public materials licensed · Made in KL ✿</span>
+      <span><a href="https://github.com/boonyongyang/pocketfi" target="_blank" rel="noopener" style="color: #FCD46A; text-decoration: none;">github.com/boonyongyang/pocketfi</a></span>
+    </div>
+  </div>
+</footer>
+
+<!-- Cookie notice (no tracking; localStorage flag only) -->
+<script>
+(function () {
+  'use strict';
+  var KEY = 'pocketfi_cookie_banner';
+  function isDismissed() { try { return localStorage.getItem(KEY) === 'dismissed'; } catch (e) { return false; } }
+  function dismiss() { try { localStorage.setItem(KEY, 'dismissed'); } catch (e) {} }
+  function mount() {
+    if (isDismissed()) return;
+    if (document.getElementById('pf-cookie-banner')) return;
+    var el = document.createElement('div');
+    el.id = 'pf-cookie-banner';
+    el.setAttribute('role', 'region');
+    el.setAttribute('aria-label', 'Cookie notice');
+    el.innerHTML = ['<div class="pf-cb-inner">','<div class="pf-cb-icon" aria-hidden="true"><span class="material-icons">cookie</span></div>',
+      '<div class="pf-cb-text"><strong>We don’t use tracking cookies.</strong> No analytics, no ad pixels — just a flag so this banner stays dismissed. <a href="cookies">Read the full policy</a>.</div>',
+      '<button type="button" class="pf-cb-btn" aria-label="Dismiss notice">Got it</button>','</div>'].join('');
+    el.querySelector('.pf-cb-btn').addEventListener('click', function () {
+      dismiss(); el.classList.add('pf-cb-out');
+      setTimeout(function () { if (el.parentNode) el.parentNode.removeChild(el); }, 280);
+    });
+    document.body.appendChild(el);
+    requestAnimationFrame(function () { el.classList.add('pf-cb-in'); });
+  }
+  function injectStyles() {
+    if (document.getElementById('pf-cookie-banner-styles')) return;
+    var s = document.createElement('style');
+    s.id = 'pf-cookie-banner-styles';
+    s.textContent = [
+      '#pf-cookie-banner { position: fixed; left: 16px; right: 16px; bottom: 16px; z-index: 2147483000; font-family: Roboto, system-ui, sans-serif; opacity: 0; transform: translateY(20px); transition: opacity 260ms ease, transform 260ms cubic-bezier(.34,1.56,.64,1); pointer-events: none; }',
+      '#pf-cookie-banner.pf-cb-in { opacity: 1; transform: translateY(0); pointer-events: auto; }',
+      '#pf-cookie-banner.pf-cb-out { opacity: 0; transform: translateY(12px); pointer-events: none; }',
+      '#pf-cookie-banner .pf-cb-inner { max-width: 720px; margin: 0 auto; display: flex; align-items: center; gap: 16px; background: #0F3D66; color: #FFF6E0; padding: 14px 18px; border-radius: 16px; box-shadow: 0 12px 32px rgba(15,61,102,0.30), 4px 4px 0 #F8B319; border: 1px solid rgba(248,179,25,0.20); }',
+      '#pf-cookie-banner .pf-cb-icon { width: 36px; height: 36px; border-radius: 50%; background: #F8B319; color: #0F3D66; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }',
+      '#pf-cookie-banner .pf-cb-icon .material-icons { font-size: 22px; }',
+      '#pf-cookie-banner .pf-cb-text { flex: 1; font-size: 13.5px; line-height: 1.55; color: rgba(255,246,224,0.92); }',
+      '#pf-cookie-banner .pf-cb-text strong { color: #FFF6E0; font-weight: 700; }',
+      '#pf-cookie-banner .pf-cb-text a { color: #FCD46A; text-decoration: underline; text-underline-offset: 3px; }',
+      '#pf-cookie-banner .pf-cb-btn { background: #F8B319; color: #0F3D66; border: 0; padding: 9px 16px; border-radius: 99px; font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer; flex-shrink: 0; transition: transform 120ms; }',
+      '#pf-cookie-banner .pf-cb-btn:active { transform: translate(1px, 1px); }',
+      '@media (max-width: 640px) { #pf-cookie-banner { left: 10px; right: 10px; bottom: 10px; } #pf-cookie-banner .pf-cb-inner { padding: 12px 14px; gap: 12px; border-radius: 14px; box-shadow: 0 10px 24px rgba(15,61,102,0.28), 3px 3px 0 #F8B319; } #pf-cookie-banner .pf-cb-icon { width: 32px; height: 32px; } #pf-cookie-banner .pf-cb-icon .material-icons { font-size: 19px; } #pf-cookie-banner .pf-cb-text { font-size: 12.5px; } #pf-cookie-banner .pf-cb-btn { padding: 8px 14px; font-size: 12.5px; } }'
+    ].join('\n');
+    document.head.appendChild(s);
+  }
+  function init() { injectStyles(); setTimeout(mount, 400); }
+  if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', init); } else { init(); }
+})();
+</script>
+</body>
+</html>

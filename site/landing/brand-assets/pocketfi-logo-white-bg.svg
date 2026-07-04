@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 452 124" width="452" height="124" role="img" aria-label="PocketFi">
+  <rect width="452" height="124" rx="20" fill="#FFFFFF"/>
+  <g transform="translate(12,12)">
+    <rect x="8" y="22" width="84" height="60" rx="14" fill="#0F3D66"/>
+    <rect x="8" y="22" width="84" height="14" rx="14" fill="#0F3D66"/>
+    <rect x="14" y="14" width="60" height="14" rx="6" fill="#0F3D66"/>
+    <circle cx="68" cy="52" r="14" fill="#F8B319"/>
+    <circle cx="68" cy="52" r="6" fill="#0F3D66"/>
+  </g>
+  <text x="132" y="84" font-family="Roboto, Arial, Helvetica, sans-serif" font-size="66" font-weight="700" letter-spacing="-1.5" fill="#0F3D66">PocketFi<tspan fill="#F8B319">!</tspan></text>
+</svg>

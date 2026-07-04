@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>PocketFi · Notifications</title>
+  <meta name="description" content="System pushes, in-app inbox, snackbars, and the notification permission prompt.">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <style>
+    html, body { margin: 0; background: #f0eee9; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif; }
+    * { box-sizing: border-box; }
+    body {
+      background-image: url("data:image/svg+xml,%3Csvg width='120' height='120' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M120 0H0v120' fill='none' stroke='rgba(0,0,0,0.06)' stroke-width='1'/%3E%3C/svg%3E");
+      background-size: 120px 120px; min-height: 100vh;
+    }
+    .world { padding: 60px; width: max-content; min-width: 100%; }
+    .sectionhead { padding: 0 0 36px; }
+    .sectionhead .title { font-size: 28px; font-weight: 600; color: rgba(40,30,20,0.85); letter-spacing: -0.4px; margin-bottom: 6px; }
+    .sectionhead .sub { font-size: 16px; color: rgba(60,50,40,0.6); }
+    .row { display: flex; gap: 48px; align-items: flex-start; }
+    .ab-wrap { flex-shrink: 0; }
+    .ab-label { font-size: 15px; font-weight: 500; color: rgba(60,50,40,0.7); padding: 3px 6px; margin-bottom: 4px; }
+    .ab-card { width: 360px; height: 780px; background: #fff; border-radius: 2px; box-shadow: 0 1px 3px rgba(0,0,0,.08), 0 4px 16px rgba(0,0,0,.06); overflow: hidden; }
+    .scroll { overflow-y: auto; }
+    .scroll::-webkit-scrollbar, .ab-card *::-webkit-scrollbar { display: none; }
+    .scroll, .ab-card * { scrollbar-width: none; }
+  </style>
+</head>
+<body>
+<div class="world">
+  <div class="sectionhead">
+    <div class="title">Notifications (Android · 360×780)</div>
+    <div class="sub">System pushes, in-app inbox, snackbars, and the permission prompt.</div>
+  </div>
+  <div class="row">
+    <div class="ab-wrap"><div class="ab-label">01 · Lock-screen stack</div><div class="ab-card" id="s1"></div></div>
+    <div class="ab-wrap"><div class="ab-label">02 · Notification variants</div><div class="ab-card" id="s2"></div></div>
+    <div class="ab-wrap"><div class="ab-label">03 · In-app inbox</div><div class="ab-card" id="s3"></div></div>
+    <div class="ab-wrap"><div class="ab-label">04 · Toasts &amp; snackbars</div><div class="ab-card" id="s4"></div></div>
+    <div class="ab-wrap"><div class="ab-label">05 · Permission prompt</div><div class="ab-card" id="s5"></div></div>
+  </div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+  var NAVY='#0F3D66', YELLOW='#F8B319', GREY='#F9F9F9', SUB='#4A5A6A', RED='#F1592A', GREEN='#2E7D32';
+  var LOGO14 = '<svg width="14" height="14" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">' +
+    '<rect x="8" y="22" width="84" height="60" rx="14" fill="#0F3D66"/>' +
+    '<rect x="8" y="22" width="84" height="14" rx="14" fill="#0F3D66"/>' +
+    '<circle cx="68" cy="52" r="14" fill="#F8B319"/>' +
+    '<circle cx="68" cy="52" r="6" fill="#0F3D66"/>' +
+    '<rect x="14" y="14" width="60" height="14" rx="6" fill="#0F3D66"/></svg>';
+
+  function statusBar(dark) {
+    return '<div style="height:32px;background:' + (dark ? '#000' : NAVY) + ';color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 18px;font-size:11px;font-weight:600">' +
+      '<span>9:41</span><span style="display:flex;gap:5px">' +
+      '<span class="material-icons" style="font-size:13px">signal_cellular_alt</span>' +
+      '<span class="material-icons" style="font-size:13px">wifi</span>' +
+      '<span class="material-icons" style="font-size:13px">battery_full</span></span></div>';
+  }
+  function pushCard(o) {
+    var actions = o.actions ?
+      '<div style="display:flex;gap:14px;margin-top:10px;padding-top:6px;border-top:1px solid rgba(15,61,102,0.06)">' +
+        o.actions.map(function (a) {
+          return '<button style="background:transparent;border:0;color:' + NAVY + ';font-weight:700;font-size:12px;letter-spacing:0.3px;text-transform:uppercase;padding:4px 0;font-family:inherit">' + a + '</button>';
+        }).join('') + '</div>' : '';
+    return '<div style="background:rgba(255,255,255,0.96);border-radius:18px;padding:14px 16px;box-shadow:0 8px 20px rgba(0,0,0,0.25);color:' + NAVY + '">' +
+      '<div style="display:flex;align-items:center;gap:10px;font-size:11px;color:' + SUB + ';margin-bottom:6px">' +
+        '<div style="width:18px;height:18px;border-radius:5px;background:' + NAVY + ';display:flex;align-items:center;justify-content:center">' + LOGO14 + '</div>' +
+        '<span style="font-weight:600;color:' + NAVY + '">' + (o.app || 'PocketFi') + '</span>' +
+        '<span>·</span><span>' + o.time + '</span>' +
+        '<span style="margin-left:auto">▾</span></div>' +
+      '<div style="font-size:13.5px;font-weight:700;color:' + NAVY + '">' + o.title + '</div>' +
+      '<div style="font-size:12.5px;color:' + SUB + ';margin-top:3px;line-height:1.5">' + o.body + '</div>' +
+      actions + '</div>';
+  }
+  function frame(inner, bg) {
+    return '<div style="width:360px;height:780px;background:' + (bg || GREY) + ';color:' + NAVY + ';display:flex;flex-direction:column;overflow:hidden;font-family:Roboto, sans-serif">' + inner + '</div>';
+  }
+
+  // S1 — Lock-screen
+  document.getElementById('s1').innerHTML =
+    '<div style="width:360px;height:780px;background:linear-gradient(160deg, #0E3458 0%, #185C8E 100%);position:relative;overflow:hidden;color:#fff;font-family:Roboto, sans-serif">' +
+      statusBar(true) +
+      '<div style="position:absolute;top:60px;left:0;right:0;text-align:center">' +
+        '<div style="font-size:14px;opacity:0.85">Friday, May 16</div>' +
+        '<div style="font-size:64px;font-weight:200;letter-spacing:-2px;line-height:1;margin-top:4px">9:41</div>' +
+      '</div>' +
+      '<div style="position:absolute;top:200px;left:14px;right:14px;display:flex;flex-direction:column;gap:10px">' +
+        pushCard({ time:'9:30 AM', title:'TNB electricity bill due in 3 days', body:'MYR 186.40 · Mark paid?', actions:['MARK PAID','SNOOZE'] }) +
+        pushCard({ time:'9:00 AM', title:'80% of Food budget used', body:'MYR 487 of MYR 600 with 14 days left.', actions:['VIEW','MUTE'] }) +
+        '<div style="background:rgba(255,255,255,0.10);border-radius:14px;padding:10px 14px;font-size:12px;color:rgba(255,255,255,0.85);display:flex;align-items:center;gap:10px">' +
+          '<div style="width:18px;height:18px;border-radius:5px;background:' + NAVY + ';display:flex;align-items:center;justify-content:center;flex-shrink:0">' + LOGO14 + '</div>' +
+          '<span style="flex:1">1 more from PocketFi</span>' +
+          '<span style="opacity:0.6">1m ago</span>' +
+        '</div>' +
+      '</div>' +
+      '<div style="position:absolute;bottom:30px;left:0;right:0;text-align:center;font-size:13px;opacity:0.6">Swipe up to unlock</div>' +
+    '</div>';
+
+  // S2 — Variants
+  document.getElementById('s2').innerHTML = frame(
+    statusBar() +
+    '<div style="background:' + NAVY + ';color:#fff;padding:10px 14px">' +
+      '<div style="font-size:11px;opacity:0.7;letter-spacing:0.4px;text-transform:uppercase">Notification examples</div>' +
+      '<div style="font-size:15px;font-weight:700">Five PocketFi pushes</div></div>' +
+    '<div style="padding:14px;display:flex;flex-direction:column;gap:10px;overflow:hidden">' +
+      pushCard({ time:'now', title:'Bill overdue · TNB Electricity', body:'MYR 186.40 was due yesterday.', actions:['MARK PAID','SNOOZE'] }) +
+      pushCard({ time:'2m', title:'Aisha added \'Dinner @ Limapulo\' to KL Trip', body:'MYR 168.50 · Your share: MYR 42.13', actions:['VIEW','REPLY'] }) +
+      pushCard({ time:'8:00', title:'Monthly recap is ready', body:'You spent MYR 1,743 in April · ▲ 12% vs March', actions:['OPEN OVERVIEW'] }) +
+      pushCard({ time:'yesterday', title:'Heads up — Food budget at 80%', body:'MYR 487 of MYR 600. 14 days left in May.', actions:['VIEW BUDGET'] }) +
+      pushCard({ time:'Mon', title:'v1.4 is out — Shared wallets are here', body:'Tap to see what\'s new in this release.' }) +
+    '</div>'
+  );
+
+  // S3 — Inbox
+  var inboxItems = [
+    { i:'event_busy', ic:RED, t:'TNB Electricity overdue', b:'MYR 186.40 was due yesterday.', d:'Just now', unread:true },
+    { i:'person_add', ic:'#7246C8', t:'Aisha joined KL Trip wallet', b:'You can now split with 4 people.', d:'2m', unread:true },
+    { i:'warning_amber', ic:'#B85F2A', t:'80% of Food budget hit', b:'MYR 487 of MYR 600 · May.', d:'1 h', unread:true },
+    { i:'auto_awesome', ic:GREEN, t:'April recap is ready', b:'12% more than March. Tap to see.', d:'2 d' },
+    { i:'add_circle', ic:NAVY, t:'Boon added "Bus to KLCC"', b:'MYR 12.50 · Transport', d:'May 13' },
+    { i:'flag', ic:GREEN, t:'Goal: Japan trip · 60% there', b:'MYR 3,000 of MYR 5,000.', d:'May 12' },
+    { i:'campaign', ic:YELLOW, t:'Shared wallets in release prep', b:'Follow GitHub notes for launch status.', d:'May 11' }
+  ].map(function (it) {
+    return '<div style="display:flex;gap:12px;padding:14px 16px;background:' + (it.unread ? 'rgba(248,179,25,0.06)' : '#fff') + ';border-bottom:1px solid rgba(15,61,102,0.06)">' +
+      '<div style="width:36px;height:36px;border-radius:10px;background:' + it.ic + ';color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0">' +
+      '<span class="material-icons" style="font-size:18px">' + it.i + '</span></div>' +
+      '<div style="flex:1;min-width:0">' +
+        '<div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px">' +
+        '<div style="font-size:13.5px;font-weight:' + (it.unread ? 700 : 600) + ';color:' + NAVY + ';overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + it.t + '</div>' +
+        '<div style="font-size:10.5px;color:' + SUB + ';flex-shrink:0">' + it.d + '</div></div>' +
+        '<div style="font-size:12px;color:' + SUB + ';margin-top:2px">' + it.b + '</div></div>' +
+      (it.unread ? '<div style="width:8px;height:8px;border-radius:50%;background:' + YELLOW + ';margin-top:8px"></div>' : '') +
+    '</div>';
+  }).join('');
+  var inboxTabs = ['All','Unread (3)','Bills','Wallets'].map(function (t, i) {
+    return '<div style="flex:1;text-align:center;padding:10px 4px;font-size:11.5px;color:' + (i === 0 ? YELLOW : SUB) + ';font-weight:' + (i === 0 ? 700 : 500) + ';border-bottom:' + (i === 0 ? '2px solid ' + YELLOW : '2px solid transparent') + '">' + t + '</div>';
+  }).join('');
+  document.getElementById('s3').innerHTML = frame(
+    statusBar() +
+    '<div style="background:' + NAVY + ';color:#fff;padding:10px 14px;display:flex;align-items:center;justify-content:space-between">' +
+      '<span class="material-icons" style="font-size:22px">arrow_back</span>' +
+      '<div style="font-size:15px;font-weight:700">Notifications</div>' +
+      '<span class="material-icons" style="font-size:22px">more_vert</span></div>' +
+    '<div style="display:flex;background:#fff;border-bottom:1px solid rgba(15,61,102,0.06)">' + inboxTabs + '</div>' +
+    '<div class="scroll" style="flex:1">' + inboxItems + '</div>'
+  );
+
+  // S4 — Toasts
+  function toast(icon, bg, text, action) {
+    return '<div style="display:flex;align-items:center;gap:12px;background:' + bg + ';padding:12px 16px;border-radius:14px;color:#fff;box-shadow:0 6px 18px rgba(15,61,102,0.2)">' +
+      '<span class="material-icons" style="font-size:20px">' + icon + '</span>' +
+      '<div style="flex:1;font-size:13.5px;font-weight:500">' + text + '</div>' +
+      (action ? '<button style="background:transparent;border:0;color:#fff;font-size:12px;font-weight:700;letter-spacing:0.3px;text-transform:uppercase;font-family:inherit">' + action + '</button>' : '') +
+    '</div>';
+  }
+  document.getElementById('s4').innerHTML = frame(
+    statusBar() +
+    '<div style="background:' + NAVY + ';color:#fff;padding:10px 14px">' +
+      '<div style="font-size:11px;opacity:0.7;letter-spacing:0.4px;text-transform:uppercase">In-app banners</div>' +
+      '<div style="font-size:15px;font-weight:700">Toasts &amp; snackbars</div></div>' +
+    '<div style="flex:1;padding:14px;display:flex;flex-direction:column;gap:14px;justify-content:space-between">' +
+      '<div style="display:flex;flex-direction:column;gap:10px">' +
+        '<div style="font-size:11px;font-weight:700;color:' + SUB + ';letter-spacing:0.6px;text-transform:uppercase">Success</div>' +
+        toast('check_circle', GREEN, 'Saved · Starbucks RM 18.00', 'UNDO') +
+        '<div style="font-size:11px;font-weight:700;color:' + SUB + ';letter-spacing:0.6px;text-transform:uppercase;margin-top:8px">Info</div>' +
+        toast('info', NAVY, '2 unsynced entries · trying again', null) +
+        '<div style="font-size:11px;font-weight:700;color:' + SUB + ';letter-spacing:0.6px;text-transform:uppercase;margin-top:8px">Warning</div>' +
+        toast('warning_amber', '#B85F2A', 'Receipt OCR is uncertain — please review.', 'OPEN') +
+        '<div style="font-size:11px;font-weight:700;color:' + SUB + ';letter-spacing:0.6px;text-transform:uppercase;margin-top:8px">Error</div>' +
+        toast('cloud_off', RED, 'Offline — your changes are queued.', 'RETRY') +
+      '</div>' +
+      '<div style="background:#fff;border-radius:14px;padding:14px;border:1px solid rgba(15,61,102,0.06)">' +
+        '<div style="font-size:11px;font-weight:700;color:' + SUB + ';letter-spacing:0.6px;text-transform:uppercase;margin-bottom:8px">In context</div>' +
+        '<div style="display:flex;align-items:center;gap:10px;padding:8px 0">' +
+          '<div style="width:30px;height:30px;border-radius:50%;background:#F2AC3C"></div>' +
+          '<div style="flex:1"><div style="font-size:12px;font-weight:600">Starbucks</div>' +
+          '<div style="font-size:10px;color:' + SUB + '">Food &amp; Drink</div></div>' +
+          '<div style="font-size:12px;font-weight:700;color:' + RED + '">−18.00</div></div>' +
+        '<div style="margin-top:8px">' + toast('check_circle', GREEN, 'Saved · Starbucks RM 18.00', 'UNDO') + '</div>' +
+      '</div>' +
+    '</div>'
+  );
+
+  // S5 — Permission prompt
+  document.getElementById('s5').innerHTML =
+    '<div style="width:360px;height:780px;background:' + GREY + ';color:' + NAVY + ';overflow:hidden;display:flex;flex-direction:column;position:relative;font-family:Roboto, sans-serif">' +
+      statusBar() +
+      '<div style="flex:1;opacity:0.30;padding:12px 14px">' +
+        '<div style="background:' + NAVY + ';color:#fff;padding:10px 14px;border-radius:10px">− MYR 1,743.20</div>' +
+        '<div style="height:14px"></div>' +
+        '<div style="background:#fff;border-radius:10px;padding:10px;margin-bottom:8px;display:flex;align-items:center;gap:10px"><div style="width:30px;height:30px;border-radius:50%;background:#ddd"></div><div style="flex:1;height:10px;background:#eee;border-radius:4px"></div></div>' +
+        '<div style="background:#fff;border-radius:10px;padding:10px;margin-bottom:8px;display:flex;align-items:center;gap:10px"><div style="width:30px;height:30px;border-radius:50%;background:#ddd"></div><div style="flex:1;height:10px;background:#eee;border-radius:4px"></div></div>' +
+        '<div style="background:#fff;border-radius:10px;padding:10px;margin-bottom:8px;display:flex;align-items:center;gap:10px"><div style="width:30px;height:30px;border-radius:50%;background:#ddd"></div><div style="flex:1;height:10px;background:#eee;border-radius:4px"></div></div>' +
+      '</div>' +
+      '<div style="position:absolute;inset:0;background:rgba(15,61,102,0.45);display:flex;align-items:flex-end">' +
+        '<div style="background:#fff;border-top-left-radius:22px;border-top-right-radius:22px;padding:22px 22px 28px;width:100%">' +
+          '<div style="width:36px;height:4px;border-radius:99px;background:rgba(15,61,102,0.20);margin:0 auto 16px"></div>' +
+          '<div style="width:56px;height:56px;border-radius:50%;background:rgba(248,179,25,0.18);color:' + YELLOW + ';display:flex;align-items:center;justify-content:center;margin-bottom:14px">' +
+            '<span class="material-icons" style="font-size:30px">notifications_active</span></div>' +
+          '<div style="font-size:22px;font-weight:700;letter-spacing:-0.4px;margin-bottom:8px">Want gentle nudges?</div>' +
+          '<p style="font-size:13.5px;line-height:1.65;color:' + SUB + ';margin:0 0 18px">We\'ll only ping you for bills due, budget warnings, and your monthly recap — at most one per day, never marketing. Change this anytime in Settings.</p>' +
+          '<button style="width:100%;background:' + NAVY + ';color:#FCD46A;border:0;padding:13px;border-radius:99px;font-size:14px;font-weight:700;font-family:inherit;box-shadow:3px 3px 0 ' + YELLOW + '">Allow notifications</button>' +
+          '<button style="width:100%;background:transparent;border:0;color:' + SUB + ';padding:12px;font-size:13px;font-weight:600;font-family:inherit;margin-top:6px">Not now</button>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+})();
+</script>
+</body>
+</html>

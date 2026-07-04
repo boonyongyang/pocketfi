@@ -1,0 +1,30 @@
+{
+  "name": "PocketFi",
+  "short_name": "PocketFi",
+  "description": "PocketFi launch site and public support pages.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "browser",
+  "background_color": "#FFF6E0",
+  "theme_color": "#0F3D66",
+  "icons": [
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/brand-assets/pocketfi-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/brand-assets/pocketfi-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

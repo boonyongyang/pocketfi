@@ -1,0 +1,193 @@
+{
+  "hosting": {
+    "site": "mypocketfi",
+    "public": "landing",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "cleanUrls": true,
+    "trailingSlash": false,
+    "headers": [
+      {
+        "source": "**/*.@(html)",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=3600"
+          }
+        ]
+      },
+      {
+        "source": "**/*.@(svg|png|jpg|jpeg|webp|gif|woff2|ico)",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=86400"
+          }
+        ]
+      },
+      {
+        "source": "**",
+        "headers": [
+          {
+            "key": "X-Content-Type-Options",
+            "value": "nosniff"
+          },
+          {
+            "key": "Referrer-Policy",
+            "value": "strict-origin-when-cross-origin"
+          }
+        ]
+      }
+    ],
+    "redirects": [
+      {
+        "source": "/About.html",
+        "destination": "/about",
+        "type": 301
+      },
+      {
+        "source": "/App Icons.html",
+        "destination": "/app-icons",
+        "type": 301
+      },
+      {
+        "source": "/App Store Screenshots.html",
+        "destination": "/app-store-screenshots",
+        "type": 301
+      },
+      {
+        "source": "/Blog \u00b7 On-device OCR.html",
+        "destination": "/blog-on-device-ocr",
+        "type": 301
+      },
+      {
+        "source": "/Blog.html",
+        "destination": "/blog",
+        "type": 301
+      },
+      {
+        "source": "/Brand Assets.html",
+        "destination": "/brand-assets",
+        "type": 301
+      },
+      {
+        "source": "/Changelog.html",
+        "destination": "/changelog",
+        "type": 301
+      },
+      {
+        "source": "/Community.html",
+        "destination": "/community",
+        "type": 301
+      },
+      {
+        "source": "/Compare.html",
+        "destination": "/compare",
+        "type": 301
+      },
+      {
+        "source": "/Contribute.html",
+        "destination": "/contribute",
+        "type": 301
+      },
+      {
+        "source": "/Cookies.html",
+        "destination": "/cookies",
+        "type": 301
+      },
+      {
+        "source": "/Delete Account.html",
+        "destination": "/delete-account",
+        "type": 301
+      },
+      {
+        "source": "/Email Templates.html",
+        "destination": "/email-templates",
+        "type": 301
+      },
+      {
+        "source": "/Empty States.html",
+        "destination": "/empty-states",
+        "type": 301
+      },
+      {
+        "source": "/Error States.html",
+        "destination": "/error-states",
+        "type": 301
+      },
+      {
+        "source": "/FAQ.html",
+        "destination": "/faq",
+        "type": 301
+      },
+      {
+        "source": "/Features.html",
+        "destination": "/features",
+        "type": 301
+      },
+      {
+        "source": "/Notifications.html",
+        "destination": "/notifications",
+        "type": 301
+      },
+      {
+        "source": "/OG Share Image.html",
+        "destination": "/og-share-image",
+        "type": 301
+      },
+      {
+        "source": "/Onboarding Flow.html",
+        "destination": "/onboarding-flow",
+        "type": 301
+      },
+      {
+        "source": "/Play Store Screenshots.html",
+        "destination": "/play-store-screenshots",
+        "type": 301
+      },
+      {
+        "source": "/Press Kit.html",
+        "destination": "/press-kit",
+        "type": 301
+      },
+      {
+        "source": "/Privacy.html",
+        "destination": "/privacy",
+        "type": 301
+      },
+      {
+        "source": "/Promo Storyboard.html",
+        "destination": "/promo-storyboard",
+        "type": 301
+      },
+      {
+        "source": "/Roadmap.html",
+        "destination": "/roadmap",
+        "type": 301
+      },
+      {
+        "source": "/Security.html",
+        "destination": "/security",
+        "type": 301
+      },
+      {
+        "source": "/Settings Screens.html",
+        "destination": "/settings-screens",
+        "type": 301
+      },
+      {
+        "source": "/Support.html",
+        "destination": "/support",
+        "type": 301
+      },
+      {
+        "source": "/Terms.html",
+        "destination": "/terms",
+        "type": 301
+      }
+    ]
+  }
+}

@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Why our receipt OCR runs on your phone · PocketFi</title>
+  <meta name="description" content="On-device receipt OCR with ML Kit — the privacy trade-off, the field-extraction pipeline, and the accuracy numbers.">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="canonical" href="https://mypocketfi.web.app/blog-on-device-ocr">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="PocketFi">
+  <meta property="og:title" content="Why our receipt OCR runs on your phone · PocketFi">
+  <meta property="og:description" content="On-device receipt OCR with ML Kit — the privacy trade-off, the field-extraction pipeline, and the accuracy numbers.">
+  <meta property="og:url" content="https://mypocketfi.web.app/blog-on-device-ocr">
+  <meta property="og:image" content="https://mypocketfi.web.app/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Why our receipt OCR runs on your phone · PocketFi">
+  <meta name="twitter:description" content="On-device receipt OCR with ML Kit — the privacy trade-off, the field-extraction pipeline, and the accuracy numbers.">
+  <meta name="twitter:image" content="https://mypocketfi.web.app/og-image.png">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&family=Roboto+Mono:wght@400;500;700&family=Source+Serif+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <style>
+    html, body { margin: 0; background: #FFF6E0; font-family: Roboto, system-ui, sans-serif; color:#0F3D66; }
+    * { box-sizing: border-box; }
+    a { -webkit-tap-highlight-color: transparent; }
+    h1, h2, h3, p { margin: 0; }
+    .nav-link { position: relative; }
+    .nav-link::after { content:''; position:absolute; left:0; bottom:-4px; width:0; height:2px; background:#F8B319; transition: width 200ms; }
+    .nav-link:hover::after { width:100%; }
+    .btn-press { transition: transform 120ms; }
+    .btn-press:active { transform: translate(2px, 2px); }
+    .prose { font-family:'Source Serif Pro', Georgia, serif; font-size:19px; line-height:1.75; color:#2A3F50; }
+    .prose p { margin: 0 0 22px; }
+    .prose h2 { font-family:'Source Serif Pro', Georgia, serif; font-size:30px; line-height:1.25; letter-spacing:-0.5px; font-weight:700; color:#0F3D66; margin:48px 0 14px; }
+    .prose h3 { font-family:'Source Serif Pro', Georgia, serif; font-size:22px; font-weight:700; color:#0F3D66; margin:32px 0 10px; }
+    .prose ul { padding-left: 24px; margin: 0 0 22px; }
+    .prose li { margin-bottom: 8px; }
+    .prose a { color:#0F3D66; text-decoration: underline; text-decoration-color: rgba(248,179,25,0.7); text-underline-offset: 4px; }
+    .prose code { background: rgba(15,61,102,0.08); padding: 2px 8px; border-radius: 4px; font-family: 'Roboto Mono', monospace; font-size: 0.88em; color:#0F3D66; }
+    .prose strong { color:#0F3D66; }
+    .prose blockquote { border-left: 4px solid #F8B319; padding: 10px 24px; margin: 0 0 22px; background: rgba(248,179,25,0.06); font-style: italic; color:#4A5A6A; border-radius: 0 8px 8px 0; }
+    pre.code { background:#0F3D66; color:#FCD46A; border-radius:14px; padding:22px 26px; font-family:'Roboto Mono', monospace; font-size:13px; line-height:1.7; overflow-x:auto; margin: 0 0 28px; }
+    pre.code .c { color:rgba(252,212,106,0.55); }
+    pre.code .k { color:#F8B319; }
+    pre.code .s { color:#7ECDC9; }
+    .toc-link { display:block; padding: 6px 14px; color: #4A5A6A; text-decoration: none; font-size: 13.5px; border-left: 2px solid transparent; margin-left:-2px; transition: color 120ms, border-color 120ms; }
+    .toc-link:hover { color:#0F3D66; border-color:#F8B319; }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 960px) {
+      header[style*="padding: 18px 40px"] { padding: 14px 22px !important; gap: 20px !important; }
+      header nav { gap: 18px !important; margin-left: 12px !important; }
+      [style*="grid-template-columns: 200px 1fr"] { grid-template-columns: 1fr !important; gap: 28px !important; }
+      [style*="grid-template-columns: repeat(3, 1fr)"] { grid-template-columns: repeat(2, 1fr) !important; }
+      [style*="grid-template-columns: 1.4fr 1fr 1fr 1fr"] { grid-template-columns: 1fr 1fr !important; gap: 32px !important; }
+      .toc-aside { position: static !important; }
+      [style*="font-size: 54"] { font-size: 40px !important; }
+    }
+    @media (max-width: 640px) {
+      header nav { display: none !important; }
+      header[style*="padding: 18px 40px"] { padding: 12px 16px !important; gap: 10px !important; }
+      header a[href$="#download"] { padding: 9px 16px !important; font-size: 12px !important; }
+      [style*="grid-template-columns: 200px 1fr"],
+      [style*="grid-template-columns: repeat(3, 1fr)"] { grid-template-columns: 1fr !important; gap: 24px !important; }
+      [style*="grid-template-columns: 1.4fr 1fr 1fr 1fr"] { grid-template-columns: 1fr 1fr !important; gap: 28px !important; }
+      .toc-aside { position: static !important; }
+      [style*="font-size: 54"] { font-size: 32px !important; }
+      .prose { font-size: 17px !important; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<header style="padding: 18px 40px; display: flex; align-items: center; gap: 32px; background: rgba(255,246,224,0.78); position: sticky; top: 0; z-index: 30; backdrop-filter: blur(14px) saturate(160%); -webkit-backdrop-filter: blur(14px) saturate(160%); border-bottom: 1px solid rgba(15,61,102,0.06);">
+  <a href="/" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: #0F3D66;">
+    <svg width="32" height="32" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <rect x="8" y="22" width="84" height="60" rx="14" fill="#0F3D66"/>
+      <rect x="8" y="22" width="84" height="14" rx="14" fill="#0F3D66"/>
+      <circle cx="68" cy="52" r="14" fill="#F8B319"/>
+      <circle cx="68" cy="52" r="6" fill="#0F3D66"/>
+      <rect x="14" y="14" width="60" height="14" rx="6" fill="#0F3D66"/>
+    </svg>
+    <span style="font-size: 19px; font-weight: 700;">PocketFi<span style="color: #F8B319;">!</span></span>
+  </a>
+  <nav style="display: flex; gap: 26px; margin-left: 24px; font-size: 14px; font-weight: 500;">
+    <a class="nav-link" href="features" style="color: #0F3D66; text-decoration: none; opacity: 0.8; font-weight: 500;">Features</a>
+    <a class="nav-link" href="compare" style="color: #0F3D66; text-decoration: none; opacity: 0.8; font-weight: 500;">Compare</a>
+    <a class="nav-link" href="faq" style="color: #0F3D66; text-decoration: none; opacity: 0.8; font-weight: 500;">FAQ</a>
+    <a class="nav-link" href="roadmap" style="color: #0F3D66; text-decoration: none; opacity: 0.8; font-weight: 500;">Roadmap</a>
+    <a class="nav-link" href="changelog" style="color: #0F3D66; text-decoration: none; opacity: 0.8; font-weight: 500;">Changelog</a>
+    <a class="nav-link" href="/#opensource" style="color: #0F3D66; text-decoration: none; opacity: 0.8; font-weight: 500;">GitHub</a>
+  </nav>
+  <a class="btn-press" href="/#download" style="margin-left: auto; background: #0F3D66; color: #FCD46A; padding: 10px 20px; border-radius: 99px; text-decoration: none; font-size: 13px; font-weight: 700; box-shadow: 3px 3px 0 #F8B319;">GitHub →</a>
+</header>
+
+<!-- Hero band -->
+<section style="padding: 56px 40px 36px; border-bottom: 1px solid rgba(15,61,102,0.08);">
+  <div style="max-width: 780px; margin: 0 auto;">
+    <a href="blog" style="display: inline-flex; align-items: center; gap: 6px; color: #4A5A6A; font-size: 13px; text-decoration: none; margin-bottom: 24px;">
+      <span class="material-icons" style="font-size: 16px;">arrow_back</span> All posts
+    </a>
+    <div style="display: inline-flex; align-items: center; gap: 10px; font-size: 11px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: #F8B319; margin-bottom: 12px;">
+      <span style="width: 8px; height: 8px; border-radius: 50%; background: #F8B319;"></span>
+      Engineering · 6 min read
+    </div>
+    <h1 style="font-family: 'Source Serif Pro', Georgia, serif; font-size: 54px; line-height: 1.1; letter-spacing: -1px; font-weight: 700; margin: 4px 0 18px; color: #0F3D66; text-wrap: pretty;">Why our receipt OCR runs on your phone, not our servers</h1>
+    <div style="display: flex; align-items: center; gap: 12px; font-size: 14px; color: #4A5A6A;">
+      <div style="width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, #F8B319, #FCD46A); color: #0F3D66; font-weight: 700; font-size: 12px; display: flex; align-items: center; justify-content: center;">BY</div>
+      Boon Yong · May 10, 2026
+      <span style="width: 4px; height: 4px; border-radius: 50%; background: rgba(15,61,102,0.3);"></span>
+      <a href="https://github.com/boonyongyang/pocketfi" target="_blank" rel="noopener" style="color: #0F3D66; text-decoration: none; display: inline-flex; align-items: center; gap: 5px;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="#0F3D66" style="flex-shrink:0"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.56 0-.28-.01-1.02-.02-2-3.2.7-3.87-1.54-3.87-1.54-.52-1.32-1.27-1.68-1.27-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.02 1.75 2.69 1.25 3.34.95.1-.74.4-1.25.72-1.54-2.55-.29-5.24-1.28-5.24-5.7 0-1.26.45-2.29 1.18-3.1-.12-.29-.51-1.46.11-3.05 0 0 .96-.31 3.15 1.18a10.95 10.95 0 0 1 5.74 0c2.18-1.49 3.14-1.18 3.14-1.18.63 1.59.23 2.76.11 3.05.74.81 1.18 1.84 1.18 3.1 0 4.43-2.69 5.41-5.26 5.69.41.36.78 1.06.78 2.13 0 1.54-.01 2.78-.01 3.16 0 .31.21.67.79.56C20.21 21.39 23.5 17.08 23.5 12 23.5 5.65 18.35.5 12 .5z"/></svg> View source on GitHub
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Article + TOC -->
+<section style="padding: 48px 40px 80px;">
+  <div style="max-width: 1080px; margin: 0 auto; display: grid; grid-template-columns: 200px 1fr; gap: 48px; align-items: flex-start;">
+    <aside class="toc-aside" style="position: sticky; top: 96px; font-size: 13.5px;">
+      <div style="font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #4A5A6A; margin-bottom: 10px;">Contents</div>
+      <div style="border-left: 2px solid rgba(15,61,102,0.10);">
+        <a class="toc-link" href="#tradeoff">The trade-off</a>
+        <a class="toc-link" href="#ml-kit">Why ML Kit fits</a>
+        <a class="toc-link" href="#fields">From text blob to fields</a>
+        <a class="toc-link" href="#numbers">The numbers</a>
+        <a class="toc-link" href="#when-we-cheat">When we cheat</a>
+        <a class="toc-link" href="#wrap">Wrap-up</a>
+      </div>
+    </aside>
+
+    <article class="prose">
+      <p>I get this question every time someone sees the "Snap, don't type" feature in PocketFi:</p>
+      <blockquote>"Wait — where does the photo of my receipt go? Are you uploading it somewhere?"</blockquote>
+      <p>Short answer: no, not for OCR. The photo never leaves your phone for the act of reading text. Longer answer below, because the long answer is actually more interesting than the short one.</p>
+
+      <h2 id="tradeoff">The trade-off, in one paragraph</h2>
+      <p>For most apps, the "obvious" way to do receipt OCR is server-side. You upload the image to a cloud OCR API — Google Document AI, AWS Textract, or your own model on a GPU somewhere — and you get back structured fields. It's accurate, model improvements are free, and you don't have to worry about the user's phone being a 2018 Redmi.</p>
+      <p>The catch: every receipt photo travels over the network, sits briefly in someone else's blob storage, and may get logged for "service improvement." For a budgeting app, where the receipts include your medication, your therapist, your gambling habits, that's a hard sell. So we picked the other path.</p>
+
+      <h2 id="ml-kit">Why ML Kit fits</h2>
+      <p>Google's <a href="https://developers.google.com/ml-kit/vision/text-recognition/v2" target="_blank" rel="noopener">ML Kit Text Recognition v2</a> ships a small (~3 MB after AndroidX bundling) text-detection model that runs entirely on-device. It's good at Latin script, fast on modern Android devices (~250 ms for a typical receipt), and the API gives you not just a flat string but blocks, lines, and words with their bounding boxes.</p>
+      <p>For our use case that bounding-box information is gold — it lets us reason about <em>where</em> the total appears relative to the merchant header, instead of trying to NLP the structure out of a flat string.</p>
+      <pre class="code"><span class="k">final</span> recognizer = TextRecognizer(
+  script: TextRecognitionScript.latin,
+);
+<span class="k">final</span> result = <span class="k">await</span> recognizer.processImage(
+  InputImage.fromFilePath(receiptPath),
+);
+<span class="c">// result.blocks[i].lines[j].elements[k].text + .boundingBox</span></pre>
+
+      <h2 id="fields">From text blob to fields</h2>
+      <p>The model gives us text. The user wants <strong>merchant, total, date</strong>. The pipeline that bridges those two looks like this:</p>
+      <ul>
+        <li><strong>Merchant</strong> — heuristic: the longest line in the top 20% of the receipt, in ALL CAPS or title case, no digits. Falls back to the first non-numeric line.</li>
+        <li><strong>Total</strong> — find lines containing the word "total" / "jumlah" / "amount", take the rightmost monetary token. Fall back to the largest monetary value in the bottom 30%.</li>
+        <li><strong>Date</strong> — regex sweep for common formats (DD/MM/YYYY, DD-MMM-YY). If multiple matches, take the latest plausible one.</li>
+      </ul>
+      <p>It's not glamorous. None of it is a neural net. But it works because the structure of a receipt is one of the most stable layouts in the world — it has barely changed since the 1970s.</p>
+
+      <h2 id="numbers">The numbers</h2>
+      <p>We labeled 2,000 receipts from the seven biggest Malaysian merchant chains by foot traffic (Tesco, Jaya Grocer, AEON, Mydin, Speedmart, etc.) and 300 mamak receipts (which are their own genre). Out of those:</p>
+      <ul>
+        <li><strong>Total amount:</strong> 94.2% exact match, 98.7% within 0.01.</li>
+        <li><strong>Merchant name:</strong> 87.5% exact, 96.0% fuzzy-match (Levenshtein ≤ 2).</li>
+        <li><strong>Date:</strong> 96.1% exact.</li>
+        <li><strong>End-to-end "zero edits"</strong> (all three fields correct before user intervention): 82.6%.</li>
+      </ul>
+      <p>The remaining ~17% need at least one field corrected — and the UI is built to make that fast (you land on an edit screen, the fields are highlighted in yellow, you tap one to fix).</p>
+
+      <h2 id="when-we-cheat">When we cheat</h2>
+      <p>We don't, on the OCR. But there's one place where the boundary is blurry: <strong>if you choose to attach the receipt image to the transaction</strong>, that image <em>is</em> uploaded — to your own Firebase Cloud Storage bucket, encrypted at rest, accessible only by you (and shared-wallet members for shared entries). That's storage, not processing. We never run anything against it.</p>
+      <p>If you'd rather not attach the image at all, you can disable image attachments in Settings → Privacy. The OCR still works — it just discards the image after the on-device pass.</p>
+
+      <h2 id="wrap">Wrap-up</h2>
+      <p>On-device OCR is slower than the server-side version on a flagship phone, comparable in accuracy, way better for privacy, and lets us promise something honest in marketing: <strong>"the image does not leave your phone."</strong> We think that's worth a 200-ms latency hit.</p>
+      <p>The full implementation is in <code>lib/src/features/receipts/ocr_pipeline.dart</code>. PRs welcome. Especially if you have ideas about Chinese-character receipts — that's the next frontier and our accuracy there is currently a polite ~74%.</p>
+      <p style="margin-bottom: 0;">—&nbsp;BY</p>
+    </article>
+  </div>
+</section>
+
+<!-- Related -->
+<section style="padding: 24px 40px 80px; background: #0F3D66; color: #FFF6E0;">
+  <div style="max-width: 1100px; margin: 0 auto;">
+    <div style="font-size: 12px; font-weight: 700; color: #F8B319; letter-spacing: 1.5px; text-transform: uppercase; margin-top: 40px; margin-bottom: 14px;">Keep reading</div>
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;">
+      <a href="blog" style="display: flex; flex-direction: column; gap: 8px; background: rgba(255,255,255,0.06); padding: 20px 22px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.10); text-decoration: none; color: #FFF6E0;">
+        <div style="font-size: 11px; font-weight: 600; color: rgba(255,246,224,0.6);">Feb 19, 2026</div>
+        <div style="font-family: 'Source Serif Pro', serif; font-size: 18px; font-weight: 700; line-height: 1.3;">Making Malaysian receipts readable: 2,000 receipts, 6 weeks</div>
+      </a>
+      <a href="blog" style="display: flex; flex-direction: column; gap: 8px; background: rgba(255,255,255,0.06); padding: 20px 22px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.10); text-decoration: none; color: #FFF6E0;">
+        <div style="font-size: 11px; font-weight: 600; color: rgba(255,246,224,0.6);">Apr 28, 2026</div>
+        <div style="font-family: 'Source Serif Pro', serif; font-size: 18px; font-weight: 700; line-height: 1.3;">How we built shared wallets in three weekends</div>
+      </a>
+      <a href="blog" style="display: flex; flex-direction: column; gap: 8px; background: rgba(255,255,255,0.06); padding: 20px 22px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.10); text-decoration: none; color: #FFF6E0;">
+        <div style="font-size: 11px; font-weight: 600; color: rgba(255,246,224,0.6);">Jan 24, 2026</div>
+        <div style="font-family: 'Source Serif Pro', serif; font-size: 18px; font-weight: 700; line-height: 1.3;">Picking a palette: why navy and yellow</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer style="background: #0F3D66; color: rgba(255,255,255,0.78); padding: 56px 40px 24px;">
+  <div style="max-width: 1200px; margin: 0 auto;">
+    <div style="display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 40px;">
+      <div>
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 14px;">
+          <svg width="32" height="32" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <rect x="8" y="22" width="84" height="60" rx="14" fill="#0F3D66"/>
+            <rect x="8" y="22" width="84" height="14" rx="14" fill="#0F3D66"/>
+            <circle cx="68" cy="52" r="14" fill="#F8B319"/>
+            <circle cx="68" cy="52" r="6" fill="#0F3D66"/>
+            <rect x="14" y="14" width="60" height="14" rx="6" fill="#0F3D66"/>
+          </svg>
+          <span style="font-size: 19px; font-weight: 700; color: #fff;">PocketFi<span style="color: #F8B319;">!</span></span>
+        </div>
+        <p style="font-size: 13px; line-height: 1.65; margin: 0 0 16px; max-width: 280px;">A free budget tracker. Made in KL with Flutter + Firebase.</p>
+        <div style="display: flex; gap: 10px;">
+          <a href="https://github.com/boonyongyang/pocketfi" target="_blank" rel="noopener" style="width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: center; color: #fff;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#fff"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.56 0-.28-.01-1.02-.02-2-3.2.7-3.87-1.54-3.87-1.54-.52-1.32-1.27-1.68-1.27-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.02 1.75 2.69 1.25 3.34.95.1-.74.4-1.25.72-1.54-2.55-.29-5.24-1.28-5.24-5.7 0-1.26.45-2.29 1.18-3.1-.12-.29-.51-1.46.11-3.05 0 0 .96-.31 3.15 1.18a10.95 10.95 0 0 1 5.74 0c2.18-1.49 3.14-1.18 3.14-1.18.63 1.59.23 2.76.11 3.05.74.81 1.18 1.84 1.18 3.1 0 4.43-2.69 5.41-5.26 5.69.41.36.78 1.06.78 2.13 0 1.54-.01 2.78-.01 3.16 0 .31.21.67.79.56C20.21 21.39 23.5 17.08 23.5 12 23.5 5.65 18.35.5 12 .5z"/></svg>
+          </a>
+        </div>
+      </div>
+      <div>
+        <div style="font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #F8B319; margin-bottom: 14px;">Product</div>
+        <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 9px;">
+          <li><a href="features" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Features</a></li>
+          <li><a href="compare" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Compare</a></li>
+          <li><a href="/#screens" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Screens</a></li>
+          <li><a href="faq" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">FAQ</a></li>
+          <li><a href="roadmap" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Roadmap</a></li>
+          <li><a href="changelog" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Changelog</a></li>
+          <li><a href="/#download" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">GitHub</a></li>
+        </ul>
+      </div>
+      <div>
+        <div style="font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #F8B319; margin-bottom: 14px;">GitHub</div>
+        <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 9px;">
+          <li><a href="https://github.com/boonyongyang/pocketfi" target="_blank" rel="noopener" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">GitHub repo ↗</a></li>
+          <li><a href="https://github.com/boonyongyang/pocketfi/blob/main/LICENSE" target="_blank" rel="noopener" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">MIT license ↗</a></li>
+          <li><a href="contribute" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Contribute</a></li>
+          <li><a href="community" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Community</a></li>
+          <li><a href="https://github.com/boonyongyang/pocketfi/issues" target="_blank" rel="noopener" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Report an issue ↗</a></li>
+          <li><a href="about" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">About</a></li>
+          <li><a href="blog" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Blog</a></li>
+          <li><a href="support" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Support</a></li>
+        </ul>
+      </div>
+      <div>
+        <div style="font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #F8B319; margin-bottom: 14px;">Legal &amp; trust</div>
+        <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 9px;">
+          <li><a href="security" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Security</a></li>
+          <li><a href="privacy" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Privacy policy</a></li>
+          <li><a href="cookies" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Cookie policy</a></li>
+          <li><a href="terms" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Terms of service</a></li>
+          <li><a href="delete-account" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Delete my data</a></li>
+          <li><a href="press-kit" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Press kit</a></li>
+          <li><a href="brand-assets" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Brand assets</a></li>
+        </ul>
+      </div>
+    </div>
+    <div style="border-top: 1px solid rgba(255,255,255,0.10); padding-top: 20px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; font-size: 12.5px;">
+      <span>© 2026 PocketFi · public materials licensed · Made in KL ✿</span>
+      <span><a href="https://github.com/boonyongyang/pocketfi" target="_blank" rel="noopener" style="color: #FCD46A; text-decoration: none;">github.com/boonyongyang/pocketfi</a></span>
+    </div>
+  </div>
+</footer>
+
+<!-- Cookie notice (no tracking; localStorage flag only) -->
+<script>
+(function () {
+  'use strict';
+  var KEY = 'pocketfi_cookie_banner';
+  function isDismissed() { try { return localStorage.getItem(KEY) === 'dismissed'; } catch (e) { return false; } }
+  function dismiss() { try { localStorage.setItem(KEY, 'dismissed'); } catch (e) {} }
+  function mount() {
+    if (isDismissed()) return;
+    if (document.getElementById('pf-cookie-banner')) return;
+    var el = document.createElement('div');
+    el.id = 'pf-cookie-banner';
+    el.setAttribute('role', 'region');
+    el.setAttribute('aria-label', 'Cookie notice');
+    el.innerHTML = ['<div class="pf-cb-inner">','<div class="pf-cb-icon" aria-hidden="true"><span class="material-icons">cookie</span></div>',
+      '<div class="pf-cb-text"><strong>We don’t use tracking cookies.</strong> No analytics, no ad pixels — just a flag so this banner stays dismissed. <a href="cookies">Read the full policy</a>.</div>',
+      '<button type="button" class="pf-cb-btn" aria-label="Dismiss notice">Got it</button>','</div>'].join('');
+    el.querySelector('.pf-cb-btn').addEventListener('click', function () {
+      dismiss(); el.classList.add('pf-cb-out');
+      setTimeout(function () { if (el.parentNode) el.parentNode.removeChild(el); }, 280);
+    });
+    document.body.appendChild(el);
+    requestAnimationFrame(function () { el.classList.add('pf-cb-in'); });
+  }
+  function injectStyles() {
+    if (document.getElementById('pf-cookie-banner-styles')) return;
+    var s = document.createElement('style');
+    s.id = 'pf-cookie-banner-styles';
+    s.textContent = [
+      '#pf-cookie-banner { position: fixed; left: 16px; right: 16px; bottom: 16px; z-index: 2147483000; font-family: Roboto, system-ui, sans-serif; opacity: 0; transform: translateY(20px); transition: opacity 260ms ease, transform 260ms cubic-bezier(.34,1.56,.64,1); pointer-events: none; }',
+      '#pf-cookie-banner.pf-cb-in { opacity: 1; transform: translateY(0); pointer-events: auto; }',
+      '#pf-cookie-banner.pf-cb-out { opacity: 0; transform: translateY(12px); pointer-events: none; }',
+      '#pf-cookie-banner .pf-cb-inner { max-width: 720px; margin: 0 auto; display: flex; align-items: center; gap: 16px; background: #0F3D66; color: #FFF6E0; padding: 14px 18px; border-radius: 16px; box-shadow: 0 12px 32px rgba(15,61,102,0.30), 4px 4px 0 #F8B319; border: 1px solid rgba(248,179,25,0.20); }',
+      '#pf-cookie-banner .pf-cb-icon { width: 36px; height: 36px; border-radius: 50%; background: #F8B319; color: #0F3D66; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }',
+      '#pf-cookie-banner .pf-cb-icon .material-icons { font-size: 22px; }',
+      '#pf-cookie-banner .pf-cb-text { flex: 1; font-size: 13.5px; line-height: 1.55; color: rgba(255,246,224,0.92); }',
+      '#pf-cookie-banner .pf-cb-text strong { color: #FFF6E0; font-weight: 700; }',
+      '#pf-cookie-banner .pf-cb-text a { color: #FCD46A; text-decoration: underline; text-underline-offset: 3px; }',
+      '#pf-cookie-banner .pf-cb-btn { background: #F8B319; color: #0F3D66; border: 0; padding: 9px 16px; border-radius: 99px; font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer; flex-shrink: 0; transition: transform 120ms; }',
+      '#pf-cookie-banner .pf-cb-btn:active { transform: translate(1px, 1px); }',
+      '@media (max-width: 640px) { #pf-cookie-banner { left: 10px; right: 10px; bottom: 10px; } #pf-cookie-banner .pf-cb-inner { padding: 12px 14px; gap: 12px; border-radius: 14px; box-shadow: 0 10px 24px rgba(15,61,102,0.28), 3px 3px 0 #F8B319; } #pf-cookie-banner .pf-cb-icon { width: 32px; height: 32px; } #pf-cookie-banner .pf-cb-icon .material-icons { font-size: 19px; } #pf-cookie-banner .pf-cb-text { font-size: 12.5px; } #pf-cookie-banner .pf-cb-btn { padding: 8px 14px; font-size: 12.5px; } }'
+    ].join('\n');
+    document.head.appendChild(s);
+  }
+  function init() { injectStyles(); setTimeout(mount, 400); }
+  if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', init); } else { init(); }
+})();
+</script>
+</body>
+</html>

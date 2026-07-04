@@ -1,0 +1,83 @@
+/* ============================================================
+   PocketFi — Design Tokens
+   Drop into any web project: import this file, then use var(--pf-*).
+   Brand: a free, open-source budget tracker. Made in KL.
+   ============================================================ */
+
+:root {
+  /* ---- Brand colours ---- */
+  --pf-navy:          #0F3D66;
+  --pf-navy-deep:     #0A2C4A;
+  --pf-yellow:        #F8B319;
+  --pf-yellow-soft:   #FCD46A;
+  --pf-cream:         #FFF6E0;
+  --pf-coral:         #F1592A;
+  --pf-white:         #FFFFFF;
+
+  /* ---- Text ---- */
+  --pf-text:          #0F3D66;
+  --pf-text-sub:      #4A5A6A;
+  --pf-text-on-navy:  #FFF6E0;
+  --pf-text-muted:    rgba(15, 61, 102, 0.62);
+
+  /* ---- Surfaces & lines ---- */
+  --pf-surface:       #FFFFFF;
+  --pf-surface-warm:  #FFF6E0;
+  --pf-canvas:        #F0EEE9;
+  --pf-border:        rgba(15, 61, 102, 0.08);
+  --pf-border-strong: rgba(15, 61, 102, 0.16);
+
+  /* ---- Type families ---- */
+  --pf-font-sans:  "Roboto", system-ui, -apple-system, sans-serif;
+  --pf-font-mono:  "Roboto Mono", ui-monospace, "SF Mono", monospace;
+  --pf-font-serif: "Source Serif Pro", Georgia, serif;
+
+  /* ---- Type scale (px) ---- */
+  --pf-text-xs:   12px;
+  --pf-text-sm:   13.5px;
+  --pf-text-base: 15px;
+  --pf-text-md:   17px;
+  --pf-text-lg:   22px;
+  --pf-text-xl:   28px;
+  --pf-text-2xl:  36px;
+  --pf-text-3xl:  48px;
+  --pf-text-4xl:  54px;
+  --pf-text-hero: 76px;
+
+  /* ---- Font weights ---- */
+  --pf-weight-regular: 400;
+  --pf-weight-medium:  500;
+  --pf-weight-bold:    700;
+  --pf-weight-black:   900;
+
+  /* ---- Radii ---- */
+  --pf-radius-sm:    8px;
+  --pf-radius-md:    14px;
+  --pf-radius-lg:    18px;
+  --pf-radius-xl:    24px;
+  --pf-radius-pill:  99px;
+
+  /* ---- Spacing scale ---- */
+  --pf-space-1:  4px;
+  --pf-space-2:  8px;
+  --pf-space-3:  12px;
+  --pf-space-4:  16px;
+  --pf-space-5:  24px;
+  --pf-space-6:  32px;
+  --pf-space-7:  48px;
+  --pf-space-8:  64px;
+
+  /* ---- Shadows ---- */
+  --pf-shadow-sm:    0 4px 12px rgba(15, 61, 102, 0.05);
+  --pf-shadow-md:    0 10px 22px rgba(15, 61, 102, 0.10);
+  --pf-shadow-lg:    0 22px 38px rgba(15, 61, 102, 0.18);
+  --pf-shadow-press: 4px 4px 0 #F8B319;
+  --pf-shadow-press-lg: 5px 5px 0 #F8B319;
+
+  /* ---- Motion ---- */
+  --pf-ease-pop:  cubic-bezier(0.34, 1.56, 0.64, 1);
+  --pf-ease-out:  cubic-bezier(0.22, 1, 0.36, 1);
+  --pf-dur-fast:  120ms;
+  --pf-dur-base:  200ms;
+  --pf-dur-slow:  400ms;
+}
