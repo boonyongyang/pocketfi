@@ -1,0 +1,411 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>FAQ &amp; Help · PocketFi</title>
+  <meta name="description" content="37 answers about PocketFi — getting started, transactions, wallets, shared wallets, receipts & OCR, budgets, privacy, and troubleshooting.">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="canonical" href="https://mypocketfi.web.app/faq">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="PocketFi">
+  <meta property="og:title" content="FAQ &amp; Help · PocketFi">
+  <meta property="og:description" content="37 answers about PocketFi — getting started, transactions, wallets, shared wallets, receipts & OCR, budgets, privacy, and troubleshooting.">
+  <meta property="og:url" content="https://mypocketfi.web.app/faq">
+  <meta property="og:image" content="https://mypocketfi.web.app/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="FAQ &amp; Help · PocketFi">
+  <meta name="twitter:description" content="37 answers about PocketFi — getting started, transactions, wallets, shared wallets, receipts & OCR, budgets, privacy, and troubleshooting.">
+  <meta name="twitter:image" content="https://mypocketfi.web.app/og-image.png">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <style>
+    html, body { margin: 0; background: #FFF6E0; font-family: Roboto, system-ui, sans-serif; color:#0F3D66; }
+    * { box-sizing: border-box; }
+    a { -webkit-tap-highlight-color: transparent; }
+    h1, h2, h3, p { margin: 0; }
+    .nav-link { position: relative; }
+    .nav-link::after { content:''; position:absolute; left:0; bottom:-4px; width:0; height:2px; background:#F8B319; transition: width 200ms; }
+    .nav-link:hover::after { width:100%; }
+    .btn-press { transition: transform 120ms; }
+    .btn-press:active { transform: translate(2px, 2px); }
+    details { background:#fff; border-radius:14px; border:1px solid rgba(15,61,102,0.08); padding:0; transition: box-shadow 200ms; }
+    details + details { margin-top: 10px; }
+    details[open] { box-shadow: 3px 3px 0 #F8B319; }
+    details > summary { list-style: none; cursor: pointer; padding: 18px 22px; display:flex; align-items:center; justify-content:space-between; gap:16px; font-size:15.5px; font-weight:600; color:#0F3D66; }
+    details > summary::-webkit-details-marker { display: none; }
+    details > summary .chev { transition: transform 200ms; color:#F8B319; flex-shrink:0; }
+    details[open] > summary .chev { transform: rotate(180deg); }
+    .answer { padding: 0 22px 22px; font-size: 14.5px; line-height: 1.7; color:#4A5A6A; }
+    .answer p { margin: 0 0 12px; }
+    .answer p:last-child { margin-bottom: 0; }
+    .answer a { color:#0F3D66; text-decoration: underline; text-decoration-color: rgba(248,179,25,0.7); text-underline-offset: 3px; }
+    .answer code { background: rgba(15,61,102,0.06); padding: 2px 6px; border-radius: 4px; font-family: 'Roboto Mono', monospace; font-size: 0.92em; }
+    .answer ul { padding-left:20px; margin:0 0 12px; }
+    .answer li { margin-bottom:6px; }
+    .topic-chip { transition: transform 120ms, box-shadow 120ms; }
+    .topic-chip:hover { transform: translateY(-2px); }
+    mark { background: #FCD46A; color:#0F3D66; padding:0 2px; border-radius:2px; }
+
+    /* ===== Responsive (inlined from landing-responsive.css) ===== */
+    @media (max-width: 960px) {
+      header[style*="padding: 18px 40px"] { padding: 14px 22px !important; gap: 20px !important; }
+      header nav { gap: 18px !important; margin-left: 12px !important; }
+      [style*="padding: 80px 40px"]  { padding: 60px 24px !important; }
+      [style*="padding: 64px 40px"]  { padding: 52px 24px !important; }
+      [style*="grid-template-columns: 1.4fr 1fr 1fr 1fr"] { grid-template-columns: 1fr 1fr !important; gap: 32px !important; }
+      [style*="font-size: 72"] { font-size: 52px !important; line-height: 1.05 !important; }
+      [style*="font-size: 64"] { font-size: 46px !important; line-height: 1.05 !important; }
+      [style*="font-size: 40"] { font-size: 32px !important; }
+    }
+    @media (max-width: 640px) {
+      header nav { display: none !important; }
+      header[style*="padding: 18px 40px"] { padding: 12px 16px !important; gap: 10px !important; }
+      header a[href$="#download"] { padding: 9px 16px !important; font-size: 12px !important; }
+      [style*="padding: 80px 40px"] { padding-left: 18px !important; padding-right: 18px !important; padding-top: 56px !important; padding-bottom: 56px !important; }
+      [style*="grid-template-columns: 1.4fr 1fr"] { grid-template-columns: 1fr !important; gap: 28px !important; }
+      [style*="grid-template-columns: 1.4fr 1fr 1fr 1fr"] { grid-template-columns: 1fr 1fr !important; gap: 28px !important; }
+      [style*="font-size: 72"] { font-size: 40px !important; line-height: 1.05 !important; letter-spacing: -0.6px !important; }
+      [style*="font-size: 64"] { font-size: 38px !important; line-height: 1.05 !important; letter-spacing: -0.6px !important; }
+      [style*="font-size: 40"] { font-size: 28px !important; }
+      p[style*="font-size: 17"] { font-size: 15.5px !important; }
+    }
+    @media (max-width: 380px) {
+      [style*="font-size: 72"] { font-size: 34px !important; }
+      [style*="font-size: 64"] { font-size: 32px !important; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Header (active: FAQ) -->
+<header style="padding: 18px 40px; display: flex; align-items: center; gap: 32px; background: rgba(255,246,224,0.78); position: sticky; top: 0; z-index: 30; backdrop-filter: blur(14px) saturate(160%); -webkit-backdrop-filter: blur(14px) saturate(160%); border-bottom: 1px solid rgba(15,61,102,0.06);">
+  <a href="/" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: #0F3D66;">
+    <svg width="32" height="32" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <rect x="8" y="22" width="84" height="60" rx="14" fill="#0F3D66"/>
+      <rect x="8" y="22" width="84" height="14" rx="14" fill="#0F3D66"/>
+      <circle cx="68" cy="52" r="14" fill="#F8B319"/>
+      <circle cx="68" cy="52" r="6" fill="#0F3D66"/>
+      <rect x="14" y="14" width="60" height="14" rx="6" fill="#0F3D66"/>
+    </svg>
+    <span style="font-size: 19px; font-weight: 700;">PocketFi<span style="color: #F8B319;">!</span></span>
+  </a>
+  <nav style="display: flex; gap: 26px; margin-left: 24px; font-size: 14px; font-weight: 500;">
+    <a class="nav-link" href="features" style="color: #0F3D66; text-decoration: none; opacity: 0.8; font-weight: 500;">Features</a>
+    <a class="nav-link" href="compare" style="color: #0F3D66; text-decoration: none; opacity: 0.8; font-weight: 500;">Compare</a>
+    <a class="nav-link" href="faq" style="color: #0F3D66; text-decoration: none; opacity: 1; font-weight: 700;">FAQ</a>
+    <a class="nav-link" href="roadmap" style="color: #0F3D66; text-decoration: none; opacity: 0.8; font-weight: 500;">Roadmap</a>
+    <a class="nav-link" href="changelog" style="color: #0F3D66; text-decoration: none; opacity: 0.8; font-weight: 500;">Changelog</a>
+    <a class="nav-link" href="/#opensource" style="color: #0F3D66; text-decoration: none; opacity: 0.8; font-weight: 500;">GitHub</a>
+  </nav>
+  <a class="btn-press" href="/#download" style="margin-left: auto; background: #0F3D66; color: #FCD46A; padding: 10px 20px; border-radius: 99px; text-decoration: none; font-size: 13px; font-weight: 700; box-shadow: 3px 3px 0 #F8B319;">GitHub →</a>
+</header>
+
+<!-- Hero with search -->
+<section style="padding: 72px 40px 24px;">
+  <div style="max-width: 900px; margin: 0 auto; text-align: center;">
+    <div style="font-size: 12px; font-weight: 700; color: #F8B319; letter-spacing: 1.5px; text-transform: uppercase;">Help center</div>
+    <h1 style="font-size: 64px; line-height: 1.0; letter-spacing: -1.6px; font-weight: 700; margin: 14px 0 14px; text-wrap: pretty;">Got a question?<br><span style="color: #F8B319;">We’ve got 37 answers.</span></h1>
+    <p style="font-size: 17px; color: #4A5A6A; margin: 0 0 32px;">Can’t find what you’re looking for? <a href="https://github.com/boonyongyang/pocketfi/issues/new/choose" style="color: #0F3D66;">Open a GitHub issue</a>.</p>
+    <div style="position: relative; max-width: 560px; margin: 0 auto;">
+      <span class="material-icons" style="position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: #4A5A6A;">search</span>
+      <input id="faq-search" placeholder="Search the FAQ…" style="width: 100%; padding: 16px 18px 16px 50px; font-size: 15px; font-family: inherit; color: #0F3D66; background: #fff; border: 1px solid rgba(15,61,102,0.10); border-radius: 99px; outline: none; box-shadow: 0 6px 16px rgba(15,61,102,0.06);">
+      <button id="faq-clear" style="display:none; position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: rgba(15,61,102,0.10); border: 0; width: 28px; height: 28px; border-radius: 50%; align-items: center; justify-content: center; cursor: pointer;">
+        <span class="material-icons" style="font-size: 16px; color: #0F3D66;">close</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- Topic chips -->
+<section style="padding: 24px 40px 8px;">
+  <div id="topic-chips" style="max-width: 1100px; margin: 0 auto; display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;"></div>
+</section>
+
+<!-- Answers -->
+<section style="padding: 40px 40px 80px;">
+  <div id="answers" style="max-width: 820px; margin: 0 auto;"></div>
+</section>
+
+<!-- Still stuck CTA -->
+<section style="background: #0F3D66; color: #FFF6E0; padding: 64px 40px;">
+  <div style="max-width: 980px; margin: 0 auto; display: grid; grid-template-columns: 1.4fr 1fr; gap: 40px; align-items: center;">
+    <div>
+      <div style="font-size: 12px; font-weight: 700; color: #F8B319; letter-spacing: 1.5px; text-transform: uppercase;">Still stuck?</div>
+      <h2 style="font-size: 40px; line-height: 1.05; letter-spacing: -0.8px; font-weight: 700; margin: 10px 0 14px;">We answer real emails.</h2>
+      <p style="font-size: 15px; line-height: 1.65; color: rgba(255,246,224,0.75); margin: 0 0 22px; max-width: 480px;">A public issue tracker means small-team support. That also means your email goes to a person who can actually fix things.</p>
+      <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+        <a class="btn-press" href="https://github.com/boonyongyang/pocketfi/issues/new/choose" style="background: #F8B319; color: #0F3D66; padding: 12px 22px; border-radius: 99px; text-decoration: none; font-weight: 700; font-size: 14px; display: inline-flex; align-items: center; gap: 8px; box-shadow: 4px 4px 0 rgba(0,0,0,0.20);">
+          <span class="material-icons" style="font-size: 18px;">mail</span>
+          GitHub Issues
+        </a>
+        <a class="btn-press" href="https://github.com/boonyongyang/pocketfi/issues" target="_blank" rel="noopener" style="background: transparent; border: 1.5px solid rgba(255,246,224,0.55); color: #FFF6E0; padding: 11px 20px; border-radius: 99px; text-decoration: none; font-weight: 600; font-size: 14px; display: inline-flex; align-items: center; gap: 8px;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="#FFF6E0" style="flex-shrink:0"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.56 0-.28-.01-1.02-.02-2-3.2.7-3.87-1.54-3.87-1.54-.52-1.32-1.27-1.68-1.27-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.02 1.75 2.69 1.25 3.34.95.1-.74.4-1.25.72-1.54-2.55-.29-5.24-1.28-5.24-5.7 0-1.26.45-2.29 1.18-3.1-.12-.29-.51-1.46.11-3.05 0 0 .96-.31 3.15 1.18a10.95 10.95 0 0 1 5.74 0c2.18-1.49 3.14-1.18 3.14-1.18.63 1.59.23 2.76.11 3.05.74.81 1.18 1.84 1.18 3.1 0 4.43-2.69 5.41-5.26 5.69.41.36.78 1.06.78 2.13 0 1.54-.01 2.78-.01 3.16 0 .31.21.67.79.56C20.21 21.39 23.5 17.08 23.5 12 23.5 5.65 18.35.5 12 .5z"/></svg> Open an issue
+        </a>
+      </div>
+    </div>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+      <div style="background: rgba(255,255,255,0.06); border-radius: 14px; padding: 16px 18px; border: 1px solid rgba(255,255,255,0.10);"><div style="font-size: 24px; font-weight: 700; color: #fff;">&lt; 24 h</div><div style="font-size: 11px; letter-spacing: 0.6px; text-transform: uppercase; color: rgba(255,246,224,0.65); margin-top: 2px;">Avg. reply time</div></div>
+      <div style="background: rgba(255,255,255,0.06); border-radius: 14px; padding: 16px 18px; border: 1px solid rgba(255,255,255,0.10);"><div style="font-size: 24px; font-weight: 700; color: #fff;">180+</div><div style="font-size: 11px; letter-spacing: 0.6px; text-transform: uppercase; color: rgba(255,246,224,0.65); margin-top: 2px;">Issues closed</div></div>
+      <div style="background: rgba(255,255,255,0.06); border-radius: 14px; padding: 16px 18px; border: 1px solid rgba(255,255,255,0.10);"><div style="font-size: 24px; font-weight: 700; color: #fff;">EN/BM</div><div style="font-size: 11px; letter-spacing: 0.6px; text-transform: uppercase; color: rgba(255,246,224,0.65); margin-top: 2px;">Languages</div></div>
+      <div style="background: rgba(255,255,255,0.06); border-radius: 14px; padding: 16px 18px; border: 1px solid rgba(255,255,255,0.10);"><div style="font-size: 24px; font-weight: 700; color: #fff;">Free</div><div style="font-size: 11px; letter-spacing: 0.6px; text-transform: uppercase; color: rgba(255,246,224,0.65); margin-top: 2px;">Always</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer style="background: #0F3D66; color: rgba(255,255,255,0.78); padding: 56px 40px 24px;">
+  <div style="max-width: 1200px; margin: 0 auto;">
+    <div style="display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 40px;">
+      <div>
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 14px;">
+          <svg width="32" height="32" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <rect x="8" y="22" width="84" height="60" rx="14" fill="#0F3D66"/>
+            <rect x="8" y="22" width="84" height="14" rx="14" fill="#0F3D66"/>
+            <circle cx="68" cy="52" r="14" fill="#F8B319"/>
+            <circle cx="68" cy="52" r="6" fill="#0F3D66"/>
+            <rect x="14" y="14" width="60" height="14" rx="6" fill="#0F3D66"/>
+          </svg>
+          <span style="font-size: 19px; font-weight: 700; color: #fff;">PocketFi<span style="color: #F8B319;">!</span></span>
+        </div>
+        <p style="font-size: 13px; line-height: 1.65; margin: 0 0 16px; max-width: 280px;">A free budget tracker. Made in KL with Flutter + Firebase.</p>
+        <div style="display: flex; gap: 10px;">
+          <a href="https://github.com/boonyongyang/pocketfi" target="_blank" rel="noopener" style="width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: center; color: #fff;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#fff"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.56 0-.28-.01-1.02-.02-2-3.2.7-3.87-1.54-3.87-1.54-.52-1.32-1.27-1.68-1.27-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.02 1.75 2.69 1.25 3.34.95.1-.74.4-1.25.72-1.54-2.55-.29-5.24-1.28-5.24-5.7 0-1.26.45-2.29 1.18-3.1-.12-.29-.51-1.46.11-3.05 0 0 .96-.31 3.15 1.18a10.95 10.95 0 0 1 5.74 0c2.18-1.49 3.14-1.18 3.14-1.18.63 1.59.23 2.76.11 3.05.74.81 1.18 1.84 1.18 3.1 0 4.43-2.69 5.41-5.26 5.69.41.36.78 1.06.78 2.13 0 1.54-.01 2.78-.01 3.16 0 .31.21.67.79.56C20.21 21.39 23.5 17.08 23.5 12 23.5 5.65 18.35.5 12 .5z"/></svg>
+          </a>
+        </div>
+      </div>
+      <div>
+        <div style="font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #F8B319; margin-bottom: 14px;">Product</div>
+        <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 9px;">
+          <li><a href="features" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Features</a></li>
+          <li><a href="compare" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Compare</a></li>
+          <li><a href="/#screens" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Screens</a></li>
+          <li><a href="faq" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">FAQ</a></li>
+          <li><a href="roadmap" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Roadmap</a></li>
+          <li><a href="changelog" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Changelog</a></li>
+          <li><a href="/#download" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">GitHub</a></li>
+        </ul>
+      </div>
+      <div>
+        <div style="font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #F8B319; margin-bottom: 14px;">GitHub</div>
+        <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 9px;">
+          <li><a href="https://github.com/boonyongyang/pocketfi" target="_blank" rel="noopener" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">GitHub repo ↗</a></li>
+          <li><a href="https://github.com/boonyongyang/pocketfi/blob/main/LICENSE" target="_blank" rel="noopener" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">MIT license ↗</a></li>
+          <li><a href="contribute" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Contribute</a></li>
+          <li><a href="community" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Community</a></li>
+          <li><a href="https://github.com/boonyongyang/pocketfi/issues" target="_blank" rel="noopener" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Report an issue ↗</a></li>
+          <li><a href="about" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">About</a></li>
+          <li><a href="blog" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Blog</a></li>
+          <li><a href="support" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Support</a></li>
+        </ul>
+      </div>
+      <div>
+        <div style="font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #F8B319; margin-bottom: 14px;">Legal &amp; trust</div>
+        <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 9px;">
+          <li><a href="security" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Security</a></li>
+          <li><a href="privacy" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Privacy policy</a></li>
+          <li><a href="cookies" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Cookie policy</a></li>
+          <li><a href="terms" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Terms of service</a></li>
+          <li><a href="delete-account" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Delete my data</a></li>
+          <li><a href="press-kit" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Press kit</a></li>
+          <li><a href="brand-assets" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Brand assets</a></li>
+        </ul>
+      </div>
+    </div>
+    <div style="border-top: 1px solid rgba(255,255,255,0.10); padding-top: 20px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; font-size: 12.5px;">
+      <span>© 2026 PocketFi · public materials licensed · Made in KL ✿</span>
+      <span><a href="https://github.com/boonyongyang/pocketfi" target="_blank" rel="noopener" style="color: #FCD46A; text-decoration: none;">github.com/boonyongyang/pocketfi</a></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+  var TOPICS = [
+    { id:'getting-started', icon:'rocket_launch', label:'Getting started' },
+    { id:'transactions', icon:'edit_note', label:'Transactions' },
+    { id:'wallets', icon:'account_balance_wallet', label:'Wallets' },
+    { id:'shared', icon:'people', label:'Shared wallets' },
+    { id:'receipts', icon:'photo_camera', label:'Receipts & OCR' },
+    { id:'budgets', icon:'donut_large', label:'Budgets & goals' },
+    { id:'privacy', icon:'shield', label:'Privacy & data' },
+    { id:'troubleshooting', icon:'help_outline', label:'Troubleshooting' }
+  ];
+  var FAQ = [
+    { topic:'getting-started', q:'Is PocketFi really free?', a:'Yes — free forever, no ads, no in-app purchases. The launch repo documents release notes, issues, and public project materials. If you want to support development, file clear issues, test releases, or improve the public docs.' },
+    { topic:'getting-started', q:'What platforms is PocketFi on?', a:'Android release is being prepared first. iOS and a read-only web view are on the roadmap, but public beta links are not live yet.' },
+    { topic:'getting-started', q:'Do I need a Google account to use it?', a:'Yes — we use Google Sign-In via Firebase Authentication. It removes the password headache and lets us sync your data across devices. We do not access anything from your Google account beyond name, email, and avatar.' },
+    { topic:'getting-started', q:'Will PocketFi work offline?', a:'Yes, mostly. Adding transactions, scanning receipts, viewing recent data, and editing entries all work offline. Sync happens automatically when you reconnect. Some screens (Shared wallets, multi-device live updates) require a connection.' },
+    { topic:'getting-started', q:'How do I import data from another app?', a:'CSV import is on the roadmap (Q4 2026). For now: Money Lover and Wallet by BudgetBakers both export CSV — ping us at GitHub Issues and we can help you batch-import via a temporary tool.' },
+    { topic:'transactions', q:'How do I add a transaction?', a:'Tap the big + button on the Timeline tab. Choose income or expense, pick a wallet and category, enter the amount, and (optionally) add a description, tags, or a photo. The whole flow is two screens.' },
+    { topic:'transactions', q:'Can I edit a transaction after I’ve saved it?', a:'Yes — tap any entry in the Timeline to open it, then tap the pencil icon. You can change amount, category, wallet, date, description, tags, and photo. Long-press an entry for quick actions like duplicate, bookmark, or delete.' },
+    { topic:'transactions', q:'What are bookmarks?', a:'Bookmarks are pinned merchants or categories you want to enter often. Long-press any transaction and tap "Bookmark" — it then appears as a one-tap shortcut on the add-transaction screen. Great for daily coffees, fixed monthly bills, or your usual rideshares.' },
+    { topic:'transactions', q:'Can I set up recurring transactions?', a:'Yes (beta in v1.4). Open a transaction → More → "Repeat monthly" (or weekly/yearly). PocketFi posts the entry automatically on the schedule. You can preview the next 3 occurrences and pause anytime.' },
+    { topic:'transactions', q:'Can I add a transaction in a foreign currency?', a:'Not yet — currency is per-wallet and locked to MYR by default (you can change a wallet’s currency once at creation). Multi-currency wallets with per-entry rates land in Q3 2026.' },
+    { topic:'wallets', q:'What’s the difference between a wallet and a category?', a:'A wallet is where the money lives — cash, your Maybank account, your credit card, savings. A category is what the money is for — food, transport, bills. Every transaction has both: amount, wallet, category. Wallets give you balances; categories give you spending breakdowns.' },
+    { topic:'wallets', q:'How many wallets can I have?', a:'No hard cap, but the UI is designed for 3–8 active wallets. You can archive wallets you don’t use anymore without deleting their history.' },
+    { topic:'wallets', q:'How do I set a starting balance?', a:'When you create a wallet, the second field is "starting balance." If you forget, you can post a one-off adjustment entry later: + transaction → Income → Category: "Adjustment".' },
+    { topic:'wallets', q:'Can I transfer between wallets?', a:'Yes — the + button has a Transfer option alongside Income / Expense. Transfers don’t affect category totals; they only move balance between wallets.' },
+    { topic:'wallets', q:'What happens if I delete a wallet with transactions in it?', a:'We ask you first: do you want to delete the wallet and all its transactions, or move them to another wallet? Most people pick the second option. Deleted wallets are gone for good after 30 days.' },
+    { topic:'shared', q:'How do shared wallets work?', a:'A shared wallet pools entries across up to 8 members. Anyone in the wallet can post; everyone sees every entry; the balance and per-member contribution are live. Your personal wallets stay completely separate — nothing about them is visible to members.' },
+    { topic:'shared', q:'How do I invite someone to a shared wallet?', a:'Open the wallet → Members → Invite. Enter their email (they must already have a PocketFi account at that email). They get a notification and can accept or decline. You can revoke an invite anytime.' },
+    { topic:'shared', q:'Can shared wallet members see my personal transactions?', a:'No. Shared wallets are completely isolated from your personal wallets. Members can only see entries posted to the shared wallet itself — not your other wallets, not your overview, not your budgets.' },
+    { topic:'shared', q:'What happens if I leave a shared wallet?', a:'You stop seeing future entries. Past entries you posted remain in the wallet (other members rely on them). If you were the wallet creator, ownership transfers to the longest-standing remaining member.' },
+    { topic:'shared', q:'Can I split a single bill unevenly?', a:'Yes. When posting to a shared wallet, tap "Split" on the entry. Choose even, by percentage, or custom amounts per member. The contribution tally updates automatically.' },
+    { topic:'receipts', q:'How accurate is the receipt OCR?', a:'For clear receipts in English / Bahasa Melayu, total-amount accuracy is ~94%, merchant ~88%, date ~96% (based on our internal corpus of 2,000+ Malaysian receipts). Always double-check before saving — we keep the edit screen front-and-center for this reason.' },
+    { topic:'receipts', q:'Does the receipt image get uploaded somewhere?', a:'OCR runs entirely on-device via Google ML Kit — the image is not sent to a server for processing. If you choose to attach the image to the transaction, it’s stored privately in your Firebase Cloud Storage bucket, encrypted at rest. Only you (and shared-wallet members for shared entries) can see it.' },
+    { topic:'receipts', q:'Can I scan receipts in a language other than English?', a:'English and Bahasa Melayu work well. Chinese and Tamil are OK for the amount/date but merchant names can be hit-or-miss. We are extending the model with a regional dataset.' },
+    { topic:'receipts', q:'Why didn’t the OCR pick up the amount?', a:'Most often: receipt is too dark, too creased, or the total is partially cropped. Try better lighting, lay flat, and include the whole receipt in frame. If it still fails, tap the field to type — nothing else is wasted.' },
+    { topic:'budgets', q:'How do budgets work?', a:'Open the Overview tab → Budgets → + Add. Pick a category, set a monthly amount. PocketFi shows a progress bar against your spend and warns when you cross 80% or 100%. Budgets reset on the 1st of each month.' },
+    { topic:'budgets', q:'Can I have a budget for the whole month, not per-category?', a:'Yes — add a budget with category set to "All". You can mix all-category and per-category budgets.' },
+    { topic:'budgets', q:'What’s a saving goal?', a:'A goal is a target amount + a deadline. Tag income or transfers to a wallet as goal contributions and the progress bar fills. You can have multiple goals running at once (emergency fund, vacation, new laptop).' },
+    { topic:'budgets', q:'Do budgets carry over unused amounts to next month?', a:'Not yet. Rolling budgets ("if I underspend MYR 50 on food, add it to next month’s food budget") are a frequently-requested feature on our roadmap.' },
+    { topic:'privacy', q:'Where is my data stored?', a:'Google Firebase — specifically Cloud Firestore for transactions and metadata, and Cloud Storage for receipt images. Hosted in multi-region asia-southeast1. See our <a href="privacy">privacy policy</a> for the full breakdown.' },
+    { topic:'privacy', q:'Do you sell my data?', a:'No. We don’t sell, rent, or share your financial data with anyone. We don’t profile you, target ads, or feed your data into ML training.' },
+    { topic:'privacy', q:'How do I delete my account?', a:'Open a GitHub issue from the public repo and include the Google account address tied to your PocketFi sign-in. Full steps are on the <a href="delete-account">delete account</a> page.' },
+    { topic:'privacy', q:'Can I export my data?', a:'Manual export requests can be opened through GitHub Issues while the in-app export flow is being prepared. CSV/XLSX export remains roadmap work.' },
+    { topic:'privacy', q:'Are my receipt images encrypted?', a:'Yes — encrypted at rest by Google Cloud Storage, and only accessible by accounts you’ve explicitly authorized (you, plus shared-wallet members for shared entries).' },
+    { topic:'troubleshooting', q:'My data isn’t syncing across devices.', a:'1) Confirm you’re signed in with the same Google account on both devices. 2) Check your internet connection — Firebase needs it to sync. 3) Force-quit and reopen. 4) If still stuck, sign out and back in. 5) Open a GitHub issue if none of that works.' },
+    { topic:'troubleshooting', q:'I can’t sign in.', a:'If Google sign-in fails, make sure your device supports Google authentication. Custom ROMs without Google services may not be supported. For "account disabled" errors, open <a href="https://github.com/boonyongyang/pocketfi/issues/new/choose">a GitHub issue</a>.' },
+    { topic:'troubleshooting', q:'The app crashes on launch.', a:'Clear cache (Android Settings → Apps → PocketFi → Storage → Clear cache — this does not delete data). If it persists, open a GitHub issue with device, OS version, and what happened before the crash.' },
+    { topic:'troubleshooting', q:'I don’t see a feature mentioned in the changelog.', a:'The changelog includes release-prep notes as well as shipped work. If a feature is not available in your build, check the roadmap status or open a GitHub issue.' }
+  ];
+
+  var COUNT = FAQ.reduce(function (acc, x) { acc[x.topic] = (acc[x.topic] || 0) + 1; return acc; }, {});
+
+  function esc(t) { return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function highlight(text, query) {
+    if (!query) return esc(text);
+    var safe = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    return text.split(new RegExp('(' + safe + ')', 'ig')).map(function (p) {
+      return p.toLowerCase() === query.toLowerCase() ? '<mark>' + esc(p) + '</mark>' : esc(p);
+    }).join('');
+  }
+  function answerHtml(item, query) {
+    var hasHtml = /<a |<strong>/.test(item.a);
+    if (hasHtml) return '<div class="answer"><p>' + item.a.replace(/\n/g, '</p><p>') + '</p></div>';
+    return '<div class="answer"><p>' + highlight(item.a, query) + '</p></div>';
+  }
+  function faqItem(item, query) {
+    return '<details><summary><span>' + highlight(item.q, query) + '</span>' +
+      '<span class="material-icons chev">expand_more</span></summary>' + answerHtml(item, query) + '</details>';
+  }
+
+  var state = { query: '', topic: 'all' };
+  var chipsEl = document.getElementById('topic-chips');
+  var answersEl = document.getElementById('answers');
+  var searchEl = document.getElementById('faq-search');
+  var clearEl = document.getElementById('faq-clear');
+
+  function chipStyle(sel) {
+    return 'display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:99px;' +
+      'background:' + (sel ? '#0F3D66' : '#fff') + ';color:' + (sel ? '#FCD46A' : '#0F3D66') + ';' +
+      'border:' + (sel ? 'none' : '1px solid rgba(15,61,102,0.10)') + ';font-size:13px;font-weight:600;' +
+      'font-family:inherit;cursor:pointer;box-shadow:' + (sel ? '3px 3px 0 #F8B319' : '0 1px 3px rgba(15,61,102,0.04)') + ';';
+  }
+  function renderChips() {
+    var all = '<button class="topic-chip" data-topic="all" style="' + chipStyle(state.topic === 'all') + '">' +
+      '<span class="material-icons" style="font-size:16px">apps</span>All (' + FAQ.length + ')</button>';
+    var rest = TOPICS.map(function (t) {
+      var sel = state.topic === t.id;
+      return '<button class="topic-chip" data-topic="' + t.id + '" style="' + chipStyle(sel) + '">' +
+        '<span class="material-icons" style="font-size:16px;color:#F8B319">' + t.icon + '</span>' +
+        esc(t.label) + ' <span style="opacity:0.6">(' + (COUNT[t.id] || 0) + ')</span></button>';
+    }).join('');
+    chipsEl.innerHTML = all + rest;
+    chipsEl.querySelectorAll('button').forEach(function (b) {
+      b.addEventListener('click', function () { state.topic = b.getAttribute('data-topic'); render(); });
+    });
+  }
+  function render() {
+    renderChips();
+    clearEl.style.display = state.query ? 'flex' : 'none';
+    var q = state.query.trim().toLowerCase();
+    if (q) {
+      var filtered = FAQ.filter(function (x) {
+        if (state.topic !== 'all' && x.topic !== state.topic) return false;
+        return x.q.toLowerCase().indexOf(q) !== -1 || x.a.toLowerCase().indexOf(q) !== -1;
+      });
+      var head = '<div style="font-size:13px;color:#4A5A6A;margin-bottom:14px">' + filtered.length + ' ' +
+        (filtered.length === 1 ? 'result' : 'results') + ' for "<strong style="color:#0F3D66">' + esc(state.query) + '</strong>"</div>';
+      if (filtered.length === 0) {
+        answersEl.innerHTML = head + '<div style="background:#fff;border-radius:14px;padding:40px 24px;text-align:center;border:1px solid rgba(15,61,102,0.08)">' +
+          '<span class="material-icons" style="font-size:40px;color:#F8B319">search_off</span>' +
+          '<div style="font-size:18px;font-weight:700;margin-top:8px">No matches.</div>' +
+          '<div style="font-size:14px;color:#4A5A6A;margin-top:6px">Try a different word, or <a href="https://github.com/boonyongyang/pocketfi/issues/new/choose" style="color:#0F3D66">open a GitHub issue</a>.</div></div>';
+      } else {
+        answersEl.innerHTML = head + filtered.map(function (x) { return faqItem(x, state.query); }).join('');
+      }
+    } else {
+      var topics = TOPICS.filter(function (t) { return state.topic === 'all' || t.id === state.topic; });
+      answersEl.innerHTML = topics.map(function (g) {
+        var items = FAQ.filter(function (x) { return x.topic === g.id; });
+        return '<div id="' + g.id + '" style="margin-bottom:36px;scroll-margin-top:80px">' +
+          '<div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">' +
+          '<span class="material-icons" style="color:#F8B319;font-size:22px">' + g.icon + '</span>' +
+          '<h2 style="font-size:20px;font-weight:700;letter-spacing:-0.3px;margin:0">' + esc(g.label) + '</h2>' +
+          '<span style="font-size:12px;color:#4A5A6A">(' + items.length + ')</span></div>' +
+          items.map(function (x) { return faqItem(x, ''); }).join('') + '</div>';
+      }).join('');
+    }
+  }
+  searchEl.addEventListener('input', function () { state.query = searchEl.value; render(); });
+  clearEl.addEventListener('click', function () { state.query = ''; searchEl.value = ''; render(); });
+  render();
+})();
+</script>
+
+<!-- Cookie notice (no tracking; localStorage flag only) -->
+<script>
+(function () {
+  'use strict';
+  var KEY = 'pocketfi_cookie_banner';
+  function isDismissed() { try { return localStorage.getItem(KEY) === 'dismissed'; } catch (e) { return false; } }
+  function dismiss() { try { localStorage.setItem(KEY, 'dismissed'); } catch (e) {} }
+  function mount() {
+    if (isDismissed()) return;
+    if (document.getElementById('pf-cookie-banner')) return;
+    var el = document.createElement('div');
+    el.id = 'pf-cookie-banner';
+    el.setAttribute('role', 'region');
+    el.setAttribute('aria-label', 'Cookie notice');
+    el.innerHTML = ['<div class="pf-cb-inner">','<div class="pf-cb-icon" aria-hidden="true"><span class="material-icons">cookie</span></div>',
+      '<div class="pf-cb-text"><strong>We don’t use tracking cookies.</strong> No analytics, no ad pixels — just a flag so this banner stays dismissed. <a href="cookies">Read the full policy</a>.</div>',
+      '<button type="button" class="pf-cb-btn" aria-label="Dismiss notice">Got it</button>','</div>'].join('');
+    el.querySelector('.pf-cb-btn').addEventListener('click', function () {
+      dismiss(); el.classList.add('pf-cb-out');
+      setTimeout(function () { if (el.parentNode) el.parentNode.removeChild(el); }, 280);
+    });
+    document.body.appendChild(el);
+    requestAnimationFrame(function () { el.classList.add('pf-cb-in'); });
+  }
+  function injectStyles() {
+    if (document.getElementById('pf-cookie-banner-styles')) return;
+    var s = document.createElement('style');
+    s.id = 'pf-cookie-banner-styles';
+    s.textContent = [
+      '#pf-cookie-banner { position: fixed; left: 16px; right: 16px; bottom: 16px; z-index: 2147483000; font-family: Roboto, system-ui, sans-serif; opacity: 0; transform: translateY(20px); transition: opacity 260ms ease, transform 260ms cubic-bezier(.34,1.56,.64,1); pointer-events: none; }',
+      '#pf-cookie-banner.pf-cb-in { opacity: 1; transform: translateY(0); pointer-events: auto; }',
+      '#pf-cookie-banner.pf-cb-out { opacity: 0; transform: translateY(12px); pointer-events: none; }',
+      '#pf-cookie-banner .pf-cb-inner { max-width: 720px; margin: 0 auto; display: flex; align-items: center; gap: 16px; background: #0F3D66; color: #FFF6E0; padding: 14px 18px; border-radius: 16px; box-shadow: 0 12px 32px rgba(15,61,102,0.30), 4px 4px 0 #F8B319; border: 1px solid rgba(248,179,25,0.20); }',
+      '#pf-cookie-banner .pf-cb-icon { width: 36px; height: 36px; border-radius: 50%; background: #F8B319; color: #0F3D66; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }',
+      '#pf-cookie-banner .pf-cb-icon .material-icons { font-size: 22px; }',
+      '#pf-cookie-banner .pf-cb-text { flex: 1; font-size: 13.5px; line-height: 1.55; color: rgba(255,246,224,0.92); }',
+      '#pf-cookie-banner .pf-cb-text strong { color: #FFF6E0; font-weight: 700; }',
+      '#pf-cookie-banner .pf-cb-text a { color: #FCD46A; text-decoration: underline; text-underline-offset: 3px; }',
+      '#pf-cookie-banner .pf-cb-btn { background: #F8B319; color: #0F3D66; border: 0; padding: 9px 16px; border-radius: 99px; font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer; flex-shrink: 0; transition: transform 120ms; }',
+      '#pf-cookie-banner .pf-cb-btn:active { transform: translate(1px, 1px); }',
+      '@media (max-width: 640px) { #pf-cookie-banner { left: 10px; right: 10px; bottom: 10px; } #pf-cookie-banner .pf-cb-inner { padding: 12px 14px; gap: 12px; border-radius: 14px; box-shadow: 0 10px 24px rgba(15,61,102,0.28), 3px 3px 0 #F8B319; } #pf-cookie-banner .pf-cb-icon { width: 32px; height: 32px; } #pf-cookie-banner .pf-cb-icon .material-icons { font-size: 19px; } #pf-cookie-banner .pf-cb-text { font-size: 12.5px; } #pf-cookie-banner .pf-cb-btn { padding: 8px 14px; font-size: 12.5px; } }'
+    ].join('\n');
+    document.head.appendChild(s);
+  }
+  function init() { injectStyles(); setTimeout(mount, 400); }
+  if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', init); } else { init(); }
+})();
+</script>
+</body>
+</html>

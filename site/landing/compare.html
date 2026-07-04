@@ -1,0 +1,482 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Compare · PocketFi</title>
+  <meta name="description" content="An honest side-by-side of PocketFi vs Money Lover, Wallet by BudgetBakers, and a plain spreadsheet.">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="canonical" href="https://mypocketfi.web.app/compare">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="PocketFi">
+  <meta property="og:title" content="Compare · PocketFi">
+  <meta property="og:description" content="An honest side-by-side of PocketFi vs Money Lover, Wallet by BudgetBakers, and a plain spreadsheet.">
+  <meta property="og:url" content="https://mypocketfi.web.app/compare">
+  <meta property="og:image" content="https://mypocketfi.web.app/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Compare · PocketFi">
+  <meta name="twitter:description" content="An honest side-by-side of PocketFi vs Money Lover, Wallet by BudgetBakers, and a plain spreadsheet.">
+  <meta name="twitter:image" content="https://mypocketfi.web.app/og-image.png">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <style>
+    html, body { margin: 0; background: #FFF6E0; font-family: Roboto, system-ui, sans-serif; color:#0F3D66; }
+    * { box-sizing: border-box; }
+    a { -webkit-tap-highlight-color: transparent; }
+    h1, h2, h3, p { margin: 0; }
+    .nav-link { position: relative; }
+    .nav-link::after { content:''; position:absolute; left:0; bottom:-4px; width:0; height:2px; background:#F8B319; transition: width 200ms; }
+    .nav-link:hover::after { width:100%; }
+    .btn-press { transition: transform 120ms; }
+    .btn-press:active { transform: translate(2px, 2px); }
+    .cmp-table { border-collapse: separate; border-spacing: 0; width: 100%; background: #fff; border-radius: 18px; overflow: hidden; box-shadow: 0 6px 20px rgba(15,61,102,0.06); border:1px solid rgba(15,61,102,0.08); }
+    .cmp-table th, .cmp-table td { padding: 16px 18px; text-align: left; font-size: 14px; vertical-align: middle; }
+    .cmp-table thead th { background: #FFF6E0; color:#0F3D66; font-size:12px; font-weight:700; letter-spacing:1.4px; text-transform:uppercase; border-bottom:1px solid rgba(15,61,102,0.08); }
+    .cmp-table tbody tr + tr td { border-top: 1px solid rgba(15,61,102,0.06); }
+    .cmp-table .row-label { font-weight:600; color:#0F3D66; }
+    .cmp-table .col-us { background: rgba(248,179,25,0.06); }
+    .cmp-table thead .col-us { background:#F8B319; color:#0F3D66; }
+    .cmp-cell-yes { color: #2E7D32; font-weight:700; }
+    .cmp-cell-no  { color: rgba(15,61,102,0.35); }
+    .cmp-cell-partial { color: #B85F2A; font-weight:600; }
+    .cmp-cell-note { color:#4A5A6A; font-size:13px; }
+    .honest-card { background:#fff; border-radius:18px; padding:24px 26px; border:1px solid rgba(15,61,102,0.08); box-shadow: 0 4px 14px rgba(15,61,102,0.05); }
+    .v-link { color:#0F3D66; text-decoration: underline; text-decoration-color: rgba(248,179,25,0.7); text-underline-offset: 3px; }
+
+    /* ===== Responsive (inlined from landing-responsive.css) ===== */
+    @media (max-width: 960px) {
+      header[style*="padding: 18px 40px"] { padding: 14px 22px !important; gap: 20px !important; }
+      header nav { gap: 18px !important; margin-left: 12px !important; }
+      [style*="padding: 80px 40px"]       { padding: 60px 24px !important; }
+      [style*="padding: 100px 40px"]      { padding: 72px 24px !important; }
+      [style*="padding: 90px 40px"]       { padding: 64px 24px !important; }
+      [style*="padding: 72px 40px"]       { padding: 56px 24px !important; }
+      [style*="padding: 64px 40px"]       { padding: 52px 24px !important; }
+      [style*="padding: 48px 52px"]       { padding: 36px 28px !important; }
+      [style*="grid-template-columns: repeat(3, 1fr)"] { grid-template-columns: repeat(2, 1fr) !important; }
+      [style*="grid-template-columns: repeat(4, 1fr)"] { grid-template-columns: repeat(2, 1fr) !important; }
+      [style*="grid-template-columns: 1.05fr 1fr"],
+      [style*="grid-template-columns: 1.1fr 1fr"],
+      [style*="grid-template-columns: 1.3fr 1fr"],
+      [style*="grid-template-columns: 1fr 1.05fr"] {
+        grid-template-columns: 1fr !important; gap: 40px !important;
+      }
+      [style*="grid-template-columns: 1.4fr 1fr 1fr 1fr"] { grid-template-columns: 1fr 1fr !important; gap: 32px !important; }
+      [style*="font-size: 76"] { font-size: 56px !important; line-height: 1.05 !important; letter-spacing: -1.2px !important; }
+      [style*="font-size: 72"] { font-size: 52px !important; line-height: 1.05 !important; }
+      [style*="font-size: 54"] { font-size: 42px !important; }
+      [style*="font-size: 56"] { font-size: 42px !important; }
+      [style*="font-size: 50"] { font-size: 38px !important; }
+      [style*="font-size: 48"] { font-size: 36px !important; }
+      [style*="font-size: 44"] { font-size: 34px !important; }
+    }
+    @media (max-width: 640px) {
+      header nav { display: none !important; }
+      header[style*="padding: 18px 40px"] { padding: 12px 16px !important; gap: 10px !important; }
+      header a[href$="#download"] { padding: 9px 16px !important; font-size: 12px !important; }
+      [style*="padding: 80px 40px"],
+      [style*="padding: 100px 40px"],
+      [style*="padding: 90px 40px"],
+      [style*="padding: 72px 40px"] {
+        padding-left: 18px !important; padding-right: 18px !important;
+      }
+      [style*="padding: 80px 40px"]       { padding-top: 56px !important; padding-bottom: 56px !important; }
+      [style*="padding: 90px 40px"]       { padding-top: 52px !important; padding-bottom: 52px !important; }
+      [style*="grid-template-columns: repeat(3, 1fr)"],
+      [style*="grid-template-columns: repeat(4, 1fr)"],
+      [style*="grid-template-columns: 1.05fr 1fr"],
+      [style*="grid-template-columns: 1.1fr 1fr"],
+      [style*="grid-template-columns: 1.3fr 1fr"],
+      [style*="grid-template-columns: 1fr 1.05fr"] {
+        grid-template-columns: 1fr !important; gap: 24px !important;
+      }
+      [style*="grid-template-columns: 1.4fr 1fr 1fr 1fr"] { grid-template-columns: 1fr 1fr !important; gap: 28px !important; }
+      [style*="grid-template-columns: 1.4fr 1fr; gap: 40px"] { grid-template-columns: 1fr !important; gap: 28px !important; }
+      [style*="grid-template-columns: repeat(2, 1fr)"] { grid-template-columns: 1fr !important; gap: 16px !important; }
+      [style*="font-size: 76"] { font-size: 44px !important; line-height: 1.05 !important; letter-spacing: -0.8px !important; }
+      [style*="font-size: 72"] { font-size: 42px !important; line-height: 1.05 !important; letter-spacing: -0.6px !important; }
+      [style*="font-size: 54"] { font-size: 34px !important; }
+      [style*="font-size: 56"] { font-size: 34px !important; }
+      [style*="font-size: 50"] { font-size: 32px !important; }
+      [style*="font-size: 48"] { font-size: 30px !important; }
+      [style*="font-size: 44"] { font-size: 28px !important; }
+      [style*="font-size: 40"] { font-size: 28px !important; }
+      [style*="font-size: 36"] { font-size: 26px !important; }
+      p[style*="font-size: 17"] { font-size: 15.5px !important; }
+    }
+    @media (max-width: 380px) {
+      [style*="font-size: 76"] { font-size: 38px !important; }
+      [style*="font-size: 72"] { font-size: 36px !important; }
+      [style*="font-size: 56"] { font-size: 30px !important; }
+      [style*="font-size: 54"] { font-size: 30px !important; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<header style="padding: 18px 40px; display: flex; align-items: center; gap: 32px; background: rgba(255,246,224,0.78); position: sticky; top: 0; z-index: 30; backdrop-filter: blur(14px) saturate(160%); -webkit-backdrop-filter: blur(14px) saturate(160%); border-bottom: 1px solid rgba(15,61,102,0.06);">
+  <a href="/" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: #0F3D66;">
+    <svg width="32" height="32" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <rect x="8" y="22" width="84" height="60" rx="14" fill="#0F3D66"/>
+      <rect x="8" y="22" width="84" height="14" rx="14" fill="#0F3D66"/>
+      <circle cx="68" cy="52" r="14" fill="#F8B319"/>
+      <circle cx="68" cy="52" r="6" fill="#0F3D66"/>
+      <rect x="14" y="14" width="60" height="14" rx="6" fill="#0F3D66"/>
+    </svg>
+    <span style="font-size: 19px; font-weight: 700;">PocketFi<span style="color: #F8B319;">!</span></span>
+  </a>
+  <nav style="display: flex; gap: 26px; margin-left: 24px; font-size: 14px; font-weight: 500;">
+    <a class="nav-link" href="features" style="color: #0F3D66; text-decoration: none; opacity: 0.8; font-weight: 500;">Features</a>
+    <a class="nav-link" href="compare" style="color: #0F3D66; text-decoration: none; opacity: 0.8; font-weight: 500;">Compare</a>
+    <a class="nav-link" href="faq" style="color: #0F3D66; text-decoration: none; opacity: 0.8; font-weight: 500;">FAQ</a>
+    <a class="nav-link" href="roadmap" style="color: #0F3D66; text-decoration: none; opacity: 0.8; font-weight: 500;">Roadmap</a>
+    <a class="nav-link" href="changelog" style="color: #0F3D66; text-decoration: none; opacity: 0.8; font-weight: 500;">Changelog</a>
+    <a class="nav-link" href="/#opensource" style="color: #0F3D66; text-decoration: none; opacity: 0.8; font-weight: 500;">GitHub</a>
+  </nav>
+  <a class="btn-press" href="/#download" style="margin-left: auto; background: #0F3D66; color: #FCD46A; padding: 10px 20px; border-radius: 99px; text-decoration: none; font-size: 13px; font-weight: 700; box-shadow: 3px 3px 0 #F8B319;">GitHub →</a>
+</header>
+
+<!-- Hero -->
+<section style="padding: 72px 40px 32px;">
+  <div style="max-width: 1100px; margin: 0 auto; text-align: center;">
+    <div style="font-size: 12px; font-weight: 700; color: #F8B319; letter-spacing: 1.5px; text-transform: uppercase;">Compare</div>
+    <h1 style="font-size: 64px; line-height: 1.0; letter-spacing: -1.6px; font-weight: 700; margin: 14px 0 14px; text-wrap: pretty;">PocketFi vs the <span style="color: #F8B319;">usual suspects.</span></h1>
+    <p style="font-size: 17px; line-height: 1.6; color: #4A5A6A; margin: 0 auto 28px; max-width: 640px;">An honest side-by-side with the apps you’re already considering — and the trusty Notes-app-meets-spreadsheet setup most of us start with.</p>
+    <div style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: 99px; background: #fff; border: 1px solid rgba(15,61,102,0.10); font-size: 13px; color: #4A5A6A;">
+      <span class="material-icons" style="font-size: 16px; color: #F8B319;">info</span>
+      Last reviewed: May 2026. We re-check every release.
+    </div>
+  </div>
+</section>
+
+<!-- Quick-glance summary -->
+<section style="padding: 24px 40px 48px;">
+  <div id="glance" style="max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;"></div>
+</section>
+
+<!-- The big table -->
+<section style="padding: 8px 40px 80px;">
+  <div style="max-width: 1100px; margin: 0 auto;">
+    <div style="margin-bottom: 18px;">
+      <h2 style="font-size: 32px; font-weight: 700; letter-spacing: -0.6px; margin: 0 0 6px;">The full table</h2>
+      <p style="font-size: 14px; color: #4A5A6A; margin: 0;">✓ Yes · — No · <span style="color: #B85F2A; font-weight: 600;">Partial</span> · short notes where context matters</p>
+    </div>
+    <div style="overflow-x: auto;">
+      <table class="cmp-table"><thead id="cmp-head"></thead><tbody id="cmp-body"></tbody></table>
+    </div>
+  </div>
+</section>
+
+<!-- Honest cons -->
+<section style="background: #0F3D66; color: #FFF6E0; padding: 72px 40px;">
+  <div style="max-width: 1100px; margin: 0 auto;">
+    <div style="text-align: center; margin-bottom: 36px;">
+      <div style="font-size: 12px; font-weight: 700; color: #F8B319; letter-spacing: 1.5px; text-transform: uppercase;">Where we don’t win (yet)</div>
+      <h2 style="font-size: 44px; line-height: 1.06; letter-spacing: -1px; font-weight: 700; margin: 10px 0 0;">The honest part.</h2>
+    </div>
+    <div id="cons-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;"></div>
+    <div style="margin-top: 34px; text-align: center; font-size: 14px; color: rgba(255,246,224,0.78);">None of these are dealbreakers for most people — but if any of them are for you, we’d rather you know now. <a href="changelog" class="v-link" style="color: #FCD46A;">Track progress on the roadmap.</a></div>
+  </div>
+</section>
+
+<!-- Pick-the-right-app guide -->
+<section style="background: #FFF6E0; padding: 72px 40px;">
+  <div style="max-width: 1100px; margin: 0 auto;">
+    <div style="text-align: center; margin-bottom: 36px;">
+      <div style="font-size: 12px; font-weight: 700; color: #F8B319; letter-spacing: 1.5px; text-transform: uppercase;">Be honest with yourself</div>
+      <h2 style="font-size: 44px; line-height: 1.06; letter-spacing: -1px; font-weight: 700; margin: 10px 0 0;">Which one is right for you?</h2>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px;">
+      <div class="honest-card">
+        <div style="font-size: 11px; font-weight: 700; letter-spacing: 1.4px; text-transform: uppercase; color: #2E7D32; margin-bottom: 10px;">Pick PocketFi if</div>
+        <ul style="margin: 0; padding-left: 18px; font-size: 14.5px; line-height: 1.7; color: #0F3D66;">
+          <li>You’re on Android (or happy to wait a few months for iOS).</li>
+          <li>You want shared wallets that actually work — partner, roommates, trips.</li>
+          <li>You’d rather scan a receipt than type one.</li>
+          <li>You care that no one is selling your data.</li>
+          <li>You like that you could read every line of code if you wanted to.</li>
+          <li>You want it to be free — not free-with-ads-and-a-paywall.</li>
+        </ul>
+      </div>
+      <div class="honest-card">
+        <div style="font-size: 11px; font-weight: 700; letter-spacing: 1.4px; text-transform: uppercase; color: #B85F2A; margin-bottom: 10px;">Maybe pick something else if</div>
+        <ul style="margin: 0; padding-left: 18px; font-size: 14.5px; line-height: 1.7; color: #0F3D66;">
+          <li>You absolutely need bank sync today (try <span class="v-link">Wallet by BudgetBakers</span>).</li>
+          <li>You’re iOS-only and can’t wait until Q3 2026.</li>
+          <li>You want hundreds of custom categories (try <span class="v-link">Money Lover</span>).</li>
+          <li>You’d rather build it yourself in Notion or Google Sheets. (Genuinely, no shade.)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Migration helper -->
+<section style="background: #FCD46A; padding: 64px 40px;">
+  <div style="max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: 1.4fr 1fr; gap: 40px; align-items: center;">
+    <div>
+      <div style="font-size: 12px; font-weight: 700; color: #0F3D66; letter-spacing: 1.5px; text-transform: uppercase; opacity: 0.7;">Switching over?</div>
+      <h2 style="font-size: 40px; line-height: 1.06; letter-spacing: -0.8px; font-weight: 700; margin: 10px 0 14px;">We’ll help you migrate.</h2>
+      <p style="font-size: 15px; line-height: 1.65; color: rgba(15,61,102,0.78); margin: 0 0 22px;">Most apps let you export CSV. Send it to us and we’ll import it into your PocketFi account for you — free, no questions, while we build the in-app importer (Q4 2026).</p>
+      <a href="https://github.com/boonyongyang/pocketfi/issues/new/choose" class="btn-press" style="display: inline-flex; align-items: center; gap: 8px; background: #0F3D66; color: #FCD46A; padding: 13px 22px; border-radius: 99px; text-decoration: none; font-weight: 700; font-size: 14px; box-shadow: 4px 4px 0 rgba(0,0,0,0.18);">
+        <span class="material-icons" style="font-size: 18px;">swap_horiz</span>
+        Open a GitHub issue your CSV
+      </a>
+    </div>
+    <div style="background: #FFF6E0; border-radius: 18px; padding: 22px 24px; box-shadow: 5px 5px 0 #0F3D66;">
+      <div style="font-size: 11px; font-weight: 700; letter-spacing: 1.4px; text-transform: uppercase; color: #4A5A6A; margin-bottom: 12px;">Confirmed working</div>
+      <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px;">
+        <li style="display: flex; align-items: center; gap: 8px; font-size: 14px; color: #0F3D66;"><span class="material-icons" style="font-size: 18px; color: #2E7D32;">check_circle</span>Money Lover (.csv)</li>
+        <li style="display: flex; align-items: center; gap: 8px; font-size: 14px; color: #0F3D66;"><span class="material-icons" style="font-size: 18px; color: #2E7D32;">check_circle</span>Wallet by BudgetBakers (.csv)</li>
+        <li style="display: flex; align-items: center; gap: 8px; font-size: 14px; color: #0F3D66;"><span class="material-icons" style="font-size: 18px; color: #2E7D32;">check_circle</span>Spendee (.csv)</li>
+        <li style="display: flex; align-items: center; gap: 8px; font-size: 14px; color: #0F3D66;"><span class="material-icons" style="font-size: 18px; color: #2E7D32;">check_circle</span>Google Sheets (export to .csv)</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- Final CTA -->
+<section style="padding: 80px 40px; text-align: center;">
+  <div style="max-width: 720px; margin: 0 auto;">
+    <h2 style="font-size: 48px; line-height: 1.04; letter-spacing: -1px; font-weight: 700; margin: 0 0 16px; text-wrap: pretty;">Try it free.</h2>
+    <p style="font-size: 17px; color: #4A5A6A; margin: 0 0 28px;">It costs nothing. You can delete your account in two taps.</p>
+    <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+      <a class="btn-press" href="/#download" style="background: #0F3D66; color: #FCD46A; padding: 14px 26px; border-radius: 99px; text-decoration: none; font-weight: 700; font-size: 14px; display: inline-flex; align-items: center; gap: 8px; box-shadow: 4px 4px 0 #F8B319;">
+        <span class="material-icons" style="font-size: 18px;">route</span>
+        View public roadmap
+      </a>
+      <a class="btn-press" href="features" style="background: transparent; border: 1.5px solid #0F3D66; color: #0F3D66; padding: 13px 22px; border-radius: 99px; text-decoration: none; font-weight: 600; font-size: 14px;">See all features</a>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer style="background: #0F3D66; color: rgba(255,255,255,0.78); padding: 56px 40px 24px;">
+  <div style="max-width: 1200px; margin: 0 auto;">
+    <div style="display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 40px;">
+      <div>
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 14px;">
+          <svg width="32" height="32" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <rect x="8" y="22" width="84" height="60" rx="14" fill="#0F3D66"/>
+            <rect x="8" y="22" width="84" height="14" rx="14" fill="#0F3D66"/>
+            <circle cx="68" cy="52" r="14" fill="#F8B319"/>
+            <circle cx="68" cy="52" r="6" fill="#0F3D66"/>
+            <rect x="14" y="14" width="60" height="14" rx="6" fill="#0F3D66"/>
+          </svg>
+          <span style="font-size: 19px; font-weight: 700; color: #fff;">PocketFi<span style="color: #F8B319;">!</span></span>
+        </div>
+        <p style="font-size: 13px; line-height: 1.65; margin: 0 0 16px; max-width: 280px;">A free budget tracker. Made in KL with Flutter + Firebase.</p>
+        <div style="display: flex; gap: 10px;">
+          <a href="https://github.com/boonyongyang/pocketfi" target="_blank" rel="noopener" style="width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: center; color: #fff;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#fff"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.56 0-.28-.01-1.02-.02-2-3.2.7-3.87-1.54-3.87-1.54-.52-1.32-1.27-1.68-1.27-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.02 1.75 2.69 1.25 3.34.95.1-.74.4-1.25.72-1.54-2.55-.29-5.24-1.28-5.24-5.7 0-1.26.45-2.29 1.18-3.1-.12-.29-.51-1.46.11-3.05 0 0 .96-.31 3.15 1.18a10.95 10.95 0 0 1 5.74 0c2.18-1.49 3.14-1.18 3.14-1.18.63 1.59.23 2.76.11 3.05.74.81 1.18 1.84 1.18 3.1 0 4.43-2.69 5.41-5.26 5.69.41.36.78 1.06.78 2.13 0 1.54-.01 2.78-.01 3.16 0 .31.21.67.79.56C20.21 21.39 23.5 17.08 23.5 12 23.5 5.65 18.35.5 12 .5z"/></svg>
+          </a>
+        </div>
+      </div>
+      <div>
+        <div style="font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #F8B319; margin-bottom: 14px;">Product</div>
+        <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 9px;">
+          <li><a href="features" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Features</a></li>
+          <li><a href="compare" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Compare</a></li>
+          <li><a href="/#screens" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Screens</a></li>
+          <li><a href="faq" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">FAQ</a></li>
+          <li><a href="roadmap" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Roadmap</a></li>
+          <li><a href="changelog" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Changelog</a></li>
+          <li><a href="/#download" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">GitHub</a></li>
+        </ul>
+      </div>
+      <div>
+        <div style="font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #F8B319; margin-bottom: 14px;">GitHub</div>
+        <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 9px;">
+          <li><a href="https://github.com/boonyongyang/pocketfi" target="_blank" rel="noopener" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">GitHub repo ↗</a></li>
+          <li><a href="https://github.com/boonyongyang/pocketfi/blob/main/LICENSE" target="_blank" rel="noopener" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">MIT license ↗</a></li>
+          <li><a href="contribute" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Contribute</a></li>
+          <li><a href="community" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Community</a></li>
+          <li><a href="https://github.com/boonyongyang/pocketfi/issues" target="_blank" rel="noopener" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Report an issue ↗</a></li>
+          <li><a href="about" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">About</a></li>
+          <li><a href="blog" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Blog</a></li>
+          <li><a href="support" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Support</a></li>
+        </ul>
+      </div>
+      <div>
+        <div style="font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #F8B319; margin-bottom: 14px;">Legal &amp; trust</div>
+        <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 9px;">
+          <li><a href="security" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Security</a></li>
+          <li><a href="privacy" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Privacy policy</a></li>
+          <li><a href="cookies" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Cookie policy</a></li>
+          <li><a href="terms" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Terms of service</a></li>
+          <li><a href="delete-account" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Delete my data</a></li>
+          <li><a href="press-kit" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Press kit</a></li>
+          <li><a href="brand-assets" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Brand assets</a></li>
+        </ul>
+      </div>
+    </div>
+    <div style="border-top: 1px solid rgba(255,255,255,0.10); padding-top: 20px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; font-size: 12.5px;">
+      <span>© 2026 PocketFi · public materials licensed · Made in KL ✿</span>
+      <span><a href="https://github.com/boonyongyang/pocketfi" target="_blank" rel="noopener" style="color: #FCD46A; text-decoration: none;">github.com/boonyongyang/pocketfi</a></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+  var COMPETITORS = ['PocketFi', 'Money Lover', 'Wallet (BB)', 'Spreadsheet'];
+  var FEATURES = [
+    { group:'Cost', rows:[
+      { l:'Free, all features', v:[true, 'partial', 'partial', true] },
+      { l:'No ads', v:[true, false, true, true] },
+      { l:'No subscription', v:[true, false, false, true] }
+    ]},
+    { group:'Core tracking', rows:[
+      { l:'Manual entry', v:[true, true, true, true] },
+      { l:'Receipt OCR (on-device)', v:[true, false, 'partial', false] },
+      { l:'Multi-wallet support', v:[true, true, true, 'partial'] },
+      { l:'Categories with custom icons', v:['17 hard-coded', '50+ + custom', '40+ + custom', 'DIY'] },
+      { l:'Bookmarks for fast entry', v:[true, false, 'partial', false] },
+      { l:'Recurring transactions', v:[true, true, true, 'manual'] }
+    ]},
+    { group:'Splitting & sharing', rows:[
+      { l:'Shared wallets', v:[true, false, true, false] },
+      { l:'Per-member contribution view', v:[true, false, 'partial', false] },
+      { l:'Even / %/ custom splits', v:[true, false, true, false] },
+      { l:'No-account invitation', v:[false, false, false, true] }
+    ]},
+    { group:'Insights', rows:[
+      { l:'Monthly overview donut', v:[true, true, true, 'DIY'] },
+      { l:'Per-category budgets', v:[true, true, true, 'DIY'] },
+      { l:'Saving goals', v:[true, true, true, 'DIY'] },
+      { l:'Bills tracker', v:[true, true, true, 'DIY'] },
+      { l:'AI-powered insights', v:[false, 'partial', 'partial', false] }
+    ]},
+    { group:'Privacy & openness', rows:[
+      { l:'GitHub tracked', v:[true, false, false, '—'] },
+      { l:'On-device OCR', v:[true, false, false, '—'] },
+      { l:'No ad / data brokers', v:[true, false, true, true] },
+      { l:'One-tap account deletion', v:[true, 'partial', true, '—'] },
+      { l:'Data export (JSON / CSV)', v:['JSON · CSV soon', 'CSV (premium)', 'CSV', 'native'] }
+    ]},
+    { group:'Platform', rows:[
+      { l:'Android', v:[true, true, true, true] },
+      { l:'iOS', v:['Beta Q3 2026', true, true, true] },
+      { l:'Web', v:['Read-only Q4 2026', true, true, true] },
+      { l:'Bank sync (MY banks)', v:[false, 'partial', 'partial', false] },
+      { l:'Multi-currency wallets', v:['Q3 2026', true, true, 'DIY'] }
+    ]}
+  ];
+
+  function esc(t) { return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function renderCell(v) {
+    if (v === true)  return '<span class="cmp-cell-yes">✓ Yes</span>';
+    if (v === false) return '<span class="cmp-cell-no">—</span>';
+    if (v === 'partial') return '<span class="cmp-cell-partial">Partial</span>';
+    return '<span class="cmp-cell-note">' + esc(v) + '</span>';
+  }
+
+  document.getElementById('cmp-head').innerHTML = '<tr><th style="width:28%">Feature</th>' +
+    COMPETITORS.map(function (c, i) {
+      return '<th class="' + (i === 0 ? 'col-us' : '') + '" style="text-align:left">' + esc(c) +
+        (i === 0 ? '<span style="margin-left:8px;font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;background:rgba(15,61,102,0.15);letter-spacing:0.6px">You are here</span>' : '') +
+        '</th>';
+    }).join('') + '</tr>';
+
+  document.getElementById('cmp-body').innerHTML = FEATURES.map(function (g) {
+    var head = '<tr><td colspan="5" style="background:#FBEAC2;font-size:11px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;color:#0F3D66;padding:10px 18px">' + esc(g.group) + '</td></tr>';
+    var body = g.rows.map(function (r) {
+      return '<tr><td class="row-label">' + esc(r.l) + '</td>' +
+        r.v.map(function (cell, ci) { return '<td class="' + (ci === 0 ? 'col-us' : '') + '">' + renderCell(cell) + '</td>'; }).join('') +
+        '</tr>';
+    }).join('');
+    return head + body;
+  }).join('');
+
+  // Quick-glance cards
+  var GLANCE = [
+    { who:'PocketFi', us:true, pros:['Free forever', 'GitHub', 'Made in KL', 'On-device OCR'], cons:['Android release in preparation', 'No bank sync yet'] },
+    { who:'Money Lover', pros:['Big category library', 'iOS + Android + Web'], cons:['Premium gates most features', 'Ads on free tier'] },
+    { who:'Wallet (BB)', pros:['Bank connections (some)', 'Mature platform'], cons:['Bank sync is premium', '~RM 130/yr'] },
+    { who:'Spreadsheet', pros:['Total control', 'Free', 'You own the data'], cons:['Manual everything', 'No mobile-first UX'] }
+  ];
+  document.getElementById('glance').innerHTML = GLANCE.map(function (c) {
+    return '<div style="background:#fff;border-radius:18px;padding:20px 22px;border:' + (c.us ? '2px solid #F8B319' : '1px solid rgba(15,61,102,0.08)') + ';box-shadow:' + (c.us ? '5px 5px 0 #0F3D66' : '0 1px 4px rgba(15,61,102,0.04)') + ';position:relative">' +
+      (c.us ? '<div style="position:absolute;top:14px;right:14px;font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:#0F3D66;background:#F8B319;padding:3px 9px;border-radius:99px">Us</div>' : '') +
+      '<div style="font-size:18px;font-weight:700;margin-bottom:14px">' + esc(c.who) + '</div>' +
+      '<div style="margin-bottom:12px">' + c.pros.map(function (p) {
+        return '<div style="display:flex;align-items:flex-start;gap:6px;font-size:13px;color:#0F3D66;margin-bottom:4px"><span style="color:#2E7D32;font-weight:700">+</span>' + esc(p) + '</div>';
+      }).join('') + '</div>' +
+      '<div>' + c.cons.map(function (p) {
+        return '<div style="display:flex;align-items:flex-start;gap:6px;font-size:13px;color:#4A5A6A;margin-bottom:4px"><span style="color:#F1592A;font-weight:700">−</span>' + esc(p) + '</div>';
+      }).join('') + '</div></div>';
+  }).join('');
+
+  // Honest cons
+  var CONS = [
+    { i:'phone_iphone', t:'No iOS app yet', b:'iOS is planned after the Android launch path is stable. Built in Flutter so the same codebase can carry both.' },
+    { i:'account_balance', t:'No bank sync', b:'Read-only bank connections (Plaid / Brankas) are on the roadmap for Q4 2026. Optional and off by default.' },
+    { i:'public', t:'No web app', b:'A read-only web view ships Q4 2026. Editing-from-web isn’t prioritized — our users tell us they edit on mobile.' },
+    { i:'currency_exchange', t:'Single currency / wallet', b:'MYR is the default; you can choose another at wallet creation. Multi-currency wallets land Q3 2026.' },
+    { i:'auto_awesome', t:'No AI insights', b:'We don’t auto-categorize via AI, recommend cuts, or summarize your month with an LLM. Maybe later — not on the v1 roadmap.' },
+    { i:'group', t:'Smaller community', b:'180+ reviews vs ~80k for Money Lover. Growing every month — but if you want the biggest forum / template marketplace, the older apps win.' }
+  ];
+  document.getElementById('cons-grid').innerHTML = CONS.map(function (c) {
+    return '<div style="background:rgba(255,255,255,0.06);border-radius:18px;padding:24px 26px;border:1px solid rgba(255,255,255,0.10)">' +
+      '<div style="width:44px;height:44px;border-radius:12px;background:rgba(248,179,25,0.18);color:#F8B319;display:flex;align-items:center;justify-content:center;margin-bottom:14px">' +
+      '<span class="material-icons" style="font-size:22px">' + c.i + '</span></div>' +
+      '<div style="font-size:17px;font-weight:700;margin-bottom:6px;letter-spacing:-0.2px">' + esc(c.t) + '</div>' +
+      '<div style="font-size:13.5px;line-height:1.65;color:rgba(255,246,224,0.78)">' + esc(c.b) + '</div></div>';
+  }).join('');
+})();
+</script>
+
+<!-- Cookie notice (no tracking; localStorage flag only) -->
+<script>
+(function () {
+  'use strict';
+  var KEY = 'pocketfi_cookie_banner';
+  function isDismissed() { try { return localStorage.getItem(KEY) === 'dismissed'; } catch (e) { return false; } }
+  function dismiss() { try { localStorage.setItem(KEY, 'dismissed'); } catch (e) {} }
+  function mount() {
+    if (isDismissed()) return;
+    if (document.getElementById('pf-cookie-banner')) return;
+    var el = document.createElement('div');
+    el.id = 'pf-cookie-banner';
+    el.setAttribute('role', 'region');
+    el.setAttribute('aria-label', 'Cookie notice');
+    el.innerHTML = ['<div class="pf-cb-inner">','<div class="pf-cb-icon" aria-hidden="true"><span class="material-icons">cookie</span></div>',
+      '<div class="pf-cb-text"><strong>We don’t use tracking cookies.</strong> No analytics, no ad pixels — just a flag so this banner stays dismissed. <a href="cookies">Read the full policy</a>.</div>',
+      '<button type="button" class="pf-cb-btn" aria-label="Dismiss notice">Got it</button>','</div>'].join('');
+    el.querySelector('.pf-cb-btn').addEventListener('click', function () {
+      dismiss(); el.classList.add('pf-cb-out');
+      setTimeout(function () { if (el.parentNode) el.parentNode.removeChild(el); }, 280);
+    });
+    document.body.appendChild(el);
+    requestAnimationFrame(function () { el.classList.add('pf-cb-in'); });
+  }
+  function injectStyles() {
+    if (document.getElementById('pf-cookie-banner-styles')) return;
+    var s = document.createElement('style');
+    s.id = 'pf-cookie-banner-styles';
+    s.textContent = [
+      '#pf-cookie-banner { position: fixed; left: 16px; right: 16px; bottom: 16px; z-index: 2147483000; font-family: Roboto, system-ui, sans-serif; opacity: 0; transform: translateY(20px); transition: opacity 260ms ease, transform 260ms cubic-bezier(.34,1.56,.64,1); pointer-events: none; }',
+      '#pf-cookie-banner.pf-cb-in { opacity: 1; transform: translateY(0); pointer-events: auto; }',
+      '#pf-cookie-banner.pf-cb-out { opacity: 0; transform: translateY(12px); pointer-events: none; }',
+      '#pf-cookie-banner .pf-cb-inner { max-width: 720px; margin: 0 auto; display: flex; align-items: center; gap: 16px; background: #0F3D66; color: #FFF6E0; padding: 14px 18px; border-radius: 16px; box-shadow: 0 12px 32px rgba(15,61,102,0.30), 4px 4px 0 #F8B319; border: 1px solid rgba(248,179,25,0.20); }',
+      '#pf-cookie-banner .pf-cb-icon { width: 36px; height: 36px; border-radius: 50%; background: #F8B319; color: #0F3D66; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }',
+      '#pf-cookie-banner .pf-cb-icon .material-icons { font-size: 22px; }',
+      '#pf-cookie-banner .pf-cb-text { flex: 1; font-size: 13.5px; line-height: 1.55; color: rgba(255,246,224,0.92); }',
+      '#pf-cookie-banner .pf-cb-text strong { color: #FFF6E0; font-weight: 700; }',
+      '#pf-cookie-banner .pf-cb-text a { color: #FCD46A; text-decoration: underline; text-underline-offset: 3px; }',
+      '#pf-cookie-banner .pf-cb-btn { background: #F8B319; color: #0F3D66; border: 0; padding: 9px 16px; border-radius: 99px; font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer; flex-shrink: 0; transition: transform 120ms; }',
+      '#pf-cookie-banner .pf-cb-btn:active { transform: translate(1px, 1px); }',
+      '@media (max-width: 640px) { #pf-cookie-banner { left: 10px; right: 10px; bottom: 10px; } #pf-cookie-banner .pf-cb-inner { padding: 12px 14px; gap: 12px; border-radius: 14px; box-shadow: 0 10px 24px rgba(15,61,102,0.28), 3px 3px 0 #F8B319; } #pf-cookie-banner .pf-cb-icon { width: 32px; height: 32px; } #pf-cookie-banner .pf-cb-icon .material-icons { font-size: 19px; } #pf-cookie-banner .pf-cb-text { font-size: 12.5px; } #pf-cookie-banner .pf-cb-btn { padding: 8px 14px; font-size: 12.5px; } }'
+    ].join('\n');
+    document.head.appendChild(s);
+  }
+  function init() { injectStyles(); setTimeout(mount, 400); }
+  if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', init); } else { init(); }
+})();
+</script>
+</body>
+</html>

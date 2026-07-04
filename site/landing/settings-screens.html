@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>PocketFi · Settings &amp; Account</title>
+  <meta name="description" content="Six in-app settings screens: account, preferences, notifications, privacy, about, delete-account flow.">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <style>
+    html, body { margin: 0; background: #f0eee9; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif; }
+    * { box-sizing: border-box; }
+    body {
+      background-image: url("data:image/svg+xml,%3Csvg width='120' height='120' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M120 0H0v120' fill='none' stroke='rgba(0,0,0,0.06)' stroke-width='1'/%3E%3C/svg%3E");
+      background-size: 120px 120px; min-height: 100vh;
+    }
+    .world { padding: 60px; width: max-content; min-width: 100%; }
+    .sectionhead { padding: 0 0 36px; }
+    .sectionhead .title { font-size: 28px; font-weight: 600; color: rgba(40,30,20,0.85); letter-spacing: -0.4px; margin-bottom: 6px; }
+    .sectionhead .sub { font-size: 16px; color: rgba(60,50,40,0.6); }
+    .row { display: flex; gap: 48px; align-items: flex-start; }
+    .ab-wrap { flex-shrink: 0; }
+    .ab-label { font-size: 15px; font-weight: 500; color: rgba(60,50,40,0.7); padding: 3px 6px; margin-bottom: 4px; }
+    .ab-card { width: 360px; height: 780px; background: #fff; border-radius: 2px; box-shadow: 0 1px 3px rgba(0,0,0,.08), 0 4px 16px rgba(0,0,0,.06); overflow: hidden; }
+    .scroll { flex: 1; overflow-y: auto; background: #F9F9F9; }
+    .scroll::-webkit-scrollbar { display: none; } .scroll { scrollbar-width: none; }
+  </style>
+</head>
+<body>
+<div class="world">
+  <div class="sectionhead">
+    <div class="title">Settings &amp; Account (Android · 360×780)</div>
+    <div class="sub">6 in-app screens covering account, preferences, notifications, privacy, about, and the destructive delete-account flow.</div>
+  </div>
+  <div class="row">
+    <div class="ab-wrap"><div class="ab-label">01 · Account home</div><div class="ab-card" id="s1"></div></div>
+    <div class="ab-wrap"><div class="ab-label">02 · Settings</div><div class="ab-card" id="s2"></div></div>
+    <div class="ab-wrap"><div class="ab-label">03 · Notifications</div><div class="ab-card" id="s3"></div></div>
+    <div class="ab-wrap"><div class="ab-label">04 · Privacy &amp; data</div><div class="ab-card" id="s4"></div></div>
+    <div class="ab-wrap"><div class="ab-label">05 · About</div><div class="ab-card" id="s5"></div></div>
+    <div class="ab-wrap"><div class="ab-label">06 · Delete confirm</div><div class="ab-card" id="s6"></div></div>
+  </div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+  var NAVY='#0F3D66', YELLOW='#F8B319', GREY='#F9F9F9', SUB='#4A5A6A', RED='#F1592A';
+
+  function statusBar() {
+    return '<div style="height:32px;background:' + NAVY + ';color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 18px;font-size:11px;font-weight:600">' +
+      '<span>9:41</span><span style="display:flex;gap:5px">' +
+      '<span class="material-icons" style="font-size:13px">signal_cellular_alt</span>' +
+      '<span class="material-icons" style="font-size:13px">wifi</span>' +
+      '<span class="material-icons" style="font-size:13px">battery_full</span></span></div>';
+  }
+  function appBar(title, opts) {
+    opts = opts || {};
+    return '<div style="background:' + NAVY + ';color:#fff;padding:10px 14px;display:flex;justify-content:space-between;align-items:center">' +
+      '<span class="material-icons" style="font-size:22px">' + (opts.back ? 'arrow_back' : 'menu') + '</span>' +
+      '<div style="text-align:center"><div style="font-size:15px;font-weight:600">' + title + '</div>' +
+      (opts.sub ? '<div style="font-size:10px;opacity:0.8">' + opts.sub + '</div>' : '') + '</div>' +
+      (opts.action ? '<span class="material-icons" style="font-size:22px">' + opts.action + '</span>' : '<div style="width:22px"></div>') +
+    '</div>';
+  }
+  function frame(inner, bg) {
+    return '<div style="width:360px;height:780px;background:' + (bg || GREY) + ';color:' + NAVY + ';display:flex;flex-direction:column;overflow:hidden;font-family:Roboto, sans-serif">' +
+      statusBar() + inner + '</div>';
+  }
+  function sectionLabel(t) {
+    return '<div style="font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:' + SUB + ';padding:18px 18px 8px">' + t + '</div>';
+  }
+  function row(o) {
+    var iconBg = o.danger ? 'rgba(241,89,42,0.10)' : 'rgba(248,179,25,0.16)';
+    var iconFg = o.danger ? RED : YELLOW;
+    var titleColor = o.danger ? RED : NAVY;
+    return '<div style="display:flex;align-items:center;gap:14px;padding:14px 18px;background:#fff;border-bottom:1px solid rgba(15,61,102,0.06)">' +
+      '<div style="width:34px;height:34px;border-radius:9px;background:' + iconBg + ';color:' + iconFg + ';display:flex;align-items:center;justify-content:center;flex-shrink:0">' +
+      '<span class="material-icons" style="font-size:18px">' + o.icon + '</span></div>' +
+      '<div style="flex:1;min-width:0">' +
+        '<div style="font-size:14px;font-weight:600;color:' + titleColor + '">' + o.title + '</div>' +
+        (o.sub ? '<div style="font-size:11.5px;color:' + SUB + ';margin-top:1px">' + o.sub + '</div>' : '') +
+      '</div>' +
+      '<div style="font-size:13px;color:' + SUB + '">' + (o.right || '') + '</div>' +
+    '</div>';
+  }
+  function toggle(on) {
+    return '<div style="width:36px;height:20px;border-radius:99px;background:' + (on ? '#34c759' : 'rgba(15,61,102,0.20)') + ';position:relative;flex-shrink:0">' +
+      '<div style="position:absolute;top:2px;left:' + (on ? '18px' : '2px') + ';width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,0.25)"></div></div>';
+  }
+  var LOGO72 = '<svg width="72" height="72" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">' +
+    '<rect x="8" y="22" width="84" height="60" rx="14" fill="#0F3D66"/>' +
+    '<rect x="8" y="22" width="84" height="14" rx="14" fill="#0F3D66"/>' +
+    '<circle cx="68" cy="52" r="14" fill="#F8B319"/>' +
+    '<circle cx="68" cy="52" r="6" fill="#0F3D66"/>' +
+    '<rect x="14" y="14" width="60" height="14" rx="6" fill="#0F3D66"/></svg>';
+
+  // S1 — Account
+  var profileStats = [
+    { v:'12', l:'Wallets' }, { v:'847', l:'Entries' }, { v:'May 2025', l:'Joined' }
+  ].map(function (s) {
+    return '<div style="flex:1;background:rgba(255,255,255,0.10);border-radius:10px;padding:8px 10px">' +
+      '<div style="font-size:14px;font-weight:700">' + s.v + '</div>' +
+      '<div style="font-size:9.5px;opacity:0.7;letter-spacing:0.3px;text-transform:uppercase">' + s.l + '</div></div>';
+  }).join('');
+  document.getElementById('s1').innerHTML = frame(
+    appBar('Account', { action:'settings' }) +
+    '<div class="scroll">' +
+      '<div style="padding:18px;background:linear-gradient(135deg, ' + NAVY + ', #1B5285);color:#fff;margin:12px 12px 4px;border-radius:18px">' +
+        '<div style="display:flex;align-items:center;gap:14px">' +
+          '<div style="width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg, ' + YELLOW + ', #FCD46A);color:' + NAVY + ';font-weight:900;font-size:22px;display:flex;align-items:center;justify-content:center">BY</div>' +
+          '<div><div style="font-size:16px;font-weight:700">Boon Yong</div><div style="font-size:12px;opacity:0.8">GitHub Issues</div></div>' +
+        '</div>' +
+        '<div style="display:flex;gap:8px;margin-top:14px">' + profileStats + '</div>' +
+      '</div>' +
+      sectionLabel('My data') +
+      row({ icon:'account_balance_wallet', title:'Wallets', right:'12 active' }) +
+      row({ icon:'bookmark', title:'Bookmarks', right:'8' }) +
+      row({ icon:'savings', title:'Saving goals', right:'3' }) +
+      row({ icon:'event_repeat', title:'Recurring transactions', right:'5' }) +
+      sectionLabel('App') +
+      row({ icon:'settings', title:'Settings' }) +
+      row({ icon:'notifications', title:'Notifications', right:'On' }) +
+      row({ icon:'palette', title:'Appearance', right:'System' }) +
+      sectionLabel('Help') +
+      row({ icon:'quiz', title:'FAQ' }) +
+      row({ icon:'mail', title:'Send feedback' }) +
+      row({ icon:'info', title:'About PocketFi', right:'v1.4.0' }) +
+      '<div style="padding:18px"><button style="width:100%;background:#fff;border:1.5px solid rgba(15,61,102,0.15);color:' + NAVY + ';padding:12px;border-radius:99px;font-size:14px;font-weight:600;font-family:inherit">Sign out</button></div>' +
+    '</div>'
+  );
+
+  // S2 — Settings
+  document.getElementById('s2').innerHTML = frame(
+    appBar('Settings', { back:true }) +
+    '<div class="scroll">' +
+      sectionLabel('Preferences') +
+      row({ icon:'palette', title:'Theme', right:'System', sub:'Light / Dark / System' }) +
+      row({ icon:'language', title:'Language', right:'English' }) +
+      row({ icon:'payments', title:'Default currency', right:'MYR' }) +
+      row({ icon:'calendar_today', title:'Week starts on', right:'Monday' }) +
+      row({ icon:'account_balance_wallet', title:'Default wallet', right:'Maybank' }) +
+      sectionLabel('Behavior') +
+      '<div style="background:#fff">' +
+        row({ icon:'vibration', title:'Haptic feedback', right:toggle(true), sub:'Light tap on save' }) +
+        row({ icon:'auto_awesome', title:'Auto-categorize', right:toggle(true), sub:'Suggest a category for new merchants' }) +
+        row({ icon:'sync', title:'Sync over mobile data', right:toggle(false), sub:'Wi-Fi only when off' }) +
+      '</div>' +
+      sectionLabel('Privacy') +
+      '<div style="background:#fff">' +
+        row({ icon:'fingerprint', title:'Require biometric on launch', right:toggle(true) }) +
+        row({ icon:'visibility_off', title:'Hide amounts in app switcher', right:toggle(false) }) +
+        row({ icon:'image', title:'Attach receipts to entries', right:toggle(true), sub:'OCR still works when off' }) +
+      '</div>' +
+      sectionLabel('Data') +
+      row({ icon:'download', title:'Export my data', right:'JSON · CSV soon' }) +
+      row({ icon:'cloud_download', title:'Last backup', right:'2 min ago' }) +
+      row({ icon:'delete_outline', title:'Delete account', danger:true }) +
+    '</div>'
+  );
+
+  // S3 — Notifications
+  document.getElementById('s3').innerHTML = frame(
+    appBar('Notifications', { back:true }) +
+    '<div class="scroll">' +
+      '<div style="padding:16px 18px;background:rgba(248,179,25,0.14);color:' + NAVY + ';font-size:12px;line-height:1.55;margin:12px 12px 0;border-radius:12px">' +
+        'We send <strong>at most one notification per day</strong>. Anything more is a bug — please report it.</div>' +
+      sectionLabel('Bills') +
+      '<div style="background:#fff">' +
+        row({ icon:'event_note', title:'3 days before due date', right:toggle(true) }) +
+        row({ icon:'event_busy', title:'Day of (8:00 AM)', right:toggle(true) }) +
+        row({ icon:'schedule', title:'Overdue', right:toggle(true) }) +
+      '</div>' +
+      sectionLabel('Budgets') +
+      '<div style="background:#fff">' +
+        row({ icon:'warning_amber', title:'80% of budget hit', right:toggle(true) }) +
+        row({ icon:'error', title:'Over budget', right:toggle(true) }) +
+      '</div>' +
+      sectionLabel('Shared wallets') +
+      '<div style="background:#fff">' +
+        row({ icon:'person_add', title:'Member joined / left', right:toggle(true) }) +
+        row({ icon:'add_circle', title:'New entry posted', right:toggle(false) }) +
+        row({ icon:'forum', title:'Member commented on entry', right:toggle(true) }) +
+      '</div>' +
+      sectionLabel('Other') +
+      '<div style="background:#fff">' +
+        row({ icon:'auto_awesome_motion', title:'Monthly recap', right:toggle(true), sub:'1st of every month' }) +
+        row({ icon:'campaign', title:'Product updates', right:toggle(false), sub:'New features only — no marketing' }) +
+      '</div>' +
+      '<div style="height:24px"></div>' +
+    '</div>'
+  );
+
+  // S4 — Privacy
+  document.getElementById('s4').innerHTML = frame(
+    appBar('Privacy &amp; data', { back:true }) +
+    '<div class="scroll">' +
+      '<div style="padding:18px;background:' + NAVY + ';color:#fff;margin:12px;border-radius:18px">' +
+        '<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">' +
+          '<span class="material-icons" style="font-size:22px;color:' + YELLOW + '">shield</span>' +
+          '<div style="font-size:15px;font-weight:700">Your data, your business</div></div>' +
+        '<div style="font-size:12px;line-height:1.55;color:rgba(255,255,255,0.78)">No ads, no trackers, no selling. Receipt OCR runs on this device. Read the policy →</div>' +
+      '</div>' +
+      sectionLabel('What we collect') +
+      row({ icon:'email', title:'Profile (from Google)', right:'Required' }) +
+      row({ icon:'receipt_long', title:'Your transactions', right:'On-device + Firestore' }) +
+      row({ icon:'bug_report', title:'Anonymized crash reports', right:toggle(true) }) +
+      row({ icon:'analytics', title:'Usage analytics', right:toggle(false) }) +
+      sectionLabel('Data tools') +
+      row({ icon:'download', title:'Export my data' }) +
+      row({ icon:'visibility', title:'Audit access log', right:'0 events' }) +
+      row({ icon:'delete_outline', title:'Delete account', danger:true }) +
+      sectionLabel('Legal') +
+      row({ icon:'description', title:'Privacy policy' }) +
+      row({ icon:'article', title:'Terms of service' }) +
+      row({ icon:'open_in_new', title:'GitHub on GitHub' }) +
+    '</div>'
+  );
+
+  // S5 — About
+  document.getElementById('s5').innerHTML = frame(
+    appBar('About', { back:true }) +
+    '<div style="flex:1;background:' + GREY + ';padding:24px;display:flex;flex-direction:column;align-items:center;text-align:center;overflow-y:auto">' +
+      LOGO72 +
+      '<div style="font-size:24px;font-weight:700;margin-top:14px">PocketFi<span style="color:' + YELLOW + '">!</span></div>' +
+      '<div style="font-size:13px;color:' + SUB + ';margin-top:4px">Version 1.4.0 · build 1452</div>' +
+      '<div style="margin-top:14px;padding:6px 14px;border-radius:99px;background:#fff;font-size:12px;color:' + NAVY + ';font-weight:600">Public roadmap</div>' +
+      '<div style="margin-top:24px;width:100%;background:#fff;border-radius:16px;padding:14px 18px">' +
+        '<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0"><span style="font-size:14px">Source code</span><span style="font-size:13px;color:' + SUB + '">GitHub →</span></div>' +
+        '<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-top:1px solid rgba(15,61,102,0.06)"><span style="font-size:14px">Changelog</span><span style="font-size:13px;color:' + SUB + '">What\'s new →</span></div>' +
+        '<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-top:1px solid rgba(15,61,102,0.06)"><span style="font-size:14px">Acknowledgments</span><span style="font-size:13px;color:' + SUB + '">OSS libraries →</span></div>' +
+      '</div>' +
+      '<div style="margin-top:30px;font-size:12px;color:' + SUB + ';line-height:1.65;max-width:240px">Made with Flutter + Firebase in Kuala Lumpur. By one slightly tired person and a number of generous contributors.</div>' +
+      '<div style="margin-top:24px;color:' + YELLOW + ';font-size:22px">♥</div>' +
+    '</div>'
+  );
+
+  // S6 — Delete confirm
+  document.getElementById('s6').innerHTML = frame(
+    appBar('Delete account', { back:true }) +
+    '<div style="flex:1;background:' + GREY + ';padding:24px;overflow-y:auto">' +
+      '<div style="width:64px;height:64px;border-radius:50%;background:rgba(241,89,42,0.14);color:' + RED + ';display:flex;align-items:center;justify-content:center;margin-bottom:18px">' +
+        '<span class="material-icons" style="font-size:34px">warning</span></div>' +
+      '<div style="font-size:24px;font-weight:700;letter-spacing:-0.4px;line-height:1.15;margin-bottom:10px">Delete your PocketFi account?</div>' +
+      '<p style="font-size:13.5px;line-height:1.65;color:' + SUB + ';margin:0 0 16px">We\'ll permanently delete every wallet, transaction, receipt image, and budget tied to <strong style="color:' + NAVY + '">GitHub Issues</strong>. Backups purge within 30 days.</p>' +
+      '<div style="background:#fff;border-radius:14px;padding:14px 16px;margin-bottom:14px;border:1px solid rgba(15,61,102,0.08)">' +
+        '<div style="font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:' + SUB + ';margin-bottom:8px">What gets deleted</div>' +
+        '<ul style="margin:0;padding-left:18px;font-size:12.5px;line-height:1.7;color:' + NAVY + '">' +
+          '<li>12 wallets · 847 transactions</li><li>34 receipt images</li>' +
+          '<li>3 saving goals · 5 recurring</li><li>Shared wallets (transferred)</li></ul>' +
+      '</div>' +
+      '<div style="font-size:12px;color:' + SUB + ';margin-bottom:6px">Type <strong style="color:' + NAVY + '">DELETE</strong> to confirm</div>' +
+      '<input placeholder="DELETE" style="width:100%;padding:12px 14px;border-radius:10px;border:1.5px solid rgba(15,61,102,0.20);font-size:14px;font-family:inherit;background:#fff;color:' + NAVY + ';outline:none">' +
+      '<div style="display:flex;flex-direction:column;gap:10px;margin-top:18px">' +
+        '<button style="background:' + RED + ';color:#fff;border:0;padding:13px;border-radius:99px;font-size:14px;font-weight:700;box-shadow:3px 3px 0 rgba(0,0,0,0.10);font-family:inherit">Delete forever</button>' +
+        '<button style="background:transparent;border:0;color:' + NAVY + ';font-size:13px;font-weight:600;font-family:inherit">Cancel</button>' +
+      '</div>' +
+    '</div>'
+  );
+})();
+</script>
+</body>
+</html>

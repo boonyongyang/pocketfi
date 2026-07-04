@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>PocketFi · Empty states</title>
+  <meta name="description" content="Eight first-run / zero-data screens. Each pairs a small illustration with a single clear next action.">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <style>
+    html, body { margin: 0; background: #f0eee9; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif; }
+    * { box-sizing: border-box; }
+    body {
+      background-image: url("data:image/svg+xml,%3Csvg width='120' height='120' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M120 0H0v120' fill='none' stroke='rgba(0,0,0,0.06)' stroke-width='1'/%3E%3C/svg%3E");
+      background-size: 120px 120px; min-height: 100vh;
+    }
+    .world { padding: 60px; width: max-content; min-width: 100%; }
+    .sectionhead { padding: 0 0 36px; }
+    .sectionhead .title { font-size: 28px; font-weight: 600; color: rgba(40,30,20,0.85); letter-spacing: -0.4px; margin-bottom: 6px; }
+    .sectionhead .sub { font-size: 16px; color: rgba(60,50,40,0.6); }
+    .row { display: flex; gap: 48px; align-items: flex-start; }
+    .ab-wrap { flex-shrink: 0; }
+    .ab-label { font-size: 15px; font-weight: 500; color: rgba(60,50,40,0.7); padding: 3px 6px; margin-bottom: 4px; }
+    .ab-card { width: 360px; height: 780px; background: #fff; border-radius: 2px; box-shadow: 0 1px 3px rgba(0,0,0,.08), 0 4px 16px rgba(0,0,0,.06); overflow: hidden; }
+  </style>
+</head>
+<body>
+<div class="world">
+  <div class="sectionhead">
+    <div class="title">Empty states (Android · 360×780)</div>
+    <div class="sub">8 first-run / zero-data screens. Each pairs a small illustration with a single clear next action.</div>
+  </div>
+  <div class="row">
+    <div class="ab-wrap"><div class="ab-label">01 · Timeline (first run)</div><div class="ab-card" id="s1"></div></div>
+    <div class="ab-wrap"><div class="ab-label">02 · Overview (not enough data)</div><div class="ab-card" id="s2"></div></div>
+    <div class="ab-wrap"><div class="ab-label">03 · Receipts</div><div class="ab-card" id="s3"></div></div>
+    <div class="ab-wrap"><div class="ab-label">04 · Bills</div><div class="ab-card" id="s4"></div></div>
+    <div class="ab-wrap"><div class="ab-label">05 · Saving goals</div><div class="ab-card" id="s5"></div></div>
+    <div class="ab-wrap"><div class="ab-label">06 · Shared wallet (no members)</div><div class="ab-card" id="s6"></div></div>
+    <div class="ab-wrap"><div class="ab-label">07 · Search (no results)</div><div class="ab-card" id="s7"></div></div>
+    <div class="ab-wrap"><div class="ab-label">08 · Bookmarks</div><div class="ab-card" id="s8"></div></div>
+  </div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+  var NAVY='#0F3D66', YELLOW='#F8B319', GREY='#F9F9F9', SUB='#4A5A6A';
+
+  function statusBar() {
+    return '<div style="height:32px;background:' + NAVY + ';color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 18px;font-size:11px;font-weight:600">' +
+      '<span>9:41</span><span style="display:flex;gap:5px">' +
+      '<span class="material-icons" style="font-size:13px">signal_cellular_alt</span>' +
+      '<span class="material-icons" style="font-size:13px">wifi</span>' +
+      '<span class="material-icons" style="font-size:13px">battery_full</span></span></div>';
+  }
+  function appBar(title, sub) {
+    return '<div style="background:' + NAVY + ';color:#fff;padding:10px 14px;display:flex;justify-content:space-between;align-items:center">' +
+      '<span class="material-icons" style="font-size:22px">menu</span>' +
+      '<div style="text-align:center"><div style="font-size:15px;font-weight:600">' + title + '</div>' +
+      (sub ? '<div style="font-size:10px;opacity:0.8">' + sub + '</div>' : '') + '</div>' +
+      '<span class="material-icons" style="font-size:22px">search</span></div>';
+  }
+  function bottomNav(active) {
+    var tabs = [
+      { i:'timeline', l:'Timeline' },
+      { i:'donut_large', l:'Overview' },
+      { i:'account_balance_wallet', l:'Wallets' },
+      { i:'person', l:'Account' }
+    ];
+    return '<div style="height:54px;background:#fff;border-top:1px solid rgba(15,61,102,0.08);display:flex">' +
+      tabs.map(function (t) {
+        var color = active === t.l ? YELLOW : SUB;
+        return '<div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;color:' + color + ';font-size:9.5px">' +
+          '<span class="material-icons" style="font-size:20px">' + t.i + '</span>' + t.l + '</div>';
+      }).join('') + '</div>';
+  }
+  function fab() {
+    return '<div style="position:absolute;bottom:18px;right:14px;width:48px;height:48px;border-radius:50%;background:' + YELLOW + ';box-shadow:0 6px 16px rgba(15,61,102,0.35);display:flex;align-items:center;justify-content:center;color:#fff">' +
+      '<span class="material-icons" style="font-size:24px">add</span></div>';
+  }
+  function emptyBody(o) {
+    return '<div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 28px;text-align:center;background:' + GREY + '">' +
+      o.illus +
+      '<div style="font-size:20px;font-weight:700;letter-spacing:-0.3px;margin-bottom:8px;color:' + NAVY + '">' + o.title + '</div>' +
+      '<div style="font-size:13.5px;line-height:1.6;color:' + SUB + ';margin-bottom:22px;max-width:260px">' + o.body + '</div>' +
+      '<button style="background:' + NAVY + ';color:#FCD46A;border:0;padding:12px 22px;border-radius:99px;font-size:14px;font-weight:700;box-shadow:3px 3px 0 ' + YELLOW + ';font-family:inherit">' + o.primary + '</button>' +
+      (o.secondary ? '<button style="margin-top:10px;background:transparent;border:0;color:' + SUB + ';font-size:13px;font-weight:600;font-family:inherit;text-decoration:underline">' + o.secondary + '</button>' : '') +
+      (o.foot || '') +
+    '</div>';
+  }
+  function frame(inner) {
+    return '<div style="width:360px;height:780px;background:' + GREY + ';color:' + NAVY + ';display:flex;flex-direction:column;overflow:hidden;font-family:Roboto, sans-serif">' +
+      statusBar() +
+      '<div style="flex:1;display:flex;flex-direction:column;position:relative">' + inner + '</div></div>';
+  }
+
+  // Illustrations
+  var ILLUS = {
+    coin: '<div style="position:relative;width:120px;height:120px;margin-bottom:18px">' +
+      '<div style="position:absolute;inset:0;border-radius:50%;background:linear-gradient(135deg, ' + YELLOW + ', #FCD46A);display:flex;align-items:center;justify-content:center;color:' + NAVY + ';font-weight:900;font-size:54px;box-shadow:4px 6px 0 ' + NAVY + '">RM</div>' +
+      '<div style="position:absolute;top:-6px;right:-10px;color:' + YELLOW + ';font-size:20px">✦</div>' +
+      '<div style="position:absolute;bottom:0;left:-12px;color:' + YELLOW + ';font-size:16px">✦</div></div>',
+    donut: '<div style="position:relative;width:120px;height:120px;margin-bottom:18px">' +
+      '<div style="width:120px;height:120px;border-radius:50%;background:conic-gradient(rgba(15,61,102,0.15) 0 100%);display:flex;align-items:center;justify-content:center">' +
+      '<div style="width:78px;height:78px;border-radius:50%;background:' + GREY + ';display:flex;align-items:center;justify-content:center">' +
+      '<span class="material-icons" style="font-size:36px;color:rgba(15,61,102,0.30)">visibility_off</span></div></div></div>',
+    receipt: '<div style="position:relative;width:120px;height:140px;margin-bottom:18px">' +
+      '<div style="position:absolute;inset:0;background:#fff;border-radius:6px;transform:rotate(-4deg);box-shadow:4px 6px 0 rgba(15,61,102,0.10);padding:12px;font-family:monospace;font-size:7px;color:#bbb;clip-path:polygon(0 0, 100% 0, 100% calc(100% - 8px), 90% 100%, 80% calc(100% - 6px), 70% 100%, 60% calc(100% - 6px), 50% 100%, 40% calc(100% - 6px), 30% 100%, 20% calc(100% - 6px), 10% 100%, 0 calc(100% - 6px))">' +
+      '<div style="text-align:center;font-weight:700;font-size:9px;color:rgba(15,61,102,0.3)">RECEIPTS</div>' +
+      '<div style="border-top:1px dashed #eee;margin-top:8px;padding:6px 0">' +
+      '<div style="height:3px;background:#eee;margin-bottom:4px"></div>' +
+      '<div style="height:3px;background:#eee;margin-bottom:4px;width:80%"></div>' +
+      '<div style="height:3px;background:#eee;margin-bottom:4px;width:60%"></div>' +
+      '</div></div></div>',
+    bills: '<div style="position:relative;width:120px;height:120px;margin-bottom:18px;display:flex;align-items:center;justify-content:center">' +
+      '<span class="material-icons" style="font-size:84px;color:' + YELLOW + '">event_note</span>' +
+      '<span class="material-icons" style="position:absolute;bottom:8px;right:18px;font-size:34px;color:' + NAVY + ';background:' + GREY + ';border-radius:50%">check_circle</span></div>',
+    goal: '<div style="position:relative;width:120px;height:120px;margin-bottom:18px">' +
+      '<div style="width:120px;height:120px;border-radius:50%;border:6px dashed ' + YELLOW + ';display:flex;align-items:center;justify-content:center;color:' + NAVY + '">' +
+      '<span class="material-icons" style="font-size:46px;color:' + NAVY + '">flag</span></div></div>',
+    people: '<div style="display:flex;margin-bottom:18px">' +
+      ['+', '?', '?'].map(function (g, i) {
+        var c = [YELLOW, '#FCD46A', 'rgba(15,61,102,0.30)'][i];
+        return '<div style="width:54px;height:54px;border-radius:50%;background:' + c + ';border:3px solid ' + GREY + ';margin-left:' + (i ? '-16px' : '0') + ';display:flex;align-items:center;justify-content:center;color:#fff;font-size:24px;font-weight:700">' + g + '</div>';
+      }).join('') + '</div>',
+    search: '<div style="position:relative;width:120px;height:120px;margin-bottom:18px;display:flex;align-items:center;justify-content:center">' +
+      '<span class="material-icons" style="font-size:84px;color:rgba(15,61,102,0.18)">search_off</span></div>',
+    bookmark: '<div style="position:relative;width:120px;height:120px;margin-bottom:18px;display:flex;align-items:center;justify-content:center">' +
+      '<span class="material-icons" style="font-size:88px;color:' + YELLOW + '">bookmark_border</span></div>'
+  };
+
+  // S1 — Timeline first-run
+  document.getElementById('s1').innerHTML = frame(
+    appBar('− MYR 0.00', 'Cash Flow · May') +
+    '<div style="background:' + NAVY + ';display:flex;padding:0 4px">' +
+      '<div style="flex:1;text-align:center;padding:10px;color:' + YELLOW + ';border-bottom:2px solid ' + YELLOW + ';font-size:11px;font-weight:600">Transactions</div>' +
+      '<div style="flex:1;text-align:center;padding:10px;color:rgba(255,255,255,0.55);font-size:11px">Overview</div>' +
+    '</div>' +
+    emptyBody({ illus: ILLUS.coin, title:'Welcome to PocketFi.', body:'Add your first transaction to see your timeline come alive. Type it, or snap a receipt.', primary:'+ Add transaction', secondary:'Snap a receipt instead' }) +
+    fab() + bottomNav('Timeline')
+  );
+
+  // S2 — Overview
+  document.getElementById('s2').innerHTML = frame(
+    '<div style="background:' + NAVY + ';color:#fff;padding:12px;text-align:center">' +
+      '<div style="font-size:11px;opacity:0.85">Overview</div>' +
+      '<div style="font-size:14px;font-weight:700;margin-top:2px">May 2026</div></div>' +
+    emptyBody({ illus: ILLUS.donut, title:'Not enough data yet.', body:'Add at least 3 transactions and we\'ll show you a donut chart and category ranking for the month.', primary:'+ Add transaction',
+      foot: '<div style="margin-top:24px;padding:14px;background:rgba(248,179,25,0.14);border-radius:12px;font-size:12px;color:' + SUB + ';line-height:1.55;max-width:280px"><strong style="color:' + NAVY + '">Tip:</strong> bookmark frequent merchants like your morning kopi so adding feels like a single tap.</div>'
+    }) + bottomNav('Overview')
+  );
+
+  // S3 — Receipts
+  document.getElementById('s3').innerHTML = frame(
+    appBar('Receipts', 'Scanned attachments') +
+    emptyBody({ illus: ILLUS.receipt, title:'No receipts yet.', body:'Receipts you attach to transactions show up here. Up to 5 MB per image, stored privately.', primary:'Scan your first receipt' }) +
+    fab() + bottomNav('Account')
+  );
+
+  // S4 — Bills
+  document.getElementById('s4').innerHTML = frame(
+    appBar('Bills', 'Recurring + due dates') +
+    emptyBody({ illus: ILLUS.bills, title:'No bills tracked.', body:'Add bills like rent, Netflix, TNB. PocketFi will nudge you 3 days before the due date — gently.', primary:'+ Add a bill', secondary:'Import from recurring transactions' }) +
+    bottomNav('Account')
+  );
+
+  // S5 — Goals
+  document.getElementById('s5').innerHTML = frame(
+    appBar('Saving goals', 'Targets + progress') +
+    emptyBody({ illus: ILLUS.goal, title:'Set your first goal.', body:'Pick a target amount and date. Tag income or transfers as goal contributions and watch the bar fill.', primary:'+ Create a goal' }) +
+    bottomNav('Account')
+  );
+
+  // S6 — Shared wallet
+  document.getElementById('s6').innerHTML = frame(
+    '<div style="background:' + NAVY + ';color:#fff;padding:12px;text-align:center">' +
+      '<div style="font-size:11px;opacity:0.85">Shared wallet</div>' +
+      '<div style="font-size:14px;font-weight:700;margin-top:2px">Untitled</div></div>' +
+    emptyBody({ illus: ILLUS.people, title:'It\'s lonely in here.', body:'Invite up to 7 people by email. Everyone sees every entry, splits any way you like.', primary:'+ Invite a member', secondary:'Make this wallet personal instead' }) +
+    fab() + bottomNav('Wallets')
+  );
+
+  // S7 — Search
+  document.getElementById('s7').innerHTML = frame(
+    appBar('Search', '"mango ais"') +
+    emptyBody({ illus: ILLUS.search, title:'No matches for that.', body:'Try a different merchant, category, or amount. Search looks at descriptions, tags, and notes.', primary:'Clear search', secondary:'Browse by category' }) +
+    bottomNav('Timeline')
+  );
+
+  // S8 — Bookmarks
+  document.getElementById('s8').innerHTML = frame(
+    appBar('Bookmarks', 'One-tap merchants') +
+    emptyBody({ illus: ILLUS.bookmark, title:'Nothing bookmarked yet.', body:'Long-press any transaction and tap Bookmark to save the merchant + category + amount as a one-tap shortcut.', primary:'Show me how' }) +
+    bottomNav('Account')
+  );
+})();
+</script>
+</body>
+</html>

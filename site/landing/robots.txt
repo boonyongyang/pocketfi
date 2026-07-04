@@ -1,0 +1,9 @@
+# mypocketfi.web.app — robots.txt
+# We want to be indexed. Nothing here is private.
+
+User-agent: *
+Allow: /
+Disallow: /uploads/
+Disallow: /preview/
+
+Sitemap: https://mypocketfi.web.app/sitemap.xml

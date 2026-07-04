@@ -15,6 +15,10 @@ PocketFi is currently in launch-preparation mode. The public launch surface is i
 
 Current release blockers are tracked through issues and launch notes, not app-store links.
 
+## Landing Site Source
+
+The public landing site source is mirrored in [site/](site/). The live site is deployed on Firebase Hosting at [mypocketfi.web.app](https://mypocketfi.web.app). The private app repo remains the deployment authority for now; this mirror exists so the public launch surface can be inspected alongside support, security, and issue-template material.
+
 ## Features
 
 - **Track expenses and income**: Add transactions and categorize them for easier tracking.

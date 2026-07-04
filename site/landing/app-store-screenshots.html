@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>PocketFi · iOS Listing Screenshots</title>
+  <meta name="description" content="Six iOS listing panels at 1290×2796 (6.7-inch iPhone).">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <style>
+    html, body { margin: 0; background: #f0eee9; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif; }
+    * { box-sizing: border-box; }
+    body {
+      background-image: url("data:image/svg+xml,%3Csvg width='120' height='120' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M120 0H0v120' fill='none' stroke='rgba(0,0,0,0.06)' stroke-width='1'/%3E%3C/svg%3E");
+      background-size: 120px 120px; min-height: 100vh;
+    }
+    .world { padding: 60px; width: max-content; min-width: 100%; }
+    .sectionhead { padding: 0 0 36px; }
+    .sectionhead .title { font-size: 28px; font-weight: 600; color: rgba(40,30,20,0.85); letter-spacing: -0.4px; margin-bottom: 6px; }
+    .sectionhead .sub { font-size: 16px; color: rgba(60,50,40,0.6); }
+    .row { display: flex; gap: 48px; align-items: flex-start; }
+    .ab-wrap { flex-shrink: 0; }
+    .ab-label { font-size: 15px; font-weight: 500; color: rgba(60,50,40,0.7); padding: 3px 6px; margin-bottom: 4px; }
+    .ab-card { width: 1290px; height: 2796px; background: #fff; border-radius: 2px; box-shadow: 0 1px 3px rgba(0,0,0,.08), 0 4px 16px rgba(0,0,0,.06); overflow: hidden; }
+  </style>
+</head>
+<body>
+<div class="world">
+  <div class="sectionhead">
+    <div class="title">iOS listing · iPhone 6.7&quot; screenshots</div>
+    <div class="sub">6 panels at 1290×2796 — listing-ready export size. Smaller sizes auto-scale from these.</div>
+  </div>
+  <div class="row">
+    <div class="ab-wrap"><div class="ab-label">01 · Hero (Track every ringgit)</div><div class="ab-card" id="p1"></div></div>
+    <div class="ab-wrap"><div class="ab-label">02 · Snap receipts</div><div class="ab-card" id="p2"></div></div>
+    <div class="ab-wrap"><div class="ab-label">03 · Monthly overview</div><div class="ab-card" id="p3"></div></div>
+    <div class="ab-wrap"><div class="ab-label">04 · Shared wallets</div><div class="ab-card" id="p4"></div></div>
+    <div class="ab-wrap"><div class="ab-label">05 · GitHub</div><div class="ab-card" id="p5"></div></div>
+    <div class="ab-wrap"><div class="ab-label">06 · Privacy first</div><div class="ab-card" id="p6"></div></div>
+  </div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+  var AS_W=1290, AS_H=2796, NAVY='#0F3D66', YELLOW='#F8B319', SUB='#4A5A6A';
+  function px(n, s) { return (n * s) + 'px'; }
+
+  function miniTx(c, icon, title, amt, dark, good) {
+    return '<div style="background:#fff;border-radius:10px;padding:9px;display:flex;align-items:center;gap:9px;box-shadow:0 2px 6px rgba(0,0,0,0.05)">' +
+      '<div style="width:30px;height:30px;border-radius:50%;background:' + c + ';display:flex;align-items:center;justify-content:center;color:' + (dark ? '#0F3D66' : '#fff') + ';flex-shrink:0">' +
+      '<span class="material-icons" style="font-size:17px">' + icon + '</span></div>' +
+      '<div style="flex:1;font-size:11.5px;color:#0F3D66;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0">' + title + '</div>' +
+      '<div style="font-size:11px;font-weight:600;color:' + (good ? '#2E7D32' : '#F44336') + ';flex-shrink:0">' + amt + '</div></div>';
+  }
+  function phoneTimeline(s, accent) {
+    accent = accent || '#F8B319';
+    return '<div style="width:' + px(280,s) + ';height:' + px(560,s) + ';border-radius:' + px(38,s) + ';background:#0F3D66;padding:' + px(7,s) + ';box-shadow:0 30px 60px rgba(15,61,102,0.28), 0 8px 16px rgba(15,61,102,0.18);position:relative">' +
+      '<div style="width:100%;height:100%;border-radius:' + px(32,s) + ';background:#F9F9F9;overflow:hidden;display:flex;flex-direction:column;position:relative">' +
+      '<div style="position:absolute;top:' + px(8,s) + ';left:50%;transform:translateX(-50%);width:' + px(86,s) + ';height:' + px(22,s) + ';background:#0F3D66;border-radius:' + px(12,s) + ';z-index:5"></div>' +
+      '<div style="height:' + px(38,s) + ';background:#0F3D66;display:flex;align-items:center;justify-content:space-between;padding:0 ' + px(20,s) + ';color:#fff;font-size:' + px(11,s) + ';font-weight:600">' +
+      '<span>9:41</span><span style="width:40px"></span><span style="display:flex;gap:4px">' +
+      '<span class="material-icons" style="font-size:' + px(13,s) + '">signal_cellular_alt</span>' +
+      '<span class="material-icons" style="font-size:' + px(13,s) + '">wifi</span>' +
+      '<span class="material-icons" style="font-size:' + px(13,s) + '">battery_full</span></span></div>' +
+      '<div style="background:#0F3D66;color:#fff;padding:' + px(10,s) + ' ' + px(14,s) + ';display:flex;justify-content:space-between;align-items:center">' +
+      '<span class="material-icons" style="font-size:' + px(20,s) + '">notifications</span>' +
+      '<div style="text-align:center"><div style="font-size:' + px(16,s) + ';font-weight:500">− MYR 1,743.20</div>' +
+      '<div style="font-size:' + px(9.5,s) + ';opacity:0.85">Cash Flow · April</div></div>' +
+      '<span class="material-icons" style="font-size:' + px(20,s) + '">search</span></div>' +
+      '<div style="background:#0F3D66;display:flex;padding:0 ' + px(4,s) + '">' +
+      '<div style="flex:1;text-align:center;padding:' + px(10,s) + ';color:' + accent + ';border-bottom:2px solid ' + accent + ';font-size:' + px(11,s) + ';font-weight:500">Transactions</div>' +
+      '<div style="flex:1;text-align:center;padding:' + px(10,s) + ';color:rgba(255,255,255,0.55);font-size:' + px(11,s) + '">Overview</div></div>' +
+      '<div style="flex:1;padding:' + px(10,s) + ';display:flex;flex-direction:column;gap:' + px(8,s) + ';background:#F9F9F9;overflow:hidden">' +
+      '<div style="font-size:' + px(10,s) + ';color:#757575;padding:4px 4px 0;font-weight:500">Today</div>' +
+      miniTx('#F2AC3C','restaurant','Starbucks oat flat white','−18.00') +
+      miniTx('#D08547','local_grocery_store','Jaya Grocer','−142.30') +
+      miniTx('#F5D046','directions_bus','Grab to KLCC','−12.50',true) +
+      '<div style="font-size:' + px(10,s) + ';color:#757575;padding:4px 4px 0;font-weight:500">Yesterday</div>' +
+      miniTx('#53AF77','business_center','April payroll','+5,800.00',false,true) +
+      miniTx('#78C1AD','receipt','TNB Electricity','−186.40') + '</div>' +
+      '<div style="position:absolute;bottom:' + px(18,s) + ';right:' + px(14,s) + ';width:' + px(46,s) + ';height:' + px(46,s) + ';border-radius:50%;background:' + accent + ';box-shadow:0 6px 16px rgba(15,61,102,0.35);display:flex;align-items:center;justify-content:center;color:#fff">' +
+      '<span class="material-icons" style="font-size:' + px(22,s) + '">add</span></div></div></div>';
+  }
+  function phoneReceipt(s) {
+    var row = function (a, b) { return '<div style="display:flex;justify-content:space-between"><span>' + a + '</span><span>' + b + '</span></div>'; };
+    return '<div style="width:' + px(240,s) + ';height:' + px(480,s) + ';border-radius:' + px(32,s) + ';background:#0F3D66;padding:' + px(6,s) + ';box-shadow:0 24px 48px rgba(15,61,102,0.25);position:relative">' +
+      '<div style="width:100%;height:100%;border-radius:' + px(27,s) + ';background:#1a1a1a;overflow:hidden;position:relative;display:flex;flex-direction:column">' +
+      '<div style="flex:1;background:linear-gradient(180deg, #f5e9d6 0%, #e8d4b0 100%);padding:' + px(16,s) + ';position:relative">' +
+      '<div style="background:#fff;padding:' + px(14,s) + ';border-radius:4px;font-family:\'Roboto Mono\', monospace;font-size:' + px(9,s) + ';color:#333;box-shadow:0 4px 12px rgba(0,0,0,0.15);transform:rotate(-1.5deg)">' +
+      '<div style="text-align:center;font-weight:700;font-size:' + px(11,s) + ';margin-bottom:4px">JAYA GROCER</div>' +
+      '<div style="text-align:center;font-size:' + px(7,s) + ';color:#999;margin-bottom:8px">Mid Valley · KL</div>' +
+      '<div style="border-top:1px dashed #ccc;border-bottom:1px dashed #ccc;padding:6px 0;display:flex;flex-direction:column;gap:2px">' +
+      row('Bananas','4.20') + row('Oat milk','12.90') + row('Bread','5.50') + row('Eggs (12)','11.80') + '</div>' +
+      '<div style="display:flex;justify-content:space-between;font-weight:700;margin-top:6px"><span>TOTAL</span><span>MYR 142.30</span></div></div>' +
+      '<div style="position:absolute;top:' + px(22 + 14 + 60, s) + ';right:' + px(28,s) + ';background:rgba(248,179,25,0.32);border:1.5px solid #F8B319;border-radius:4px;padding:2px 6px;font-size:' + px(8,s) + ';font-weight:700;color:#0F3D66">MYR 142.30</div>' +
+      '<div style="position:absolute;top:' + px(26,s) + ';left:' + px(30,s) + ';background:rgba(248,179,25,0.32);border:1.5px solid #F8B319;border-radius:4px;padding:2px 6px;font-size:' + px(8,s) + ';font-weight:700;color:#0F3D66">JAYA GROCER</div></div>' +
+      '<div style="background:#0F3D66;color:#fff;padding:' + px(14,s) + ';display:flex;flex-direction:column;gap:' + px(6,s) + '">' +
+      '<div style="font-size:' + px(9,s) + ';opacity:0.7;letter-spacing:1px;font-weight:600;text-transform:uppercase">Detected</div>' +
+      '<div style="font-size:' + px(16,s) + ';font-weight:700">Jaya Grocer</div>' +
+      '<div style="font-size:' + px(13,s) + ';color:#F8B319;font-weight:600">− MYR 142.30 · Groceries</div>' +
+      '<div style="margin-top:' + px(6,s) + ';background:#F8B319;color:#0F3D66;text-align:center;padding:' + px(8,s) + ' 0;border-radius:' + px(20,s) + ';font-weight:700;font-size:' + px(12,s) + '">Save</div></div></div></div>';
+  }
+  function phoneOverview(s) {
+    var legend = [{ c:'#F2AC3C', t:'Food', v:'487.20' },{ c:'#D08547', t:'Groceries', v:'418.50' },{ c:'#78C1AD', t:'Bills', v:'296.40' }].map(function (r) {
+      return '<div style="display:flex;align-items:center;gap:' + px(7,s) + ';font-size:' + px(11,s) + '">' +
+        '<div style="width:' + px(10,s) + ';height:' + px(10,s) + ';border-radius:50%;background:' + r.c + '"></div>' +
+        '<span style="flex:1;color:#0F3D66">' + r.t + '</span><span style="color:#0F3D66;font-weight:600">' + r.v + '</span></div>';
+    }).join('');
+    return '<div style="width:' + px(240,s) + ';height:' + px(480,s) + ';border-radius:' + px(32,s) + ';background:#0F3D66;padding:' + px(6,s) + ';box-shadow:0 24px 48px rgba(15,61,102,0.25)">' +
+      '<div style="width:100%;height:100%;border-radius:' + px(27,s) + ';background:#F9F9F9;overflow:hidden;display:flex;flex-direction:column">' +
+      '<div style="background:#0F3D66;color:#fff;padding:' + px(12,s) + ';text-align:center">' +
+      '<div style="font-size:' + px(11,s) + ';opacity:0.85">Overview</div>' +
+      '<div style="font-size:' + px(14,s) + ';font-weight:700;margin-top:2px">April 2026</div></div>' +
+      '<div style="flex:1;padding:' + px(14,s) + ';display:flex;flex-direction:column;align-items:center;gap:' + px(12,s) + '">' +
+      '<div style="width:' + px(150,s) + ';height:' + px(150,s) + ';border-radius:50%;background:conic-gradient(#F2AC3C 0 28%, #D08547 28% 52%, #78C1AD 52% 69%, #F5D046 69% 80%, #D471E8 80% 90%, #7246C8 90% 96%, #67686B 96% 100%);display:flex;align-items:center;justify-content:center;box-shadow:0 6px 18px rgba(0,0,0,0.10)">' +
+      '<div style="width:' + px(92,s) + ';height:' + px(92,s) + ';border-radius:50%;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center">' +
+      '<div style="font-size:' + px(9,s) + ';color:#757575">Spent</div>' +
+      '<div style="font-size:' + px(14,s) + ';font-weight:700;color:#0F3D66">MYR 1,743</div>' +
+      '<div style="font-size:' + px(8,s) + ';color:#F1592A;margin-top:2px">▲ 12% vs Mar</div></div></div>' +
+      '<div style="width:100%;display:flex;flex-direction:column;gap:' + px(5,s) + '">' + legend + '</div></div></div></div>';
+  }
+  function phoneWallet(s) {
+    var members = [{ n:'Aisha', a:'A', c:'#D471E8', amt:'+ 460.00' },{ n:'Boon', a:'B', c:'#53AF77', amt:'+ 480.50' },{ n:'Mei', a:'M', c:'#F2AC3C', amt:'+ 460.00' },{ n:'You', a:'Y', c:'#0F3D66', amt:'+ 440.00' }].map(function (p) {
+      return '<div style="background:#fff;border-radius:10px;padding:' + px(8,s) + ';display:flex;align-items:center;gap:' + px(8,s) + ';box-shadow:0 2px 6px rgba(0,0,0,0.05)">' +
+        '<div style="width:' + px(26,s) + ';height:' + px(26,s) + ';border-radius:50%;background:' + p.c + ';color:#fff;font-size:' + px(11,s) + ';font-weight:700;display:flex;align-items:center;justify-content:center">' + p.a + '</div>' +
+        '<span style="flex:1;font-size:' + px(11,s) + ';color:#0F3D66;font-weight:500">' + p.n + '</span>' +
+        '<span style="font-size:' + px(11,s) + ';color:#2E7D32;font-weight:600">' + p.amt + '</span></div>';
+    }).join('');
+    return '<div style="width:' + px(240,s) + ';height:' + px(480,s) + ';border-radius:' + px(32,s) + ';background:#0F3D66;padding:' + px(6,s) + ';box-shadow:0 24px 48px rgba(15,61,102,0.25)">' +
+      '<div style="width:100%;height:100%;border-radius:' + px(27,s) + ';background:#F9F9F9;overflow:hidden;display:flex;flex-direction:column">' +
+      '<div style="background:#0F3D66;color:#fff;padding:' + px(12,s) + ';text-align:center">' +
+      '<div style="font-size:' + px(11,s) + ';opacity:0.8">Shared Wallet</div>' +
+      '<div style="font-size:' + px(14,s) + ';font-weight:700;margin-top:2px">KL Trip · Apr 18-22</div></div>' +
+      '<div style="padding:' + px(14,s) + ';display:flex;flex-direction:column;gap:' + px(10,s) + ';flex:1">' +
+      '<div style="background:linear-gradient(135deg, #F8B319, #FCD46A);padding:' + px(12,s) + ';border-radius:' + px(14,s) + ';color:#0F3D66">' +
+      '<div style="font-size:' + px(9,s) + ';opacity:0.7;letter-spacing:0.4px;font-weight:700">POOLED</div>' +
+      '<div style="font-size:' + px(18,s) + ';font-weight:700;margin-top:2px">MYR 1,840.50</div>' +
+      '<div style="font-size:' + px(9,s) + ';margin-top:4px;opacity:0.8">Across 4 members</div></div>' +
+      '<div style="display:flex;flex-direction:column;gap:' + px(6,s) + '">' + members + '</div></div></div></div>';
+  }
+
+  function decorBlobs(accent) {
+    return '<div style="position:absolute;top:-220px;right:-220px;width:620px;height:620px;border-radius:50%;background:' + accent + '24"></div>' +
+      '<div style="position:absolute;bottom:-260px;left:-200px;width:540px;height:540px;border-radius:50%;background:' + accent + '1a"></div>' +
+      '<div style="position:absolute;top:48%;right:-4%;color:' + accent + ';font-size:110px;opacity:0.35">✦</div>' +
+      '<div style="position:absolute;top:20%;left:8%;color:' + accent + ';font-size:74px;opacity:0.30">✦</div>';
+  }
+  function panel(o) {
+    return '<div style="width:1290px;height:2796px;background:' + o.bg + ';color:' + o.fg + ';position:relative;overflow:hidden;font-family:Roboto, system-ui, sans-serif;display:flex;flex-direction:column">' +
+      (o.decor || '') +
+      '<div style="padding:200px 120px 0;position:relative;z-index:2">' +
+        '<div style="font-size:34px;font-weight:700;color:' + o.accent + ';letter-spacing:5px;text-transform:uppercase;margin-bottom:36px">' + o.kicker + '</div>' +
+        '<h2 style="font-size:152px;line-height:0.98;letter-spacing:-4.5px;font-weight:700;margin:0;text-wrap:balance">' + o.headline + '</h2>' +
+      '</div>' +
+      '<div style="flex:1;display:flex;align-items:flex-end;justify-content:center;position:relative;z-index:2;padding-bottom:' + (o.footer ? '130px' : '60px') + '">' + o.phone + '</div>' +
+      (o.footer ? '<div style="padding:0 120px 110px;text-align:center;position:relative;z-index:2"><div style="font-size:32px;font-weight:500;color:' + (o.footerColor || o.fg) + ';opacity:0.78;letter-spacing:0.5px;line-height:1.3">' + o.footer + '</div></div>' : '') +
+    '</div>';
+  }
+
+  document.getElementById('p1').innerHTML = panel({
+    bg:'#0F3D66', fg:'#FFF6E0', accent:'#F8B319', kicker:'● PocketFi',
+    headline:'Track every<br><span style="color:#F8B319">ringgit.</span>',
+    decor: decorBlobs('#F8B319'), footer:'Free · Public roadmap', footerColor:'rgba(255,246,224,0.78)',
+    phone:'<div style="filter:drop-shadow(0 36px 70px rgba(0,0,0,0.40))">' + phoneTimeline(2.40, '#F8B319') + '</div>'
+  });
+  document.getElementById('p2').innerHTML = panel({
+    bg:'#FFF6E0', fg:'#0F3D66', accent:'#F8B319', kicker:'● Receipt OCR',
+    headline:'Snap,<br>don\'t <span style="color:#F8B319">type.</span>',
+    decor: decorBlobs('#0F3D66') + '<div style="position:absolute;top:100px;right:100px;color:#F8B319;font-size:88px;opacity:0.5">✦</div>',
+    footer:'Merchant. Amount. Date.<br>Filled in for you.', footerColor:'#4A5A6A',
+    phone:'<div style="filter:drop-shadow(0 36px 70px rgba(15,61,102,0.30))">' + phoneReceipt(2.85) + '</div>'
+  });
+  document.getElementById('p3').innerHTML = panel({
+    bg:'#FCD46A', fg:'#0F3D66', accent:'#0F3D66', kicker:'● Monthly view',
+    headline:'The big<br>picture.',
+    decor: '<div style="position:absolute;top:-170px;left:-170px;width:500px;height:500px;border-radius:50%;background:rgba(15,61,102,0.10)"></div>' +
+      '<div style="position:absolute;bottom:-220px;right:-200px;width:540px;height:540px;border-radius:50%;background:rgba(15,61,102,0.06)"></div>' +
+      '<div style="position:absolute;top:26%;right:8%;color:#0F3D66;font-size:96px;opacity:0.30">✦</div>' +
+      '<div style="position:absolute;bottom:32%;left:7%;color:#0F3D66;font-size:64px;opacity:0.30">✦</div>',
+    footer:'Donut, ranking, gentle nudges.', footerColor:'rgba(15,61,102,0.78)',
+    phone:'<div style="filter:drop-shadow(0 36px 70px rgba(15,61,102,0.30))">' + phoneOverview(2.85) + '</div>'
+  });
+  document.getElementById('p4').innerHTML = panel({
+    bg:'#F1592A', fg:'#FFF6E0', accent:'#FCD46A', kicker:'● Shared wallets',
+    headline:'Split it,<br>track it,<br>done.',
+    decor: '<div style="position:absolute;top:-220px;right:-220px;width:620px;height:620px;border-radius:50%;background:rgba(255,255,255,0.10)"></div>' +
+      '<div style="position:absolute;bottom:-260px;left:-200px;width:540px;height:540px;border-radius:50%;background:rgba(15,61,102,0.18)"></div>' +
+      '<div style="position:absolute;top:200px;right:140px;display:flex">' +
+      ['#FCD46A','#0F3D66','#FFF6E0'].map(function (c, i) {
+        return '<div style="width:94px;height:94px;border-radius:50%;background:' + c + ';color:#F1592A;font-size:38px;font-weight:800;display:flex;align-items:center;justify-content:center;border:6px solid #F1592A;margin-left:' + (i ? '-34px' : '0') + ';box-shadow:0 10px 24px rgba(0,0,0,0.18)">' + ['A','B','M'][i] + '</div>';
+      }).join('') + '</div>',
+    footer:'No more "who paid?" texts<br>at 11pm.', footerColor:'rgba(255,246,224,0.85)',
+    phone:'<div style="filter:drop-shadow(0 36px 70px rgba(0,0,0,0.32))">' + phoneWallet(2.85) + '</div>'
+  });
+
+  // P5 — GitHub
+  document.getElementById('p5').innerHTML =
+    '<div style="width:1290px;height:2796px;background:#0F3D66;color:#FFF6E0;position:relative;overflow:hidden;font-family:Roboto, system-ui, sans-serif;padding:200px 120px">' +
+      '<div style="position:absolute;inset:0;background-image:radial-gradient(rgba(248,179,25,0.45) 2.5px, transparent 2.5px);background-size:58px 58px;opacity:0.18"></div>' +
+      '<div style="position:relative;z-index:2">' +
+        '<div style="font-size:34px;font-weight:700;color:#F8B319;letter-spacing:5px;text-transform:uppercase;margin-bottom:36px">● GitHub</div>' +
+        '<h2 style="font-size:152px;line-height:0.98;letter-spacing:-4.5px;font-weight:700;margin:0 0 64px;text-wrap:balance">Read the<br>code. <span style="color:#F8B319">Fork it.</span></h2>' +
+        '<div style="background:rgba(0,0,0,0.32);border-radius:28px;padding:42px 52px;font-family:Roboto Mono, monospace;font-size:36px;line-height:1.7;color:rgba(255,246,224,0.92);border:2px solid rgba(255,255,255,0.08);margin-bottom:50px">' +
+          '<div style="display:flex;gap:16px;margin-bottom:28px;align-items:center">' +
+            '<span style="width:22px;height:22px;border-radius:50%;background:#F44336"></span>' +
+            '<span style="width:22px;height:22px;border-radius:50%;background:#F8B319"></span>' +
+            '<span style="width:22px;height:22px;border-radius:50%;background:#4CAF50"></span>' +
+            '<span style="margin-left:auto;font-size:26px;opacity:0.55">app_colors.dart</span></div>' +
+          '<div><span style="color:#F8B319">class</span> <span style="color:#7ECDC9">AppColors</span> {</div>' +
+          '<div style="padding-left:36px">main1 = <span style="color:#FCD46A">0xFF0F3D66</span>;</div>' +
+          '<div style="padding-left:36px">main2 = <span style="color:#FCD46A">0xFFF8B319</span>;</div>' +
+          '<div style="padding-left:36px;opacity:0.55">// release proof in progress</div>' +
+          '<div>}</div>' +
+        '</div>' +
+        '<div style="display:flex;gap:72px;margin-bottom:60px;font-size:38px;color:rgba(255,246,224,0.88)">' +
+          '<span style="display:inline-flex;align-items:center;gap:16px"><span class="material-icons" style="font-size:42px;color:#F8B319">star</span><strong>240</strong> stars</span>' +
+          '<span style="display:inline-flex;align-items:center;gap:16px"><span class="material-icons" style="font-size:42px">call_split</span><strong>34</strong> forks</span>' +
+        '</div>' +
+        '<div style="display:inline-flex;align-items:center;gap:20px;background:#F8B319;color:#0F3D66;padding:34px 56px;border-radius:99px;font-size:42px;font-weight:700;box-shadow:12px 12px 0 rgba(0,0,0,0.18)">' +
+          '<svg width="46" height="46" viewBox="0 0 24 24" fill="#0F3D66"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.56 0-.28-.01-1.02-.02-2-3.2.7-3.87-1.54-3.87-1.54-.52-1.32-1.27-1.68-1.27-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.02 1.75 2.69 1.25 3.34.95.1-.74.4-1.25.72-1.54-2.55-.29-5.24-1.28-5.24-5.7 0-1.26.45-2.29 1.18-3.1-.12-.29-.51-1.46.11-3.05 0 0 .96-.31 3.15 1.18a10.95 10.95 0 0 1 5.74 0c2.18-1.49 3.14-1.18 3.14-1.18.63 1.59.23 2.76.11 3.05.74.81 1.18 1.84 1.18 3.1 0 4.43-2.69 5.41-5.26 5.69.41.36.78 1.06.78 2.13 0 1.54-.01 2.78-.01 3.16 0 .31.21.67.79.56C20.21 21.39 23.5 17.08 23.5 12 23.5 5.65 18.35.5 12 .5z"/></svg>' +
+          'public materials licensed.' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+
+  // P6 — Privacy
+  var p6items = [
+    { i:'block', t:'No ads, no trackers' },
+    { i:'visibility_off', t:'No selling your data' },
+    { i:'lock', t:'Encrypted at rest in Firebase' },
+    { i:'delete_outline', t:'One-tap account deletion' }
+  ].map(function (x) {
+    return '<div style="display:flex;align-items:center;gap:36px;font-size:50px;font-weight:600">' +
+      '<div style="width:108px;height:108px;border-radius:50%;background:#F8B319;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:6px 6px 0 #0F3D66">' +
+      '<span class="material-icons" style="font-size:56px;color:#0F3D66">' + x.i + '</span></div>' + x.t + '</div>';
+  }).join('');
+  document.getElementById('p6').innerHTML =
+    '<div style="width:1290px;height:2796px;background:#FFF6E0;color:#0F3D66;position:relative;overflow:hidden;font-family:Roboto, system-ui, sans-serif;padding:200px 120px;display:flex;flex-direction:column;justify-content:space-between">' +
+      decorBlobs('#F8B319') +
+      '<div style="position:relative;z-index:2">' +
+        '<div style="font-size:34px;font-weight:700;color:#F8B319;letter-spacing:5px;text-transform:uppercase;margin-bottom:36px">● Your data</div>' +
+        '<h2 style="font-size:152px;line-height:0.98;letter-spacing:-4.5px;font-weight:700;margin:0;text-wrap:balance">Yours.<br>Not <span style="color:#F8B319">theirs.</span></h2>' +
+      '</div>' +
+      '<div style="position:relative;z-index:2;display:flex;flex-direction:column;gap:40px">' + p6items + '</div>' +
+      '<div style="position:relative;z-index:2;font-size:32px;color:rgba(15,61,102,0.65);font-style:italic">Read the policy →</div>' +
+    '</div>';
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Page not found · PocketFi</title>
+  <meta name="description" content="That page got misplaced. Find your way back home, or pick from the links below.">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <style>
+    html, body { margin: 0; background: #FFF6E0; font-family: Roboto, system-ui, sans-serif; color:#0F3D66; min-height:100vh; }
+    * { box-sizing: border-box; }
+    body { display: flex; flex-direction: column; }
+    a { -webkit-tap-highlight-color: transparent; }
+    h1, h2, h3, p { margin: 0; }
+    .nav-link { position: relative; }
+    .nav-link::after { content:''; position:absolute; left:0; bottom:-4px; width:0; height:2px; background:#F8B319; transition: width 200ms; }
+    .nav-link:hover::after { width:100%; }
+    .btn-press { transition: transform 120ms; }
+    .btn-press:active { transform: translate(2px, 2px); }
+    @keyframes drift { 0%, 100% { transform: translate(0,0) rotate(var(--r,0deg)); } 50% { transform: translate(0,-12px) rotate(var(--r,0deg)); } }
+    .drift { animation: drift 5s ease-in-out infinite; }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 960px) {
+      header[style*="padding: 18px 40px"] { padding: 14px 22px !important; gap: 20px !important; }
+      header nav { gap: 18px !important; margin-left: 12px !important; }
+      [style*="grid-template-columns: 1.1fr 1fr"] { grid-template-columns: 1fr !important; gap: 36px !important; }
+      [style*="grid-template-columns: 1.4fr 1fr 1fr 1fr"] { grid-template-columns: 1fr 1fr !important; gap: 32px !important; }
+      [style*="font-size: 72"] { font-size: 52px !important; line-height: 1.05 !important; }
+    }
+    @media (max-width: 640px) {
+      header nav { display: none !important; }
+      header[style*="padding: 18px 40px"] { padding: 12px 16px !important; gap: 10px !important; }
+      header a[href$="#download"] { padding: 9px 16px !important; font-size: 12px !important; }
+      [style*="grid-template-columns: 1fr 1fr"] { grid-template-columns: 1fr !important; gap: 12px !important; }
+      [style*="grid-template-columns: 1.4fr 1fr 1fr 1fr"] { grid-template-columns: 1fr 1fr !important; gap: 28px !important; }
+      [style*="font-size: 72"] { font-size: 40px !important; line-height: 1.05 !important; letter-spacing: -0.6px !important; }
+      p[style*="font-size: 17"] { font-size: 15.5px !important; }
+    }
+    @media (max-width: 380px) { [style*="font-size: 72"] { font-size: 34px !important; } }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<header style="padding: 18px 40px; display: flex; align-items: center; gap: 32px; background: rgba(255,246,224,0.78); position: sticky; top: 0; z-index: 30; backdrop-filter: blur(14px) saturate(160%); -webkit-backdrop-filter: blur(14px) saturate(160%); border-bottom: 1px solid rgba(15,61,102,0.06);">
+  <a href="/" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: #0F3D66;">
+    <svg width="32" height="32" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <rect x="8" y="22" width="84" height="60" rx="14" fill="#0F3D66"/>
+      <rect x="8" y="22" width="84" height="14" rx="14" fill="#0F3D66"/>
+      <circle cx="68" cy="52" r="14" fill="#F8B319"/>
+      <circle cx="68" cy="52" r="6" fill="#0F3D66"/>
+      <rect x="14" y="14" width="60" height="14" rx="6" fill="#0F3D66"/>
+    </svg>
+    <span style="font-size: 19px; font-weight: 700;">PocketFi<span style="color: #F8B319;">!</span></span>
+  </a>
+  <nav style="display: flex; gap: 26px; margin-left: 24px; font-size: 14px; font-weight: 500;">
+    <a class="nav-link" href="features" style="color: #0F3D66; text-decoration: none; opacity: 0.8; font-weight: 500;">Features</a>
+    <a class="nav-link" href="compare" style="color: #0F3D66; text-decoration: none; opacity: 0.8; font-weight: 500;">Compare</a>
+    <a class="nav-link" href="faq" style="color: #0F3D66; text-decoration: none; opacity: 0.8; font-weight: 500;">FAQ</a>
+    <a class="nav-link" href="roadmap" style="color: #0F3D66; text-decoration: none; opacity: 0.8; font-weight: 500;">Roadmap</a>
+    <a class="nav-link" href="changelog" style="color: #0F3D66; text-decoration: none; opacity: 0.8; font-weight: 500;">Changelog</a>
+    <a class="nav-link" href="/#opensource" style="color: #0F3D66; text-decoration: none; opacity: 0.8; font-weight: 500;">GitHub</a>
+  </nav>
+  <a class="btn-press" href="/#download" style="margin-left: auto; background: #0F3D66; color: #FCD46A; padding: 10px 20px; border-radius: 99px; text-decoration: none; font-size: 13px; font-weight: 700; box-shadow: 3px 3px 0 #F8B319;">GitHub →</a>
+</header>
+
+<main style="flex: 1; display: flex; align-items: center; justify-content: center; padding: 60px 40px 80px; background: #FFF6E0;">
+  <div style="max-width: 1100px; width: 100%; display: grid; grid-template-columns: 1.1fr 1fr; gap: 60px; align-items: center;">
+    <div>
+      <div style="font-family: Roboto Mono, monospace; font-size: 14px; color: #F8B319; letter-spacing: 2px; font-weight: 600;">ERROR · 404</div>
+      <h1 style="font-size: 72px; line-height: 1.0; letter-spacing: -1.8px; font-weight: 700; margin: 14px 0 18px; text-wrap: pretty;">This receipt<br>got <span style="color: #F8B319;">misplaced.</span></h1>
+      <p style="font-size: 17px; line-height: 1.65; color: #4A5A6A; margin: 0 0 30px; max-width: 480px;">The page you're looking for either moved, never existed, or got eaten by your washing machine. We've all been there.</p>
+      <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 36px;">
+        <a class="btn-press" href="/" style="background: #0F3D66; color: #FCD46A; padding: 14px 26px; border-radius: 99px; text-decoration: none; font-weight: 700; font-size: 14px; display: inline-flex; align-items: center; gap: 9px; box-shadow: 4px 4px 0 #F8B319;">
+          <span class="material-icons" style="font-size: 18px;">home</span> Back to home
+        </a>
+        <button class="btn-press" onclick="history.back()" style="background: transparent; border: 1.5px solid #0F3D66; color: #0F3D66; padding: 13px 22px; border-radius: 99px; font-weight: 600; font-size: 14px; font-family: inherit; cursor: pointer; display: inline-flex; align-items: center; gap: 8px;">
+          <span class="material-icons" style="font-size: 18px;">arrow_back</span> Go back
+        </button>
+      </div>
+      <div style="border-top: 1px solid rgba(15,61,102,0.10); padding-top: 24px;">
+        <div style="font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #4A5A6A; margin-bottom: 14px;">Or try one of these</div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-width: 440px;">
+          <a href="/#features" style="display: flex; align-items: center; gap: 10px; background: #fff; padding: 12px 14px; border-radius: 12px; text-decoration: none; color: #0F3D66; font-size: 14px; font-weight: 500; border: 1px solid rgba(15,61,102,0.08); box-shadow: 0 1px 3px rgba(15,61,102,0.04);">
+            <span class="material-icons" style="font-size: 18px; color: #F8B319;">auto_awesome</span>Features<span style="margin-left: auto; color: rgba(15,61,102,0.4);">→</span>
+          </a>
+          <a href="/#screens" style="display: flex; align-items: center; gap: 10px; background: #fff; padding: 12px 14px; border-radius: 12px; text-decoration: none; color: #0F3D66; font-size: 14px; font-weight: 500; border: 1px solid rgba(15,61,102,0.08); box-shadow: 0 1px 3px rgba(15,61,102,0.04);">
+            <span class="material-icons" style="font-size: 18px; color: #F8B319;">phone_iphone</span>App screens<span style="margin-left: auto; color: rgba(15,61,102,0.4);">→</span>
+          </a>
+          <a href="changelog" style="display: flex; align-items: center; gap: 10px; background: #fff; padding: 12px 14px; border-radius: 12px; text-decoration: none; color: #0F3D66; font-size: 14px; font-weight: 500; border: 1px solid rgba(15,61,102,0.08); box-shadow: 0 1px 3px rgba(15,61,102,0.04);">
+            <span class="material-icons" style="font-size: 18px; color: #F8B319;">history</span>Changelog<span style="margin-left: auto; color: rgba(15,61,102,0.4);">→</span>
+          </a>
+          <a href="privacy" style="display: flex; align-items: center; gap: 10px; background: #fff; padding: 12px 14px; border-radius: 12px; text-decoration: none; color: #0F3D66; font-size: 14px; font-weight: 500; border: 1px solid rgba(15,61,102,0.08); box-shadow: 0 1px 3px rgba(15,61,102,0.04);">
+            <span class="material-icons" style="font-size: 18px; color: #F8B319;">shield</span>Privacy policy<span style="margin-left: auto; color: rgba(15,61,102,0.4);">→</span>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div style="display: flex; justify-content: center;">
+      <!-- NotFoundReceipt -->
+      <div style="position: relative; width: 280px; height: 340px;">
+        <div class="drift" style="--r: -9deg; position: absolute; left: 14px; top: 40px; width: 200px; height: 260px; background: #fff; border-radius: 6px; transform: rotate(-9deg); box-shadow: 0 6px 18px rgba(15,61,102,0.10); opacity: 0.6; clip-path: polygon(0 0, 100% 0, 100% calc(100% - 12px), 92% 100%, 84% calc(100% - 8px), 76% 100%, 68% calc(100% - 8px), 60% 100%, 52% calc(100% - 8px), 44% 100%, 36% calc(100% - 8px), 28% 100%, 20% calc(100% - 8px), 12% 100%, 4% calc(100% - 8px), 0 100%);"></div>
+        <div class="drift" style="--r: 4deg; position: absolute; left: 60px; top: 18px; width: 200px; height: 300px; background: #fff; border-radius: 6px; transform: rotate(4deg); box-shadow: 4px 8px 20px rgba(15,61,102,0.18); padding: 18px 18px 28px; font-family: Roboto Mono, monospace; font-size: 10px; color: #666; clip-path: polygon(0 0, 100% 0, 100% calc(100% - 12px), 92% 100%, 84% calc(100% - 8px), 76% 100%, 68% calc(100% - 8px), 60% 100%, 52% calc(100% - 8px), 44% 100%, 36% calc(100% - 8px), 28% 100%, 20% calc(100% - 8px), 12% 100%, 4% calc(100% - 8px), 0 100%);">
+          <div style="font-weight: 700; text-align: center; font-size: 11px; color: #0F3D66; letter-spacing: 1.5px;">POCKETFI</div>
+          <div style="text-align: center; font-size: 8.5px; opacity: 0.6; margin-top: 2px;">404 · this page</div>
+          <div style="border-top: 1px dashed #ccc; border-bottom: 1px dashed #ccc; margin: 14px 0; padding: 10px 0; display: flex; flex-direction: column; gap: 5px;">
+            <div style="display: flex; justify-content: space-between;"><span>Item</span><span>Status</span></div>
+            <div style="display: flex; justify-content: space-between;"><span>The page</span><span style="color: #F1592A;">missing</span></div>
+            <div style="display: flex; justify-content: space-between;"><span>The link</span><span style="color: #F1592A;">broken</span></div>
+            <div style="display: flex; justify-content: space-between;"><span>The vibe</span><span style="color: #2E7D32;">intact</span></div>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-weight: 700; color: #0F3D66; font-size: 11px;"><span>NOT FOUND</span><span>404.00</span></div>
+          <div style="text-align: center; margin-top: 14px; font-size: 8.5px; opacity: 0.6;">thank you, come again</div>
+          <div style="display: flex; gap: 1.5px; justify-content: center; margin-top: 10px;">
+            <div style="width: 3px; height: 22px; background: #0F3D66;"></div>
+            <div style="width: 2px; height: 22px; background: #0F3D66;"></div>
+            <div style="width: 2px; height: 22px; background: #0F3D66;"></div>
+            <div style="width: 1px; height: 22px; background: #0F3D66;"></div>
+            <div style="width: 3px; height: 22px; background: #0F3D66;"></div>
+            <div style="width: 2px; height: 22px; background: #0F3D66;"></div>
+            <div style="width: 1px; height: 22px; background: #0F3D66;"></div>
+            <div style="width: 2px; height: 22px; background: #0F3D66;"></div>
+            <div style="width: 3px; height: 22px; background: #0F3D66;"></div>
+            <div style="width: 1px; height: 22px; background: #0F3D66;"></div>
+            <div style="width: 2px; height: 22px; background: #0F3D66;"></div>
+            <div style="width: 2px; height: 22px; background: #0F3D66;"></div>
+            <div style="width: 3px; height: 22px; background: #0F3D66;"></div>
+            <div style="width: 2px; height: 22px; background: #0F3D66;"></div>
+            <div style="width: 1px; height: 22px; background: #0F3D66;"></div>
+            <div style="width: 2px; height: 22px; background: #0F3D66;"></div>
+            <div style="width: 3px; height: 22px; background: #0F3D66;"></div>
+            <div style="width: 1px; height: 22px; background: #0F3D66;"></div>
+            <div style="width: 2px; height: 22px; background: #0F3D66;"></div>
+            <div style="width: 2px; height: 22px; background: #0F3D66;"></div>
+            <div style="width: 3px; height: 22px; background: #0F3D66;"></div>
+            <div style="width: 2px; height: 22px; background: #0F3D66;"></div>
+          </div>
+        </div>
+        <div class="drift" style="--r: 0deg; position: absolute; top: 6px; right: 18px; color: #F8B319; font-size: 24px; animation-delay: 0.5s;">✦</div>
+        <div class="drift" style="--r: 0deg; position: absolute; bottom: 8px; left: 18px; color: #F8B319; font-size: 18px; animation-delay: 1.5s;">✦</div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- Footer -->
+<footer style="background: #0F3D66; color: rgba(255,255,255,0.78); padding: 56px 40px 24px;">
+  <div style="max-width: 1200px; margin: 0 auto;">
+    <div style="display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 40px;">
+      <div>
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 14px;">
+          <svg width="32" height="32" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <rect x="8" y="22" width="84" height="60" rx="14" fill="#0F3D66"/>
+            <rect x="8" y="22" width="84" height="14" rx="14" fill="#0F3D66"/>
+            <circle cx="68" cy="52" r="14" fill="#F8B319"/>
+            <circle cx="68" cy="52" r="6" fill="#0F3D66"/>
+            <rect x="14" y="14" width="60" height="14" rx="6" fill="#0F3D66"/>
+          </svg>
+          <span style="font-size: 19px; font-weight: 700; color: #fff;">PocketFi<span style="color: #F8B319;">!</span></span>
+        </div>
+        <p style="font-size: 13px; line-height: 1.65; margin: 0 0 16px; max-width: 280px;">A free budget tracker. Made in KL with Flutter + Firebase.</p>
+        <div style="display: flex; gap: 10px;">
+          <a href="https://github.com/boonyongyang/pocketfi" target="_blank" rel="noopener" style="width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: center; color: #fff;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#fff"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.56 0-.28-.01-1.02-.02-2-3.2.7-3.87-1.54-3.87-1.54-.52-1.32-1.27-1.68-1.27-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.02 1.75 2.69 1.25 3.34.95.1-.74.4-1.25.72-1.54-2.55-.29-5.24-1.28-5.24-5.7 0-1.26.45-2.29 1.18-3.1-.12-.29-.51-1.46.11-3.05 0 0 .96-.31 3.15 1.18a10.95 10.95 0 0 1 5.74 0c2.18-1.49 3.14-1.18 3.14-1.18.63 1.59.23 2.76.11 3.05.74.81 1.18 1.84 1.18 3.1 0 4.43-2.69 5.41-5.26 5.69.41.36.78 1.06.78 2.13 0 1.54-.01 2.78-.01 3.16 0 .31.21.67.79.56C20.21 21.39 23.5 17.08 23.5 12 23.5 5.65 18.35.5 12 .5z"/></svg>
+          </a>
+        </div>
+      </div>
+      <div>
+        <div style="font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #F8B319; margin-bottom: 14px;">Product</div>
+        <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 9px;">
+          <li><a href="features" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Features</a></li>
+          <li><a href="compare" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Compare</a></li>
+          <li><a href="/#screens" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Screens</a></li>
+          <li><a href="faq" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">FAQ</a></li>
+          <li><a href="roadmap" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Roadmap</a></li>
+          <li><a href="changelog" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Changelog</a></li>
+          <li><a href="/#download" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">GitHub</a></li>
+        </ul>
+      </div>
+      <div>
+        <div style="font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #F8B319; margin-bottom: 14px;">GitHub</div>
+        <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 9px;">
+          <li><a href="https://github.com/boonyongyang/pocketfi" target="_blank" rel="noopener" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">GitHub repo ↗</a></li>
+          <li><a href="https://github.com/boonyongyang/pocketfi/blob/main/LICENSE" target="_blank" rel="noopener" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">MIT license ↗</a></li>
+          <li><a href="contribute" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Contribute</a></li>
+          <li><a href="community" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Community</a></li>
+          <li><a href="https://github.com/boonyongyang/pocketfi/issues" target="_blank" rel="noopener" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Report an issue ↗</a></li>
+          <li><a href="about" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">About</a></li>
+          <li><a href="blog" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Blog</a></li>
+          <li><a href="support" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Support</a></li>
+        </ul>
+      </div>
+      <div>
+        <div style="font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #F8B319; margin-bottom: 14px;">Legal &amp; trust</div>
+        <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 9px;">
+          <li><a href="security" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Security</a></li>
+          <li><a href="privacy" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Privacy policy</a></li>
+          <li><a href="cookies" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Cookie policy</a></li>
+          <li><a href="terms" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Terms of service</a></li>
+          <li><a href="delete-account" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Delete my data</a></li>
+          <li><a href="press-kit" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Press kit</a></li>
+          <li><a href="brand-assets" style="color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13.5px;">Brand assets</a></li>
+        </ul>
+      </div>
+    </div>
+    <div style="border-top: 1px solid rgba(255,255,255,0.10); padding-top: 20px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; font-size: 12.5px;">
+      <span>© 2026 PocketFi · public materials licensed · Made in KL ✿</span>
+      <span><a href="https://github.com/boonyongyang/pocketfi" target="_blank" rel="noopener" style="color: #FCD46A; text-decoration: none;">github.com/boonyongyang/pocketfi</a></span>
+    </div>
+  </div>
+</footer>
+
+<!-- Cookie notice (no tracking; localStorage flag only) -->
+<script>
+(function () {
+  'use strict';
+  var KEY = 'pocketfi_cookie_banner';
+  function isDismissed() { try { return localStorage.getItem(KEY) === 'dismissed'; } catch (e) { return false; } }
+  function dismiss() { try { localStorage.setItem(KEY, 'dismissed'); } catch (e) {} }
+  function mount() {
+    if (isDismissed()) return;
+    if (document.getElementById('pf-cookie-banner')) return;
+    var el = document.createElement('div');
+    el.id = 'pf-cookie-banner';
+    el.setAttribute('role', 'region');
+    el.setAttribute('aria-label', 'Cookie notice');
+    el.innerHTML = ['<div class="pf-cb-inner">','<div class="pf-cb-icon" aria-hidden="true"><span class="material-icons">cookie</span></div>',
+      '<div class="pf-cb-text"><strong>We don’t use tracking cookies.</strong> No analytics, no ad pixels — just a flag so this banner stays dismissed. <a href="cookies">Read the full policy</a>.</div>',
+      '<button type="button" class="pf-cb-btn" aria-label="Dismiss notice">Got it</button>','</div>'].join('');
+    el.querySelector('.pf-cb-btn').addEventListener('click', function () {
+      dismiss(); el.classList.add('pf-cb-out');
+      setTimeout(function () { if (el.parentNode) el.parentNode.removeChild(el); }, 280);
+    });
+    document.body.appendChild(el);
+    requestAnimationFrame(function () { el.classList.add('pf-cb-in'); });
+  }
+  function injectStyles() {
+    if (document.getElementById('pf-cookie-banner-styles')) return;
+    var s = document.createElement('style');
+    s.id = 'pf-cookie-banner-styles';
+    s.textContent = [
+      '#pf-cookie-banner { position: fixed; left: 16px; right: 16px; bottom: 16px; z-index: 2147483000; font-family: Roboto, system-ui, sans-serif; opacity: 0; transform: translateY(20px); transition: opacity 260ms ease, transform 260ms cubic-bezier(.34,1.56,.64,1); pointer-events: none; }',
+      '#pf-cookie-banner.pf-cb-in { opacity: 1; transform: translateY(0); pointer-events: auto; }',
+      '#pf-cookie-banner.pf-cb-out { opacity: 0; transform: translateY(12px); pointer-events: none; }',
+      '#pf-cookie-banner .pf-cb-inner { max-width: 720px; margin: 0 auto; display: flex; align-items: center; gap: 16px; background: #0F3D66; color: #FFF6E0; padding: 14px 18px; border-radius: 16px; box-shadow: 0 12px 32px rgba(15,61,102,0.30), 4px 4px 0 #F8B319; border: 1px solid rgba(248,179,25,0.20); }',
+      '#pf-cookie-banner .pf-cb-icon { width: 36px; height: 36px; border-radius: 50%; background: #F8B319; color: #0F3D66; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }',
+      '#pf-cookie-banner .pf-cb-icon .material-icons { font-size: 22px; }',
+      '#pf-cookie-banner .pf-cb-text { flex: 1; font-size: 13.5px; line-height: 1.55; color: rgba(255,246,224,0.92); }',
+      '#pf-cookie-banner .pf-cb-text strong { color: #FFF6E0; font-weight: 700; }',
+      '#pf-cookie-banner .pf-cb-text a { color: #FCD46A; text-decoration: underline; text-underline-offset: 3px; }',
+      '#pf-cookie-banner .pf-cb-btn { background: #F8B319; color: #0F3D66; border: 0; padding: 9px 16px; border-radius: 99px; font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer; flex-shrink: 0; transition: transform 120ms; }',
+      '#pf-cookie-banner .pf-cb-btn:active { transform: translate(1px, 1px); }',
+      '@media (max-width: 640px) { #pf-cookie-banner { left: 10px; right: 10px; bottom: 10px; } #pf-cookie-banner .pf-cb-inner { padding: 12px 14px; gap: 12px; border-radius: 14px; box-shadow: 0 10px 24px rgba(15,61,102,0.28), 3px 3px 0 #F8B319; } #pf-cookie-banner .pf-cb-icon { width: 32px; height: 32px; } #pf-cookie-banner .pf-cb-icon .material-icons { font-size: 19px; } #pf-cookie-banner .pf-cb-text { font-size: 12.5px; } #pf-cookie-banner .pf-cb-btn { padding: 8px 14px; font-size: 12.5px; } }'
+    ].join('\n');
+    document.head.appendChild(s);
+  }
+  function init() { injectStyles(); setTimeout(mount, 400); }
+  if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', init); } else { init(); }
+})();
+</script>
+</body>
+</html>

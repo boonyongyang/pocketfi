@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>PocketFi · App icons</title>
+  <meta name="description" content="The PocketFi app-icon system: master, holiday variants, Android adaptive + monochrome, iOS sizes, in-context.">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <style>
+    html, body { margin: 0; background: #f0eee9; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif; }
+    * { box-sizing: border-box; }
+    body {
+      background-image: url("data:image/svg+xml,%3Csvg width='120' height='120' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M120 0H0v120' fill='none' stroke='rgba(0,0,0,0.06)' stroke-width='1'/%3E%3C/svg%3E");
+      background-size: 120px 120px;
+      min-height: 100vh;
+    }
+    .world { padding: 60px; width: max-content; min-width: 100%; }
+    .sectionhead { padding: 0 0 36px; }
+    .sectionhead .title { font-size: 28px; font-weight: 600; color: rgba(40,30,20,0.85); letter-spacing: -0.4px; margin-bottom: 6px; }
+    .sectionhead .sub { font-size: 16px; color: rgba(60,50,40,0.6); }
+    .row { display: flex; gap: 48px; align-items: flex-start; }
+    .ab-wrap { flex-shrink: 0; position: relative; }
+    .ab-label { font-size: 15px; font-weight: 500; color: rgba(60,50,40,0.7); padding: 3px 6px; margin-bottom: 4px; }
+    .ab-card { width: 1280px; height: 760px; background: #fff; border-radius: 2px; box-shadow: 0 1px 3px rgba(0,0,0,.08), 0 4px 16px rgba(0,0,0,.06); overflow: hidden; }
+    .ab-card * { scrollbar-width: none; }
+    .ab-card *::-webkit-scrollbar { display: none; }
+  </style>
+</head>
+<body>
+<div class="world">
+  <div class="sectionhead">
+    <div class="title">App icons (1280×760 artboards)</div>
+    <div class="sub">Master, holiday/seasonal variants, Android adaptive + monochrome, iOS sizes, and in-context.</div>
+  </div>
+  <div class="row">
+    <div class="ab-wrap">
+      <div class="ab-label">01 · Master + variants</div>
+      <div class="ab-card" id="ab-1"></div>
+    </div>
+    <div class="ab-wrap">
+      <div class="ab-label">02 · Android adaptive</div>
+      <div class="ab-card" id="ab-2"></div>
+    </div>
+    <div class="ab-wrap">
+      <div class="ab-label">03 · iOS sizes</div>
+      <div class="ab-card" id="ab-3"></div>
+    </div>
+    <div class="ab-wrap">
+      <div class="ab-label">04 · In context</div>
+      <div class="ab-card" id="ab-4"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+  var NAVY = '#0F3D66', YELLOW = '#F8B319', SUB = '#4A5A6A', CREAM = '#FFF6E0';
+  var uid = 0;
+
+  function pfmark(opts) {
+    opts = opts || {};
+    var size = opts.size || 512;
+    var fg = opts.fg || YELLOW;
+    var bg = opts.bg || NAVY;
+    var glyph = opts.glyph || 'R';
+    var glyphColor = opts.glyphColor || NAVY;
+    var edgeShine = !!opts.edgeShine;
+    var mono = !!opts.monochrome;
+    var r = size * 0.22;
+    var id = 'pf' + (++uid);
+    var coinStop2 = mono ? fg : '#FCD46A';
+    var coinStroke = mono ? 'transparent' : 'rgba(0,0,0,0.08)';
+    var ringStroke = mono ? 'rgba(0,0,0,0.08)' : 'rgba(15,61,102,0.16)';
+    var dots = !mono ?
+      '<circle cx="64" cy="64" r="6" fill="rgba(248,179,25,0.20)"/>' +
+      '<circle cx="448" cy="64" r="6" fill="rgba(248,179,25,0.20)"/>' +
+      '<circle cx="64" cy="448" r="6" fill="rgba(248,179,25,0.20)"/>' +
+      '<circle cx="448" cy="448" r="6" fill="rgba(248,179,25,0.20)"/>' : '';
+    var sparkle = !mono ?
+      '<path d="M380 130 l8 16 l16 8 l-16 8 l-8 16 l-8 -16 l-16 -8 l16 -8 z" fill="' + fg + '" opacity="0.85"/>' : '';
+    var shine = edgeShine ?
+      '<circle cx="256" cy="270" r="138" fill="url(#shine-' + id + ')"/>' : '';
+    return '<svg width="' + size + '" height="' + size + '" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" style="display:block">' +
+      '<defs>' +
+      '<linearGradient id="coin-' + id + '" x1="0" y1="0" x2="1" y2="1">' +
+      '<stop offset="0%" stop-color="' + fg + '"/>' +
+      '<stop offset="100%" stop-color="' + coinStop2 + '"/>' +
+      '</linearGradient>' +
+      '<radialGradient id="shine-' + id + '" cx="0.3" cy="0.25" r="0.8">' +
+      '<stop offset="0%" stop-color="rgba(255,255,255,0.45)"/>' +
+      '<stop offset="60%" stop-color="rgba(255,255,255,0)"/>' +
+      '</radialGradient>' +
+      '</defs>' +
+      '<rect width="512" height="512" rx="' + r + '" ry="' + r + '" fill="' + bg + '"/>' +
+      dots +
+      '<circle cx="256" cy="270" r="138" fill="url(#coin-' + id + ')"/>' +
+      '<circle cx="256" cy="270" r="138" fill="none" stroke="' + coinStroke + '" stroke-width="3"/>' +
+      '<circle cx="256" cy="270" r="116" fill="none" stroke="' + ringStroke + '" stroke-width="3" stroke-dasharray="6 6"/>' +
+      '<text x="256" y="316" text-anchor="middle" font-family="Roboto, system-ui, sans-serif" font-size="170" font-weight="900" fill="' + glyphColor + '" letter-spacing="-4">' + glyph + '</text>' +
+      shine + sparkle +
+      '</svg>';
+  }
+
+  // ─ Artboard 1: master + 6 variants ─
+  var variants = [
+    { l:'Default',         bg:NAVY,    fg:YELLOW, glyphColor:NAVY,    glyph:'R' },
+    { l:'Inverse',         bg:YELLOW,  fg:NAVY,   glyphColor:'#FCD46A', glyph:'R' },
+    { l:'Holiday — Raya',  bg:'#0F3D66', fg:'#F8B319', glyphColor:NAVY, glyph:'☪' },
+    { l:'Holiday — CNY',   bg:'#A12626', fg:'#F8B319', glyphColor:'#A12626', glyph:'R' },
+    { l:'v2 — Cream',      bg:CREAM,   fg:NAVY,   glyphColor:'#FCD46A', glyph:'R' },
+    { l:'Beta',            bg:'#3D4663', fg:YELLOW, glyphColor:NAVY,  glyph:'β' }
+  ];
+  document.getElementById('ab-1').innerHTML =
+    '<div style="width:1280px;height:760px;background:#FFF6E0;padding:40px;color:' + NAVY + ';font-family:Roboto, system-ui, sans-serif">' +
+      '<div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:24px">' +
+        '<div>' +
+          '<div style="font-size:11px;color:' + YELLOW + ';letter-spacing:1.4px;text-transform:uppercase;font-weight:700">App icon</div>' +
+          '<div style="font-size:36px;font-weight:700;letter-spacing:-0.8px">The master + six variants.</div>' +
+        '</div>' +
+        '<div style="font-size:12px;color:' + SUB + '">SVG · 512×512 master · derivative sizes auto-generated</div>' +
+      '</div>' +
+      '<div style="display:grid;grid-template-columns:380px 1fr;gap:36px;align-items:flex-start">' +
+        '<div style="background:#fff;border-radius:24px;padding:32px;border:1px solid rgba(15,61,102,0.08);box-shadow:5px 5px 0 ' + YELLOW + ';text-align:center">' +
+          '<div style="font-size:11px;color:' + SUB + ';letter-spacing:1px;text-transform:uppercase;font-weight:700;margin-bottom:14px">Master</div>' +
+          '<div style="display:flex;justify-content:center">' + pfmark({ size:300, edgeShine:true }) + '</div>' +
+          '<div style="margin-top:18px;font-size:13px;color:' + SUB + '">Navy base · yellow coin · "R" for ringgit</div>' +
+        '</div>' +
+        '<div style="display:grid;grid-template-columns:repeat(3, 1fr);gap:20px">' +
+          variants.map(function (v) {
+            return '<div style="background:#fff;border-radius:18px;padding:18px 18px 14px;border:1px solid rgba(15,61,102,0.08);text-align:center">' +
+              '<div style="display:flex;justify-content:center">' + pfmark({ size:160, bg:v.bg, fg:v.fg, glyph:v.glyph, glyphColor:v.glyphColor }) + '</div>' +
+              '<div style="margin-top:10px;font-size:12px;font-weight:700;color:' + NAVY + '">' + v.l + '</div>' +
+            '</div>';
+          }).join('') +
+        '</div>' +
+      '</div>' +
+    '</div>';
+
+  // ─ Artboard 2: Android adaptive ─
+  function specimen(label, sub, inner) {
+    return '<div style="display:flex;flex-direction:column;align-items:center;gap:8px">' + inner +
+      '<div style="font-size:11px;color:' + SUB + ';font-weight:700;text-transform:uppercase;letter-spacing:1px">' + label + '</div>' +
+      (sub ? '<div style="font-size:11px;color:' + SUB + ';margin-top:-4px">' + sub + '</div>' : '') +
+    '</div>';
+  }
+  var themedSwatches = [
+    { bg:'#FFFFFF', fg:'#0F3D66', l:'Light' },
+    { bg:'#202124', fg:'#FCD46A', l:'Dark' },
+    { bg:'#F2D7C2', fg:'#9C5520', l:'Wallpaper tint' }
+  ].map(function (b) {
+    return '<div style="width:140px;height:140px;border-radius:36px;background:' + b.bg + ';display:flex;align-items:center;justify-content:center;position:relative;box-shadow:0 4px 14px rgba(0,0,0,0.10)">' +
+      '<svg width="80" height="80" viewBox="0 0 512 512">' +
+      '<circle cx="256" cy="270" r="138" fill="' + b.fg + '"/>' +
+      '<text x="256" y="316" text-anchor="middle" font-family="Roboto" font-size="170" font-weight="900" fill="' + b.bg + '">R</text>' +
+      '</svg>' +
+      '<div style="position:absolute;bottom:-22px;left:0;right:0;text-align:center;font-size:11px;color:' + SUB + ';font-weight:700;letter-spacing:0.5px">' + b.l + '</div>' +
+    '</div>';
+  }).join('');
+
+  document.getElementById('ab-2').innerHTML =
+    '<div style="width:1280px;height:760px;background:#FFF6E0;padding:40px;color:' + NAVY + ';font-family:Roboto, system-ui, sans-serif">' +
+      '<div style="margin-bottom:24px">' +
+        '<div style="font-size:11px;color:' + YELLOW + ';letter-spacing:1.4px;text-transform:uppercase;font-weight:700">Android</div>' +
+        '<div style="font-size:36px;font-weight:700;letter-spacing:-0.8px">Adaptive icon · two layers, every shape.</div>' +
+        '<div style="font-size:13px;color:' + SUB + ';margin-top:4px">Foreground must keep all critical content inside the 66% safe-zone circle.</div>' +
+      '</div>' +
+      '<div style="display:flex;gap:18px;justify-content:center;align-items:center;flex-wrap:wrap">' +
+        specimen('Background layer', '432×432 · solid',
+          '<div style="width:200px;height:200px;background:' + NAVY + ';position:relative">' +
+            '<div style="position:absolute;inset:0;opacity:0.05;background-image:radial-gradient(rgba(248,179,25,0.5) 2px, transparent 2px);background-size:18px 18px"></div>' +
+          '</div>') +
+        specimen('Foreground layer', '432×432 · 66×66 safe',
+          '<div style="width:200px;height:200px;background:#ddd;position:relative;overflow:hidden">' +
+            '<div style="position:absolute;inset:17%;border:1px dashed rgba(15,61,102,0.45);border-radius:50%"></div>' +
+            '<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">' +
+              '<svg width="160" height="160" viewBox="0 0 512 512">' +
+                '<circle cx="256" cy="270" r="138" fill="' + YELLOW + '"/>' +
+                '<circle cx="256" cy="270" r="116" fill="none" stroke="rgba(15,61,102,0.20)" stroke-width="3" stroke-dasharray="6 6"/>' +
+                '<text x="256" y="316" text-anchor="middle" font-family="Roboto" font-size="170" font-weight="900" fill="' + NAVY + '">R</text>' +
+                '<path d="M380 130 l8 16 l16 8 l-16 8 l-8 16 l-8 -16 l-16 -8 l16 -8 z" fill="' + YELLOW + '"/>' +
+              '</svg>' +
+            '</div>' +
+          '</div>') +
+        specimen('Round mask preview', 'Pixel-style launchers',
+          '<div style="width:200px;height:200px;border-radius:50%;overflow:hidden;background:' + NAVY + ';position:relative">' + pfmark({ size:200, edgeShine:true }) + '</div>') +
+        specimen('Squircle mask', 'Most stock launchers',
+          '<div style="width:200px;height:200px;border-radius:48px;overflow:hidden;background:' + NAVY + '">' + pfmark({ size:200 }) + '</div>') +
+        specimen('Teardrop mask', 'Some OEMs',
+          '<div style="width:200px;height:200px;border-radius:50% 50% 50% 12px;overflow:hidden;background:' + NAVY + '">' + pfmark({ size:200 }) + '</div>') +
+      '</div>' +
+      '<div style="margin-top:34px;display:grid;grid-template-columns:1.2fr 1fr;gap:32px;align-items:center">' +
+        '<div style="background:#fff;border-radius:18px;padding:22px 26px;border:1px solid rgba(15,61,102,0.08)">' +
+          '<div style="font-size:11px;color:' + YELLOW + ';letter-spacing:1.4px;text-transform:uppercase;font-weight:700">Themed icon (Android 13+)</div>' +
+          '<div style="font-size:20px;font-weight:700;margin-top:4px;margin-bottom:6px">Monochrome silhouette.</div>' +
+          '<div style="font-size:13px;color:' + SUB + ';line-height:1.55">Single-color version that the OS tints to match the user\'s wallpaper / Material You theme. No gradients, no fine details — just the "R-coin" silhouette.</div>' +
+        '</div>' +
+        '<div style="display:flex;gap:18px;justify-content:center">' + themedSwatches + '</div>' +
+      '</div>' +
+    '</div>';
+
+  // ─ Artboard 3: iOS sizes ─
+  var iosSizes = [
+    { px:180, l:'iPhone @3x', sub:'60pt' },
+    { px:120, l:'iPhone @2x', sub:'60pt' },
+    { px:152, l:'iPad @2x',  sub:'76pt' },
+    { px:80,  l:'Settings',  sub:'29pt @2x/3x' },
+    { px:58,  l:'Spotlight', sub:'29pt @2x' }
+  ];
+  document.getElementById('ab-3').innerHTML =
+    '<div style="width:1280px;height:760px;background:#FFF6E0;padding:40px;color:' + NAVY + ';font-family:Roboto, system-ui, sans-serif">' +
+      '<div style="margin-bottom:24px">' +
+        '<div style="font-size:11px;color:' + YELLOW + ';letter-spacing:1.4px;text-transform:uppercase;font-weight:700">iOS</div>' +
+        '<div style="font-size:36px;font-weight:700;letter-spacing:-0.8px">Every required size.</div>' +
+        '<div style="font-size:13px;color:' + SUB + ';margin-top:4px">iOS masks square corners automatically. No transparency, no rounded corners in the source — flat square PNG.</div>' +
+      '</div>' +
+      '<div style="display:grid;grid-template-columns:320px 1fr;gap:36px;align-items:flex-start">' +
+        '<div style="background:#fff;border-radius:18px;padding:24px;border:1px solid rgba(15,61,102,0.08);text-align:center">' +
+          '<div style="width:280px;height:280px;margin:0 auto;border-radius:60px;overflow:hidden;box-shadow:0 12px 28px rgba(15,61,102,0.18)">' + pfmark({ size:280, edgeShine:true }) + '</div>' +
+          '<div style="font-size:12px;font-weight:700;color:' + NAVY + ';margin-top:14px">1024 × 1024 · iOS</div>' +
+          '<div style="font-size:11px;color:' + SUB + ';margin-top:2px">PNG, sRGB, no transparency</div>' +
+        '</div>' +
+        '<div style="display:flex;flex-wrap:wrap;gap:24px;align-items:flex-end">' +
+          iosSizes.map(function (s) {
+            var r = Math.max(8, s.px * 0.22);
+            return '<div style="display:flex;flex-direction:column;align-items:center;gap:6px">' +
+              '<div style="width:' + s.px + 'px;height:' + s.px + 'px;border-radius:' + r + 'px;overflow:hidden;box-shadow:0 6px 14px rgba(15,61,102,0.18)">' + pfmark({ size:s.px }) + '</div>' +
+              '<div style="font-size:11px;font-weight:700;color:' + NAVY + '">' + s.l + '</div>' +
+              '<div style="font-size:10px;color:' + SUB + '">' + s.px + '×' + s.px + ' · ' + s.sub + '</div>' +
+            '</div>';
+          }).join('') +
+        '</div>' +
+      '</div>' +
+    '</div>';
+
+  // ─ Artboard 4: In context ─
+  var fakeApps = [
+    { c:'#34A853', i:'message' },
+    { c:'#1A73E8', i:'mail' },
+    { c:'#EA4335', i:'calendar_today' },
+    { c:'#FBBC04', i:'photo_camera' }
+  ];
+  function fakeRow(opacity, gap) {
+    return fakeApps.map(function (a) {
+      return '<div style="display:flex;flex-direction:column;align-items:center;gap:4px">' +
+        '<div style="width:54px;height:54px;border-radius:14px;background:' + a.c + ';color:#fff;display:flex;align-items:center;justify-content:center">' +
+        '<span class="material-icons" style="font-size:26px">' + a.i + '</span></div>' +
+        '<div style="font-size:9px;opacity:' + opacity + '">App</div></div>';
+    }).join('');
+  }
+  document.getElementById('ab-4').innerHTML =
+    '<div style="width:1280px;height:760px;background:#FFF6E0;padding:40px;color:' + NAVY + ';font-family:Roboto, system-ui, sans-serif">' +
+      '<div style="margin-bottom:24px">' +
+        '<div style="font-size:11px;color:' + YELLOW + ';letter-spacing:1.4px;text-transform:uppercase;font-weight:700">In context</div>' +
+        '<div style="font-size:36px;font-weight:700;letter-spacing:-0.8px">How it shows up.</div>' +
+      '</div>' +
+      '<div style="display:grid;grid-template-columns:320px 320px 1fr;gap:24px">' +
+        // Android home
+        '<div style="background:linear-gradient(160deg, #1B5285, #0E3458);border-radius:30px;padding:18px;color:#fff;height:560px;position:relative;overflow:hidden">' +
+          '<div style="text-align:center;margin-top:14px">' +
+            '<div style="font-size:11px;opacity:0.85">Friday, May 16</div>' +
+            '<div style="font-size:46px;font-weight:200;letter-spacing:-1.5px;line-height:1">9:41</div>' +
+          '</div>' +
+          '<div style="display:grid;grid-template-columns:repeat(4, 1fr);gap:14px;margin-top:24px">' +
+            fakeRow('0.85') +
+            '<div style="display:flex;flex-direction:column;align-items:center;gap:4px">' +
+              '<div style="width:54px;height:54px;border-radius:14px;overflow:hidden;box-shadow:0 4px 8px rgba(0,0,0,0.30)">' + pfmark({ size:54 }) + '</div>' +
+              '<div style="font-size:9px;opacity:1;font-weight:600">PocketFi</div></div>' +
+          '</div>' +
+          '<div style="position:absolute;left:0;right:0;bottom:14px;display:flex;justify-content:center;gap:18px">' +
+            ['call','message','public','photo_camera'].map(function (i) {
+              return '<div style="width:42px;height:42px;border-radius:12px;background:rgba(255,255,255,0.10);color:#fff;display:flex;align-items:center;justify-content:center">' +
+                '<span class="material-icons" style="font-size:20px">' + i + '</span></div>';
+            }).join('') +
+          '</div>' +
+        '</div>' +
+        // iOS home
+        '<div style="background:linear-gradient(160deg, #f4d4a8, #f0a063);border-radius:30px;padding:18px;color:#fff;height:560px;position:relative;overflow:hidden">' +
+          '<div style="text-align:center;margin-top:14px">' +
+            '<div style="font-size:11px;opacity:0.95">Fri, May 16</div>' +
+            '<div style="font-size:46px;font-weight:200;letter-spacing:-1.5px;line-height:1">9:41</div>' +
+          '</div>' +
+          '<div style="display:grid;grid-template-columns:repeat(4, 1fr);gap:18px;margin-top:24px">' +
+            fakeRow('1') +
+            '<div style="display:flex;flex-direction:column;align-items:center;gap:4px">' +
+              '<div style="width:54px;height:54px;border-radius:14px;overflow:hidden;box-shadow:0 4px 8px rgba(0,0,0,0.18)">' + pfmark({ size:54 }) + '</div>' +
+              '<div style="font-size:9px;font-weight:600">PocketFi</div></div>' +
+          '</div>' +
+        '</div>' +
+        // Browser tab + favicon + notif + store listing
+        '<div style="display:flex;flex-direction:column;gap:16px">' +
+          '<div style="background:#fff;border-radius:14px;padding:10px 14px;border:1px solid rgba(15,61,102,0.08);display:flex;align-items:center;gap:10px">' +
+            '<div style="width:18px;height:18px;border-radius:4px;overflow:hidden">' + pfmark({ size:18 }) + '</div>' +
+            '<div style="font-size:12.5px;font-weight:600">PocketFi · Track your ringgit</div>' +
+            '<span class="material-icons" style="font-size:14px;color:' + SUB + ';margin-left:auto">close</span>' +
+          '</div>' +
+          '<div style="background:#fff;border-radius:14px;padding:18px;border:1px solid rgba(15,61,102,0.08);display:flex;align-items:center;gap:14px">' +
+            '<div style="width:48px;height:48px;border-radius:8px;overflow:hidden">' + pfmark({ size:48 }) + '</div>' +
+            '<div>' +
+              '<div style="font-size:13px;font-weight:700">Favicon · 32, 48, 64 px</div>' +
+              '<div style="font-size:11.5px;color:' + SUB + '">Single SVG with raster fallbacks.</div>' +
+            '</div>' +
+          '</div>' +
+          '<div style="background:#fff;border-radius:14px;padding:12px 14px;border:1px solid rgba(15,61,102,0.08)">' +
+            '<div style="display:flex;align-items:center;gap:10px;font-size:11px;color:' + SUB + ';margin-bottom:6px">' +
+              '<div style="width:18px;height:18px;border-radius:5px;overflow:hidden">' + pfmark({ size:18 }) + '</div>' +
+              '<span style="font-weight:600;color:' + NAVY + '">PocketFi</span><span>·</span><span>now</span>' +
+            '</div>' +
+            '<div style="font-size:13px;font-weight:700">TNB Electricity due in 3 days</div>' +
+            '<div style="font-size:12px;color:' + SUB + ';margin-top:3px">MYR 186.40 · Mark paid?</div>' +
+          '</div>' +
+          '<div style="background:' + NAVY + ';color:#FFF6E0;border-radius:14px;padding:14px 18px;display:flex;align-items:center;gap:14px">' +
+            '<div style="width:48px;height:48px;border-radius:12px;overflow:hidden;flex-shrink:0">' + pfmark({ size:48 }) + '</div>' +
+            '<div>' +
+              '<div style="font-size:14px;font-weight:700">PocketFi — Track your ringgit</div>' +
+              '<div style="font-size:11px;opacity:0.78">Boon Yong · Finance · Launch prep</div>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+})();
+</script>
+</body>
+</html>

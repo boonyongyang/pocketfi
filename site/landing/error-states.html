@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>PocketFi · Error &amp; offline states</title>
+  <meta name="description" content="Six recoverable failure screens — connectivity, server, auth, form validation, OCR uncertain.">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <style>
+    html, body { margin: 0; background: #f0eee9; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif; }
+    * { box-sizing: border-box; }
+    body {
+      background-image: url("data:image/svg+xml,%3Csvg width='120' height='120' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M120 0H0v120' fill='none' stroke='rgba(0,0,0,0.06)' stroke-width='1'/%3E%3C/svg%3E");
+      background-size: 120px 120px; min-height: 100vh;
+    }
+    .world { padding: 60px; width: max-content; min-width: 100%; }
+    .sectionhead { padding: 0 0 36px; }
+    .sectionhead .title { font-size: 28px; font-weight: 600; color: rgba(40,30,20,0.85); letter-spacing: -0.4px; margin-bottom: 6px; }
+    .sectionhead .sub { font-size: 16px; color: rgba(60,50,40,0.6); }
+    .row { display: flex; gap: 48px; align-items: flex-start; }
+    .ab-wrap { flex-shrink: 0; }
+    .ab-label { font-size: 15px; font-weight: 500; color: rgba(60,50,40,0.7); padding: 3px 6px; margin-bottom: 4px; }
+    .ab-card { width: 360px; height: 780px; background: #fff; border-radius: 2px; box-shadow: 0 1px 3px rgba(0,0,0,.08), 0 4px 16px rgba(0,0,0,.06); overflow: hidden; }
+    .ab-card *::-webkit-scrollbar { display: none; } .ab-card * { scrollbar-width: none; }
+  </style>
+</head>
+<body>
+<div class="world">
+  <div class="sectionhead">
+    <div class="title">Error states (Android · 360×780)</div>
+    <div class="sub">Six recoverable failure screens — connectivity, server, auth, validation, OCR.</div>
+  </div>
+  <div class="row">
+    <div class="ab-wrap"><div class="ab-label">01 · Offline banner</div><div class="ab-card" id="s1"></div></div>
+    <div class="ab-wrap"><div class="ab-label">02 · No connection</div><div class="ab-card" id="s2"></div></div>
+    <div class="ab-wrap"><div class="ab-label">03 · Server error</div><div class="ab-card" id="s3"></div></div>
+    <div class="ab-wrap"><div class="ab-label">04 · Session expired</div><div class="ab-card" id="s4"></div></div>
+    <div class="ab-wrap"><div class="ab-label">05 · Form validation</div><div class="ab-card" id="s5"></div></div>
+    <div class="ab-wrap"><div class="ab-label">06 · OCR uncertain</div><div class="ab-card" id="s6"></div></div>
+  </div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+  var NAVY='#0F3D66', YELLOW='#F8B319', GREY='#F9F9F9', SUB='#4A5A6A', RED='#F1592A', GREEN='#2E7D32';
+
+  function statusBar() {
+    return '<div style="height:32px;background:' + NAVY + ';color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 18px;font-size:11px;font-weight:600">' +
+      '<span>9:41</span><span style="display:flex;gap:5px">' +
+      '<span class="material-icons" style="font-size:13px">airplanemode_active</span>' +
+      '<span class="material-icons" style="font-size:13px">battery_full</span></span></div>';
+  }
+  function appBar(title, opts) {
+    opts = opts || {};
+    return '<div style="background:' + NAVY + ';color:#fff;padding:10px 14px;display:flex;justify-content:space-between;align-items:center">' +
+      '<span class="material-icons" style="font-size:22px">' + (opts.back ? 'arrow_back' : 'menu') + '</span>' +
+      '<div style="text-align:center"><div style="font-size:15px;font-weight:600">' + title + '</div>' +
+      (opts.sub ? '<div style="font-size:10px;opacity:0.8">' + opts.sub + '</div>' : '') + '</div>' +
+      '<div style="width:22px"></div></div>';
+  }
+  function frame(inner) {
+    return '<div style="width:360px;height:780px;background:' + GREY + ';color:' + NAVY + ';display:flex;flex-direction:column;overflow:hidden;font-family:Roboto, sans-serif">' +
+      statusBar() + inner + '</div>';
+  }
+
+  // S1 — Offline banner over Timeline
+  var todayTx = [
+    { c:'#F2AC3C', i:'restaurant', t:'Starbucks',  a:'−18.00', s:'queued' },
+    { c:'#D08547', i:'shopping_basket', t:'Jaya Grocer', a:'−142.30', s:'queued' }
+  ].map(function (x) {
+    return '<div style="background:#fff;border-radius:10px;padding:9px;display:flex;align-items:center;gap:9px;opacity:0.6;position:relative">' +
+      '<div style="width:28px;height:28px;border-radius:50%;background:' + x.c + ';color:#fff;display:flex;align-items:center;justify-content:center">' +
+      '<span class="material-icons" style="font-size:16px">' + x.i + '</span></div>' +
+      '<div style="flex:1;font-size:11.5px;color:' + NAVY + ';font-weight:500">' + x.t + '</div>' +
+      '<div style="font-size:11px;font-weight:600;color:' + RED + '">' + x.a + '</div>' +
+      '<div style="position:absolute;top:6px;right:8px;font-size:9px;color:' + SUB + ';display:inline-flex;align-items:center;gap:4px">' +
+        '<span class="material-icons" style="font-size:12px">schedule</span>' + x.s + '</div></div>';
+  }).join('');
+  var yesterdayTx = [
+    { c:'#F5D046', i:'directions_bus', t:'Grab',   a:'−12.50', fg:NAVY },
+    { c:'#53AF77', i:'business_center', t:'Apr payroll', a:'+5,800.00', good:true, fg:'#fff' }
+  ].map(function (x) {
+    return '<div style="background:#fff;border-radius:10px;padding:9px;display:flex;align-items:center;gap:9px">' +
+      '<div style="width:28px;height:28px;border-radius:50%;background:' + x.c + ';color:' + x.fg + ';display:flex;align-items:center;justify-content:center">' +
+      '<span class="material-icons" style="font-size:16px">' + x.i + '</span></div>' +
+      '<div style="flex:1;font-size:11.5px;color:' + NAVY + ';font-weight:500">' + x.t + '</div>' +
+      '<div style="font-size:11px;font-weight:600;color:' + (x.good ? GREEN : RED) + '">' + x.a + '</div></div>';
+  }).join('');
+  document.getElementById('s1').innerHTML = frame(
+    appBar('− MYR 1,743.20', { sub:'Cash Flow · May' }) +
+    '<div style="background:#FBEAD6;color:#7A3812;padding:10px 14px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(15,61,102,0.06)">' +
+      '<span class="material-icons" style="font-size:18px">cloud_off</span>' +
+      '<div style="flex:1;font-size:12px;line-height:1.4">You\'re offline. <strong>2 entries queued</strong> · will sync automatically.</div>' +
+      '<button style="background:transparent;border:0;color:#7A3812;font-size:11px;font-weight:700;letter-spacing:0.4px;text-transform:uppercase;font-family:inherit">Retry</button>' +
+    '</div>' +
+    '<div style="background:' + NAVY + ';display:flex;padding:0 4px">' +
+      '<div style="flex:1;text-align:center;padding:10px;color:' + YELLOW + ';border-bottom:2px solid ' + YELLOW + ';font-size:11px;font-weight:600">Transactions</div>' +
+      '<div style="flex:1;text-align:center;padding:10px;color:rgba(255,255,255,0.55);font-size:11px">Overview</div>' +
+    '</div>' +
+    '<div style="flex:1;padding:10px;display:flex;flex-direction:column;gap:8px">' +
+      '<div style="font-size:10px;color:' + SUB + ';font-weight:500;padding:4px 4px 0">Today</div>' +
+      todayTx +
+      '<div style="font-size:10px;color:' + SUB + ';font-weight:500;padding:4px 4px 0">Yesterday</div>' +
+      yesterdayTx +
+    '</div>'
+  );
+
+  // S2 — No connection
+  document.getElementById('s2').innerHTML = frame(
+    appBar('PocketFi') +
+    '<div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 28px;text-align:center;background:' + GREY + '">' +
+      '<div style="width:120px;height:120px;border-radius:50%;background:rgba(241,89,42,0.10);display:flex;align-items:center;justify-content:center;margin-bottom:18px">' +
+        '<span class="material-icons" style="font-size:56px;color:' + RED + '">cloud_off</span></div>' +
+      '<div style="font-size:22px;font-weight:700;letter-spacing:-0.4px;margin-bottom:8px">No internet, no sync.</div>' +
+      '<div style="font-size:14px;line-height:1.6;color:' + SUB + ';margin-bottom:22px;max-width:280px">You can still add transactions and they\'ll save locally. They\'ll sync as soon as you\'re back online.</div>' +
+      '<button style="background:' + NAVY + ';color:#FCD46A;border:0;padding:12px 22px;border-radius:99px;font-size:14px;font-weight:700;box-shadow:3px 3px 0 ' + YELLOW + ';font-family:inherit">Try again</button>' +
+      '<button style="margin-top:10px;background:transparent;border:0;color:' + SUB + ';font-size:13px;font-weight:600;font-family:inherit">Use offline anyway</button>' +
+      '<div style="margin-top:30px;padding:10px 14px;background:#fff;border-radius:10px;border:1px solid rgba(15,61,102,0.08);font-size:11px;color:' + SUB + ';display:flex;align-items:center;gap:8px">' +
+        '<span class="material-icons" style="font-size:14px;color:' + GREEN + '">check_circle</span>' +
+        'Local data: <strong style="color:' + NAVY + '">up to date · 2 min ago</strong></div>' +
+    '</div>'
+  );
+
+  // S3 — Server error
+  document.getElementById('s3').innerHTML = frame(
+    appBar('Something broke', { back:true }) +
+    '<div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 28px;text-align:center;background:' + GREY + '">' +
+      '<div style="width:120px;height:120px;border-radius:30px;background:rgba(241,89,42,0.10);display:flex;align-items:center;justify-content:center;margin-bottom:18px;transform:rotate(-4deg)">' +
+        '<span class="material-icons" style="font-size:62px;color:' + RED + '">bug_report</span></div>' +
+      '<div style="font-size:22px;font-weight:700;letter-spacing:-0.4px;margin-bottom:8px">This one\'s on us.</div>' +
+      '<div style="font-size:14px;line-height:1.6;color:' + SUB + ';margin-bottom:22px;max-width:280px">Something went wrong on our end. The crash was automatically reported — we\'ll take a look.</div>' +
+      '<button style="background:' + NAVY + ';color:#FCD46A;border:0;padding:12px 22px;border-radius:99px;font-size:14px;font-weight:700;box-shadow:3px 3px 0 ' + YELLOW + ';font-family:inherit">Try again</button>' +
+      '<button style="margin-top:10px;background:transparent;border:0;color:' + SUB + ';font-size:13px;font-weight:600;font-family:inherit">Send a description with this report</button>' +
+      '<div style="margin-top:28px;font-size:10px;color:' + SUB + ';font-family:Roboto Mono, monospace;background:rgba(15,61,102,0.06);padding:8px 12px;border-radius:8px">error_id · 4f8a-2b71 · v1.4.0</div>' +
+    '</div>'
+  );
+
+  // S4 — Session expired
+  document.getElementById('s4').innerHTML = frame(
+    appBar('') +
+    '<div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 28px;text-align:center;background:' + GREY + '">' +
+      '<div style="width:108px;height:108px;border-radius:50%;background:rgba(248,179,25,0.18);display:flex;align-items:center;justify-content:center;margin-bottom:18px">' +
+        '<span class="material-icons" style="font-size:50px;color:' + YELLOW + '">lock_clock</span></div>' +
+      '<div style="font-size:22px;font-weight:700;letter-spacing:-0.4px;margin-bottom:8px">Session expired.</div>' +
+      '<div style="font-size:14px;line-height:1.6;color:' + SUB + ';margin-bottom:22px;max-width:280px">For your security, we signed you out after 30 days. Tap to sign back in with Google.</div>' +
+      '<button style="background:#fff;border:1px solid rgba(15,61,102,0.15);padding:12px 18px;border-radius:14px;display:flex;align-items:center;gap:12px;font-family:inherit">' +
+        '<svg width="20" height="20" viewBox="0 0 48 48">' +
+          '<path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3c-1.7 4.7-6.2 8-11.3 8-6.6 0-12-5.4-12-12s5.4-12 12-12c3 0 5.7 1.1 7.8 2.9l5.7-5.7C34 6.1 29.3 4 24 4 12.95 4 4 12.95 4 24s8.95 20 20 20c11 0 19.7-8 19.7-20 0-1.3-.1-2.4-.1-3.5z"/>' +
+          '<path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3 0 5.7 1.1 7.8 2.9l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.4 6.3 14.7z"/>' +
+          '<path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2c-2 1.4-4.5 2.4-7.2 2.4-5.1 0-9.5-3.3-11.2-7.9l-6.5 5C9.6 39.5 16.2 44 24 44z"/>' +
+          '<path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.3 4.3-4.1 5.6l6.2 5.2C40 35.4 44 30.2 44 24c0-1.3-.1-2.4-.4-3.5z"/>' +
+        '</svg>' +
+        '<span style="font-size:14px;font-weight:600;color:' + NAVY + '">Continue as user@example.com</span>' +
+      '</button>' +
+      '<button style="margin-top:10px;background:transparent;border:0;color:' + SUB + ';font-size:13px;font-weight:600;font-family:inherit">Sign in as someone else</button>' +
+    '</div>'
+  );
+
+  // S5 — Form validation
+  var typeToggle = ['Expense','Income','Transfer'].map(function (t, i) {
+    return '<div style="flex:1;text-align:center;padding:8px;border-radius:99px;background:' + (i === 0 ? '#fff' : 'transparent') + ';font-size:12px;font-weight:600;color:' + (i === 0 ? NAVY : SUB) + '">' + t + '</div>';
+  }).join('');
+  document.getElementById('s5').innerHTML = frame(
+    appBar('Add transaction', { back:true }) +
+    '<div style="flex:1;padding:14px 16px;overflow-y:auto">' +
+      '<div style="display:flex;gap:6px;background:rgba(15,61,102,0.06);padding:4px;border-radius:99px;margin-bottom:14px">' + typeToggle + '</div>' +
+      '<div style="margin-bottom:14px">' +
+        '<div style="font-size:11px;color:' + RED + ';letter-spacing:0.4px;text-transform:uppercase;font-weight:700;margin-bottom:6px;display:flex;align-items:center;gap:6px">' +
+          '<span class="material-icons" style="font-size:14px">error</span>Amount · MYR</div>' +
+        '<div style="background:#fff;border:2px solid ' + RED + ';border-radius:12px;padding:14px 16px;display:flex;align-items:baseline;gap:8px">' +
+          '<span style="font-size:22px;font-weight:700;color:' + NAVY + '">RM</span>' +
+          '<input value="0.00" readonly style="flex:1;border:0;font-size:30px;font-weight:700;color:' + RED + ';background:transparent;outline:none;font-family:inherit">' +
+        '</div>' +
+        '<div style="font-size:12px;color:' + RED + ';margin-top:6px;display:flex;align-items:center;gap:4px">' +
+          '<span class="material-icons" style="font-size:14px">info</span> Amount must be greater than 0.</div>' +
+      '</div>' +
+      '<div style="background:#fff;border:1px solid rgba(15,61,102,0.10);border-radius:12px;padding:12px 16px;margin-bottom:14px">' +
+        '<div style="font-size:11px;color:' + SUB + ';letter-spacing:0.4px;text-transform:uppercase;font-weight:600;margin-bottom:2px">Wallet</div>' +
+        '<div style="font-size:14px;font-weight:600">Maybank</div>' +
+      '</div>' +
+      '<div style="background:#fff;border:2px solid ' + RED + ';border-radius:12px;padding:12px 16px;margin-bottom:8px">' +
+        '<div style="font-size:11px;color:' + RED + ';letter-spacing:0.4px;text-transform:uppercase;font-weight:700;margin-bottom:2px">Category</div>' +
+        '<div style="font-size:14px;font-weight:500;color:rgba(15,61,102,0.45)">Tap to select</div>' +
+      '</div>' +
+      '<div style="font-size:12px;color:' + RED + ';margin-bottom:14px;display:flex;align-items:center;gap:4px">' +
+        '<span class="material-icons" style="font-size:14px">info</span> Please pick a category.</div>' +
+      '<div style="background:#fff;border:1px solid rgba(15,61,102,0.10);border-radius:12px;padding:12px 16px;margin-bottom:14px">' +
+        '<div style="font-size:11px;color:' + SUB + ';letter-spacing:0.4px;text-transform:uppercase;font-weight:600;margin-bottom:2px">Date</div>' +
+        '<div style="font-size:14px;font-weight:600">May 16, 2026</div>' +
+      '</div>' +
+      '<button style="width:100%;background:rgba(15,61,102,0.10);color:rgba(15,61,102,0.45);border:0;padding:14px;border-radius:99px;font-size:14px;font-weight:700;font-family:inherit;cursor:not-allowed">Save · 2 errors</button>' +
+    '</div>'
+  );
+
+  // S6 — OCR uncertain
+  document.getElementById('s6').innerHTML = frame(
+    appBar('Confirm receipt', { back:true }) +
+    '<div style="background:rgba(248,179,25,0.18);color:#7A3812;padding:10px 14px;display:flex;align-items:flex-start;gap:10px;border-bottom:1px solid rgba(15,61,102,0.06)">' +
+      '<span class="material-icons" style="font-size:18px;margin-top:1px">warning_amber</span>' +
+      '<div style="flex:1;font-size:12px;line-height:1.5"><strong>Some fields need a check.</strong> The amount looked clear; the merchant was a guess.</div>' +
+    '</div>' +
+    '<div style="padding:14px;display:flex;flex-direction:column;gap:12px">' +
+      '<div style="height:120px;background:linear-gradient(180deg, #f5e9d6 0%, #e8d4b0 100%);border-radius:12px;padding:10px;display:flex;align-items:center;justify-content:center;position:relative">' +
+        '<div style="width:80px;height:100px;background:#fff;transform:rotate(-3deg);border-radius:4px;padding:8px;font-family:monospace;font-size:7px;color:#999;box-shadow:2px 4px 8px rgba(0,0,0,0.12)">' +
+          '<div style="text-align:center;font-weight:700;font-size:9px;color:' + NAVY + '">?????</div>' +
+          '<div style="border-top:1px dashed #ccc;border-bottom:1px dashed #ccc;margin:6px 0;padding:4px 0">' +
+            '<div style="height:2px;background:#eee;margin-bottom:2px"></div>' +
+            '<div style="height:2px;background:#eee;margin-bottom:2px"></div></div>' +
+          '<div style="font-weight:700;color:' + NAVY + '">142.30</div></div>' +
+        '<div style="position:absolute;top:8px;right:8px;font-size:10px;background:' + NAVY + ';color:#fff;padding:3px 8px;border-radius:99px;font-weight:600">OCR · 76%</div>' +
+      '</div>' +
+      '<div style="background:#fff;border:2px solid ' + YELLOW + ';border-radius:12px;padding:12px 16px">' +
+        '<div style="font-size:11px;color:#7A3812;letter-spacing:0.4px;text-transform:uppercase;font-weight:700;margin-bottom:2px;display:flex;align-items:center;gap:4px">' +
+          '<span class="material-icons" style="font-size:14px">help_outline</span> Merchant · low confidence</div>' +
+        '<div style="font-size:14px;font-weight:600">JAYA GROCER MID VAL — please confirm</div>' +
+      '</div>' +
+      '<div style="background:#fff;border:1.5px solid ' + GREEN + ';border-radius:12px;padding:12px 16px">' +
+        '<div style="font-size:11px;color:' + GREEN + ';letter-spacing:0.4px;text-transform:uppercase;font-weight:700;margin-bottom:2px;display:flex;align-items:center;gap:4px">' +
+          '<span class="material-icons" style="font-size:14px">check_circle</span> Amount · 98% confident</div>' +
+        '<div style="font-size:14px;font-weight:600">MYR 142.30</div>' +
+      '</div>' +
+      '<div style="background:#fff;border:1px solid rgba(15,61,102,0.10);border-radius:12px;padding:12px 16px">' +
+        '<div style="font-size:11px;color:' + SUB + ';letter-spacing:0.4px;text-transform:uppercase;font-weight:600;margin-bottom:2px">Date</div>' +
+        '<div style="font-size:14px;font-weight:600">May 16, 2026</div>' +
+      '</div>' +
+      '<button style="margin-top:6px;background:' + NAVY + ';color:#FCD46A;border:0;padding:14px;border-radius:99px;font-size:14px;font-weight:700;font-family:inherit;box-shadow:3px 3px 0 ' + YELLOW + '">Looks right · save</button>' +
+      '<button style="background:transparent;border:0;color:' + SUB + ';font-size:13px;font-weight:600;font-family:inherit">Retake photo</button>' +
+    '</div>'
+  );
+})();
+</script>
+</body>
+</html>

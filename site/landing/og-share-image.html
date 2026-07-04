@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>PocketFi · OG / Social share image</title>
+  <meta name="description" content="1200×630 social share cards for Twitter, Facebook, LinkedIn, Open Graph.">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <style>
+    html, body { margin: 0; background: #f0eee9; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif; }
+    * { box-sizing: border-box; }
+    body {
+      background-image: url("data:image/svg+xml,%3Csvg width='120' height='120' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M120 0H0v120' fill='none' stroke='rgba(0,0,0,0.06)' stroke-width='1'/%3E%3C/svg%3E");
+      background-size: 120px 120px; min-height: 100vh;
+    }
+    .world { padding: 60px; width: max-content; min-width: 100%; }
+    .sectionhead { padding: 0 0 36px; }
+    .sectionhead .title { font-size: 28px; font-weight: 600; color: rgba(40,30,20,0.85); letter-spacing: -0.4px; margin-bottom: 6px; }
+    .sectionhead .sub { font-size: 16px; color: rgba(60,50,40,0.6); }
+    .row { display: flex; gap: 48px; align-items: flex-start; }
+    .ab-wrap { flex-shrink: 0; }
+    .ab-label { font-size: 15px; font-weight: 500; color: rgba(60,50,40,0.7); padding: 3px 6px; margin-bottom: 4px; }
+    .ab-card { width: 1200px; height: 630px; background: #fff; border-radius: 2px; box-shadow: 0 1px 3px rgba(0,0,0,.08), 0 4px 16px rgba(0,0,0,.06); overflow: hidden; }
+  </style>
+</head>
+<body>
+<div class="world">
+  <div class="sectionhead">
+    <div class="title">OG cards (1200×630)</div>
+    <div class="sub">1200×630 cards for Twitter, Facebook, LinkedIn, OG.</div>
+  </div>
+  <div class="row">
+    <div class="ab-wrap"><div class="ab-label">01 · Navy hero</div><div class="ab-card" id="og1"></div></div>
+    <div class="ab-wrap"><div class="ab-label">02 · Cream hero</div><div class="ab-card" id="og2"></div></div>
+    <div class="ab-wrap"><div class="ab-label">03 · Release announce</div><div class="ab-card" id="og3"></div></div>
+  </div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+  function px(n, s) { return (n * s) + 'px'; }
+  function logo(size) {
+    return '<svg width="' + size + '" height="' + size + '" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">' +
+      '<rect x="8" y="22" width="84" height="60" rx="14" fill="#0F3D66"/>' +
+      '<rect x="8" y="22" width="84" height="14" rx="14" fill="#0F3D66"/>' +
+      '<circle cx="68" cy="52" r="14" fill="#F8B319"/>' +
+      '<circle cx="68" cy="52" r="6" fill="#0F3D66"/>' +
+      '<rect x="14" y="14" width="60" height="14" rx="6" fill="#0F3D66"/></svg>';
+  }
+  function miniTx(c, icon, title, amt, dark, good) {
+    return '<div style="background:#fff;border-radius:10px;padding:9px;display:flex;align-items:center;gap:9px;box-shadow:0 2px 6px rgba(0,0,0,0.05)">' +
+      '<div style="width:30px;height:30px;border-radius:50%;background:' + c + ';display:flex;align-items:center;justify-content:center;color:' + (dark ? '#0F3D66' : '#fff') + ';flex-shrink:0">' +
+      '<span class="material-icons" style="font-size:17px">' + icon + '</span></div>' +
+      '<div style="flex:1;font-size:11.5px;color:#0F3D66;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0">' + title + '</div>' +
+      '<div style="font-size:11px;font-weight:600;color:' + (good ? '#2E7D32' : '#F44336') + ';flex-shrink:0">' + amt + '</div></div>';
+  }
+  function phoneTimeline(s, accent) {
+    accent = accent || '#F8B319';
+    return '<div style="width:' + px(280,s) + ';height:' + px(560,s) + ';border-radius:' + px(38,s) + ';background:#0F3D66;padding:' + px(7,s) + ';box-shadow:0 30px 60px rgba(15,61,102,0.28), 0 8px 16px rgba(15,61,102,0.18);position:relative">' +
+      '<div style="width:100%;height:100%;border-radius:' + px(32,s) + ';background:#F9F9F9;overflow:hidden;display:flex;flex-direction:column;position:relative">' +
+      '<div style="position:absolute;top:' + px(8,s) + ';left:50%;transform:translateX(-50%);width:' + px(86,s) + ';height:' + px(22,s) + ';background:#0F3D66;border-radius:' + px(12,s) + ';z-index:5"></div>' +
+      '<div style="height:' + px(38,s) + ';background:#0F3D66;display:flex;align-items:center;justify-content:space-between;padding:0 ' + px(20,s) + ';color:#fff;font-size:' + px(11,s) + ';font-weight:600">' +
+      '<span>9:41</span><span style="width:40px"></span><span style="display:flex;gap:4px">' +
+      '<span class="material-icons" style="font-size:' + px(13,s) + '">signal_cellular_alt</span>' +
+      '<span class="material-icons" style="font-size:' + px(13,s) + '">wifi</span>' +
+      '<span class="material-icons" style="font-size:' + px(13,s) + '">battery_full</span></span></div>' +
+      '<div style="background:#0F3D66;color:#fff;padding:' + px(10,s) + ' ' + px(14,s) + ';display:flex;justify-content:space-between;align-items:center">' +
+      '<span class="material-icons" style="font-size:' + px(20,s) + '">notifications</span>' +
+      '<div style="text-align:center"><div style="font-size:' + px(16,s) + ';font-weight:500">− MYR 1,743.20</div>' +
+      '<div style="font-size:' + px(9.5,s) + ';opacity:0.85">Cash Flow · April</div></div>' +
+      '<span class="material-icons" style="font-size:' + px(20,s) + '">search</span></div>' +
+      '<div style="background:#0F3D66;display:flex;padding:0 ' + px(4,s) + '">' +
+      '<div style="flex:1;text-align:center;padding:' + px(10,s) + ';color:' + accent + ';border-bottom:2px solid ' + accent + ';font-size:' + px(11,s) + ';font-weight:500">Transactions</div>' +
+      '<div style="flex:1;text-align:center;padding:' + px(10,s) + ';color:rgba(255,255,255,0.55);font-size:' + px(11,s) + '">Overview</div></div>' +
+      '<div style="flex:1;padding:' + px(10,s) + ';display:flex;flex-direction:column;gap:' + px(8,s) + ';background:#F9F9F9;overflow:hidden">' +
+      '<div style="font-size:' + px(10,s) + ';color:#757575;padding:4px 4px 0;font-weight:500">Today</div>' +
+      miniTx('#F2AC3C','restaurant','Starbucks oat flat white','−18.00') +
+      miniTx('#D08547','local_grocery_store','Jaya Grocer','−142.30') +
+      miniTx('#F5D046','directions_bus','Grab to KLCC','−12.50',true) +
+      '<div style="font-size:' + px(10,s) + ';color:#757575;padding:4px 4px 0;font-weight:500">Yesterday</div>' +
+      miniTx('#53AF77','business_center','April payroll','+5,800.00',false,true) +
+      miniTx('#78C1AD','receipt','TNB Electricity','−186.40') + '</div>' +
+      '<div style="position:absolute;bottom:' + px(18,s) + ';right:' + px(14,s) + ';width:' + px(46,s) + ';height:' + px(46,s) + ';border-radius:50%;background:' + accent + ';box-shadow:0 6px 16px rgba(15,61,102,0.35);display:flex;align-items:center;justify-content:center;color:#fff">' +
+      '<span class="material-icons" style="font-size:' + px(22,s) + '">add</span></div></div></div>';
+  }
+  function phoneOverview(s) {
+    var legend = [{ c:'#F2AC3C', t:'Food', v:'487.20' },{ c:'#D08547', t:'Groceries', v:'418.50' },{ c:'#78C1AD', t:'Bills', v:'296.40' }].map(function (r) {
+      return '<div style="display:flex;align-items:center;gap:' + px(7,s) + ';font-size:' + px(11,s) + '">' +
+        '<div style="width:' + px(10,s) + ';height:' + px(10,s) + ';border-radius:50%;background:' + r.c + '"></div>' +
+        '<span style="flex:1;color:#0F3D66">' + r.t + '</span><span style="color:#0F3D66;font-weight:600">' + r.v + '</span></div>';
+    }).join('');
+    return '<div style="width:' + px(240,s) + ';height:' + px(480,s) + ';border-radius:' + px(32,s) + ';background:#0F3D66;padding:' + px(6,s) + ';box-shadow:0 24px 48px rgba(15,61,102,0.25)">' +
+      '<div style="width:100%;height:100%;border-radius:' + px(27,s) + ';background:#F9F9F9;overflow:hidden;display:flex;flex-direction:column">' +
+      '<div style="background:#0F3D66;color:#fff;padding:' + px(12,s) + ';text-align:center">' +
+      '<div style="font-size:' + px(11,s) + ';opacity:0.85">Overview</div>' +
+      '<div style="font-size:' + px(14,s) + ';font-weight:700;margin-top:2px">April 2026</div></div>' +
+      '<div style="flex:1;padding:' + px(14,s) + ';display:flex;flex-direction:column;align-items:center;gap:' + px(12,s) + '">' +
+      '<div style="width:' + px(150,s) + ';height:' + px(150,s) + ';border-radius:50%;background:conic-gradient(#F2AC3C 0 28%, #D08547 28% 52%, #78C1AD 52% 69%, #F5D046 69% 80%, #D471E8 80% 90%, #7246C8 90% 96%, #67686B 96% 100%);display:flex;align-items:center;justify-content:center;box-shadow:0 6px 18px rgba(0,0,0,0.10)">' +
+      '<div style="width:' + px(92,s) + ';height:' + px(92,s) + ';border-radius:50%;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center">' +
+      '<div style="font-size:' + px(9,s) + ';color:#757575">Spent</div>' +
+      '<div style="font-size:' + px(14,s) + ';font-weight:700;color:#0F3D66">MYR 1,743</div>' +
+      '<div style="font-size:' + px(8,s) + ';color:#F1592A;margin-top:2px">▲ 12% vs Mar</div></div></div>' +
+      '<div style="width:100%;display:flex;flex-direction:column;gap:' + px(5,s) + '">' + legend + '</div></div></div></div>';
+  }
+
+  // OG 1 — Navy hero
+  document.getElementById('og1').innerHTML =
+    '<div style="width:1200px;height:630px;background:#0F3D66;color:#FFF6E0;position:relative;overflow:hidden;display:flex;align-items:center;padding:0 80px;font-family:Roboto, system-ui, sans-serif">' +
+      '<div style="position:absolute;top:-160px;right:-160px;width:480px;height:480px;border-radius:50%;background:rgba(248,179,25,0.18)"></div>' +
+      '<div style="position:absolute;bottom:-200px;left:-100px;width:380px;height:380px;border-radius:50%;background:rgba(248,179,25,0.10)"></div>' +
+      '<div style="position:absolute;top:18%;right:42%;color:#F8B319;font-size:42px;opacity:0.5">✦</div>' +
+      '<div style="position:absolute;bottom:18%;right:10%;color:#F8B319;font-size:30px;opacity:0.45">✦</div>' +
+      '<div style="flex:1.2;position:relative;z-index:2">' +
+        '<div style="display:flex;align-items:center;gap:14px;margin-bottom:24px">' + logo(48) +
+          '<span style="font-size:30px;font-weight:700">PocketFi<span style="color:#F8B319">!</span></span></div>' +
+        '<h1 style="font-size:78px;line-height:1.0;letter-spacing:-2.4px;font-weight:700;margin:0 0 18px;text-wrap:pretty">Track your<br>ringgit, <span style="color:#F8B319">simply.</span></h1>' +
+        '<p style="font-size:20px;color:rgba(255,246,224,0.78);margin:0;max-width:480px;line-height:1.5">A free budget tracker. Receipts, shared wallets, monthly overview.</p>' +
+        '<div style="margin-top:28px;display:inline-flex;align-items:center;gap:10px;background:#F8B319;color:#0F3D66;padding:10px 20px;border-radius:99px;font-size:14px;font-weight:700;box-shadow:4px 4px 0 rgba(0,0,0,0.20)">Public roadmap · Made in KL</div>' +
+      '</div>' +
+      '<div style="flex:1;display:flex;justify-content:center;position:relative;z-index:2">' +
+        '<div style="transform:rotate(4deg);filter:drop-shadow(0 22px 38px rgba(0,0,0,0.45))">' + phoneTimeline(0.95, '#F8B319') + '</div>' +
+      '</div>' +
+    '</div>';
+
+  // OG 2 — Cream hero
+  document.getElementById('og2').innerHTML =
+    '<div style="width:1200px;height:630px;background:#FFF6E0;color:#0F3D66;position:relative;overflow:hidden;display:flex;align-items:center;padding:0 80px;font-family:Roboto, system-ui, sans-serif">' +
+      '<div style="position:absolute;top:-160px;left:-140px;width:420px;height:420px;border-radius:50%;background:rgba(248,179,25,0.20)"></div>' +
+      '<div style="position:absolute;bottom:-180px;right:-120px;width:360px;height:360px;border-radius:50%;background:rgba(15,61,102,0.06)"></div>' +
+      '<div style="position:absolute;top:12%;right:12%;color:#F8B319;font-size:36px;opacity:0.5">✦</div>' +
+      '<div style="flex:1.2;position:relative;z-index:2">' +
+        '<div style="display:flex;align-items:center;gap:14px;margin-bottom:24px">' + logo(48) +
+          '<span style="font-size:30px;font-weight:700">PocketFi<span style="color:#F8B319">!</span></span></div>' +
+        '<h1 style="font-size:78px;line-height:1.0;letter-spacing:-2.4px;font-weight:700;margin:0 0 18px;text-wrap:pretty">Where every<br>ringgit <span style="color:#F8B319">goes.</span></h1>' +
+        '<p style="font-size:20px;color:#4A5A6A;margin:0;max-width:500px;line-height:1.5">Snap a receipt, split with roommates, see the month at a glance.</p>' +
+        '<div style="margin-top:28px;display:inline-flex;align-items:center;gap:10px;background:#0F3D66;color:#FCD46A;padding:10px 20px;border-radius:99px;font-size:14px;font-weight:700;box-shadow:4px 4px 0 #F8B319">View public roadmap →</div>' +
+      '</div>' +
+      '<div style="flex:1;display:flex;justify-content:center;position:relative;z-index:2">' +
+        '<div style="transform:rotate(-3deg);filter:drop-shadow(0 22px 38px rgba(15,61,102,0.20))">' + phoneOverview(0.95) + '</div>' +
+      '</div>' +
+    '</div>';
+
+  // OG 3 — Release announce
+  document.getElementById('og3').innerHTML =
+    '<div style="width:1200px;height:630px;background:#FCD46A;color:#0F3D66;position:relative;overflow:hidden;font-family:Roboto, system-ui, sans-serif;padding:60px">' +
+      '<div style="position:absolute;inset:0;background-image:radial-gradient(rgba(15,61,102,0.18) 2px, transparent 2px);background-size:32px 32px;opacity:0.4"></div>' +
+      '<div style="position:relative;z-index:2;display:flex;align-items:center;gap:14px;margin-bottom:30px">' + logo(42) +
+        '<span style="font-size:26px;font-weight:700">PocketFi<span style="color:#F1592A">!</span></span>' +
+        '<span style="margin-left:auto;font-size:14px;font-weight:600;padding:6px 14px;border-radius:99px;background:#0F3D66;color:#FCD46A">v1.4 · Shared wallets are here</span>' +
+      '</div>' +
+      '<div style="position:relative;z-index:2;text-align:center;max-width:1000px;margin:30px auto 0">' +
+        '<div style="font-size:14px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(15,61,102,0.65);margin-bottom:20px">Now with shared wallets</div>' +
+        '<h1 style="font-size:108px;line-height:0.95;letter-spacing:-3.5px;font-weight:700;margin:0 0 24px;text-wrap:balance">Split it,<br>track it, <span style="font-style:italic;color:#F1592A">done.</span></h1>' +
+        '<div style="display:inline-flex;gap:32px;font-size:18px;color:rgba(15,61,102,0.78)">' +
+          '<span style="display:inline-flex;align-items:center;gap:8px">● Free</span>' +
+          '<span style="display:inline-flex;align-items:center;gap:8px">● GitHub</span>' +
+          '<span style="display:inline-flex;align-items:center;gap:8px">● No ads</span>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+})();
+</script>
+</body>
+</html>
